@@ -4,72 +4,25 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Trash2, Minus, Plus, ShoppingBag, Tag, ArrowRight } from "lucide-react";
-import { cn, formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
-interface CartItem {
-  id: string;
-  name: string;
-  slug: string;
-  image: string;
-  variant: string;
-  price: number;
-  quantity: number;
-  stock: number;
-}
-
-const initialItems: CartItem[] = [
-  {
-    id: "1",
-    name: "Set Hidroponik NFT 6 Lubang — Starter Kit",
-    slug: "set-hidroponik-nft-6-lubang",
-    image: "/products/hidroponik-nft-6.jpg",
-    variant: "6 Lubang (Starter)",
-    price: 699000,
-    quantity: 1,
-    stock: 25,
-  },
-  {
-    id: "2",
-    name: "Nutrisi AB Mix Hidroponik — 1 Liter",
-    slug: "nutrisi-ab-mix-1l",
-    image: "/products/ab-mix.jpg",
-    variant: "Default",
-    price: 45000,
-    quantity: 2,
-    stock: 100,
-  },
-];
+import { useCartStore } from "@/lib/cart-store";
 
 export default function CartPage() {
-  const [items, setItems] = useState<CartItem[]>(initialItems);
+  const { items, updateQuantity, removeItem, totalItems, totalPrice, totalWeight } = useCartStore();
   const [couponCode, setCouponCode] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponDiscount, setCouponDiscount] = useState(0);
 
-  function updateQuantity(id: string, delta: number) {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, Math.min(item.stock, item.quantity + delta)) }
-          : item
-      )
-    );
-  }
-
-  function removeItem(id: string) {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  }
-
   function applyCoupon() {
     if (couponCode.toUpperCase() === "JAGOFARM10") {
-      const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const subtotal = totalPrice();
       setCouponDiscount(Math.min(subtotal * 0.1, 100000));
       setCouponApplied(true);
     }
   }
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = totalPrice();
   const shippingCost = subtotal >= 500000 ? 0 : 25000;
   const total = subtotal - couponDiscount + shippingCost;
 
@@ -78,13 +31,9 @@ export default function CartPage() {
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
         <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground" />
         <h1 className="mt-4 text-2xl font-bold">Keranjang Kosong</h1>
-        <p className="mt-2 text-muted-foreground">
-          Yuk, mulai belanja produk pertanian modern!
-        </p>
+        <p className="mt-2 text-muted-foreground">Yuk, mulai belanja produk pertanian modern!</p>
         <Link href="/products" className="mt-6 inline-block">
-          <Button size="lg">
-            Belanja Sekarang <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <Button size="lg">Belanja Sekarang <ArrowRight className="ml-2 h-4 w-4" /></Button>
         </Link>
       </div>
     );
@@ -93,64 +42,43 @@ export default function CartPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <h1 className="text-2xl font-bold tracking-tight">Keranjang Belanja</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {items.length} produk di keranjang
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">{totalItems()} produk di keranjang</p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Items */}
         <div className="lg:col-span-2 space-y-4">
           {items.map((item) => (
-            <div
-              key={item.id}
-              className="flex gap-4 rounded-xl border border-border bg-card p-4"
-            >
+            <div key={item.id} className="flex gap-4 rounded-xl border border-border bg-card p-4">
               <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-secondary">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover"
-                />
+                <Image src={item.image || "/placeholder-product.jpg"} alt={item.name}
+                  fill className="object-cover" />
               </div>
               <div className="flex flex-1 flex-col justify-between">
                 <div>
-                  <Link
-                    href={`/products/${item.slug}`}
-                    className="text-sm font-semibold hover:text-primary transition-colors"
-                  >
+                  <Link href={`/products/${item.productId}`}
+                    className="text-sm font-semibold hover:text-primary transition-colors">
                     {item.name}
                   </Link>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    Varian: {item.variant}
+                    Berat: {((item.weightGram ?? 0) / 1000).toFixed(1)} kg
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center rounded-lg border border-input">
-                    <button
-                      onClick={() => updateQuantity(item.id, -1)}
-                      className="px-2 py-1 hover:bg-secondary transition-colors"
-                    >
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      className="px-2 py-1 hover:bg-secondary transition-colors">
                       <Minus className="h-3.5 w-3.5" />
                     </button>
-                    <span className="min-w-[2.5rem] text-center text-sm font-medium">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(item.id, 1)}
-                      className="px-2 py-1 hover:bg-secondary transition-colors"
-                    >
+                    <span className="min-w-[2.5rem] text-center text-sm font-medium">{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      className="px-2 py-1 hover:bg-secondary transition-colors">
                       <Plus className="h-3.5 w-3.5" />
                     </button>
                   </div>
                   <div className="flex items-center gap-3">
-                    <p className="text-sm font-bold text-primary">
-                      {formatPrice(item.price * item.quantity)}
-                    </p>
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                    >
+                    <p className="text-sm font-bold text-primary">{formatPrice(item.price * item.quantity)}</p>
+                    <button onClick={() => removeItem(item.id)}
+                      className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive">
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
@@ -170,28 +98,17 @@ export default function CartPage() {
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Kode kupon"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    disabled={couponApplied}
-                    className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary disabled:opacity-50"
-                  />
+                  <input type="text" placeholder="Kode kupon" value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)} disabled={couponApplied}
+                    className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary disabled:opacity-50" />
                 </div>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={applyCoupon}
-                  disabled={couponApplied || !couponCode}
-                >
+                <Button variant="secondary" size="sm" onClick={applyCoupon}
+                  disabled={couponApplied || !couponCode}>
                   {couponApplied ? "Diterapkan" : "Pakai"}
                 </Button>
               </div>
               {couponApplied && (
-                <p className="mt-1 text-xs text-primary">
-                  Kupon berhasil! Diskon {formatPrice(couponDiscount)}
-                </p>
+                <p className="mt-1 text-xs text-primary">Kupon berhasil! Diskon {formatPrice(couponDiscount)}</p>
               )}
             </div>
 
@@ -218,16 +135,9 @@ export default function CartPage() {
             </div>
 
             <Link href="/checkout" className="mt-4 block">
-              <Button size="lg" className="w-full">
-                Checkout
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <Button size="lg" className="w-full">Checkout <ArrowRight className="ml-2 h-4 w-4" /></Button>
             </Link>
-
-            <Link
-              href="/products"
-              className="mt-3 block text-center text-sm text-primary hover:underline"
-            >
+            <Link href="/products" className="mt-3 block text-center text-sm text-primary hover:underline">
               ← Lanjut Belanja
             </Link>
           </div>

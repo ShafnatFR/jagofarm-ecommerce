@@ -1,144 +1,73 @@
-import { Suspense } from "react";
-import { Metadata } from "next";
-import { ProductFilters } from "@/components/product/product-filters";
-import { ProductGrid } from "@/components/product/product-grid";
+"use client";
+
+import { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Grid3X3, List, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Grid3X3, List } from "lucide-react";
+import { ProductCard } from "@/components/product/product-card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ProductFilters } from "@/components/product/product-filters";
 
-export const metadata: Metadata = {
-  title: "Semua Produk",
-  description: "Jelajahi koleksi lengkap produk pertanian modern JagoFarm",
-};
-
-const allProducts = [
-  {
-    id: "1",
-    name: "Set Hidroponik NFT 6 Lubang — Starter Kit",
-    slug: "set-hidroponik-nft-6-lubang",
-    price: 850000,
-    discountPrice: 699000,
-    image: "/products/hidroponik-nft-6.jpg",
-    rating: 4.8,
-    reviewCount: 124,
-    category: "Set Hidroponik",
-  },
-  {
-    id: "2",
-    name: "IoT pH & Suhu Sensor untuk Tambak",
-    slug: "iot-ph-suhu-sensor-tambak",
-    price: 1250000,
-    image: "/products/iot-sensor.jpg",
-    rating: 4.9,
-    reviewCount: 67,
-    category: "IoT & Smart Farming",
-  },
-  {
-    id: "3",
-    name: "Set Aquaponik Compact 120x80cm",
-    slug: "set-aquaponik-compact-120x80",
-    price: 2500000,
-    discountPrice: 2100000,
-    image: "/products/aquaponik-compact.jpg",
-    rating: 4.7,
-    reviewCount: 89,
-    category: "Set Aquaponik",
-  },
-  {
-    id: "4",
-    name: "Benih Lele Sangkuriang Super — 1000 ekor",
-    slug: "benih-lele-sangkuriang-1000",
-    price: 150000,
-    image: "/products/benih-lele.jpg",
-    rating: 4.6,
-    reviewCount: 203,
-    category: "Benih",
-  },
-  {
-    id: "5",
-    name: "Set Tambak Terpal 3x3m Lengkap",
-    slug: "set-tambak-terpal-3x3",
-    price: 1800000,
-    discountPrice: 1550000,
-    image: "/products/tambak-terpal.jpg",
-    rating: 4.5,
-    reviewCount: 56,
-    category: "Set Tambak",
-  },
-  {
-    id: "6",
-    name: "Anakan Nila Gift Super — 500 ekor",
-    slug: "anakan-nila-gift-500",
-    price: 175000,
-    image: "/products/anakan-nila.jpg",
-    rating: 4.8,
-    reviewCount: 142,
-    category: "Anakan Ikan",
-  },
-  {
-    id: "7",
-    name: "Smart Water Pump IoT — Solar Panel",
-    slug: "smart-water-pump-iot-solar",
-    price: 3200000,
-    discountPrice: 2850000,
-    image: "/products/smart-pump.jpg",
-    rating: 4.9,
-    reviewCount: 31,
-    category: "IoT & Smart Farming",
-  },
-  {
-    id: "8",
-    name: "Nutrisi AB Mix Hidroponik — 1 Liter",
-    slug: "nutrisi-ab-mix-1l",
-    price: 45000,
-    image: "/products/ab-mix.jpg",
-    rating: 4.7,
-    reviewCount: 318,
-    category: "Set Hidroponik",
-  },
-];
-
-interface ProductsPageProps {
-  searchParams: Promise<{
-    category?: string;
-    sort?: string;
-    price?: string;
-    page?: string;
-    view?: string;
-  }>;
+interface ApiProduct {
+  id: string; name: string; slug: string; basePrice: number;
+  discountPrice?: number | null; isFeatured?: boolean;
+  images: { url: string; altText?: string | null; isPrimary?: boolean }[];
+  category: { id: string; name: string; slug: string };
+  _count?: { reviews?: number };
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const params = await searchParams;
-  const category = params.category || "";
-  const sort = params.sort || "newest";
-  const view = params.view || "grid";
+function ProductsContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Filter products
-  let filtered = allProducts;
-  if (category) {
-    const categoryMap: Record<string, string> = {
-      "set-tambak": "Set Tambak",
-      "set-hidroponik": "Set Hidroponik",
-      "set-aquaponik": "Set Aquaponik",
-      "iot-smart-farming": "IoT & Smart Farming",
-      benih: "Benih",
-      "anakan-ikan": "Anakan Ikan",
-    };
-    const catName = categoryMap[category];
-    if (catName) {
-      filtered = filtered.filter((p) => p.category === catName);
+  const category = searchParams.get("category") || "";
+  const sort = searchParams.get("sort") || "newest";
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const view = searchParams.get("view") || "grid";
+
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams();
+        if (category) params.set("category", category);
+        if (sort) params.set("sort", sort);
+        params.set("page", String(page));
+        params.set("limit", "12");
+        const res = await fetch(`/api/products?${params.toString()}`);
+        if (!res.ok) throw new Error("Gagal memuat produk");
+        const data = await res.json();
+        setProducts(data.products ?? []);
+        setTotal(data.total ?? data.products?.length ?? 0);
+        setTotalPages(data.totalPages ?? 1);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
+      } finally {
+        setLoading(false);
+      }
     }
+    fetchProducts();
+  }, [category, sort, page]);
+
+  function updateView(v: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("view", v);
+    router.push(`/products?${params.toString()}`);
   }
 
-  // Sort
-  if (sort === "price-asc") {
-    filtered = [...filtered].sort(
-      (a, b) => (a.discountPrice ?? a.price) - (b.discountPrice ?? b.price)
-    );
-  } else if (sort === "price-desc") {
-    filtered = [...filtered].sort(
-      (a, b) => (b.discountPrice ?? b.price) - (a.discountPrice ?? a.price)
-    );
+  function goToPage(p: number) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(p));
+    router.push(`/products?${params.toString()}`);
   }
 
   return (
@@ -147,15 +76,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Semua Produk</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {filtered.length} produk ditemukan
-          </p>
+          {!loading && (
+            <p className="mt-1 text-sm text-muted-foreground">{total} produk ditemukan</p>
+          )}
         </div>
         <div className="hidden items-center gap-1 sm:flex">
-          <Button variant={view === "grid" ? "primary" : "ghost"} size="icon" className="h-8 w-8">
+          <Button variant={view === "grid" ? "primary" : "ghost"} size="icon" className="h-8 w-8"
+            onClick={() => updateView("grid")}>
             <Grid3X3 className="h-4 w-4" />
           </Button>
-          <Button variant={view === "list" ? "primary" : "ghost"} size="icon" className="h-8 w-8">
+          <Button variant={view === "list" ? "primary" : "ghost"} size="icon" className="h-8 w-8"
+            onClick={() => updateView("list")}>
             <List className="h-4 w-4" />
           </Button>
         </div>
@@ -168,27 +99,86 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </Suspense>
 
         <div className="flex-1">
-          <ProductGrid
-            products={filtered}
-            emptyMessage="Tidak ada produk ditemukan untuk filter ini."
-          />
+          {loading ? (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="rounded-xl border border-border bg-card p-3">
+                  <Skeleton className="aspect-square rounded-lg" />
+                  <Skeleton className="mt-3 h-3 w-16" />
+                  <Skeleton className="mt-1 h-4 w-full" />
+                  <Skeleton className="mt-2 h-5 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="py-20 text-center">
+              <AlertCircle className="mx-auto h-8 w-8 text-destructive" />
+              <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+            </div>
+          ) : products.length === 0 ? (
+            <div className="py-20 text-center">
+              <p className="text-lg text-muted-foreground">Tidak ada produk ditemukan untuk filter ini.</p>
+              <Link href="/products" className="mt-4 inline-block">
+                <Button variant="secondary" size="sm">Hapus Filter</Button>
+              </Link>
+            </div>
+          ) : (
+            <div className={cn(
+              view === "grid"
+                ? "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                : "space-y-4"
+            )}>
+              {products.map((p, i) => (
+                <ProductCard key={p.id} index={i} product={{
+                  id: p.id, name: p.name, slug: p.slug,
+                  price: p.basePrice, discountPrice: p.discountPrice,
+                  image: p.images?.[0]?.url || "/placeholder-product.jpg",
+                  category: p.category.name, isFeatured: p.isFeatured,
+                }} />
+              ))}
+            </div>
+          )}
 
-          {/* Pagination placeholder */}
-          {filtered.length > 0 && (
-            <div className="mt-8 flex justify-center gap-2">
-              <Button variant="secondary" size="sm" disabled>
-                Sebelumnya
-              </Button>
-              <Button variant="primary" size="sm">
-                1
-              </Button>
-              <Button variant="secondary" size="sm" disabled>
-                Selanjutnya
-              </Button>
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="mt-8 flex items-center justify-center gap-2">
+              <Button variant="secondary" size="sm" disabled={page <= 1}
+                onClick={() => goToPage(page - 1)}>Sebelumnya</Button>
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                const p = i + 1;
+                return (
+                  <Button key={p} variant={p === page ? "primary" : "secondary"} size="sm"
+                    onClick={() => goToPage(p)}>{p}</Button>
+                );
+              })}
+              <Button variant="secondary" size="sm" disabled={page >= totalPages}
+                onClick={() => goToPage(page + 1)}>Selanjutnya</Button>
             </div>
           )}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="mx-auto max-w-7xl px-4 py-8">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="mt-2 h-4 w-32" />
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="rounded-xl border border-border bg-card p-3">
+              <Skeleton className="aspect-square rounded-lg" />
+              <Skeleton className="mt-3 h-4 w-full" />
+              <Skeleton className="mt-2 h-5 w-20" />
+            </div>
+          ))}
+        </div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }

@@ -12,19 +12,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
-
-const categories = [
-  { name: "Set Tambak", href: "/products?category=set-tambak" },
-  { name: "Set Hidroponik", href: "/products?category=set-hidroponik" },
-  { name: "Set Aquaponik", href: "/products?category=set-aquaponik" },
-  { name: "IoT & Smart Farming", href: "/products?category=iot-smart-farming" },
-  { name: "Benih", href: "/products?category=benih" },
-  { name: "Anakan Ikan", href: "/products?category=anakan-ikan" },
-];
+import { useCategories } from "@/hooks/use-categories";
 
 export function Navbar() {
   const [showCategories, setShowCategories] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { categories, loading } = useCategories();
   const cartCount = 0; // TODO: connect to Zustand cart store
 
   return (
@@ -70,15 +63,21 @@ export function Navbar() {
               </button>
               {showCategories && (
                 <div className="absolute right-0 top-full mt-1 w-56 rounded-lg border border-border bg-card p-2 shadow-lg">
-                  {categories.map((cat) => (
-                    <Link
-                      key={cat.href}
-                      href={cat.href}
-                      className="block rounded-md px-3 py-2 text-sm transition-colors hover:bg-secondary hover:text-primary"
-                    >
-                      {cat.name}
-                    </Link>
-                  ))}
+                  {loading ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">Loading...</div>
+                  ) : categories.length === 0 ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">No categories</div>
+                  ) : (
+                    categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/products?category=${cat.slug}`}
+                        className="block rounded-md px-3 py-2 text-sm transition-colors hover:bg-secondary hover:text-primary"
+                      >
+                        {cat.name}
+                      </Link>
+                    ))
+                  )}
                 </div>
               )}
             </div>

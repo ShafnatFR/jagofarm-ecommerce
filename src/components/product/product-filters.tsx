@@ -5,15 +5,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
-const categories = [
-  { slug: "set-tambak", name: "Set Tambak" },
-  { slug: "set-hidroponik", name: "Set Hidroponik" },
-  { slug: "set-aquaponik", name: "Set Aquaponik" },
-  { slug: "iot-smart-farming", name: "IoT & Smart Farming" },
-  { slug: "benih", name: "Benih" },
-  { slug: "anakan-ikan", name: "Anakan Ikan" },
-];
+import { useCategories } from "@/hooks/use-categories";
 
 const priceRanges = [
   { label: "Di bawah Rp 100rb", min: 0, max: 100000 },
@@ -38,6 +30,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { categories, loading } = useCategories();
 
   const activeCategory = searchParams.get("category") || "";
   const activeSort = searchParams.get("sort") || "newest";
@@ -81,22 +74,28 @@ export function ProductFilters({ className }: ProductFiltersProps) {
       <div>
         <h3 className="mb-3 text-sm font-semibold text-foreground">Kategori</h3>
         <div className="space-y-2">
-          {categories.map((cat) => (
-            <button
-              key={cat.slug}
-              onClick={() =>
-                updateParam("category", activeCategory === cat.slug ? "" : cat.slug)
-              }
-              className={cn(
-                "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors text-left",
-                activeCategory === cat.slug
-                  ? "bg-primary text-primary-foreground font-medium"
-                  : "hover:bg-secondary"
-              )}
-            >
-              <span>{cat.name}</span>
-            </button>
-          ))}
+          {loading ? (
+            <div className="px-3 py-2 text-sm text-muted-foreground">Loading categories...</div>
+          ) : categories.length === 0 ? (
+            <div className="px-3 py-2 text-sm text-muted-foreground">No categories available</div>
+          ) : (
+            categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() =>
+                  updateParam("category", activeCategory === cat.slug ? "" : cat.slug)
+                }
+                className={cn(
+                  "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors text-left",
+                  activeCategory === cat.slug
+                    ? "bg-primary text-primary-foreground font-medium"
+                    : "hover:bg-secondary"
+                )}
+              >
+                <span>{cat.name}</span>
+              </button>
+            ))
+          )}
         </div>
       </div>
 

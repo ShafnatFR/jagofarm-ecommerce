@@ -3,15 +3,7 @@
 import Link from "next/link";
 import { X, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const categories = [
-  { name: "Set Tambak", href: "/products?category=set-tambak" },
-  { name: "Set Hidroponik", href: "/products?category=set-hidroponik" },
-  { name: "Set Aquaponik", href: "/products?category=set-aquaponik" },
-  { name: "IoT & Smart Farming", href: "/products?category=iot-smart-farming" },
-  { name: "Benih", href: "/products?category=benih" },
-  { name: "Anakan Ikan", href: "/products?category=anakan-ikan" },
-];
+import { useCategories } from "@/hooks/use-categories";
 
 interface MobileNavProps {
   open: boolean;
@@ -19,6 +11,8 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ open, onClose }: MobileNavProps) {
+  const { categories, loading } = useCategories();
+
   if (!open) return null;
 
   return (
@@ -72,16 +66,22 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
               Kategori
             </p>
             <div className="mt-2 space-y-1">
-              {categories.map((cat) => (
-                <Link
-                  key={cat.href}
-                  href={cat.href}
-                  onClick={onClose}
-                  className="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary hover:text-primary"
-                >
-                  {cat.name}
-                </Link>
-              ))}
+              {loading ? (
+                <div className="px-3 py-2 text-sm text-muted-foreground">Loading...</div>
+              ) : categories.length === 0 ? (
+                <div className="px-3 py-2 text-sm text-muted-foreground">No categories</div>
+              ) : (
+                categories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/products?category=${cat.slug}`}
+                    onClick={onClose}
+                    className="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary hover:text-primary"
+                  >
+                    {cat.name}
+                  </Link>
+                ))
+              )}
             </div>
           </div>
 

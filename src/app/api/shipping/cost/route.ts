@@ -1,17 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const body = await request.json();
     const { origin, destination, weight, courier } = body;
 
-    if (!origin || !destination || !weight) {
+    if (!destination || !weight) {
       return NextResponse.json(
         { error: "origin, destination, and weight are required" },
         { status: 400 }
