@@ -16,6 +16,7 @@ const footerLinks = {
     { label: "Kebijakan Pengiriman", href: "/shipping-policy" },
     { label: "Kebijakan Pengembalian", href: "/return-policy" },
     { label: "FAQ", href: "/faq" },
+    { label: "Hubungi Kami", href: "/contact" },
   ],
   akun: [
     { label: "Masuk", href: "/login" },
