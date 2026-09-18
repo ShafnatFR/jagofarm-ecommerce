@@ -38,7 +38,18 @@ export default function CouponsPage() {
   useEffect(() => {
     fetch("/api/admin/coupons")
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setCoupons(d.coupons || []))
+      .then((d) => setCoupons((d.coupons || []).map((c: any) => ({
+        id: c.id, code: c.code,
+        type: c.discountType || c.type || "percentage",
+        value: c.discountValue ?? c.value ?? 0,
+        minOrder: c.minOrderValue ?? c.minOrder ?? 0,
+        maxDiscount: c.maxDiscount ?? null,
+        usageLimit: c.usageLimit ?? 0,
+        usageCount: c.usedCount ?? c.usageCount ?? 0,
+        startDate: c.startsAt || c.startDate || "",
+        endDate: c.expiresAt || c.endDate || "",
+        status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate) < new Date() ? "EXPIRED" : "ACTIVE",
+      }))))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [])

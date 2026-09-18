@@ -32,7 +32,15 @@ export default function ProductsPage() {
     if (category && category !== "all") params.set("category", category)
     fetch(`/api/admin/products?${params}`)
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setProducts(d.products || []))
+      .then((d) => setProducts((d.products || []).map((p: any) => ({
+        id: p.id, name: p.name, slug: p.slug,
+        category: p.category?.name || p.category || "",
+        price: p.basePrice || p.price || 0,
+        discountPrice: p.discountPrice ?? null,
+        stock: p.stock ?? 0,
+        image: p.images?.[0]?.url || p.image || "",
+        featured: p.isFeatured ?? p.featured ?? false,
+      }))))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [search, category])
