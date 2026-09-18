@@ -12,13 +12,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
+import { useCartStore } from "@/lib/cart-store";
 import { useCategories } from "@/hooks/use-categories";
 
 export function Navbar() {
   const [showCategories, setShowCategories] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { categories, loading } = useCategories();
-  const cartCount = 0; // TODO: connect to Zustand cart store
+  const cartCount = useCartStore((s) => s.totalItems());
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
