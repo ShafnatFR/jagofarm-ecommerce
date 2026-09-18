@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Leaf, Instagram, Mail, Phone, MapPin, Globe } from "lucide-react";
+import { Leaf, Mail, Phone, MapPin, Globe, Share2 } from "lucide-react";
 
 const footerLinks = {
   produk: [
@@ -48,7 +48,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20"
               >
-                <Instagram className="h-4 w-4" />
+                <Share2 className="h-4 w-4" />
               </a>
               <a
                 href="https://facebook.com"
