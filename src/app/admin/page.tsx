@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge"
 import { formatPrice, formatDate } from "@/lib/utils"
 
 interface Stats {
-  revenue: number; orders: number; customers: number; avgOrderValue: number
+  revenue: number; orders: number; customers: number; avgOrderValue: number;
+  totalRevenue?: number; totalOrders?: number; totalCustomers?: number;
+  orderStatusCounts?: Record<string, number>;
 }
 interface RecentOrder { id: string; customer: string; total: number; status: string; date: string }
 interface StatusBreakdown { status: string; count: number; color: string }
@@ -78,7 +80,7 @@ export default function AdminDashboardPage() {
 
   const colorMap: Record<string, string> = { pending: "bg-yellow-500", paid: "bg-green-500", processing: "bg-blue-500", shipped: "bg-indigo-500", delivered: "bg-emerald-500", cancelled: "bg-red-500" }
   const statusCounts = data.stats.orderStatusCounts ?? {}
-  const breakdown = Array.isArray(data.orderStatusBreakdown) ? data.orderStatusBreakdown : Object.entries(statusCounts).map(([status, count]) => ({ status, count, color: colorMap[status] || "bg-gray-500" }))
+  const breakdown: {status: string; count: number; color: string}[] = Array.isArray(data.orderStatusBreakdown) ? data.orderStatusBreakdown : Object.entries(statusCounts).map(([status, count]) => ({ status, count: count as number, color: colorMap[status] || "bg-gray-500" }))
 
   const totalBreakdown = breakdown.reduce((s, o) => s + o.count, 0)
 
