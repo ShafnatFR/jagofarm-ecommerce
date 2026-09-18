@@ -47,8 +47,8 @@ function ProductsContent() {
         if (!res.ok) throw new Error("Gagal memuat produk");
         const data = await res.json();
         setProducts(data.products ?? []);
-        setTotal(data.total ?? data.products?.length ?? 0);
-        setTotalPages(data.totalPages ?? 1);
+        setTotal(data.pagination?.total ?? data.total ?? data.products?.length ?? 0);
+        setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       } finally {
