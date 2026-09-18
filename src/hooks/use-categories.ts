@@ -8,49 +8,50 @@ export interface NavCategory {
   slug: string;
 }
 
-interface CategoryNode {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  imageUrl: string | null;
-  sortOrder: number;
-  children: CategoryNode[];
+let cachedCategories: NavCategory[] | null = null;
+let fetchPromise: Promise<NavCategory[]> | null = null;
+
+async function fetchCategoriesFromAPI(): Promise<NavCategory[]> {
+  if (cachedCategories) return cachedCategories;
+  if (fetchPromise) return fetchPromise;
+
+  fetchPromise = (async () => {
+    try {
+      const res = await fetch("/api/categories", { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) return [];
+      const data = await res.json();
+      const cats = (data.categories || []).map((c: any) => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+      }));
+      cachedCategories = cats;
+      return cats;
+    } catch {
+      return [];
+    } finally {
+      fetchPromise = null;
+    }
+  })();
+
+  return fetchPromise;
 }
 
 export function useCategories() {
-  const [categories, setCategories] = useState<NavCategory[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<NavCategory[]>(cachedCategories || []);
+  const [loading, setLoading] = useState(!cachedCategories);
 
   useEffect(() => {
-    let cancelled = false;
+    let active = true;
 
-    async function fetchCategories() {
-      try {
-        const res = await fetch("/api/categories");
-        if (!res.ok) return;
-        const data = await res.json();
-        if (cancelled) return;
-
-        // Flatten: take root categories (API returns tree with children)
-        const roots: CategoryNode[] = data.categories || [];
-        const flat: NavCategory[] = roots.map((c) => ({
-          id: c.id,
-          name: c.name,
-          slug: c.slug,
-        }));
-        setCategories(flat);
-      } catch {
-        // silently fail — show empty
-      } finally {
-        if (!cancelled) setLoading(false);
+    fetchCategoriesFromAPI().then((cats) => {
+      if (active) {
+        setCategories(cats);
+        setLoading(false);
       }
-    }
+    });
 
-    fetchCategories();
-    return () => {
-      cancelled = true;
-    };
+    return () => { active = false; };
   }, []);
 
   return { categories, loading };
