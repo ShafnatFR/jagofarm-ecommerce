@@ -97,7 +97,6 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "jagofarm-cart",
-      skipHydration: true,
     }
   )
 );
