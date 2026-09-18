@@ -37,7 +37,15 @@ export default function OrdersPage() {
     if (statusFilter !== "ALL") params.set("status", statusFilter)
     fetch(`/api/admin/orders?${params}`)
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setOrders(d.orders || []))
+      .then((d) => setOrders((d.orders || []).map((o: any) => ({
+        id: o.id || o.orderNumber,
+        date: o.createdAt || o.date,
+        customer: o.user?.name || o.customer || "",
+        email: o.user?.email || o.email || "",
+        items: Array.isArray(o.items) ? o.items.length : o.items ?? 0,
+        total: o.total ?? 0,
+        status: o.status || "PENDING",
+      }))))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [search, statusFilter])
