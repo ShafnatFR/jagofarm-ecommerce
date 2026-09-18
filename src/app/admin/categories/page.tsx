@@ -10,14 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 
 interface Category {
-  id: string; name: string; slug: string; productCount: number; children: Category[]
+  id: string; name: string; slug: string; description?: string;
+  parentId?: string | null; sortOrder?: number; isActive?: boolean;
+  _count?: { products?: number };
+  children?: Category[];
+  productCount?: number;
 }
 
 function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
   category: Category; depth?: number; onEdit: (c: Category) => void; onDelete: (c: Category) => void
 }) {
   const [expanded, setExpanded] = useState(depth === 0)
-  const hasChildren = category.children.length > 0
+  const hasChildren = (category.children?.length ?? 0) > 0
 
   return (
     <div>
@@ -30,7 +34,7 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
           ) : <div className="w-4" />}
           <FolderTree className="h-4 w-4 text-[#1B4D3E]" />
           <span className="font-medium">{category.name}</span>
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{category.productCount} produk</span>
+          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{category._count?.products ?? category.productCount ?? 0} produk</span>
         </div>
         <div className="flex items-center gap-1">
           <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8"><Edit className="h-3.5 w-3.5" /></Button>
@@ -40,7 +44,7 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
       <AnimatePresence>
         {expanded && hasChildren && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-            {category.children.map((child) => <CategoryNode key={child.id} category={child} depth={depth + 1} onEdit={onEdit} onDelete={onDelete} />)}
+            {category.children?.map((child) => <CategoryNode key={child.id} category={child} depth={depth + 1} onEdit={onEdit} onDelete={onDelete} />)}
           </motion.div>
         )}
       </AnimatePresence>
@@ -52,7 +56,7 @@ function flattenCategories(cats: Category[], prefix = ""): { value: string; labe
   const result: { value: string; label: string }[] = []
   for (const cat of cats) {
     result.push({ value: cat.id, label: prefix + cat.name })
-    result.push(...flattenCategories(cat.children, prefix + cat.name + " / "))
+    result.push(...flattenCategories(cat.children ?? [], prefix + cat.name + " / "))
   }
   return result
 }
