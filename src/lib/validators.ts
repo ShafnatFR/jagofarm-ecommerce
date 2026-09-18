@@ -98,7 +98,7 @@ export const checkoutSchema = z.object({
       "qris",
       "cstore",
     ],
-    { required_error: "Metode pembayaran wajib dipilih" }
+    { message: "Metode pembayaran wajib dipilih" }
   ),
   couponCode: z
     .string()

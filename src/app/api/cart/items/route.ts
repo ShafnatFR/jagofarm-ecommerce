@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
         cartId_productId_variantId: {
           cartId: cart.id,
           productId,
-          variantId: variantId || null,
+          variantId: variantId || "",
         },
       },
     });

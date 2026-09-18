@@ -100,7 +100,7 @@ export default function LoginPage() {
             </div>
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
               className="w-full"
               onClick={() => signIn("google", { callbackUrl })}
             >
