@@ -35,6 +35,7 @@ const steps = [
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, totalWeight, clearCart } = useCartStore();
+  const [hydrated, setHydrated] = useState(false);
   const [step, setStep] = useState(1);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -46,7 +47,10 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => { setHydrated(true); }, []);
+
   useEffect(() => {
+    if (!hydrated) return;
     if (items.length === 0) { router.replace("/cart"); return; }
     fetchAddresses();
   }, []);
