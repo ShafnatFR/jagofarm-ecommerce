@@ -70,13 +70,17 @@ export default function AdminDashboardPage() {
   }
 
   const stats = [
-    { title: "Total Pendapatan", value: data.stats.revenue, icon: DollarSign, format: "price" as const, trend: "up" as const, change: "" },
-    { title: "Total Pesanan", value: data.stats.orders, icon: ShoppingCart, format: "number" as const, trend: "up" as const, change: "" },
-    { title: "Pelanggan", value: data.stats.customers, icon: Users, format: "number" as const, trend: "up" as const, change: "" },
-    { title: "Rata-rata Pesanan", value: data.stats.avgOrderValue, icon: TrendingUp, format: "price" as const, trend: "up" as const, change: "" },
+    { title: "Total Pendapatan", value: data.stats.totalRevenue ?? data.stats.revenue ?? 0, icon: DollarSign, format: "price" as const, trend: "up" as const, change: "" },
+    { title: "Total Pesanan", value: data.stats.totalOrders ?? data.stats.orders ?? 0, icon: ShoppingCart, format: "number" as const, trend: "up" as const, change: "" },
+    { title: "Pelanggan", value: data.stats.totalCustomers ?? data.stats.customers ?? 0, icon: Users, format: "number" as const, trend: "up" as const, change: "" },
+    { title: "Rata-rata Pesanan", value: data.stats.avgOrderValue ?? 0, icon: TrendingUp, format: "price" as const, trend: "up" as const, change: "" },
   ]
 
-  const totalBreakdown = data.orderStatusBreakdown.reduce((s, o) => s + o.count, 0)
+  const colorMap: Record<string, string> = { pending: "bg-yellow-500", paid: "bg-green-500", processing: "bg-blue-500", shipped: "bg-indigo-500", delivered: "bg-emerald-500", cancelled: "bg-red-500" }
+  const statusCounts = data.stats.orderStatusCounts ?? {}
+  const breakdown = Array.isArray(data.orderStatusBreakdown) ? data.orderStatusBreakdown : Object.entries(statusCounts).map(([status, count]) => ({ status, count, color: colorMap[status] || "bg-gray-500" }))
+
+  const totalBreakdown = breakdown.reduce((s, o) => s + o.count, 0)
 
   return (
     <div className="space-y-6">
@@ -127,8 +131,8 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader><CardTitle className="text-lg">Status Pesanan</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            {data.orderStatusBreakdown.length === 0 && <p className="text-sm text-gray-400">Belum ada data</p>}
-            {data.orderStatusBreakdown.map((item) => {
+            {breakdown.length === 0 && <p className="text-sm text-gray-400">Belum ada data</p>}
+            {breakdown.map((item) => {
               const pct = totalBreakdown > 0 ? Math.round((item.count / totalBreakdown) * 100) : 0
               return (
                 <div key={item.status} className="space-y-1.5">
