@@ -28,9 +28,10 @@ const addressSchema = z.object({
   phone: z.string().min(8).max(20),
   province: z.string().min(1).max(100),
   city: z.string().min(1).max(100),
-  district: z.string().min(1).max(100),
+  district: z.string().min(1).max(100).optional().default(""),
   postalCode: z.string().min(4).max(10),
   detail: z.string().optional(),
+  street: z.string().optional(), // alias for detail
   isDefault: z.boolean().default(false),
 });
 
@@ -52,6 +53,10 @@ export async function POST(request: NextRequest) {
 
     const data = parsed.data;
 
+    // Handle street alias for detail
+    const detail = data.detail || data.street || "";
+    const district = data.district || "";
+
     // If setting as default, unset others
     if (data.isDefault) {
       await prisma.address.updateMany({
@@ -68,7 +73,15 @@ export async function POST(request: NextRequest) {
 
     const address = await prisma.address.create({
       data: {
-        ...data,
+        label: data.label,
+        recipientName: data.recipientName,
+        phone: data.phone,
+        province: data.province,
+        city: data.city,
+        district,
+        postalCode: data.postalCode,
+        detail,
+        isDefault: data.isDefault,
         userId: session.user.id,
       },
     });
