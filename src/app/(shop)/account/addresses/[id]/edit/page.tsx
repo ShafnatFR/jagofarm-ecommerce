@@ -96,7 +96,7 @@ export default async function EditAddressPage({
               name="street"
               required
               rows={3}
-              defaultValue={address.detail}
+              defaultValue={address.detail || ""}
               placeholder="Jalan, Nomor, RT/RW, Kelurahan"
               className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             />

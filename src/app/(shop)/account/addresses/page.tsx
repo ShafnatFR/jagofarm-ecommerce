@@ -12,7 +12,7 @@ export default async function AddressesPage() {
 
   const addresses = await prisma.address.findMany({
     where: { userId: user.id },
-    orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
+    orderBy: [{ isDefault: "desc" }],
   });
 
   return (
@@ -57,7 +57,7 @@ export default async function AddressesPage() {
                 {address.phone}
               </p>
               <p className="text-sm text-muted-foreground mb-4">
-                {address.street}, {address.city}, {address.province} {address.postalCode}
+                {address.detail}, {address.city}, {address.province} {address.postalCode}
               </p>
               <div className="flex gap-2">
                 <Link
