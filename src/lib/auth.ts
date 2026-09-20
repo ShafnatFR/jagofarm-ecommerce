@@ -20,6 +20,8 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "jagofarm-secret-key-production-2026",
+  trustHost: true,
   adapter: PrismaAdapter(prisma) as Adapter,
   session: { strategy: "jwt" },
   pages: {
@@ -76,15 +78,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   events: {
     async createUser({ user }) {
       if (user.id) {
-        await prisma.cart.upsert({
-          where: { userId: user.id },
-          create: { userId: user.id },
-          update: {},
-        });
+        try {
+          await prisma.cart.upsert({
+            where: { userId: user.id },
+            create: { userId: user.id },
+            update: {},
+          });
+        } catch (e) {
+          console.error("Error creating cart for new user:", e);
+        }
       }
     },
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (user && user.id) {
+        try {
+          await prisma.cart.upsert({
+            where: { userId: user.id },
+            create: { userId: user.id },
+            update: {},
+          });
+        } catch (e) {
+          console.error("Error upserting cart on signIn:", e);
+        }
+      }
+      return true;
+    },
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
