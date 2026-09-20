@@ -73,11 +73,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  events: {
+    async createUser({ user }) {
+      if (user.id) {
+        await prisma.cart.upsert({
+          where: { userId: user.id },
+          create: { userId: user.id },
+          update: {},
+        });
+      }
+    },
+  },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = user.role || "customer";
       }
 
       if (trigger === "update" && session) {
@@ -90,7 +101,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = token.role as "customer" | "admin" | "staff";
+        session.user.role = (token.role as "customer" | "admin" | "staff") || "customer";
       }
 
       return session;
