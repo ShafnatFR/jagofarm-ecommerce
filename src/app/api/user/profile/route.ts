@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
         name: true,
         email: true,
         phone: true,
-        avatarUrl: true,
+        image: true,
         role: true,
         createdAt: true,
         _count: { select: { orders: true, reviews: true } },
@@ -42,12 +42,12 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, phone, avatarUrl } = body;
+    const { name, phone, image } = body;
 
     const updateData: any = {};
     if (name !== undefined) updateData.name = name;
     if (phone !== undefined) updateData.phone = phone;
-    if (avatarUrl !== undefined) updateData.avatarUrl = avatarUrl;
+    if (image !== undefined) updateData.image = image;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
@@ -64,7 +64,7 @@ export async function PATCH(request: NextRequest) {
         name: true,
         email: true,
         phone: true,
-        avatarUrl: true,
+        image: true,
         role: true,
         createdAt: true,
       },

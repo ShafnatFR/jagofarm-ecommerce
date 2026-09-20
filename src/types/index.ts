@@ -24,7 +24,7 @@ export interface User {
   phone: string | null;
   passwordHash: string | null;
   role: Role;
-  avatarUrl: string | null;
+  image: string | null;
   emailVerified: Date | null;
   createdAt: Date;
   updatedAt: Date;

@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
           name: true,
           email: true,
           phone: true,
-          avatarUrl: true,
+          image: true,
           createdAt: true,
           _count: { select: { orders: true } },
         },

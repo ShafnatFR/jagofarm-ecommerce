@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         imageUrl,
         isApproved: false, // Needs admin approval
       },
-      include: { user: { select: { id: true, name: true, avatarUrl: true } } },
+      include: { user: { select: { id: true, name: true, image: true } } },
     });
 
     return NextResponse.json(

@@ -38,7 +38,7 @@ model User {
   phone         String?   @db.VarChar(20)
   passwordHash  String?   @map("password_hash") @db.VarChar(255)
   role          Role      @default(customer)
-  avatarUrl     String?   @map("avatar_url") @db.Text
+  image         String?   @map("avatar_url") @db.Text
   emailVerified DateTime? @map("email_verified")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
