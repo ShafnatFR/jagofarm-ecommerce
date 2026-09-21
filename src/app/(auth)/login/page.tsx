@@ -1,9 +1,9 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -23,19 +23,29 @@ function LoginForm() {
     setLoading(true);
     setError("");
 
-    const result = await signIn("credentials", {
+    const supabase = createClient();
+    const { error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
-      redirect: false,
     });
 
-    if (result?.error) {
+    if (authError) {
       setError("Email atau password salah");
       setLoading(false);
     } else {
       router.push(callbackUrl);
       router.refresh();
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=${callbackUrl}`,
+      },
+    });
   };
 
   return (
@@ -77,7 +87,7 @@ function LoginForm() {
             <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
             <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-muted-foreground">Atau</span></div>
           </div>
-          <Button type="button" variant="secondary" className="w-full" onClick={() => signIn("google", { callbackUrl })}>
+          <Button type="button" variant="secondary" className="w-full" onClick={handleGoogleLogin}>
             Masuk dengan Google
           </Button>
         </form>

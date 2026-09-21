@@ -1,28 +1,12 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // Protect admin routes
-  if (pathname.startsWith("/admin")) {
-    // We'll check auth in the admin layout via session
-    // This middleware just adds headers for now
-    const response = NextResponse.next();
-    response.headers.set("x-pathname", pathname);
-    return response;
-  }
-
-  // Protect account/orders routes
-  if (pathname.startsWith("/account") || pathname.startsWith("/orders")) {
-    const response = NextResponse.next();
-    response.headers.set("x-pathname", pathname);
-    return response;
-  }
-
-  return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  return await updateSession(request);
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/account/:path*", "/orders/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
