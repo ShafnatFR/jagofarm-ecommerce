@@ -1,8 +1,6 @@
-import NextAuth, { type DefaultSession, type User as NextAuthUser } from "next-auth";
-import type { Adapter } from "@auth/core/adapters";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth, { type DefaultSession } from "next-auth";
 import Google from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
@@ -13,16 +11,11 @@ declare module "next-auth" {
       role: "customer" | "admin" | "staff";
     } & DefaultSession["user"];
   }
-
-  interface User {
-    role: "customer" | "admin" | "staff";
-  }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   trustHost: true,
-  adapter: PrismaAdapter(prisma) as Adapter,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
@@ -41,30 +34,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
-
+        if (!credentials?.email || !credentials?.password) return null;
         const email = credentials.email as string;
         const password = credentials.password as string;
-
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
-
-        if (!user || !user.passwordHash) {
-          return null;
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          password,
-          user.passwordHash
-        );
-
-        if (!isPasswordValid) {
-          return null;
-        }
-
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user || !user.passwordHash) return null;
+        const ok = await bcrypt.compare(password, user.passwordHash);
+        if (!ok) return null;
         return {
           id: user.id,
           email: user.email,
@@ -75,37 +51,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  events: {
-    async createUser({ user }) {
-      if (user.id) {
-        try {
-          await prisma.cart.upsert({
-            where: { userId: user.id },
-            create: { userId: user.id },
-            update: {},
-          });
-        } catch (e) {
-          console.error("Error creating cart for new user:", e);
-        }
-      }
-    },
-  },
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (user && user.id) {
+      if (account?.provider === "google" && profile) {
         try {
-          await prisma.cart.upsert({
-            where: { userId: user.id },
-            create: { userId: user.id },
-            update: {},
-          });
+          const email = profile.email!;
+          const existing = await prisma.user.findUnique({ where: { email } });
+          if (!existing) {
+            const newUser = await prisma.user.create({
+              data: {
+                email,
+                name: profile.name || "",
+                image: (profile as any).picture || null,
+                role: "customer",
+              },
+            });
+            user.id = newUser.id;
+            await prisma.cart.create({ data: { userId: newUser.id } });
+          } else {
+            user.id = existing.id;
+          }
         } catch (e) {
-          console.error("Error upserting cart on signIn:", e);
+          console.error("Error in signIn callback:", e);
+          return false;
         }
       }
       return true;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role || "customer";
@@ -122,32 +95,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 });
 
-/**
- * Helper: get current session user or null
- */
 export async function getCurrentUser() {
   const session = await auth();
   return session?.user ?? null;
 }
 
-/**
- * Helper: require authenticated user or throw
- */
 export async function requireAuth() {
   const user = await getCurrentUser();
-  if (!user) {
-    throw new Error("Unauthorized");
-  }
+  if (!user) throw new Error("Unauthorized");
   return user;
 }
 
-/**
- * Helper: require admin/staff role or throw
- */
 export async function requireAdmin() {
   const user = await requireAuth();
-  if (user.role === "customer") {
-    throw new Error("Forbidden");
-  }
+  if (user.role === "customer") throw new Error("Forbidden");
   return user;
 }
