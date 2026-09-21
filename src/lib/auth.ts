@@ -24,25 +24,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               role: "customer",
             },
           });
-          user.id = newUser.id;
+          (user as any).id = newUser.id;
           await prisma.cart.create({ data: { userId: newUser.id } });
         } else {
-          user.id = existing.id;
+          (user as any).id = existing.id;
         }
       }
       return true;
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = (user as any).id;
         token.role = (user as any).role || "customer";
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = (token.role as "customer" | "admin" | "staff") || "customer";
+        (session.user as any).id = token.id as string;
+        (session.user as any).role = (token.role as string) || "customer";
       }
       return session;
     },
@@ -51,7 +51,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 export async function getCurrentUser() {
   const session = await auth();
-  return session?.user ?? null;
+  return (session?.user as any) ?? null;
 }
 
 export async function requireAuth() {

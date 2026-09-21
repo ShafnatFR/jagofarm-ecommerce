@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
       const newOrder = await tx.order.create({
         data: {
           orderNumber,
-          userId: session.user.id,
+          userId: (session.user as any).id,
           shippingAddressId: data.shippingAddressId,
           paymentMethod: data.paymentMethod,
           shippingCourier: data.shippingCourier,
