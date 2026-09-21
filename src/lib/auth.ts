@@ -23,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "jagofarm-secret-key-production-2026",
   trustHost: true,
   adapter: PrismaAdapter(prisma) as Adapter,
-  session: { strategy: "jwt" },
+  session: { strategy: "database" },
   pages: {
     signIn: "/login",
     error: "/login",
@@ -106,25 +106,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role || "customer";
       }
-
-      if (trigger === "update" && session) {
-        token.name = session.user?.name;
-        token.email = session.user?.email;
-      }
-
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, user }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = (token.role as "customer" | "admin" | "staff") || "customer";
+        session.user.id = user.id;
+        session.user.role = (user.role as "customer" | "admin" | "staff") || "customer";
       }
-
       return session;
     },
   },

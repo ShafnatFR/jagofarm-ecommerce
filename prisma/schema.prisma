@@ -81,7 +81,7 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("sessions")
+  @@map("nextauth_sessions")
 }
 
 model VerificationToken {
