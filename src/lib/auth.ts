@@ -20,10 +20,10 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "jagofarm-secret-key-production-2026",
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   trustHost: true,
   adapter: PrismaAdapter(prisma) as Adapter,
-  session: { strategy: "database" },
+  session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
     error: "/login",
@@ -33,7 +33,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       allowDangerousEmailAccountLinking: true,
-      issuer: "https://accounts.google.com",
     }),
     Credentials({
       name: "credentials",
@@ -106,17 +105,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role || "customer";
+        token.role = (user as any).role || "customer";
       }
       return token;
     },
-    async session({ session, user }) {
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
-        session.user.role = (user.role as "customer" | "admin" | "staff") || "customer";
+        session.user.id = token.id as string;
+        session.user.role = (token.role as "customer" | "admin" | "staff") || "customer";
       }
       return session;
     },
