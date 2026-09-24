@@ -86,10 +86,25 @@ export const addressSchema = z.object({
 
 export const checkoutSchema = z.object({
   shippingAddressId: z.string().uuid("Alamat pengiriman tidak valid"),
-  shippingCourier: z.string().min(1, "Kurir pengiriman wajib dipilih"),
-  shippingService: z.string().min(1, "Layanan pengiriman wajib dipilih"),
-  shippingCost: z.number().min(0, "Biaya pengiriman tidak valid"),
-  shippingEtd: z.string().optional(),
+  shippingCourier: z
+    .string()
+    .min(1, "Kurir pengiriman wajib dipilih")
+    .max(20, "Kode kurir maksimal 20 karakter"),
+  shippingService: z
+    .string()
+    .min(1, "Layanan pengiriman wajib dipilih")
+    .max(50, "Layanan pengiriman maksimal 50 karakter"),
+  // Ongkir WAJIB dikirim (hasil pilihan kurir di halaman checkout).
+  // Nominal final tetap dihitung ulang/diambil dari body oleh server order.
+  shippingCost: z
+    .number()
+    .min(0, "Biaya pengiriman tidak valid")
+    .max(100_000_000, "Biaya pengiriman tidak wajar"),
+  shippingEtd: z
+    .string()
+    .max(20, "Estimasi pengiriman maksimal 20 karakter")
+    .optional()
+    .or(z.literal("")),
   paymentMethod: z.enum(
     [
       "credit_card",

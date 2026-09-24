@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { z } from "zod";
+import { addToCartSchema } from "@/lib/validators";
 
-const addItemSchema = z.object({
-  productId: z.string().uuid(),
-  variantId: z.string().uuid().optional().nullable(),
-  quantity: z.number().int().min(1).default(1),
-});
+function isUniqueConstraintError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    (error as { code?: string }).code === "P2002"
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,8 +18,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await request.json();
-    const parsed = addItemSchema.safeParse(body);
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Body request tidak valid" },
+        { status: 400 }
+      );
+    }
+
+    const parsed = addToCartSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
         { error: parsed.error.flatten().fieldErrors },
@@ -25,36 +36,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { productId, variantId, quantity } = parsed.data;
+    const { productId, quantity } = parsed.data;
+    const variantId = parsed.data.variantId ?? null;
 
-    const product = await prisma.product.findUnique({
+    const product = await prisma.product.findFirst({
       where: { id: productId, isActive: true },
     });
     if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Produk tidak ditemukan" },
+        { status: 404 }
+      );
     }
 
-    // Check stock
+    // Validasi varian: harus milik produk yang sama
+    let availableStock = product.stock;
     if (variantId) {
-      const variant = await prisma.productVariant.findUnique({
+      const variant = await prisma.productVariant.findFirst({
         where: { id: variantId, productId },
       });
       if (!variant) {
-        return NextResponse.json({ error: "Variant not found" }, { status: 404 });
-      }
-      if (variant.stock < quantity) {
         return NextResponse.json(
-          { error: "Insufficient stock" },
-          { status: 400 }
+          { error: "Varian produk tidak ditemukan" },
+          { status: 404 }
         );
       }
-    } else {
-      if (product.stock < quantity) {
-        return NextResponse.json(
-          { error: "Insufficient stock" },
-          { status: 400 }
-        );
-      }
+      availableStock = variant.stock;
     }
 
     // Get or create cart
@@ -67,49 +74,87 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Upsert cart item
-    const existingItem = await prisma.cartItem.findUnique({
-      where: {
-        cartId_productId_variantId: {
-          cartId: cart.id,
-          productId,
-          variantId: variantId || "",
-        },
-      },
+    /*
+     * FIX dedupe item tanpa varian:
+     * Baris cart_items menyimpan variant_id = NULL untuk produk tanpa varian,
+     * sedangkan compound unique (cartId, productId, variantId) pada Prisma
+     * tidak bisa di-lookup dengan variantId "" (string kosong != NULL), sehingga
+     * add-to-cart berulang membuat baris duplikat. Dengan findFirst + variantId
+     * null, NULL match NULL dan duplikat tidak lagi terbentuk.
+     */
+    const existingItem = await prisma.cartItem.findFirst({
+      where: { cartId: cart.id, productId, variantId },
     });
 
-    if (existingItem) {
-      const newQty = existingItem.quantity + quantity;
-      const availableStock = variantId
-        ? (await prisma.productVariant.findUnique({ where: { id: variantId } }))!
-            .stock
-        : product.stock;
-      if (newQty > availableStock) {
-        return NextResponse.json(
-          { error: "Insufficient stock for requested quantity" },
-          { status: 400 }
-        );
-      }
-      await prisma.cartItem.update({
-        where: { id: existingItem.id },
-        data: { quantity: newQty },
-      });
-    } else {
-      await prisma.cartItem.create({
-        data: {
-          cartId: cart.id,
-          productId,
-          variantId,
-          quantity,
+    const requestedQty = (existingItem?.quantity ?? 0) + quantity;
+
+    if (requestedQty > availableStock) {
+      return NextResponse.json(
+        {
+          error: `Stok tidak mencukupi untuk ${product.name}. Tersedia ${availableStock}, diminta ${requestedQty}.`,
         },
-      });
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ message: "Item added to cart" }, { status: 201 });
+    let cartItem;
+    if (existingItem) {
+      cartItem = await prisma.cartItem.update({
+        where: { id: existingItem.id },
+        data: { quantity: requestedQty },
+      });
+    } else {
+      try {
+        cartItem = await prisma.cartItem.create({
+          data: {
+            cartId: cart.id,
+            productId,
+            variantId,
+            quantity,
+          },
+        });
+      } catch (error) {
+        // Balapan request paralel: unique constraint -> ulangi sebagai update.
+        if (!isUniqueConstraintError(error)) throw error;
+
+        const conflicting = await prisma.cartItem.findFirst({
+          where: { cartId: cart.id, productId, variantId },
+        });
+        if (!conflicting) throw error;
+
+        const retryQty = conflicting.quantity + quantity;
+        if (retryQty > availableStock) {
+          return NextResponse.json(
+            {
+              error: `Stok tidak mencukupi untuk ${product.name}. Tersedia ${availableStock}, diminta ${retryQty}.`,
+            },
+            { status: 400 }
+          );
+        }
+
+        cartItem = await prisma.cartItem.update({
+          where: { id: conflicting.id },
+          data: { quantity: retryQty },
+        });
+      }
+    }
+
+    return NextResponse.json(
+      {
+        message: "Item ditambahkan ke keranjang",
+        item: {
+          id: cartItem.id,
+          productId: cartItem.productId,
+          variantId: cartItem.variantId,
+          quantity: cartItem.quantity,
+        },
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Add to cart error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Gagal menambahkan item ke keranjang" },
       { status: 500 }
     );
   }

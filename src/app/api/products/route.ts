@@ -24,9 +24,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (minPrice || maxPrice) {
-      where.basePrice = {};
-      if (minPrice) (where.basePrice as any).gte = parseFloat(minPrice);
-      if (maxPrice) (where.basePrice as any).lte = parseFloat(maxPrice);
+      const basePrice: Prisma.DecimalFilter = {};
+      if (minPrice) basePrice.gte = parseFloat(minPrice);
+      if (maxPrice) basePrice.lte = parseFloat(maxPrice);
+      where.basePrice = basePrice;
     }
 
     if (search) {

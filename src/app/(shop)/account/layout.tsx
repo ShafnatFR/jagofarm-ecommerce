@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { Heart, Package } from "lucide-react";
 
 export default async function AccountLayout({
   children,
@@ -32,6 +33,24 @@ export default async function AccountLayout({
                 className="px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors border-b-2 border-transparent hover:border-primary"
               >
                 Alamat
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/wishlist"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors border-b-2 border-transparent hover:border-primary"
+              >
+                <Heart className="h-4 w-4" />
+                Wishlist
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/orders"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors border-b-2 border-transparent hover:border-primary"
+              >
+                <Package className="h-4 w-4" />
+                Pesanan
               </Link>
             </li>
           </ul>

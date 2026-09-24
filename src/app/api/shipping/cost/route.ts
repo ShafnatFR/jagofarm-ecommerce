@@ -1,80 +1,121 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { WAREHOUSE } from "@/lib/constants";
+import {
+  getShippingOptions,
+  isUuid,
+  normalizeCouriers,
+  type ShippingOptionResult,
+} from "@/lib/shipping";
+
+/** Ambil nama kota dari alamat milik user (kalau yang dikirim ternyata UUID alamat). */
+async function resolveCityFromAddress(addressId: string): Promise<string | null> {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return null;
+
+    const address = await prisma.address.findFirst({
+      where: { id: addressId, userId: session.user.id },
+      select: { city: true },
+    });
+
+    return address?.city ?? null;
+  } catch (error) {
+    console.error("Resolve address city failed:", error);
+    return null;
+  }
+}
+
+function readString(value: unknown): string {
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return "";
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { origin, destination, weight, courier } = body;
-
-    if (!destination || !weight) {
+    let body: Record<string, unknown>;
+    try {
+      body = (await request.json()) as Record<string, unknown>;
+    } catch {
       return NextResponse.json(
-        { error: "origin, destination, and weight are required" },
+        { error: "Body request tidak valid" },
         { status: 400 }
       );
     }
 
-    const apiKey = process.env.RAJAONGKIR_API_KEY;
-
-    if (!apiKey) {
-      // Mock response when no API key
-      const couriers = courier ? [courier] : ["jne", "pos", "tiki"];
-      const mockResults = couriers.flatMap((c: string) => [
-        {
-          courier: c.toUpperCase(),
-          service: `${c.toUpperCase()} REG`,
-          cost: 18000,
-          etd: "2-3",
-        },
-        {
-          courier: c.toUpperCase(),
-          service: `${c.toUpperCase()} OKE`,
-          cost: 15000,
-          etd: "3-5",
-        },
-        {
-          courier: c.toUpperCase(),
-          service: `${c.toUpperCase()} YES`,
-          cost: 25000,
-          etd: "1-2",
-        },
-      ]);
-
-      return NextResponse.json({ costs: mockResults });
+    const weight = Number(body.weight);
+    if (!Number.isFinite(weight) || weight <= 0) {
+      return NextResponse.json(
+        { error: "Berat pengiriman (gram) wajib diisi dan lebih dari 0" },
+        { status: 400 }
+      );
     }
 
-    // Real RajaOngkir API call
-    const response = await fetch(
-      "https://api.rajaongkir.com/starter/cost",
-      {
-        method: "POST",
-        headers: {
-          key: apiKey,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          origin: String(origin),
-          destination: String(destination),
-          weight: String(weight),
-          courier: courier || "jne",
-        }),
+    const couriers = normalizeCouriers(body.courier);
+
+    let destinationCity = readString(body.destinationCity);
+    const destinationCityId = readString(body.destinationCityId);
+
+    // Kompatibilitas field lama `destination` (dulu dikirim UUID alamat).
+    const legacyDestination = readString(body.destination);
+    if (!destinationCity && !destinationCityId) {
+      if (isUuid(legacyDestination)) {
+        // UUID alamat TIDAK boleh dikirim ke RajaOngkir -> resolve ke nama kota.
+        const cityName = await resolveCityFromAddress(legacyDestination);
+        if (cityName) {
+          destinationCity = cityName;
+        } else {
+          return NextResponse.json(
+            {
+              error:
+                "Kota tujuan tidak dapat dibaca dari alamat. Kirim destinationCity (nama kota) atau destinationCityId.",
+            },
+            { status: 400 }
+          );
+        }
+      } else if (legacyDestination) {
+        destinationCity = legacyDestination;
       }
+    }
+
+    if (!destinationCity && !destinationCityId) {
+      return NextResponse.json(
+        {
+          error:
+            "Kota tujuan wajib diisi (destinationCity atau destinationCityId)",
+        },
+        { status: 400 }
+      );
+    }
+
+    const { options, source, destination } = await getShippingOptions(
+      WAREHOUSE.CITY_ID,
+      {
+        destinationCity: destinationCity || null,
+        destinationCityId: destinationCityId || null,
+      },
+      Math.round(weight),
+      couriers
     );
 
-    const data = await response.json();
-    const results =
-      data.rajaongkir?.results?.flatMap((r: any) =>
-        r.costs.map((c: any) => ({
-          courier: r.code.toUpperCase(),
-          service: c.service,
-          cost: c.cost[0]?.value || 0,
-          etd: c.cost[0]?.etd || "-",
-        }))
-      ) || [];
+    const results: ShippingOptionResult[] = options;
 
-    return NextResponse.json({ costs: results });
+    return NextResponse.json({
+      // `results` = bentuk yang dibaca halaman checkout
+      results,
+      // `costs` dipertahankan untuk kompatibilitas klien lama
+      costs: results,
+      source,
+      destination,
+      weight: Math.round(weight),
+      couriers,
+    });
   } catch (error) {
     console.error("Shipping cost error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Gagal menghitung biaya pengiriman" },
       { status: 500 }
     );
   }

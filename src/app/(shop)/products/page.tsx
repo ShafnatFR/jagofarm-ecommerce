@@ -3,16 +3,17 @@
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Grid3X3, List, AlertCircle } from "lucide-react";
+import { Grid3X3, List, AlertCircle, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductFilters } from "@/components/product/product-filters";
+import { useCategories } from "@/hooks/use-categories";
 
 interface ApiProduct {
   id: string; name: string; slug: string; basePrice: number;
-  discountPrice?: number | null; isFeatured?: boolean;
+  discountPrice?: number | null; isFeatured?: boolean; weightGram?: number;
   images: { url: string; altText?: string | null; isPrimary?: boolean }[];
   category: { id: string; name: string; slug: string };
   _count?: { reviews?: number };
@@ -21,7 +22,9 @@ interface ApiProduct {
 function ProductsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { categories } = useCategories();
 
+  const search = searchParams.get("search")?.trim() || "";
   const category = searchParams.get("category") || "";
   const sort = searchParams.get("sort") || "newest";
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -32,6 +35,7 @@ function ProductsContent() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     async function fetchProducts() {
@@ -39,6 +43,7 @@ function ProductsContent() {
       setError(null);
       try {
         const params = new URLSearchParams();
+        if (search) params.set("search", search);
         if (category) params.set("category", category);
         if (sort) params.set("sort", sort);
         params.set("page", String(page));
@@ -56,7 +61,27 @@ function ProductsContent() {
       }
     }
     fetchProducts();
-  }, [category, sort, page]);
+  }, [search, category, sort, page]);
+
+  // Tandai kartu yang sudah ada di wishlist (401 = belum login, diabaikan).
+  useEffect(() => {
+    let active = true;
+    async function fetchWishlistIds() {
+      try {
+        const res = await fetch("/api/wishlist", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        const ids: string[] = (data.wishlists ?? []).map(
+          (w: { productId: string }) => w.productId
+        );
+        if (active) setWishlistIds(new Set(ids));
+      } catch {
+        /* wishlist opsional: biarkan tombol hati kosong */
+      }
+    }
+    fetchWishlistIds();
+    return () => { active = false; };
+  }, []);
 
   function updateView(v: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -70,14 +95,60 @@ function ProductsContent() {
     router.push(`/products?${params.toString()}`);
   }
 
+  /** Lepas filter pencarian tanpa menghapus filter lain (kategori/sort). */
+  function clearSearch() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("search");
+    params.delete("page");
+    const qs = params.toString();
+    router.push(qs ? `/products?${qs}` : "/products");
+  }
+
+  function handleWishlistChange(productId: string, wishlisted: boolean) {
+    setWishlistIds((prev) => {
+      const next = new Set(prev);
+      if (wishlisted) next.add(productId);
+      else next.delete(productId);
+      return next;
+    });
+  }
+
+  const hasFilterOrSearch = Boolean(search || category || sort !== "newest");
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Semua Produk</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {search ? `Hasil pencarian untuk “${search}”` : "Semua Produk"}
+          </h1>
           {!loading && (
-            <p className="mt-1 text-sm text-muted-foreground">{total} produk ditemukan</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {total} produk ditemukan
+            </p>
+          )}
+          {search && (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">
+                <Search className="h-3.5 w-3.5" />
+                Hasil pencarian untuk “{search}”
+                <button
+                  type="button"
+                  onClick={clearSearch}
+                  aria-label="Hapus pencarian"
+                  className="ml-0.5 rounded-full p-0.5 transition-colors hover:bg-primary/20"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </span>
+              <Link
+                href="/products"
+                className="text-sm font-medium text-muted-foreground underline-offset-2 hover:text-primary hover:underline"
+              >
+                Hapus filter
+              </Link>
+            </div>
           )}
         </div>
         <div className="hidden items-center gap-1 sm:flex">
@@ -116,11 +187,44 @@ function ProductsContent() {
               <p className="mt-2 text-sm text-muted-foreground">{error}</p>
             </div>
           ) : products.length === 0 ? (
-            <div className="py-20 text-center">
-              <p className="text-lg text-muted-foreground">Tidak ada produk ditemukan untuk filter ini.</p>
-              <Link href="/products" className="mt-4 inline-block">
-                <Button variant="secondary" size="sm">Hapus Filter</Button>
-              </Link>
+            <div className="py-16 text-center">
+              <Search className="mx-auto h-8 w-8 text-muted-foreground" />
+              <p className="mt-3 text-lg font-medium text-foreground">
+                {search
+                  ? `Tidak ada produk yang cocok dengan “${search}”`
+                  : "Tidak ada produk ditemukan untuk filter ini."}
+              </p>
+              <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
+                {search
+                  ? "Coba kata kunci lain yang lebih umum, periksa ejaan, atau jelajahi kategori di bawah ini."
+                  : "Coba longgarkan filter yang sedang aktif untuk melihat lebih banyak produk."}
+              </p>
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                {hasFilterOrSearch ? (
+                  <Button variant="secondary" size="sm" onClick={clearSearch}>
+                    Hapus pencarian &amp; filter
+                  </Button>
+                ) : null}
+                <Link href="/products">
+                  <Button variant="primary" size="sm">Lihat semua produk</Button>
+                </Link>
+              </div>
+              {categories.length > 0 && (
+                <div className="mt-8">
+                  <p className="text-sm font-medium text-foreground">Saran kategori</p>
+                  <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+                    {categories.slice(0, 8).map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/products?category=${encodeURIComponent(cat.slug)}`}
+                        className="rounded-full border border-border px-3 py-1 text-sm transition-colors hover:border-primary hover:text-primary"
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className={cn(
@@ -129,11 +233,15 @@ function ProductsContent() {
                 : "space-y-4"
             )}>
               {products.map((p, i) => (
-                <ProductCard key={p.id} index={i} product={{
+                <ProductCard key={p.id} index={i}
+                  isWishlisted={wishlistIds.has(p.id)}
+                  onWishlistChange={handleWishlistChange}
+                  product={{
                   id: p.id, name: p.name, slug: p.slug,
                   price: p.basePrice, discountPrice: p.discountPrice,
                   image: p.images?.[0]?.url || "/placeholder-product.jpg",
                   category: p.category.name, isFeatured: p.isFeatured,
+                  weightGram: p.weightGram,
                 }} />
               ))}
             </div>

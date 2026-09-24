@@ -25,7 +25,7 @@ export default function HowToOrderPage() {
       </div>
 
       <div className="mt-12 space-y-6">
-        {steps.map((step, i) => (
+        {steps.map((step) => (
           <Card key={step.num}>
             <CardContent className="flex items-start gap-5 p-6">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-lg">

@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Package, ChevronRight, Eye, AlertCircle, LogIn } from "lucide-react";
+import { Package, ChevronRight, Eye, AlertCircle, LogIn, CreditCard, ShoppingCart, Star } from "lucide-react";
 import { cn, formatPrice, formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/use-toast";
+import { useCartStore } from "@/lib/cart-store";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   pending: { label: "Menunggu Pembayaran", color: "bg-yellow-100 text-yellow-700" },
@@ -14,14 +17,57 @@ const statusConfig: Record<string, { label: string; color: string }> = {
   shipped: { label: "Dikirim", color: "bg-indigo-100 text-indigo-700" },
   delivered: { label: "Selesai", color: "bg-green-100 text-green-700" },
   cancelled: { label: "Dibatalkan", color: "bg-red-100 text-red-700" },
+  expired: { label: "Kedaluwarsa", color: "bg-gray-100 text-gray-700" },
 };
 
+interface OrderItemProduct {
+  id?: string;
+  name?: string;
+  slug?: string;
+  images?: { url: string }[] | null;
+}
+
 interface OrderItem {
-  name: string; quantity: number; price: number;
+  /** Nama produk flat (bentuk lama respons) — dipakai sebagai fallback. */
+  name?: string;
+  productName?: string;
+  variantName?: string | null;
+  quantity: number;
+  price: number;
+  productId?: string;
+  variantId?: string | null;
+  product?: OrderItemProduct | null;
+  variant?: { name?: string } | null;
 }
 interface Order {
   id: string; orderNumber: string; createdAt: string;
   status: string; total: number; items: OrderItem[];
+  paymentStatus?: string; paymentMethod?: string | null;
+}
+
+/** Nama tampilan item dari bentuk respons apa pun (productName / product.name / name). */
+function itemLabel(item: OrderItem): string {
+  const base =
+    (item.productName ?? item.product?.name ?? item.name ?? "Produk").trim() ||
+    "Produk";
+  const variant = item.variantName ?? item.variant?.name ?? null;
+  return variant ? `${base} (${variant})` : base;
+}
+
+/** Payload addItem untuk 'Beli Lagi'. weightGram 0 bila produk tidak menyertakannya. */
+function toCartPayload(item: OrderItem) {
+  const productId = item.productId ?? item.product?.id ?? "";
+  return {
+    id: item.variantId ? `${productId}-${item.variantId}` : productId,
+    productId,
+    variantId: item.variantId ?? undefined,
+    name: itemLabel(item),
+    price: Number(item.price ?? 0),
+    quantity: Math.max(1, Number(item.quantity ?? 1)),
+    image: item.product?.images?.[0]?.url ?? undefined,
+    weightGram: 0,
+    slug: item.product?.slug,
+  };
 }
 
 export default function OrdersPage() {
@@ -31,6 +77,41 @@ export default function OrdersPage() {
   const [unauthorized, setUnauthorized] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const router = useRouter();
+  const { toast } = useToast();
+  const addItem = useCartStore((s) => s.addItem);
+  const hydrateCart = useCartStore((s) => s.hydrate);
+
+  // Ringkasan cart server disiapkan dulu supaya 'Beli Lagi' ikut tersinkron.
+  useEffect(() => {
+    void hydrateCart();
+  }, [hydrateCart]);
+
+  /** 'Beli Lagi': masukkan semua item order kembali ke keranjang, lalu ke /cart. */
+  function handleReorder(order: Order) {
+    const items = order.items ?? [];
+    const usable = items.filter((item) => item.productId ?? item.product?.id);
+
+    if (usable.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Tidak bisa membeli lagi",
+        description: "Data produk pada pesanan ini tidak tersedia.",
+      });
+      return;
+    }
+
+    for (const item of usable) {
+      addItem(toCartPayload(item));
+    }
+
+    toast({
+      title: "Ditambahkan ke keranjang",
+      description: `${usable.length} item dari pesanan ${order.orderNumber} ditambahkan ke keranjang.`,
+    });
+    router.push("/cart");
+  }
 
   useEffect(() => {
     async function fetchOrders() {
@@ -46,7 +127,8 @@ export default function OrdersPage() {
         if (!res.ok) throw new Error("Gagal memuat pesanan");
         const data = await res.json();
         setOrders(data.orders ?? []);
-        setTotalPages(data.totalPages ?? 1);
+        // API mengembalikan { pagination: { totalPages } } — dukung juga bentuk lama.
+        setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       } finally {
@@ -129,20 +211,45 @@ export default function OrdersPage() {
                     </span>
                   </div>
                   <div className="mt-3 space-y-1">
-                    {order.items.map((item, i) => (
+                    {(order.items ?? []).map((item, i) => (
                       <p key={i} className="text-sm text-muted-foreground">
-                        {item.name} × {item.quantity}
+                        {itemLabel(item)} × {item.quantity}
                       </p>
                     ))}
                   </div>
-                  <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+                  <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-3">
                     <p className="text-sm font-bold text-primary">Total: {formatPrice(order.total)}</p>
-                    <Link href={`/orders/${order.orderNumber}`}>
-                      <Button variant="secondary" size="sm">
-                        <Eye className="mr-1 h-3.5 w-3.5" /> Detail
-                        <ChevronRight className="ml-1 h-3.5 w-3.5" />
-                      </Button>
-                    </Link>
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                      {order.status === "pending" && order.paymentStatus !== "paid" && (
+                        <Link href={`/orders/${order.orderNumber}`}>
+                          <Button size="sm">
+                            <CreditCard className="mr-1 h-3.5 w-3.5" /> Bayar
+                          </Button>
+                        </Link>
+                      )}
+                      {(order.status === "shipped" || order.status === "delivered") && (
+                        <Button
+                          variant="accent"
+                          size="sm"
+                          onClick={() => handleReorder(order)}
+                        >
+                          <ShoppingCart className="mr-1 h-3.5 w-3.5" /> Beli Lagi
+                        </Button>
+                      )}
+                      {order.status === "delivered" && (
+                        <Link href={`/orders/${order.orderNumber}`}>
+                          <Button variant="secondary" size="sm">
+                            <Star className="mr-1 h-3.5 w-3.5" /> Tulis Ulasan
+                          </Button>
+                        </Link>
+                      )}
+                      <Link href={`/orders/${order.orderNumber}`}>
+                        <Button variant="secondary" size="sm">
+                          <Eye className="mr-1 h-3.5 w-3.5" /> Detail
+                          <ChevronRight className="ml-1 h-3.5 w-3.5" />
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

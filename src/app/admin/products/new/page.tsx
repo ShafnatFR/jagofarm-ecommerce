@@ -3,11 +3,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Upload, X, Plus } from "lucide-react";
+import { ArrowLeft, X, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ImageUploader } from "@/components/admin/image-uploader";
+import { useToast } from "@/components/ui/use-toast";
 import { slugify } from "@/lib/utils";
 import Link from "next/link";
 
@@ -15,8 +17,12 @@ interface Category { id: string; name: string; }
 
 export default function NewProductPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCats, setLoadingCats] = useState(true);
+  const [images, setImages] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "", slug: "", category: "", description: "", shortDescription: "",
     basePrice: "", discountPrice: "", sku: "", weight: "", stock: "", featured: false, tags: [] as string[],
@@ -47,8 +53,55 @@ export default function NewProductPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("/api/admin/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-    if (res.ok) router.push("/admin/products");
+    setError("");
+
+    const basePrice = Number(form.basePrice);
+    const weightGram = Number(form.weight);
+    const stock = Number(form.stock);
+
+    if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
+    if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
+    if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
+    if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
+    if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
+
+    setSaving(true);
+    try {
+      const payload = {
+        name: form.name.trim(),
+        categoryId: form.category,
+        description: form.description.trim() || undefined,
+        shortDesc: form.shortDescription.trim() || undefined,
+        basePrice,
+        discountPrice: Number(form.discountPrice) > 0 ? Number(form.discountPrice) : null,
+        sku: form.sku.trim(),
+        weightGram: Math.trunc(weightGram),
+        stock: Math.trunc(stock),
+        isActive: true,
+        isFeatured: form.featured,
+        tags: form.tags,
+        // Gambar pertama otomatis jadi primary (diproses ulang di API juga)
+        images: images.map((url, index) => ({ url, sortOrder: index, isPrimary: index === 0 })),
+      };
+
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(typeof data?.error === "string" ? data.error : "Gagal menyimpan produk.");
+      }
+
+      toast({ title: "Produk dibuat", description: "Produk baru berhasil disimpan." });
+      router.push("/admin/products");
+    } catch (err) {
+      setError(err instanceof Error && err.message ? err.message : "Gagal menyimpan produk.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -60,6 +113,8 @@ export default function NewProductPage() {
           <p className="text-sm text-gray-500">Buat produk baru untuk toko Anda</p>
         </div>
       </div>
+
+      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
@@ -77,7 +132,7 @@ export default function NewProductPage() {
                     <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
                       <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
                       <SelectContent>
-                        {categories.map((c) => <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>)}
+                        {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   )}
@@ -101,8 +156,8 @@ export default function NewProductPage() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Input label="Harga Dasar (Rp)" type="number" placeholder="850000" value={form.basePrice} onChange={(e) => updateField("basePrice", e.target.value)} required />
                   <Input label="Harga Diskon (Rp)" type="number" placeholder="750000" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
-                  <Input label="SKU" placeholder="JF-HID-NFT6" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} />
-                  <Input label="Berat (gram)" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} />
+                  <Input label="SKU" placeholder="JF-HID-NFT6" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
+                  <Input label="Berat (gram)" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
                   <Input label="Stok" type="number" placeholder="24" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
                 </div>
               </CardContent>
@@ -115,12 +170,7 @@ export default function NewProductPage() {
             <Card>
               <CardHeader><CardTitle className="text-lg">Gambar Produk</CardTitle></CardHeader>
               <CardContent>
-                <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 p-8 text-center">
-                  <Upload className="mb-2 h-8 w-8 text-gray-300" />
-                  <p className="text-sm text-gray-500">Seret & lepas gambar di sini</p>
-                  <p className="text-xs text-gray-400">atau klik untuk memilih</p>
-                  <Button variant="secondary" size="sm" className="mt-3" type="button">Pilih File</Button>
-                </div>
+                <ImageUploader value={images} onChange={setImages} max={6} disabled={saving} folder="products" />
               </CardContent>
             </Card>
           </motion.div>
@@ -160,7 +210,7 @@ export default function NewProductPage() {
           </motion.div>
 
           <div className="flex gap-3">
-            <Button type="submit" className="flex-1">Simpan Produk</Button>
+            <Button type="submit" className="flex-1" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
             <Link href="/admin/products" className="flex-1"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>
           </div>
         </div>

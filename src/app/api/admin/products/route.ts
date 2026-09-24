@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
@@ -7,7 +8,7 @@ import { z } from "zod";
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id || (session.user as any).role !== "admin") {
+    if (!session?.user?.id || session.user.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
     const status = searchParams.get("status"); // active, inactive, all
 
-    const where: any = {};
+    const where: Prisma.ProductWhereInput = {};
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
@@ -96,7 +97,7 @@ const createProductSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id || (session.user as any).role !== "admin") {
+    if (!session?.user?.id || session.user.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -109,16 +110,24 @@ export async function POST(request: NextRequest) {
     const { images, variants, ...productData } = parsed.data;
     const slug = slugify(productData.name);
 
+    // Gambar pertama otomatis jadi primary, sortOrder mengikuti urutan kiriman
+    const normalizedImages = images
+      ?.filter((img) => img.url.trim().length > 0)
+      .map((img, i) => ({
+        url: img.url.trim(),
+        altText: img.altText ?? null,
+        sortOrder: i,
+        isPrimary: i === 0,
+      }));
+
     const product = await prisma.product.create({
       data: {
         ...productData,
         slug,
-        images: images
-          ? { create: images.map((img, i) => ({ ...img, sortOrder: i })) }
-          : undefined,
+        images: normalizedImages ? { create: normalizedImages } : undefined,
         variants: variants ? { create: variants } : undefined,
       },
-      include: { images: true, variants: true },
+      include: { images: { orderBy: { sortOrder: "asc" } }, variants: true },
     });
 
     return NextResponse.json(

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { OrderStatus, Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id || (session.user as any).role !== "admin") {
+    if (!session?.user?.id || session.user.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -17,8 +18,8 @@ export async function GET(request: NextRequest) {
     const dateFrom = searchParams.get("date_from");
     const dateTo = searchParams.get("date_to");
 
-    const where: any = {};
-    if (status && status !== "all") where.status = status;
+    const where: Prisma.OrderWhereInput = {};
+    if (status && status !== "all") where.status = status as OrderStatus;
     if (search) {
       where.OR = [
         { orderNumber: { contains: search, mode: "insensitive" } },
@@ -27,9 +28,10 @@ export async function GET(request: NextRequest) {
       ];
     }
     if (dateFrom || dateTo) {
-      where.createdAt = {};
-      if (dateFrom) where.createdAt.gte = new Date(dateFrom);
-      if (dateTo) where.createdAt.lte = new Date(dateTo + "T23:59:59");
+      const createdAt: Prisma.DateTimeFilter = {};
+      if (dateFrom) createdAt.gte = new Date(dateFrom);
+      if (dateTo) createdAt.lte = new Date(dateTo + "T23:59:59");
+      where.createdAt = createdAt;
     }
 
     const skip = (page - 1) * limit;

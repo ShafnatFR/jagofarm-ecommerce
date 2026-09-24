@@ -1,33 +1,119 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
-import { Search, Mail, Phone, Eye, AlertCircle } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
+import { Search, Mail, Phone, Eye, AlertCircle, MapPin, ShoppingCart, Loader2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { formatPrice, formatDate } from "@/lib/utils"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useToast } from "@/components/ui/use-toast"
+import { formatPrice, formatDate, formatDateTime } from "@/lib/utils"
+
+/** Pesan error yang aman ditampilkan di UI (unknown -> string). */
+function toMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+/** Bentuk mentah pelanggan dari GET /api/admin/customers. */
+interface CustomerApiItem {
+  id: string;
+  name?: string | null; email?: string | null; phone?: string | null;
+  orderCount?: number; ordersCount?: number;
+  _count?: { orders?: number } | null;
+  totalSpent?: number | null;
+  createdAt?: string | null; joinedAt?: string | null;
+  lastOrderAt?: string | null; lastOrder?: string | null;
+}
+
+type BadgeVariant = "default" | "success" | "warning" | "destructive" | "secondary"
 
 interface Customer {
   id: string; name: string; email: string; phone: string
-  ordersCount: number; totalSpent: number; joinedAt: string; lastOrder: string
+  ordersCount: number; totalSpent: number; joinedAt: string | null; lastOrder: string | null
+}
+
+interface Address {
+  id: string; label: string; recipientName: string; phone: string
+  province: string; city: string; district: string; postalCode: string
+  detail: string | null; isDefault: boolean
+}
+
+interface RecentOrder {
+  id: string; orderNumber: string; status: string; paymentStatus: string
+  paymentMethod: string | null; total: number; trackingNumber: string | null
+  createdAt: string; itemCount: number
+}
+
+interface CustomerDetail {
+  id: string; name: string | null; email: string; phone: string | null; image: string | null
+  role: string; createdAt: string; updatedAt: string
+  addresses: Address[]
+  summary: {
+    orderCount: number
+    reviewCount: number
+    totalSpent: number
+    lastOrderAt: string | null
+    recentOrders: RecentOrder[]
+  }
+}
+
+const orderStatusConfig: Record<string, { label: string; variant: BadgeVariant }> = {
+  pending: { label: "Menunggu", variant: "warning" },
+  paid: { label: "Dibayar", variant: "success" },
+  processing: { label: "Diproses", variant: "default" },
+  shipped: { label: "Dikirim", variant: "default" },
+  delivered: { label: "Selesai", variant: "success" },
+  cancelled: { label: "Dibatalkan", variant: "destructive" },
+  expired: { label: "Kedaluwarsa", variant: "destructive" },
+}
+
+const paymentConfig: Record<string, { label: string; variant: BadgeVariant }> = {
+  unpaid: { label: "Belum Dibayar", variant: "warning" },
+  paid: { label: "Lunas", variant: "success" },
+  refunded: { label: "Dikembalikan", variant: "secondary" },
+  failed: { label: "Gagal", variant: "destructive" },
 }
 
 export default function CustomersPage() {
+  const { toast } = useToast()
+
   const [customers, setCustomers] = useState<Customer[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState("")
 
-  const fetchData = useCallback(() => {
+  const [detailOpen, setDetailOpen] = useState(false)
+  const [detailLoading, setDetailLoading] = useState(false)
+  const [detailError, setDetailError] = useState<string | null>(null)
+  const [detail, setDetail] = useState<CustomerDetail | null>(null)
+
+  const fetchData = useCallback(async () => {
     setLoading(true)
     const params = new URLSearchParams()
     if (search) params.set("search", search)
-    fetch(`/api/admin/customers?${params}`)
-      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setCustomers(d.customers || []))
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
+    try {
+      const r = await fetch(`/api/admin/customers?${params}`, { cache: "no-store" })
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      const d = await r.json()
+      setCustomers(
+        (d.customers || []).map((c: CustomerApiItem) => ({
+          id: c.id,
+          name: c.name || "-",
+          email: c.email || "-",
+          phone: c.phone || "-",
+          ordersCount: c.orderCount ?? c._count?.orders ?? c.ordersCount ?? 0,
+          totalSpent: Number(c.totalSpent ?? 0),
+          joinedAt: c.createdAt ?? c.joinedAt ?? null,
+          lastOrder: c.lastOrderAt ?? c.lastOrder ?? null,
+        }))
+      )
+      setError(null)
+    } catch (e) {
+      setError(toMessage(e))
+    } finally {
+      setLoading(false)
+    }
   }, [search])
 
   useEffect(() => {
@@ -35,7 +121,30 @@ export default function CustomersPage() {
     return () => clearTimeout(timer)
   }, [fetchData])
 
-  if (loading) {
+  const openDetail = async (customer: Customer) => {
+    setDetailOpen(true)
+    setDetail(null)
+    setDetailError(null)
+    setDetailLoading(true)
+    try {
+      const r = await fetch(`/api/admin/customers/${customer.id}`, { cache: "no-store" })
+      const data = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
+      setDetail(data.customer)
+    } catch (e) {
+      const message = toMessage(e)
+      setDetailError(message)
+      toast({
+        title: "Gagal memuat detail pelanggan",
+        description: message,
+        variant: "destructive",
+      })
+    } finally {
+      setDetailLoading(false)
+    }
+  }
+
+  if (loading && customers.length === 0) {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-40 rounded bg-gray-200" />
@@ -45,7 +154,7 @@ export default function CustomersPage() {
     )
   }
 
-  if (error) {
+  if (error && customers.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
@@ -113,9 +222,18 @@ export default function CustomersPage() {
                       </td>
                       <td className="px-4 py-3 text-center"><Badge variant="secondary">{customer.ordersCount}</Badge></td>
                       <td className="px-4 py-3 font-medium text-[#1B4D3E]">{formatPrice(customer.totalSpent)}</td>
-                      <td className="px-4 py-3 text-gray-500">{formatDate(customer.joinedAt)}</td>
-                      <td className="px-4 py-3 text-gray-500">{formatDate(customer.lastOrder)}</td>
-                      <td className="px-4 py-3 text-right"><Button variant="ghost" size="icon"><Eye className="h-4 w-4" /></Button></td>
+                      <td className="px-4 py-3 text-gray-500">{customer.joinedAt ? formatDate(customer.joinedAt) : "-"}</td>
+                      <td className="px-4 py-3 text-gray-500">{customer.lastOrder ? formatDate(customer.lastOrder) : "-"}</td>
+                      <td className="px-4 py-3 text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Detail pelanggan"
+                          onClick={() => openDetail(customer)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -124,6 +242,132 @@ export default function CustomersPage() {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={detailOpen} onOpenChange={(open) => { setDetailOpen(open); if (!open) setDetail(null) }}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Detail Pelanggan</DialogTitle>
+          </DialogHeader>
+
+          {detailLoading ? (
+            <div className="flex h-40 items-center justify-center gap-2 text-sm text-gray-500">
+              <Loader2 className="h-4 w-4 animate-spin" /> Memuat detail pelanggan...
+            </div>
+          ) : detailError || !detail ? (
+            <div className="flex h-40 flex-col items-center justify-center gap-2 text-center">
+              <AlertCircle className="h-8 w-8 text-red-400" />
+              <p className="text-sm text-gray-600">{detailError || "Detail pelanggan tidak tersedia."}</p>
+            </div>
+          ) : (
+            <div className="max-h-[70vh] space-y-5 overflow-y-auto pr-1">
+              {/* Profil + ringkasan */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1B4D3E]/10 text-lg font-bold text-[#1B4D3E]">
+                  {(detail.name || detail.email).charAt(0)}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">{detail.name || "-"}</p>
+                  <p className="text-xs text-gray-500">{detail.email}</p>
+                  <p className="text-xs text-gray-400">
+                    {detail.phone || "Telepon belum diisi"} • Bergabung{" "}
+                    {detail.createdAt ? formatDate(detail.createdAt) : "-"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-gray-500">Jumlah Pesanan</p>
+                  <p className="text-lg font-bold text-gray-900">{detail.summary.orderCount}</p>
+                </div>
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-gray-500">Total Belanja</p>
+                  <p className="text-lg font-bold text-[#1B4D3E]">{formatPrice(detail.summary.totalSpent)}</p>
+                </div>
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-gray-500">Order Terakhir</p>
+                  <p className="text-sm font-medium text-gray-700">
+                    {detail.summary.lastOrderAt ? formatDateTime(detail.summary.lastOrderAt) : "-"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Alamat */}
+              <div>
+                <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-900">
+                  <MapPin className="h-4 w-4 text-[#1B4D3E]" /> Daftar Alamat ({detail.addresses.length})
+                </p>
+                {detail.addresses.length === 0 ? (
+                  <p className="text-xs text-gray-400">Belum ada alamat tersimpan.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {detail.addresses.map((address) => (
+                      <div key={address.id} className="rounded-lg border p-3 text-xs text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-gray-900">{address.label}</span>
+                          {address.isDefault && <Badge variant="success">Utama</Badge>}
+                        </div>
+                        <p className="mt-1 font-medium text-gray-800">
+                          {address.recipientName} • {address.phone}
+                        </p>
+                        <p>
+                          {address.detail ? `${address.detail}, ` : ""}
+                          {address.district}, {address.city}, {address.province} {address.postalCode}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Order terakhir */}
+              <div>
+                <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-900">
+                  <ShoppingCart className="h-4 w-4 text-[#1B4D3E]" /> Order Terakhir
+                </p>
+                {detail.summary.recentOrders.length === 0 ? (
+                  <p className="text-xs text-gray-400">Belum ada pesanan.</p>
+                ) : (
+                  <div className="overflow-x-auto rounded-lg border">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="bg-gray-50/80 text-left text-gray-500">
+                          <th className="px-3 py-2 font-medium">No. Pesanan</th>
+                          <th className="px-3 py-2 font-medium">Tanggal</th>
+                          <th className="px-3 py-2 text-center font-medium">Item</th>
+                          <th className="px-3 py-2 font-medium text-right">Total</th>
+                          <th className="px-3 py-2 font-medium">Status</th>
+                          <th className="px-3 py-2 font-medium">Bayar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {detail.summary.recentOrders.map((order) => (
+                          <tr key={order.id} className="border-t">
+                            <td className="px-3 py-2 font-mono">{order.orderNumber}</td>
+                            <td className="px-3 py-2 text-gray-500">{formatDate(order.createdAt)}</td>
+                            <td className="px-3 py-2 text-center">{order.itemCount}</td>
+                            <td className="px-3 py-2 text-right font-medium">{formatPrice(order.total)}</td>
+                            <td className="px-3 py-2">
+                              <Badge variant={orderStatusConfig[order.status]?.variant || "default"}>
+                                {orderStatusConfig[order.status]?.label || order.status}
+                              </Badge>
+                            </td>
+                            <td className="px-3 py-2">
+                              <Badge variant={paymentConfig[order.paymentStatus]?.variant || "secondary"}>
+                                {paymentConfig[order.paymentStatus]?.label || order.paymentStatus}
+                              </Badge>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

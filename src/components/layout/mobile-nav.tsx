@@ -112,6 +112,13 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
               >
                 Pesanan Saya
               </Link>
+              <Link
+                href="/wishlist"
+                onClick={onClose}
+                className="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary"
+              >
+                Wishlist Saya
+              </Link>
             </div>
           </div>
         </nav>

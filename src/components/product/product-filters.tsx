@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { SlidersHorizontal, X } from "lucide-react";
-import { useState } from "react";
-import { cn, formatPrice } from "@/lib/utils";
+import { Search, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCategories } from "@/hooks/use-categories";
 
@@ -34,6 +34,14 @@ export function ProductFilters({ className }: ProductFiltersProps) {
 
   const activeCategory = searchParams.get("category") || "";
   const activeSort = searchParams.get("sort") || "newest";
+  const activeSearch = searchParams.get("search")?.trim() || "";
+  const [searchInput, setSearchInput] = useState(activeSearch);
+
+  // Sinkronkan input dengan URL (mis. saat pencarian dihapus dari header).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronkan input dengan query URL saat berubah dari luar halaman
+    setSearchInput(activeSearch);
+  }, [activeSearch]);
 
   function updateParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -47,13 +55,61 @@ export function ProductFilters({ className }: ProductFiltersProps) {
   }
 
   function clearFilters() {
+    setSearchInput("");
     router.push("/products");
   }
 
-  const hasActiveFilters = activeCategory;
+  const hasActiveFilters = Boolean(activeCategory || activeSearch);
 
   const filterContent = (
     <div className="space-y-6">
+      {/* Search */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Cari Produk</h3>
+        <form
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateParam("search", searchInput.trim());
+          }}
+          className="relative"
+        >
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Cari produk..."
+            aria-label="Cari produk"
+            className="w-full rounded-lg border border-input bg-background py-2 pl-3 pr-16 text-sm outline-none focus:border-primary"
+          />
+          {searchInput.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchInput("");
+                updateParam("search", "");
+              }}
+              aria-label="Hapus pencarian"
+              className="absolute right-9 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+          <button
+            type="submit"
+            aria-label="Cari"
+            className="absolute right-1 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        </form>
+        {activeSearch && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Menampilkan hasil untuk “{activeSearch}”
+          </p>
+        )}
+      </div>
+
       {/* Sort */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-foreground">Urutkan</h3>

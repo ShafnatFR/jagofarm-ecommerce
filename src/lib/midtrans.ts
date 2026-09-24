@@ -6,16 +6,22 @@ const MIDTRANS_IS_PRODUCTION =
   process.env.MIDTRANS_IS_PRODUCTION === "true";
 
 const MIDTRANS_BASE_URL = MIDTRANS_IS_PRODUCTION
-  ? "https://app.midtrans.com/snap/v1"
-  : "https://app.sandbox.midtrans.com/snap/v1";
+  ? "https://app.midtrans.com"
+  : "https://app.sandbox.midtrans.com";
 
-const MIDTRANS_SNAP_URL = MIDTRANS_IS_PRODUCTION
-  ? "https://app.midtrans.com/snap/v2"
-  : "https://app.sandbox.midtrans.com/snap/v2";
+/**
+ * Snap token endpoint.
+ * The correct endpoint is POST {base}/snap/v1/transactions (the previous
+ * constant wrongly pointed at /snap/v2).
+ */
+const MIDTRANS_SNAP_URL = `${MIDTRANS_BASE_URL}/snap/v1/transactions`;
 
 const MIDTRANS_STATUS_URL = MIDTRANS_IS_PRODUCTION
   ? "https://api.midtrans.com/v2"
   : "https://api.sandbox.midtrans.com/v2";
+
+/** Snap.js browser script URL (used together with data-client-key). */
+const MIDTRANS_SNAP_SCRIPT_URL = `${MIDTRANS_BASE_URL}/snap/snap.js`;
 
 export interface MidtransItemDetail {
   id: string;
@@ -45,16 +51,26 @@ export interface MidtransAddress {
   country_code?: string;
 }
 
+/**
+ * Snap callbacks (optional).
+ * `finish`   — customer completed the payment flow successfully.
+ * `unfinish` — customer closed the payment page before finishing.
+ * `error`    — the payment failed / was rejected.
+ */
+export interface MidtransCallbacks {
+  finish?: string;
+  unfinish?: string;
+  error?: string;
+}
+
 export interface CreateTransactionParams {
   orderId: string;
   grossAmount: number;
   itemDetails: MidtransItemDetail[];
   customerDetails: MidtransCustomerDetails;
-  callbacks?: {
-    finish?: string;
-    error?: string;
-    pending?: string;
-  };
+  callbacks?: MidtransCallbacks;
+  /** Snap expiry in hours (default 24). */
+  expiryHours?: number;
 }
 
 export interface MidtransSnapResponse {
@@ -78,6 +94,8 @@ export interface MidtransTransactionStatus {
   bill_key?: string;
   biller_code?: string;
   store?: string;
+  qr_string?: string;
+  actions?: Array<{ name: string; method: string; url: string }>;
 }
 
 export type MidtransOrderStatus =
@@ -99,6 +117,15 @@ function getAuthHeader(): string {
   return `Basic ${encoded}`;
 }
 
+/** Fail fast (with a clear message) when the server key is missing. */
+function assertServerKey(): void {
+  if (!MIDTRANS_SERVER_KEY) {
+    throw new Error(
+      "MIDTRANS_SERVER_KEY belum dikonfigurasi. Set env tersebut sebelum membuat pembayaran."
+    );
+  }
+}
+
 /**
  * Create a Midtrans Snap transaction
  * Returns a Snap token and redirect URL for the payment page
@@ -106,23 +133,35 @@ function getAuthHeader(): string {
 export async function createTransaction(
   params: CreateTransactionParams
 ): Promise<MidtransSnapResponse> {
-  const payload = {
+  assertServerKey();
+
+  const payload: Record<string, unknown> = {
     transaction_details: {
       order_id: params.orderId,
       gross_amount: params.grossAmount,
     },
     item_details: params.itemDetails,
     customer_details: params.customerDetails,
-    callbacks: params.callbacks,
     credit_card: {
       secure: true,
     },
     expiry: {
       start_time: new Date().toISOString(),
       unit: "hours",
-      duration: 24,
+      duration: params.expiryHours ?? 24,
     },
   };
+
+  // Only forward the callbacks that are actually set — Midtrans rejects empty strings.
+  if (params.callbacks) {
+    const callbacks: MidtransCallbacks = {};
+    if (params.callbacks.finish) callbacks.finish = params.callbacks.finish;
+    if (params.callbacks.unfinish) callbacks.unfinish = params.callbacks.unfinish;
+    if (params.callbacks.error) callbacks.error = params.callbacks.error;
+    if (Object.keys(callbacks).length > 0) {
+      payload.callbacks = callbacks;
+    }
+  }
 
   const response = await fetch(MIDTRANS_SNAP_URL, {
     method: "POST",
@@ -229,15 +268,28 @@ export function mapToOrderStatus(
 }
 
 /**
+ * True when a Midtrans transaction_status means the order is dead
+ * (cancelled / expired/failed), so the stock reserved at checkout must be
+ * released again. Refunds are intentionally excluded.
+ */
+export function shouldReleaseStock(transactionStatus: string): boolean {
+  return ["expire", "cancel", "deny", "failure"].includes(transactionStatus);
+}
+
+/**
  * Get the Midtrans client-side config for Snap.js
  */
 export function getMidtransClientConfig() {
   return {
-    clientKey: MIDTRANS_CLIENT_KEY,
-    snapUrl: MIDTRANS_IS_PRODUCTION
-      ? "https://app.midtrans.com/snap/snap.js"
-      : "https://app.sandbox.midtrans.com/snap/snap.js",
+    clientKey:
+      process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || MIDTRANS_CLIENT_KEY,
+    snapUrl: MIDTRANS_SNAP_SCRIPT_URL,
+    isProduction: MIDTRANS_IS_PRODUCTION,
   };
 }
 
-export { MIDTRANS_CLIENT_KEY, MIDTRANS_IS_PRODUCTION };
+export {
+  MIDTRANS_CLIENT_KEY,
+  MIDTRANS_IS_PRODUCTION,
+  MIDTRANS_SNAP_SCRIPT_URL,
+};

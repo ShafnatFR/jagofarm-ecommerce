@@ -2,6 +2,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { Heart } from "lucide-react";
+import { ProfileForm } from "@/components/account/profile-form";
 
 export default async function AccountPage() {
   const user = await getCurrentUser();
@@ -67,31 +70,14 @@ export default async function AccountPage() {
             <span className="inline-block mt-2 px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
               {dbUser.role === "admin" ? "Admin" : dbUser.role === "staff" ? "Staff" : "Pelanggan"}
             </span>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Bergabung sejak {formatDate(dbUser.createdAt)}
+            </p>
           </div>
         </div>
 
         <div className="md:col-span-2 space-y-6">
-          <div className="bg-card p-6 rounded-lg border border-border">
-            <h3 className="text-lg font-semibold mb-4">Informasi Akun</h3>
-            <dl className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <dt className="text-sm text-muted-foreground">Nama</dt>
-                <dd className="sm:col-span-2 font-medium">{dbUser.name || "-"}</dd>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <dt className="text-sm text-muted-foreground">Email</dt>
-                <dd className="sm:col-span-2 font-medium">{dbUser.email}</dd>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <dt className="text-sm text-muted-foreground">Telepon</dt>
-                <dd className="sm:col-span-2 font-medium">{dbUser.phone || "-"}</dd>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <dt className="text-sm text-muted-foreground">Bergabung Sejak</dt>
-                <dd className="sm:col-span-2 font-medium">{formatDate(dbUser.createdAt)}</dd>
-              </div>
-            </dl>
-          </div>
+          <ProfileForm />
 
           <div className="bg-card p-6 rounded-lg border border-border">
             <h3 className="text-lg font-semibold mb-4">Statistik</h3>
@@ -116,18 +102,25 @@ export default async function AccountPage() {
               >
                 Kelola Alamat
               </a>
-              <a
+              <Link
                 href="/orders"
                 className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary border border-border rounded-lg hover:bg-muted transition-colors"
               >
                 Lihat Pesanan
-              </a>
+              </Link>
               <a
+                href="/wishlist"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-foreground hover:text-primary border border-border rounded-lg hover:bg-muted transition-colors"
+              >
+                <Heart className="h-4 w-4" />
+                Wishlist Saya
+              </a>
+              <Link
                 href="/products"
                 className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Belanja Lagi
-              </a>
+              </Link>
             </div>
           </div>
         </div>

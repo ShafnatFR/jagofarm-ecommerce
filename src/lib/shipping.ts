@@ -1,12 +1,25 @@
 /**
- * RajaOngkir shipping cost integration
- * Falls back to mock data when RAJAONGKIR_API_KEY is not set
+ * RajaOngkir shipping integration
+ *
+ * Sumber ongkir:
+ *  - "rajaongkir" -> API RajaOngkir dipakai (RAJAONGKIR_API_KEY tersedia & lookup sukses)
+ *  - "mock"       -> fallback deterministik (API key kosong / lookup gagal / city id tidak ditemukan)
+ *
+ * PENTING: endpoint RajaOngkir hanya menerima city_id numerik. Nama kota harus
+ * di-resolve lebih dulu lewat lookup kota (di-cache in-memory), JANGAN pernah
+ * mengirim UUID alamat ke RajaOngkir.
  */
 
+import { SHIPPING_COURIER_LABELS } from "@/lib/constants";
+
 const RAJAONGKIR_API_KEY = process.env.RAJAONGKIR_API_KEY ?? "";
-const RAJAONGKIR_BASE_URL = process.env.RAJAONGKIR_BASE_URL ?? "https://api.rajaongkir.com/starter";
+const RAJAONGKIR_BASE_URL =
+  process.env.RAJAONGKIR_BASE_URL ?? "https://api.rajaongkir.com/starter";
 
 const USE_MOCK = !RAJAONGKIR_API_KEY;
+
+/** Kurir yang didukung secara default */
+export const DEFAULT_COURIERS = ["jne", "pos", "tiki"];
 
 // ── Types ─────────────────────────────────────────────
 
@@ -40,6 +53,80 @@ export interface ShippingCostDetail {
   value: number;
   etd: string;
   note: string;
+}
+
+/** Bentuk datar yang dibaca halaman checkout */
+export interface ShippingOptionResult {
+  courier: string;
+  courierName: string;
+  service: string;
+  cost: number;
+  etd: string;
+}
+
+export interface DestinationInput {
+  /** Nama kota tujuan, mis. "Bandung" (dari form alamat) */
+  destinationCity?: string | null;
+  /** city_id RajaOngkir (numerik) kalau sudah diketahui */
+  destinationCityId?: string | null;
+}
+
+export interface ResolvedDestination {
+  cityId: string | null;
+  cityName: string | null;
+  resolved: boolean;
+}
+
+export type ShippingSource = "rajaongkir" | "mock";
+
+// ── Helpers ───────────────────────────────────────────
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export function isUuid(value: string): boolean {
+  return UUID_RE.test(value.trim());
+}
+
+function normalizeCityName(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/^(kota|kabupaten|kab\.?|kodya|administrasi)\s+/i, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function scoreCityMatch(query: string, candidate: string): number {
+  if (!query || !candidate) return 0;
+  if (candidate === query) return 3;
+  if (query.length < 3) return 0;
+  if (candidate.startsWith(query) || query.startsWith(candidate)) return 2;
+  if (candidate.includes(query) || query.includes(candidate)) return 1;
+  return 0;
+}
+
+export function courierLabel(code: string): string {
+  const key = code.toLowerCase();
+  return SHIPPING_COURIER_LABELS[key] ?? key.toUpperCase();
+}
+
+/**
+ * Normalisasi input kurir dari request (string "jne", "jne:pos", array, atau kosong)
+ */
+export function normalizeCouriers(input?: unknown): string[] {
+  let raw: string[] = [];
+  if (typeof input === "string") {
+    raw = input.split(/[:,]/);
+  } else if (Array.isArray(input)) {
+    raw = input.filter((c): c is string => typeof c === "string");
+  }
+
+  const cleaned = raw
+    .map((c) => c.trim().toLowerCase())
+    .filter((c) => c.length > 0);
+
+  return cleaned.length > 0 ? Array.from(new Set(cleaned)) : DEFAULT_COURIERS;
 }
 
 // ── RajaOngkir API calls ──────────────────────────────
@@ -122,129 +209,355 @@ const MOCK_CITIES: City[] = [
   { city_id: "18", province_id: "33", province: "Sumatera Utara", type: "Kota", city_name: "Medan", postal_code: "20111" },
 ];
 
+/** Faktor harga per kurir untuk mock (deterministik, tidak random) */
+const MOCK_COURIER_FACTORS: Record<string, number> = {
+  jne: 1,
+  pos: 0.85,
+  tiki: 1.1,
+  sicepat: 1.05,
+  jnt: 1.02,
+  anteraja: 1.0,
+  ninja: 1.15,
+  lion: 1.2,
+  wahana: 0.9,
+  pandu: 0.8,
+};
+
+/** Layanan per kurir untuk mock: [nama service, etd, multiplier] */
+const MOCK_COURIER_SERVICES: Record<
+  string,
+  { service: string; etd: string; multiplier: number }[]
+> = {
+  jne: [
+    { service: "REG", etd: "2-3", multiplier: 1 },
+    { service: "YES", etd: "1-1", multiplier: 2 },
+    { service: "OKE", etd: "3-5", multiplier: 0.7 },
+  ],
+  pos: [
+    { service: "Pos Reguler", etd: "3-5", multiplier: 1 },
+    { service: "Pos Express", etd: "1-2", multiplier: 1.9 },
+  ],
+  tiki: [
+    { service: "REG", etd: "2-3", multiplier: 1 },
+    { service: "ECO", etd: "4-6", multiplier: 0.7 },
+  ],
+  sicepat: [
+    { service: "REG", etd: "2-3", multiplier: 1 },
+    { service: "BEST", etd: "1-2", multiplier: 1.8 },
+  ],
+  jnt: [
+    { service: "EZ", etd: "2-3", multiplier: 1 },
+    { service: "Express", etd: "1-1", multiplier: 1.9 },
+  ],
+  anteraja: [
+    { service: "Reguler", etd: "2-3", multiplier: 1 },
+    { service: "Same Day", etd: "1-1", multiplier: 2.2 },
+  ],
+  ninja: [
+    { service: "Standard", etd: "2-4", multiplier: 1 },
+    { service: "Express", etd: "1-2", multiplier: 1.8 },
+  ],
+  lion: [
+    { service: "JAGUAR", etd: "2-3", multiplier: 1.2 },
+    { service: "REGPACK", etd: "3-5", multiplier: 0.85 },
+  ],
+  wahana: [{ service: "Reguler", etd: "3-5", multiplier: 1 }],
+  pandu: [{ service: "Logistik", etd: "3-6", multiplier: 1 }],
+};
+
+function roundTo500(value: number): number {
+  return Math.max(1000, Math.round(value / 500) * 500);
+}
+
+/**
+ * Mock ongkir deterministik: berat + faktor kurir + service.
+ * Dipakai saat RAJAONGKIR_API_KEY kosong / lookup gagal.
+ */
 function generateMockCost(
   destinationCity: string,
-  weightGram: number
+  weightGram: number,
+  couriers: string[] = DEFAULT_COURIERS
 ): ShippingCostResult[] {
-  // Seed stable mock pricing based on city name length and weight
-  const baseCostJne = 9000 + Math.floor(weightGram / 1000) * 3000;
-  const baseCostPos = 7000 + Math.floor(weightGram / 1000) * 2000;
-  const baseCostTiki = 10000 + Math.floor(weightGram / 1000) * 3500;
+  const kg = Math.max(1, Math.ceil(weightGram / 1000));
+  const base = 9000 + (kg - 1) * 3000;
+  // Catatan tujuan dipasang di `note` supaya respons mock tetap bisa ditelusuri
+  const destination = destinationCity.trim();
 
-  return [
-    {
-      code: "jne",
-      name: "Jalur Nugraha Ekakurir (JNE)",
-      costs: [
-        {
-          service: "REG",
-          description: "Layanan Reguler",
-          cost: [{ value: baseCostJne, etd: "2-3", note: "" }],
-        },
-        {
-          service: "YES",
-          description: "Yakin Esok Sampai",
-          cost: [{ value: baseCostJne * 2, etd: "1-1", note: "" }],
-        },
-        {
-          service: "OKE",
-          description: "Ongkos Kirim Ekonomis",
-          cost: [{ value: Math.floor(baseCostJne * 0.7), etd: "3-5", note: "" }],
-        },
-      ],
-    },
-    {
-      code: "pos",
-      name: "POS Indonesia (POS)",
-      costs: [
-        {
-          service: "Pos Reguler",
-          description: "Pos Reguler",
-          cost: [{ value: baseCostPos, etd: "3-5", note: "" }],
-        },
-        {
-          service: "Pos Express",
-          description: "Pos Express",
-          cost: [{ value: baseCostPos * 2, etd: "1-2", note: "" }],
-        },
-      ],
-    },
-    {
-      code: "tiki",
-      name: "Citra Van Titipan Kilat (TIKI)",
-      costs: [
-        {
-          service: "REG",
-          description: "Regular Service",
-          cost: [{ value: baseCostTiki, etd: "2-3", note: "" }],
-        },
-        {
-          service: "ECO",
-          description: "Economy Service",
-          cost: [{ value: Math.floor(baseCostTiki * 0.7), etd: "4-6", note: "" }],
-        },
-      ],
-    },
-  ];
+  return couriers.map((code) => {
+    const key = code.toLowerCase();
+    const factor = MOCK_COURIER_FACTORS[key] ?? 1.05;
+    const services =
+      MOCK_COURIER_SERVICES[key] ??
+      [{ service: "REG", etd: "2-4", multiplier: 1 }];
+
+    return {
+      code: key,
+      name: courierLabel(key),
+      costs: services.map((s) => ({
+        service: s.service,
+        description: `${courierLabel(key)} ${s.service}`,
+        cost: [
+          {
+            value: roundTo500(base * factor * s.multiplier),
+            etd: s.etd,
+            note: destination ? `Tujuan: ${destination}` : "",
+          },
+        ],
+      })),
+    };
+  });
 }
+
+// ── In-memory cache ───────────────────────────────────
+
+const citiesByProvinceCache = new Map<string, City[]>();
+let allCitiesCache: City[] | null = null;
+let provincesCache: Province[] | null = null;
 
 // ── Public API ────────────────────────────────────────
 
-/**
- * Get list of provinces
- */
+/** Daftar provinsi (mock atau RajaOngkir) */
 export async function getProvinces(): Promise<Province[]> {
-  if (USE_MOCK) {
+  if (USE_MOCK) return MOCK_PROVINCES;
+  if (provincesCache) return provincesCache;
+
+  try {
+    const provinces = await rajaOngkirFetch<Province[]>("/province");
+    provincesCache = provinces ?? [];
+    return provincesCache;
+  } catch (error) {
+    console.error("RajaOngkir provinces lookup failed, using mock:", error);
     return MOCK_PROVINCES;
   }
-  return rajaOngkirFetch<Province[]>("/province");
 }
 
-/**
- * Get cities, optionally filtered by province ID
- */
-export async function getCities(
-  provinceId?: string
-): Promise<City[]> {
+/** Daftar kota, opsional difilter province_id */
+export async function getCities(provinceId?: string): Promise<City[]> {
   if (USE_MOCK) {
     if (!provinceId) return MOCK_CITIES;
     return MOCK_CITIES.filter((c) => c.province_id === provinceId);
   }
-  const query = provinceId ? `?province=${provinceId}` : "";
-  return rajaOngkirFetch<City[]>(`/city${query}`);
+
+  const cacheKey = provinceId ?? "__all__";
+  const cached = citiesByProvinceCache.get(cacheKey);
+  if (cached) return cached;
+
+  try {
+    const query = provinceId ? `?province=${encodeURIComponent(provinceId)}` : "";
+    const cities = await rajaOngkirFetch<City[]>(`/city${query}`);
+    const list = cities ?? [];
+    citiesByProvinceCache.set(cacheKey, list);
+    if (!provinceId) allCitiesCache = list;
+    return list;
+  } catch (error) {
+    console.error("RajaOngkir cities lookup failed, using mock:", error);
+    if (!provinceId) return MOCK_CITIES;
+    return MOCK_CITIES.filter((c) => c.province_id === provinceId);
+  }
+}
+
+/** Semua kota (dipakai untuk resolve nama kota -> city_id) */
+async function getAllCities(): Promise<City[]> {
+  if (USE_MOCK) return MOCK_CITIES;
+  if (allCitiesCache) return allCitiesCache;
+  const cities = await getCities();
+  return cities;
+}
+
+/** Cari provinsi berdasarkan id numerik atau nama */
+export async function resolveProvince(
+  identifier: string
+): Promise<Province | null> {
+  const raw = identifier.trim();
+  if (!raw) return null;
+
+  const provinces = await getProvinces();
+
+  const numeric = raw.match(/^\d+$/)?.[0];
+  if (numeric) {
+    return provinces.find((p) => p.province_id === numeric) ?? null;
+  }
+
+  const query = raw.toLowerCase().replace(/^(provinsi|prov\.?|di)\s+/i, "").trim();
+  return (
+    provinces.find((p) => p.province.toLowerCase() === query) ??
+    provinces.find((p) => p.province.toLowerCase().includes(query)) ??
+    provinces.find((p) => query.includes(p.province.toLowerCase())) ??
+    null
+  );
+}
+
+/** Cari kota berdasarkan city_id numerik */
+export async function findCityById(cityId: string): Promise<City | null> {
+  const numeric = cityId.trim().match(/\d+/)?.[0];
+  if (!numeric) return null;
+  const cities = await getAllCities();
+  return cities.find((c) => c.city_id === numeric) ?? null;
+}
+
+/** Cari kota berdasarkan nama (case-insensitive, toleran prefix Kota/Kabupaten) */
+export async function findCityByName(cityName: string): Promise<City | null> {
+  const query = normalizeCityName(cityName);
+  if (!query) return null;
+
+  const cities = await getAllCities();
+  const scored = cities
+    .map((city) => ({
+      city,
+      score: scoreCityMatch(query, normalizeCityName(city.city_name)),
+    }))
+    .filter((entry) => entry.score > 0)
+    .sort(
+      (a, b) =>
+        b.score - a.score || Number(a.city.city_id) - Number(b.city.city_id)
+    );
+
+  return scored[0]?.city ?? null;
 }
 
 /**
- * Calculate shipping cost
+ * Resolve tujuan pengiriman dari nama kota dan/atau city_id.
+ * UUID alamat TIDAK pernah dianggap sebagai city id.
+ */
+export async function resolveDestination(
+  input: DestinationInput
+): Promise<ResolvedDestination> {
+  const rawId =
+    typeof input.destinationCityId === "string"
+      ? input.destinationCityId.trim()
+      : "";
+  const rawName =
+    typeof input.destinationCity === "string" ? input.destinationCity.trim() : "";
+
+  if (rawId && !isUuid(rawId)) {
+    const numericId = rawId.match(/\d+/)?.[0];
+    if (numericId) {
+      const city = await findCityById(numericId);
+      return {
+        cityId: numericId,
+        cityName: city?.city_name ?? (rawName || null),
+        resolved: true,
+      };
+    }
+  }
+
+  if (rawName && !isUuid(rawName)) {
+    const city = await findCityByName(rawName);
+    if (city) {
+      return { cityId: city.city_id, cityName: city.city_name, resolved: true };
+    }
+    // Nama kota tidak dikenal di RajaOngkir -> biarkan route fallback ke mock
+    return { cityId: null, cityName: rawName, resolved: false };
+  }
+
+  return { cityId: null, cityName: null, resolved: false };
+}
+
+/** Ubah hasil RajaOngkir (nested) jadi bentuk datar yang dibaca halaman checkout */
+export function flattenCostResults(
+  results: ShippingCostResult[]
+): ShippingOptionResult[] {
+  return results.flatMap((result) =>
+    (result.costs ?? []).map((entry) => {
+      const first = entry.cost?.[0];
+      return {
+        courier: (result.code ?? "").toLowerCase(),
+        courierName: result.name || courierLabel(result.code ?? ""),
+        service: entry.service,
+        cost: Number(first?.value ?? 0),
+        etd: first?.etd ?? "-",
+      };
+    })
+  );
+}
+
+/**
+ * Hitung opsi ongkir.
+ * Mock dipakai kalau API key kosong ATAU lookup tujuan gagal.
+ */
+export async function getShippingOptions(
+  originCityId: string,
+  destination: DestinationInput,
+  weightGram: number,
+  couriers: string[] = DEFAULT_COURIERS
+): Promise<{
+  options: ShippingOptionResult[];
+  source: ShippingSource;
+  destination: ResolvedDestination;
+}> {
+  const resolved = await resolveDestination(destination);
+
+  const mocked = (): ShippingOptionResult[] =>
+    flattenCostResults(
+      generateMockCost(
+        resolved.cityName ?? destination.destinationCity ?? "",
+        weightGram,
+        couriers
+      )
+    );
+
+  if (USE_MOCK) {
+    return { options: mocked(), source: "mock", destination: resolved };
+  }
+
+  if (!resolved.cityId) {
+    // Kota tujuan tidak bisa di-resolve ke city_id RajaOngkir
+    return { options: mocked(), source: "mock", destination: resolved };
+  }
+
+  try {
+    const results = await getCost(
+      originCityId,
+      resolved.cityId,
+      weightGram,
+      couriers
+    );
+    const options = flattenCostResults(results);
+    if (options.length === 0) throw new Error("RajaOngkir returned no costs");
+    return { options, source: "rajaongkir", destination: resolved };
+  } catch (error) {
+    console.error("RajaOngkir cost lookup failed, using mock:", error);
+    return { options: mocked(), source: "mock", destination: resolved };
+  }
+}
+
+/**
+ * Hitung ongkir mentah dari RajaOngkir (atau mock).
  *
- * @param originCityId - Origin city ID (e.g., warehouse city)
- * @param destinationCityId - Destination city ID
- * @param weightGram - Weight in grams
- * @param couriers - Courier codes to query (default: jne,pos,tiki)
+ * @param originCityId - city_id asal (mis. kota gudang)
+ * @param destinationCityId - city_id tujuan (numerik!)
+ * @param weightGram - berat dalam gram
+ * @param couriers - kode kurir (default: jne,pos,tiki)
  */
 export async function getCost(
   originCityId: string,
   destinationCityId: string,
   weightGram: number,
-  couriers: string[] = ["jne", "pos", "tiki"]
+  couriers: string[] = DEFAULT_COURIERS
 ): Promise<ShippingCostResult[]> {
   if (USE_MOCK) {
-    const dest = MOCK_CITIES.find((c) => c.city_id === destinationCityId);
-    return generateMockCost(dest?.city_name ?? "Unknown", weightGram);
+    const dest = await findCityById(destinationCityId);
+    return generateMockCost(dest?.city_name ?? "", weightGram, couriers);
   }
 
   const courierList = couriers.join(":");
 
-  const url = `/cost?origin=${originCityId}&destination=${destinationCityId}&weight=${weightGram}&courier=${courierList}`;
+  const body = `origin=${encodeURIComponent(
+    originCityId
+  )}&destination=${encodeURIComponent(
+    destinationCityId
+  )}&weight=${encodeURIComponent(String(weightGram))}&courier=${encodeURIComponent(
+    courierList
+  )}`;
 
-  const response = await fetch(`${RAJAONGKIR_BASE_URL}${url}`, {
+  const response = await fetch(`${RAJAONGKIR_BASE_URL}/cost`, {
     method: "POST",
     headers: {
       key: RAJAONGKIR_API_KEY,
       "Content-Type": "application/x-www-form-urlencoded",
       Accept: "application/json",
     },
-    body: `origin=${originCityId}&destination=${destinationCityId}&weight=${weightGram}&courier=${courierList}`,
+    body,
   });
 
   if (!response.ok) {
@@ -256,9 +569,12 @@ export async function getCost(
   return data.rajaongkir?.results ?? [];
 }
 
-/**
- * Check if we're using mock/shipping data (no real API key configured)
- */
+/** True kalau ongkir sedang memakai data mock (tanpa RAJAONGKIR_API_KEY) */
 export function isUsingMockShipping(): boolean {
   return USE_MOCK;
+}
+
+/** Daftar kode kurir yang punya data mock lengkap */
+export function supportedMockCouriers(): string[] {
+  return Object.keys(MOCK_COURIER_SERVICES);
 }

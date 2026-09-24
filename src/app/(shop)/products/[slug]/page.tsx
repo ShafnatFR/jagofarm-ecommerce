@@ -5,13 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
-  Star, ShoppingCart, Heart, Minus, Plus, Truck,
+  Star, ShoppingCart, Minus, Plus, Truck,
   Shield, ChevronRight, AlertCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ReviewForm } from "@/components/product/review-form";
 import { useCartStore } from "@/lib/cart-store";
 
 interface ApiProduct {
@@ -28,6 +29,12 @@ interface Review {
   id: string; user: string; rating: number; comment: string; date: string;
 }
 
+interface ReviewSummary {
+  averageRating: number;
+  totalReviews: number;
+  distribution: Record<string, number>;
+}
+
 export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -41,6 +48,22 @@ export default function ProductDetailPage() {
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [reviewSummary, setReviewSummary] = useState<ReviewSummary | null>(null);
+
+  /** Muat ulasan + ringkasan rating; dipakai saat halaman dibuka dan setelah kirim ulasan. */
+  async function loadReviews(productId: string) {
+    try {
+      const res = await fetch(`/api/reviews?productId=${productId}`, {
+        cache: "no-store",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setReviews(data.reviews ?? []);
+      setReviewSummary(data.summary ?? null);
+    } catch {
+      /* ulasan opsional: kegagalan muat tidak boleh menggagalkan halaman */
+    }
+  }
 
   useEffect(() => {
     async function fetchProduct() {
@@ -51,14 +74,7 @@ export default function ProductDetailPage() {
         if (!res.ok) throw new Error("Produk tidak ditemukan");
         const data = await res.json();
         setProduct(data);
-        // Try fetching reviews
-        try {
-          const revRes = await fetch(`/api/reviews?productId=${data.id}`);
-          if (revRes.ok) {
-            const revData = await revRes.json();
-            setReviews(revData.reviews ?? []);
-          }
-        } catch { /* reviews optional */ }
+        await loadReviews(data.id);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       } finally {
@@ -248,7 +264,62 @@ export default function ProductDetailPage() {
           </div>
         </div>
         <div>
-          <h2 className="text-xl font-bold">Ulasan ({reviews.length})</h2>
+          <h2 className="text-xl font-bold">
+            Ulasan ({reviewSummary?.totalReviews ?? reviews.length})
+          </h2>
+
+          {reviewSummary && reviewSummary.totalReviews > 0 && (
+            <div className="mt-4 rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl font-bold">
+                  {reviewSummary.averageRating.toFixed(1)}
+                </span>
+                <div>
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={cn(
+                          "h-3.5 w-3.5",
+                          i < Math.round(reviewSummary.averageRating)
+                            ? "fill-accent text-accent"
+                            : "text-muted"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    dari {reviewSummary.totalReviews} ulasan
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-3 space-y-1">
+                {[5, 4, 3, 2, 1].map((star) => {
+                  const count = reviewSummary.distribution?.[String(star)] ?? 0;
+                  const pct =
+                    reviewSummary.totalReviews > 0
+                      ? Math.round((count / reviewSummary.totalReviews) * 100)
+                      : 0;
+                  return (
+                    <div key={star} className="flex items-center gap-2 text-xs">
+                      <span className="w-3 text-muted-foreground">{star}</span>
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                        <div
+                          className="h-full rounded-full bg-accent"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <span className="w-8 text-right text-muted-foreground">
+                        {count}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {reviews.length === 0 ? (
             <p className="mt-4 text-sm text-muted-foreground">Belum ada ulasan.</p>
           ) : (
@@ -268,6 +339,15 @@ export default function ProductDetailPage() {
                   <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>
                 </div>
               ))}
+            </div>
+          )}
+
+          {product.id && (
+            <div className="mt-6">
+              <ReviewForm
+                productId={product.id}
+                onSuccess={() => loadReviews(product.id)}
+              />
             </div>
           )}
         </div>

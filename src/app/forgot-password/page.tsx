@@ -11,6 +11,7 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [sentMessage, setSentMessage] = useState("");
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
@@ -23,13 +24,20 @@ export default function ForgotPasswordPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
+      const data = await res.json().catch(() => null);
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Gagal mengirim email");
+        throw new Error(
+          typeof data?.error === "string" ? data.error : "Gagal mengirim email"
+        );
       }
+      setSentMessage(
+        typeof data?.message === "string"
+          ? data.message
+          : "Jika email tersebut terdaftar, kami telah mengirim tautan reset password."
+      );
       setSent(true);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Terjadi kesalahan");
     } finally {
       setLoading(false);
     }
@@ -56,7 +64,7 @@ export default function ForgotPasswordPage() {
                 <CheckCircle className="h-16 w-16 text-green-500" />
               </div>
               <p className="text-sm text-muted-foreground">
-                Email reset password telah dikirim ke <strong>{email}</strong>. Silakan cek inbox atau folder spam Anda.
+                {sentMessage} Cek inbox atau folder spam pada <strong>{email}</strong>.
               </p>
               <Link href="/login">
                 <Button variant="secondary" className="w-full">

@@ -10,6 +10,17 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatPrice } from "@/lib/utils"
 
+/** Bentuk mentah produk dari GET /api/admin/products (toleran dua penamaan field). */
+interface ProductApiItem {
+  id: string; name: string; slug: string;
+  category?: { name?: string | null } | string | null;
+  basePrice?: number | string | null; price?: number | string | null;
+  discountPrice?: number | string | null;
+  stock?: number | null;
+  images?: { url?: string | null }[] | null; image?: string | null;
+  isFeatured?: boolean; featured?: boolean;
+}
+
 interface Product {
   id: string; name: string; slug: string; category: string; price: number
   discountPrice: number | null; stock: number; image: string; featured: boolean
@@ -32,11 +43,11 @@ export default function ProductsPage() {
     if (category && category !== "all") params.set("category", category)
     fetch(`/api/admin/products?${params}`)
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setProducts((d.products || []).map((p: any) => ({
+      .then((d) => setProducts((d.products || []).map((p: ProductApiItem) => ({
         id: p.id, name: p.name, slug: p.slug,
-        category: p.category?.name || p.category || "",
-        price: p.basePrice || p.price || 0,
-        discountPrice: p.discountPrice ?? null,
+        category: typeof p.category === "string" ? p.category : p.category?.name || "",
+        price: Number(p.basePrice || p.price || 0),
+        discountPrice: p.discountPrice != null ? Number(p.discountPrice) : null,
         stock: p.stock ?? 0,
         image: p.images?.[0]?.url || p.image || "",
         featured: p.isFeatured ?? p.featured ?? false,
@@ -63,8 +74,8 @@ export default function ProductsPage() {
       const r = await fetch(`/api/admin/products/${id}`, { method: "DELETE" })
       if (!r.ok) throw new Error("Gagal menghapus")
       setProducts((prev) => prev.filter((p) => p.id !== id))
-    } catch (e: any) {
-      alert(e.message)
+    } catch (e) {
+      alert(e instanceof Error ? e.message : String(e))
     }
   }
 

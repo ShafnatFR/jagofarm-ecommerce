@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
@@ -6,7 +7,7 @@ import { z } from "zod";
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id || (session.user as any).role !== "admin") {
+    if (!session?.user?.id || session.user.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(50, parseInt(searchParams.get("limit") || "20"));
     const search = searchParams.get("search");
 
-    const where: any = {};
+    const where: Prisma.CouponWhereInput = {};
     if (search) {
       where.OR = [
         { code: { contains: search, mode: "insensitive" } },
@@ -66,7 +67,7 @@ const couponSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id || (session.user as any).role !== "admin") {
+    if (!session?.user?.id || session.user.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

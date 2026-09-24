@@ -1,69 +1,73 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCities, isUsingMockShipping, resolveProvince } from "@/lib/shipping";
 
+/**
+ * GET /api/shipping/cities
+ *
+ * Query (opsional, semua boleh kosong):
+ *  - province_id / province : id numerik ATAU nama provinsi (mis. "Jawa Barat")
+ *  - q / search             : filter nama kota (mis. "band")
+ *
+ * Bentuk respons: { cities: [{ id, name, type, postalCode, provinceId, province }], source }
+ * `id` = city_id RajaOngkir yang siap dipakai endpoint shipping/cost.
+ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const provinceId = searchParams.get("province_id");
+    const provinceParam = (
+      searchParams.get("province_id") ??
+      searchParams.get("province") ??
+      ""
+    ).trim();
+    const searchQuery = (
+      searchParams.get("q") ??
+      searchParams.get("search") ??
+      ""
+    )
+      .trim()
+      .toLowerCase();
 
-    if (!provinceId) {
-      return NextResponse.json(
-        { error: "province_id is required" },
-        { status: 400 }
+    let provinceId: string | undefined;
+    let provinceName: string | null = null;
+
+    if (provinceParam) {
+      const province = await resolveProvince(provinceParam);
+      if (province) {
+        provinceId = province.province_id;
+        provinceName = province.province;
+      }
+      // Provinsi tidak dikenal: kembalikan daftar kosong (tidak bikin form error)
+    }
+
+    let cities = await getCities(provinceId);
+
+    if (searchQuery) {
+      cities = cities.filter((city) =>
+        city.city_name.toLowerCase().includes(searchQuery)
       );
     }
 
-    const apiKey = process.env.RAJAONGKIR_API_KEY;
-
-    if (!apiKey) {
-      // Mock cities by province
-      const mockCities: Record<string, { id: string; name: string }[]> = {
-        "1": [
-          { id: "1", name: "Jakarta Pusat" },
-          { id: "2", name: "Jakarta Selatan" },
-          { id: "3", name: "Jakarta Barat" },
-          { id: "4", name: "Jakarta Timur" },
-          { id: "5", name: "Jakarta Utara" },
-        ],
-        "2": [
-          { id: "6", name: "Bandung" },
-          { id: "7", name: "Bekasi" },
-          { id: "8", name: "Bogor" },
-          { id: "9", name: "Depok" },
-          { id: "10", name: "Cimahi" },
-        ],
-        "3": [
-          { id: "11", name: "Semarang" },
-          { id: "12", name: "Solo" },
-          { id: "13", name: "Magelang" },
-        ],
-        "4": [
-          { id: "14", name: "Surabaya" },
-          { id: "15", name: "Malang" },
-          { id: "16", name: "Sidoarjo" },
-        ],
-      };
-      return NextResponse.json({
-        cities: mockCities[provinceId] || [],
-      });
-    }
-
-    const response = await fetch(
-      `https://api.rajaongkir.com/starter/city?province=${provinceId}`,
-      { headers: { key: apiKey } }
-    );
-    const data = await response.json();
-    const cities =
-      data.rajaongkir?.results?.map((c: any) => ({
-        id: c.city_id,
-        name: c.city_name,
-        type: c.type,
-      })) || [];
-
-    return NextResponse.json({ cities });
+    return NextResponse.json({
+      cities: cities.map((city) => ({
+        id: city.city_id,
+        name: city.city_name,
+        type: city.type,
+        postalCode: city.postal_code,
+        provinceId: city.province_id,
+        province: city.province,
+      })),
+      provinceId: provinceId ?? null,
+      province: provinceName,
+      source: isUsingMockShipping() ? "mock" : "rajaongkir",
+      message:
+        provinceParam && !provinceId
+          ? `Provinsi "${provinceParam}" tidak ditemukan`
+          : undefined,
+    });
   } catch (error) {
     console.error("Cities error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Gagal memuat daftar kota", cities: [] },
       { status: 500 }
     );
   }

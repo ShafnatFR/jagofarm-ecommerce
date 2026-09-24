@@ -20,7 +20,7 @@ async function fetchCategoriesFromAPI(): Promise<NavCategory[]> {
       const res = await fetch("/api/categories", { signal: AbortSignal.timeout(10000) });
       if (!res.ok) return [];
       const data = await res.json();
-      const cats = (data.categories || []).map((c: any) => ({
+      const cats = (data.categories || []).map((c: NavCategory) => ({
         id: c.id,
         name: c.name,
         slug: c.slug,

@@ -2,10 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ShoppingCart, Heart } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { MouseEvent } from "react";
+import { Star, ShoppingCart, Heart, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
+import { useCartStore } from "@/lib/cart-store";
 
 interface ProductCardProps {
   product: {
@@ -19,13 +24,106 @@ interface ProductCardProps {
     reviewCount?: number;
     category: string;
     isFeatured?: boolean;
+    /** Berat dalam gram (dipakai saat menambah ke keranjang). */
+    weightGram?: number;
   };
   index?: number;
+  /** Kondisi awal tombol hati (mis. dari GET /api/wishlist di halaman induk). */
+  isWishlisted?: boolean;
+  /** Dipanggil setelah perubahan wishlist berhasil/final. */
+  onWishlistChange?: (productId: string, wishlisted: boolean) => void;
 }
 
-export function ProductCard({ product, index = 0 }: ProductCardProps) {
+export function ProductCard({
+  product,
+  index = 0,
+  isWishlisted,
+  onWishlistChange,
+}: ProductCardProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const addItem = useCartStore((s) => s.addItem);
+
   const displayPrice = product.discountPrice ?? product.price;
   const hasDiscount = product.discountPrice != null && product.discountPrice < product.price;
+
+  const [wishlisted, setWishlisted] = useState(isWishlisted ?? false);
+  const [pending, setPending] = useState(false);
+
+  // Sinkronkan saat data induk berubah (mis. daftar wishlist baru dimuat).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi state hati saat prop isWishlisted berubah (nilai turunan dari prop)
+    if (isWishlisted !== undefined) setWishlisted(isWishlisted);
+  }, [isWishlisted]);
+
+  /** Optimistic update + rollback kalau request gagal. */
+  async function toggleWishlist(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (pending) return;
+
+    const next = !wishlisted;
+    setWishlisted(next);
+    setPending(true);
+
+    try {
+      const res = await fetch("/api/wishlist", {
+        method: next ? "POST" : "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: product.id }),
+      });
+
+      if (res.status === 401) {
+        setWishlisted(!next);
+        toast({
+          variant: "destructive",
+          title: "Silakan masuk dulu",
+          description: "Anda perlu login untuk menyimpan produk ke wishlist.",
+        });
+        router.push(`/login?next=${encodeURIComponent(pathname)}`);
+        return;
+      }
+
+      // 409 = produk sudah ada di wishlist: state akhir tetap terisi.
+      if (!res.ok && !(res.status === 409 && next)) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      onWishlistChange?.(product.id, next);
+      toast({
+        title: next ? "Ditambahkan ke wishlist" : "Dihapus dari wishlist",
+        description: product.name,
+      });
+    } catch {
+      setWishlisted(!next);
+      toast({
+        variant: "destructive",
+        title: "Gagal memperbarui wishlist",
+        description: "Periksa koneksi internet Anda lalu coba lagi.",
+      });
+    } finally {
+      setPending(false);
+    }
+  }
+
+  function handleAddToCart(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    addItem({
+      id: product.id,
+      productId: product.id,
+      name: product.name,
+      price: displayPrice,
+      quantity: 1,
+      image: product.image || undefined,
+      weightGram: product.weightGram ?? 0,
+      slug: product.slug,
+    });
+    toast({
+      title: "Ditambahkan ke keranjang",
+      description: product.name,
+    });
+  }
 
   return (
     <motion.div
@@ -58,8 +156,28 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       </Link>
 
       {/* Wishlist button */}
-      <button className="absolute right-3 top-3 rounded-full bg-white/80 p-1.5 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-white">
-        <Heart className="h-4 w-4 text-muted-foreground" />
+      <button
+        type="button"
+        onClick={toggleWishlist}
+        disabled={pending}
+        aria-pressed={wishlisted}
+        aria-label={wishlisted ? "Hapus dari wishlist" : "Simpan ke wishlist"}
+        title={wishlisted ? "Hapus dari wishlist" : "Simpan ke wishlist"}
+        className={cn(
+          "absolute right-3 top-3 rounded-full bg-white/80 p-1.5 transition-opacity hover:bg-white disabled:cursor-not-allowed",
+          wishlisted ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+        )}
+      >
+        {pending ? (
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        ) : (
+          <Heart
+            className={cn(
+              "h-4 w-4",
+              wishlisted ? "fill-destructive text-destructive" : "text-muted-foreground"
+            )}
+          />
+        )}
       </button>
 
       {/* Content */}
@@ -96,7 +214,13 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               {formatPrice(displayPrice)}
             </p>
           </div>
-          <Button size="icon" variant="primary" className="h-8 w-8 rounded-lg">
+          <Button
+            size="icon"
+            variant="primary"
+            className="h-8 w-8 rounded-lg"
+            onClick={handleAddToCart}
+            aria-label="Tambah ke keranjang"
+          >
             <ShoppingCart className="h-4 w-4" />
           </Button>
         </div>

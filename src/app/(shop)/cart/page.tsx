@@ -1,30 +1,124 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, Minus, Plus, ShoppingBag, Tag, ArrowRight } from "lucide-react";
+import {
+  Trash2, Minus, Plus, ShoppingBag, Tag, ArrowRight, Loader2, AlertCircle,
+} from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
+import { useToast } from "@/components/ui/use-toast";
+
+/** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */
+function errorMessage(error: unknown): string {
+  if (typeof error === "string" && error.trim()) return error;
+  if (error && typeof error === "object") {
+    const parts = Object.values(error as Record<string, unknown>)
+      .flatMap((value) => (Array.isArray(value) ? value : [value]))
+      .filter((value): value is string => typeof value === "string");
+    if (parts.length > 0) return parts.join(", ");
+  }
+  return "Terjadi kesalahan. Silakan coba lagi.";
+}
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, totalItems, totalPrice, totalWeight } = useCartStore();
-  const [couponCode, setCouponCode] = useState("");
-  const [couponApplied, setCouponApplied] = useState(false);
-  const [couponDiscount, setCouponDiscount] = useState(0);
+  const {
+    items,
+    updateQuantity,
+    removeItem,
+    totalItems,
+    totalPrice,
+    hydrate,
+    serverCart,
+    isSyncing,
+    cartLoaded,
+    isLoggedIn,
+  } = useCartStore();
+  const { toast } = useToast();
 
-  function applyCoupon() {
-    if (couponCode.toUpperCase() === "JAGOFARM10") {
-      const subtotal = totalPrice();
-      setCouponDiscount(Math.min(subtotal * 0.1, 100000));
-      setCouponApplied(true);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+
+  // Muat cart server saat halaman dibuka (source of truth untuk user login)
+  useEffect(() => {
+    void hydrate();
+  }, [hydrate]);
+
+  // Nilai dari server (user login); fallback ke perhitungan lokal kalau belum ada
+  const subtotal = serverCart ? serverCart.subtotal : totalPrice();
+  const discount = serverCart ? serverCart.discount : 0;
+  const total = serverCart ? serverCart.total : subtotal;
+  const appliedCoupon = serverCart?.coupon ?? null;
+  const couponError = serverCart?.couponError ?? null;
+
+  async function applyCoupon() {
+    const code = couponCode.trim();
+    if (!code) return;
+
+    setCouponLoading(true);
+    try {
+      const res = await fetch("/api/cart/coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        toast({
+          variant: "destructive",
+          title: "Kupon gagal dipakai",
+          description: errorMessage(data?.error),
+        });
+        return;
+      }
+
+      await hydrate();
+      setCouponCode("");
+      toast({
+        title: "Kupon diterapkan",
+        description: `Kode ${data?.coupon?.code ?? code.toUpperCase()} berhasil dipakai.`,
+      });
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Kupon gagal dipakai",
+        description: "Periksa koneksi internet Anda.",
+      });
+    } finally {
+      setCouponLoading(false);
     }
   }
 
-  const subtotal = totalPrice();
-  const shippingCost = subtotal >= 500000 ? 0 : 25000;
-  const total = subtotal - couponDiscount + shippingCost;
+  async function removeCoupon() {
+    setCouponLoading(true);
+    try {
+      const res = await fetch("/api/cart/coupon", { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        toast({
+          variant: "destructive",
+          title: "Gagal menghapus kupon",
+          description: errorMessage(data?.error),
+        });
+        return;
+      }
+
+      await hydrate();
+      setCouponCode("");
+      toast({ title: "Kupon dihapus" });
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Gagal menghapus kupon",
+        description: "Periksa koneksi internet Anda.",
+      });
+    } finally {
+      setCouponLoading(false);
+    }
+  }
 
   if (items.length === 0) {
     return (
@@ -41,7 +135,14 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="text-2xl font-bold tracking-tight">Keranjang Belanja</h1>
+      <div className="flex items-center gap-3">
+        <h1 className="text-2xl font-bold tracking-tight">Keranjang Belanja</h1>
+        {isSyncing && (
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Menyinkronkan...
+          </span>
+        )}
+      </div>
       <p className="mt-1 text-sm text-muted-foreground">{totalItems()} produk di keranjang</p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
@@ -55,7 +156,7 @@ export default function CartPage() {
               </div>
               <div className="flex flex-1 flex-col justify-between">
                 <div>
-                  <Link href={`/products/${item.productId}`}
+                  <Link href={`/products/${item.slug || item.productId}`}
                     className="text-sm font-semibold hover:text-primary transition-colors">
                     {item.name}
                   </Link>
@@ -70,7 +171,7 @@ export default function CartPage() {
                       <Minus className="h-3.5 w-3.5" />
                     </button>
                     <span className="min-w-[2.5rem] text-center text-sm font-medium">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    <button onClick={() => updateQuantity(item.id, Math.min(99, item.quantity + 1))}
                       className="px-2 py-1 hover:bg-secondary transition-colors">
                       <Plus className="h-3.5 w-3.5" />
                     </button>
@@ -93,22 +194,47 @@ export default function CartPage() {
           <div className="sticky top-20 rounded-xl border border-border bg-card p-5">
             <h2 className="text-lg font-semibold">Ringkasan Belanja</h2>
 
-            {/* Coupon */}
+            {/* Coupon — divalidasi server via /api/cart/coupon */}
             <div className="mt-4">
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input type="text" placeholder="Kode kupon" value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)} disabled={couponApplied}
-                    className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary disabled:opacity-50" />
+              {!isLoggedIn && cartLoaded ? (
+                <p className="rounded-lg bg-secondary px-3 py-2 text-xs text-muted-foreground">
+                  <Link href="/login" className="font-medium text-primary hover:underline">Login</Link> dulu
+                  untuk memakai kode kupon.
+                </p>
+              ) : appliedCoupon ? (
+                <div className="flex items-center justify-between rounded-lg border border-primary/30 bg-primary/5 px-3 py-2">
+                  <div>
+                    <p className="flex items-center gap-1.5 text-sm font-semibold text-primary">
+                      <Tag className="h-3.5 w-3.5" /> {appliedCoupon.code}
+                    </p>
+                    {discount > 0 && (
+                      <p className="text-xs text-muted-foreground">Hemat {formatPrice(discount)}</p>
+                    )}
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={removeCoupon} disabled={couponLoading}>
+                    Hapus
+                  </Button>
                 </div>
-                <Button variant="secondary" size="sm" onClick={applyCoupon}
-                  disabled={couponApplied || !couponCode}>
-                  {couponApplied ? "Diterapkan" : "Pakai"}
-                </Button>
-              </div>
-              {couponApplied && (
-                <p className="mt-1 text-xs text-primary">Kupon berhasil! Diskon {formatPrice(couponDiscount)}</p>
+              ) : (
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input type="text" placeholder="Kode kupon" value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary disabled:opacity-50"
+                      disabled={couponLoading} />
+                  </div>
+                  <Button variant="secondary" size="sm" onClick={applyCoupon}
+                    disabled={couponLoading || !couponCode.trim()}>
+                    {couponLoading ? "Memeriksa..." : "Pakai"}
+                  </Button>
+                </div>
+              )}
+
+              {couponError && (
+                <p className="mt-2 flex items-start gap-1.5 text-xs text-destructive">
+                  <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {couponError}
+                </p>
               )}
             </div>
 
@@ -118,20 +244,19 @@ export default function CartPage() {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>{formatPrice(subtotal)}</span>
               </div>
-              {couponDiscount > 0 && (
+              {discount > 0 && (
                 <div className="flex justify-between text-sm text-primary">
                   <span>Diskon Kupon</span>
-                  <span>-{formatPrice(couponDiscount)}</span>
+                  <span>-{formatPrice(discount)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Pengiriman</span>
-                <span>{shippingCost === 0 ? "Gratis" : formatPrice(shippingCost)}</span>
-              </div>
               <div className="flex justify-between border-t border-border pt-2 text-base font-bold">
                 <span>Total</span>
                 <span className="text-primary">{formatPrice(total)}</span>
               </div>
+              <p className="text-xs text-muted-foreground">
+                Ongkos kirim dihitung pada langkah checkout.
+              </p>
             </div>
 
             <Link href="/checkout" className="mt-4 block">

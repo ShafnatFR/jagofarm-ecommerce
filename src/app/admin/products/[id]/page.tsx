@@ -3,24 +3,30 @@
 import { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Upload, X, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, X, Plus, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ImageUploader } from "@/components/admin/image-uploader";
+import { useToast } from "@/components/ui/use-toast";
 import { slugify } from "@/lib/utils";
 import Link from "next/link";
 
 interface Category { id: string; name: string; }
 
+interface ProductImageRow { id?: string; url: string; sortOrder?: number; isPrimary?: boolean; }
+
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCats, setLoadingCats] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
   const [form, setForm] = useState({
     name: "", slug: "", category: "", description: "", shortDescription: "",
     basePrice: "", discountPrice: "", sku: "", weight: "", stock: "", featured: false, tags: [] as string[],
@@ -31,14 +37,30 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     Promise.all([
       fetch(`/api/admin/products/${id}`).then((r) => { if (!r.ok) throw new Error("Gagal memuat produk"); return r.json(); }),
       fetch("/api/admin/categories").then((r) => r.ok ? r.json() : { categories: [] }),
-    ]).then(([product, catData]) => {
+    ]).then(([data, catData]) => {
+      // API GET mengembalikan { product: {...} }
+      const product = data?.product ?? data ?? {};
       setForm({
-        name: product.name ?? "", slug: product.slug ?? "", category: product.category ?? "",
-        description: product.description ?? "", shortDescription: product.shortDescription ?? "",
-        basePrice: String(product.basePrice ?? ""), discountPrice: product.discountPrice ? String(product.discountPrice) : "",
-        sku: product.sku ?? "", weight: String(product.weight ?? ""), stock: String(product.stock ?? ""),
-        featured: product.featured ?? false, tags: product.tags ?? [],
+        name: product.name ?? "",
+        slug: product.slug ?? "",
+        category: product.category?.id ?? product.categoryId ?? "",
+        description: product.description ?? "",
+        shortDescription: product.shortDesc ?? product.shortDescription ?? "",
+        basePrice: product.basePrice != null ? String(product.basePrice) : "",
+        discountPrice: product.discountPrice ? String(product.discountPrice) : "",
+        sku: product.sku ?? "",
+        weight: product.weightGram != null ? String(product.weightGram) : "",
+        stock: product.stock != null ? String(product.stock) : "",
+        featured: product.isFeatured ?? product.featured ?? false,
+        tags: product.tags ?? [],
       });
+      setImages(
+        (Array.isArray(product.images) ? (product.images as ProductImageRow[]) : [])
+          .slice()
+          .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+          .map((img) => img.url)
+          .filter((url): url is string => typeof url === "string" && url.length > 0)
+      );
       setCategories(catData.categories ?? catData ?? []);
     }).catch((e) => setError(e.message))
       .finally(() => { setLoading(false); setLoadingCats(false); });
@@ -55,15 +77,56 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const removeTag = (tag: string) => setForm((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }));
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); setSaving(true);
+    e.preventDefault();
+    setError("");
+
+    const basePrice = Number(form.basePrice);
+    const weightGram = Number(form.weight);
+    const stock = Number(form.stock);
+
+    if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
+    if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
+    if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
+    if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
+    if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
+
+    setSaving(true);
     try {
+      const payload = {
+        name: form.name.trim(),
+        slug: form.slug.trim() || slugify(form.name),
+        categoryId: form.category,
+        description: form.description.trim() || null,
+        shortDesc: form.shortDescription.trim() || null,
+        basePrice,
+        discountPrice: Number(form.discountPrice) > 0 ? Number(form.discountPrice) : null,
+        sku: form.sku.trim(),
+        weightGram: Math.trunc(weightGram),
+        stock: Math.trunc(stock),
+        isFeatured: form.featured,
+        tags: form.tags,
+        // Daftar ini menggantikan gambar lama; gambar pertama jadi primary
+        images: images.map((url, index) => ({ url, sortOrder: index, isPrimary: index === 0 })),
+      };
+
       const res = await fetch(`/api/admin/products/${id}`, {
-        method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form),
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Gagal menyimpan");
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(typeof data?.error === "string" ? data.error : "Gagal menyimpan perubahan.");
+      }
+
+      toast({ title: "Perubahan disimpan", description: "Data produk berhasil diperbarui." });
       router.push("/admin/products");
-    } catch (e: any) { setError(e.message); }
-    finally { setSaving(false); }
+    } catch (err) {
+      setError(err instanceof Error && err.message ? err.message : "Gagal menyimpan perubahan.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (loading) {
@@ -114,7 +177,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
                       <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
                       <SelectContent>
-                        {categories.map((c) => <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>)}
+                        {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   )}
@@ -138,8 +201,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Input label="Harga Dasar (Rp)" type="number" value={form.basePrice} onChange={(e) => updateField("basePrice", e.target.value)} required />
                   <Input label="Harga Diskon (Rp)" type="number" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
-                  <Input label="SKU" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} />
-                  <Input label="Berat (gram)" type="number" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} />
+                  <Input label="SKU" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
+                  <Input label="Berat (gram)" type="number" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
                   <Input label="Stok" type="number" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
                 </div>
               </CardContent>
@@ -152,12 +215,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             <Card>
               <CardHeader><CardTitle className="text-lg">Gambar Produk</CardTitle></CardHeader>
               <CardContent>
-                <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 p-8 text-center">
-                  <Upload className="mb-2 h-8 w-8 text-gray-300" />
-                  <p className="text-sm text-gray-500">Seret & lepas gambar di sini</p>
-                  <p className="text-xs text-gray-400">atau klik untuk memilih</p>
-                  <Button variant="secondary" size="sm" className="mt-3" type="button">Pilih File</Button>
-                </div>
+                <ImageUploader value={images} onChange={setImages} max={6} disabled={saving} folder="products" />
               </CardContent>
             </Card>
           </motion.div>

@@ -9,6 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { HeroCarousel } from "@/components/home/hero-carousel";
+import { BundleHighlight, pickBundleProduct } from "@/components/home/bundle-highlight";
 
 interface ApiCategory {
   id: string; name: string; slug: string; description?: string | null;
@@ -17,6 +19,9 @@ interface ApiCategory {
 interface ApiProduct {
   id: string; name: string; slug: string; basePrice: number;
   discountPrice?: number | null; isFeatured?: boolean;
+  shortDesc?: string | null; description?: string | null;
+  tags?: string[] | null;
+  weightGram?: number;
   images: { url: string; altText?: string | null; isPrimary?: boolean }[];
   category: { id: string; name: string; slug: string };
   _count?: { reviews?: number };
@@ -62,47 +67,14 @@ export default function HomePage() {
     fetchData();
   }, []);
 
+  // Set bundle terlaris diambil dari katalog unggulan yang sudah di-fetch
+  // (tag "bestseller" kalau ada, kalau tidak produk dengan harga tertinggi).
+  const bundleProduct = pickBundleProduct(products);
+
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-primary">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
-          <div className="grid items-center gap-8 lg:grid-cols-2">
-            <div className="text-primary-foreground">
-              <span className="inline-block rounded-full bg-accent/20 px-4 py-1.5 text-sm font-medium text-accent">
-                🌱 Pertanian Modern Indonesia
-              </span>
-              <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                Mulai Bertani<br />dengan <span className="text-accent">Teknologi</span>
-              </h1>
-              <p className="mt-4 max-w-lg text-lg text-primary-foreground/80 leading-relaxed">
-                JagoFarm menyediakan set lengkap tambak, hidroponik, aquaponik,
-                dan IoT smart farming untuk pertanian modern yang produktif dan efisien.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/products">
-                  <Button size="lg" variant="accent">
-                    Belanja Sekarang <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="/products?category=iot-smart-farming">
-                  <Button size="lg" variant="secondary" className="border-white/30 text-white hover:bg-white/10">
-                    Jelajahi IoT Farming
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="hidden lg:block">
-              <div className="relative h-96 rounded-2xl bg-primary-foreground/10 flex items-center justify-center">
-                <div className="text-center text-primary-foreground/30">
-                  <Sprout className="mx-auto h-24 w-24" />
-                  <p className="mt-2 text-sm">Hero Image</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero carousel */}
+      <HeroCarousel />
 
       {/* Features bar */}
       <section className="border-b border-border bg-card">
@@ -221,6 +193,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Set Bundle Terlaris */}
+      <BundleHighlight product={bundleProduct} />
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 py-16">

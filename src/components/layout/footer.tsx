@@ -13,16 +13,14 @@ const footerLinks = {
   informasi: [
     { label: "Tentang Kami", href: "/about" },
     { label: "Cara Pemesanan", href: "/how-to-order" },
-    { label: "Kebijakan Pengiriman", href: "/shipping-policy" },
-    { label: "Kebijakan Pengembalian", href: "/return-policy" },
     { label: "FAQ", href: "/faq" },
     { label: "Hubungi Kami", href: "/contact" },
   ],
-  akun: [
-    { label: "Masuk", href: "/login" },
-    { label: "Daftar", href: "/register" },
-    { label: "Pesanan Saya", href: "/orders" },
-    { label: "Keranjang", href: "/cart" },
+  kebijakan: [
+    { label: "Kebijakan Pengiriman", href: "/shipping-policy" },
+    { label: "Kebijakan Pengembalian", href: "/return-policy" },
+    { label: "Kebijakan Privasi", href: "/privacy-policy" },
+    { label: "Syarat dan Ketentuan", href: "/terms" },
   ],
 };
 
@@ -30,7 +28,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2">
@@ -88,6 +86,25 @@ export function Footer() {
             </h3>
             <ul className="mt-3 space-y-2">
               {footerLinks.informasi.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Kebijakan */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider">
+              Kebijakan
+            </h3>
+            <ul className="mt-3 space-y-2">
+              {footerLinks.kebijakan.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

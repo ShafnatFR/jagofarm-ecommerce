@@ -1,18 +1,84 @@
 import { NextRequest, NextResponse } from "next/server";
+import { OrderStatus, Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { generateOrderNumber } from "@/lib/utils";
-import { z } from "zod";
+import { sendEmailSafe } from "@/lib/email";
+import { orderCreatedEmail, toEmailOrder } from "@/lib/email-templates";
+import { formatPrice, generateOrderNumber } from "@/lib/utils";
+import { checkoutSchema } from "@/lib/validators";
 
-const checkoutSchema = z.object({
-  shippingAddressId: z.string().uuid(),
-  shippingCourier: z.string(),
-  shippingService: z.string(),
-  shippingCost: z.number().min(0),
-  shippingEtd: z.string().optional(),
-  paymentMethod: z.string(),
-  notes: z.string().optional(),
-});
+/** Error bisnis checkout (dibedakan dari error tak terduga -> 500). */
+class CheckoutError extends Error {
+  status: number;
+
+  constructor(message: string, status = 400) {
+    super(message);
+    this.name = "CheckoutError";
+    this.status = status;
+  }
+}
+
+interface CouponLike {
+  code: string;
+  discountType: string;
+  discountValue: unknown;
+  minOrderValue: unknown;
+  maxDiscount: unknown;
+  usageLimit: number | null;
+  usedCount: number;
+  isActive: boolean;
+  startsAt: Date;
+  expiresAt: Date;
+}
+
+/**
+ * Validasi & hitung diskon kupon terhadap subtotal (server-authoritative).
+ * Duplikat sengaja dari /api/cart (validasi kupon) agar route bisa dipastikan
+ * independen dan tidak saling impor antar route handler.
+ */
+function evaluateCoupon(
+  subtotal: number,
+  coupon: CouponLike
+): { discount: number; error: string | null } {
+  const now = new Date();
+
+  if (!coupon.isActive) {
+    return { discount: 0, error: "Kupon sudah tidak aktif" };
+  }
+  if (now < coupon.startsAt) {
+    return { discount: 0, error: "Kupon belum berlaku" };
+  }
+  if (now > coupon.expiresAt) {
+    return { discount: 0, error: "Kupon sudah kedaluwarsa" };
+  }
+  if (coupon.usageLimit !== null && coupon.usedCount >= coupon.usageLimit) {
+    return { discount: 0, error: "Kuota kupon sudah habis" };
+  }
+
+  const minOrder = coupon.minOrderValue ? Number(coupon.minOrderValue) : 0;
+  if (subtotal < minOrder) {
+    return {
+      discount: 0,
+      error: `Minimal belanja ${formatPrice(minOrder)} untuk memakai kupon ini`,
+    };
+  }
+
+  const value = Number(coupon.discountValue);
+  let discount =
+    coupon.discountType === "percentage" ? (subtotal * value) / 100 : value;
+
+  const maxDiscount = coupon.maxDiscount ? Number(coupon.maxDiscount) : null;
+  if (
+    coupon.discountType === "percentage" &&
+    maxDiscount !== null &&
+    discount > maxDiscount
+  ) {
+    discount = maxDiscount;
+  }
+  if (discount > subtotal) discount = subtotal;
+
+  return { discount: Math.round(discount), error: null };
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,8 +92,8 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(20, Math.max(1, parseInt(searchParams.get("limit") || "10")));
     const status = searchParams.get("status");
 
-    const where: any = { userId: session.user.id };
-    if (status) where.status = status;
+    const where: Prisma.OrderWhereInput = { userId: session.user.id };
+    if (status) where.status = status as OrderStatus;
 
     const skip = (page - 1) * limit;
 
@@ -70,7 +136,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("Orders fetch error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Gagal memuat daftar pesanan" },
       { status: 500 }
     );
   }
@@ -83,7 +149,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Body request tidak valid" },
+        { status: 400 }
+      );
+    }
+
     const parsed = checkoutSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
@@ -93,18 +168,27 @@ export async function POST(request: NextRequest) {
     }
 
     const data = parsed.data;
+    const userId = session.user.id;
 
-    // Verify address belongs to user
+    // Ongkir datang dari body (pilihan kurir user), nominal lain dihitung di sini.
+    const shippingCost = Math.round(Number(data.shippingCost));
+    const notes = data.notes?.trim() ? data.notes.trim() : null;
+    const shippingEtd = data.shippingEtd?.trim() ? data.shippingEtd.trim() : null;
+
+    // Pastikan alamat milik user
     const address = await prisma.address.findFirst({
-      where: { id: data.shippingAddressId, userId: session.user.id },
+      where: { id: data.shippingAddressId, userId },
+      select: { id: true },
     });
     if (!address) {
-      return NextResponse.json({ error: "Address not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Alamat pengiriman tidak ditemukan" },
+        { status: 404 }
+      );
     }
 
-    // Get cart with items
     const cart = await prisma.cart.findUnique({
-      where: { userId: session.user.id },
+      where: { userId },
       include: {
         items: { include: { product: true, variant: true } },
         coupon: true,
@@ -112,10 +196,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (!cart || cart.items.length === 0) {
-      return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Keranjang masih kosong. Tambahkan produk sebelum checkout." },
+        { status: 400 }
+      );
     }
 
-    // Calculate totals and verify stock
+    // ── Hitung ulang seluruh nominal dari data DB (jangan percaya client) ──
     let subtotal = 0;
     const orderItems: {
       productId: string;
@@ -126,24 +213,29 @@ export async function POST(request: NextRequest) {
     }[] = [];
 
     for (const item of cart.items) {
+      if (!item.product.isActive) {
+        throw new CheckoutError(
+          `Produk ${item.product.name} sudah tidak dijual lagi. Hapus dari keranjang untuk melanjutkan.`
+        );
+      }
+
+      const availableStock = item.variant ? item.variant.stock : item.product.stock;
+      if (item.quantity > availableStock) {
+        throw new CheckoutError(
+          `Stok ${item.product.name} tidak mencukupi. Tersedia ${availableStock}, diminta ${item.quantity}.`
+        );
+      }
+
       const basePrice = Number(item.product.basePrice);
       const discountPrice = item.product.discountPrice
         ? Number(item.product.discountPrice)
         : null;
-      const variantMod = item.variant ? Number(item.variant.priceModifier) : 0;
-      const unitPrice = (discountPrice || basePrice) + variantMod;
+      const variantModifier = item.variant ? Number(item.variant.priceModifier) : 0;
+      const unitPrice = Math.round(
+        (discountPrice && discountPrice > 0 ? discountPrice : basePrice) +
+          variantModifier
+      );
       const lineTotal = unitPrice * item.quantity;
-
-      // Stock check
-      const availableStock = item.variant
-        ? item.variant.stock
-        : item.product.stock;
-      if (item.quantity > availableStock) {
-        return NextResponse.json(
-          { error: `Insufficient stock for ${item.product.name}` },
-          { status: 400 }
-        );
-      }
 
       subtotal += lineTotal;
       orderItems.push({
@@ -155,66 +247,84 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Apply coupon
-    let discount = 0;
-    let couponId: string | null = null;
-    if (cart.coupon) {
-      const coupon = cart.coupon;
-      const couponValue = Number(coupon.discountValue);
-      const minOrder = coupon.minOrderValue ? Number(coupon.minOrderValue) : 0;
+    subtotal = Math.round(subtotal);
 
-      if (subtotal >= minOrder) {
-        couponId = coupon.id;
-        if (coupon.discountType === "percentage") {
-          discount = (subtotal * couponValue) / 100;
-          const maxDisc = coupon.maxDiscount ? Number(coupon.maxDiscount) : null;
-          if (maxDisc !== null && discount > maxDisc) discount = maxDisc;
-        } else {
-          discount = couponValue;
-        }
-      }
+    // ── Kupon: sumber utama cart.coupon, fallback couponCode dari body ──
+    let coupon = cart.coupon ?? null;
+    const bodyCouponCode = (data.couponCode ?? "").trim().toUpperCase();
+    if (!coupon && bodyCouponCode) {
+      coupon = await prisma.coupon.findUnique({ where: { code: bodyCouponCode } });
     }
 
-    const total = subtotal - discount + data.shippingCost;
+    let discount = 0;
+    let couponId: string | null = null;
+    let couponWarning: string | null = null;
+
+    if (coupon) {
+      const evaluated = evaluateCoupon(subtotal, coupon);
+      if (evaluated.error) {
+        couponWarning = evaluated.error;
+      } else {
+        discount = evaluated.discount;
+        couponId = coupon.id;
+      }
+    } else if (bodyCouponCode) {
+      couponWarning = "Kode kupon tidak ditemukan";
+    }
+
+    const total = Math.max(0, subtotal - discount + shippingCost);
     const orderNumber = generateOrderNumber();
 
-    // Create order in transaction
+    // ── Simpan order + stok + kupon + kosongkan cart dalam satu transaksi ──
     const order = await prisma.$transaction(async (tx) => {
       const newOrder = await tx.order.create({
         data: {
           orderNumber,
-          userId: (session.user as any).id,
+          userId,
           shippingAddressId: data.shippingAddressId,
+          status: "pending",
+          paymentStatus: "unpaid",
           paymentMethod: data.paymentMethod,
           shippingCourier: data.shippingCourier,
           shippingService: data.shippingService,
-          shippingCost: data.shippingCost,
-          shippingEtd: data.shippingEtd,
+          shippingCost,
+          shippingEtd,
           subtotal,
           discount,
           total,
-          notes: data.notes,
+          notes,
           couponId,
+          // Snapshot item sesuai schema OrderItem (productId/variantId/price/quantity/total)
           items: { create: orderItems },
         },
       });
 
-      // Decrease stock
+      // Kurangi stok (guard `gte` supaya tidak minus saat request balapan)
       for (const item of cart.items) {
         if (item.variantId) {
-          await tx.productVariant.update({
-            where: { id: item.variantId },
+          const updated = await tx.productVariant.updateMany({
+            where: { id: item.variantId, stock: { gte: item.quantity } },
             data: { stock: { decrement: item.quantity } },
           });
+          if (updated.count === 0) {
+            throw new CheckoutError(
+              `Stok ${item.product.name} tidak mencukupi saat pesanan diproses. Silakan perbarui keranjang.`
+            );
+          }
         } else {
-          await tx.product.update({
-            where: { id: item.productId },
+          const updated = await tx.product.updateMany({
+            where: { id: item.productId, stock: { gte: item.quantity } },
             data: { stock: { decrement: item.quantity } },
           });
+          if (updated.count === 0) {
+            throw new CheckoutError(
+              `Stok ${item.product.name} tidak mencukupi saat pesanan diproses. Silakan perbarui keranjang.`
+            );
+          }
         }
       }
 
-      // Increment coupon usage
+      // Hitung pemakaian kupon
       if (couponId) {
         await tx.coupon.update({
           where: { id: couponId },
@@ -222,7 +332,7 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // Clear cart
+      // Kosongkan keranjang + lepas kupon
       await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
       await tx.cart.update({
         where: { id: cart.id },
@@ -232,24 +342,79 @@ export async function POST(request: NextRequest) {
       return newOrder;
     });
 
+    const fullOrder = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: {
+        items: {
+          include: {
+            product: { select: { id: true, name: true, slug: true } },
+            variant: { select: { id: true, name: true } },
+          },
+        },
+        shippingAddress: true,
+      },
+    });
+
+    // ── Notifikasi email "pesanan dibuat" ──────────────────────────────────
+    // Best-effort: sendEmailSafe tidak pernah throw, jadi kegagalan email
+    // tidak mengubah respons checkout. Data diambil dari fullOrder yang sudah
+    // ada (tanpa query tambahan); alamat email diambil dari sesi user.
+    if (fullOrder) {
+      const recipient = session.user.email?.trim();
+      if (recipient) {
+        await sendEmailSafe({
+          to: recipient,
+          ...orderCreatedEmail(
+            toEmailOrder(fullOrder, { customerName: session.user.name ?? null })
+          ),
+        });
+      } else {
+        console.warn(
+          `[orders] Email pesanan ${order.orderNumber} dilewati: user tidak memiliki alamat email.`
+        );
+      }
+    }
+
     return NextResponse.json(
       {
-        message: "Order created",
-        order: {
-          id: order.id,
-          orderNumber: order.orderNumber,
-          subtotal: Number(order.subtotal),
-          discount: Number(order.discount),
-          shippingCost: Number(order.shippingCost),
-          total: Number(order.total),
-        },
+        message: "Pesanan berhasil dibuat",
+        orderNumber: order.orderNumber,
+        couponWarning,
+        order: fullOrder
+          ? {
+              ...fullOrder,
+              subtotal: Number(fullOrder.subtotal),
+              discount: Number(fullOrder.discount),
+              shippingCost: Number(fullOrder.shippingCost),
+              total: Number(fullOrder.total),
+              items: fullOrder.items.map((i) => ({
+                ...i,
+                price: Number(i.price),
+                total: Number(i.total),
+              })),
+            }
+          : {
+              id: order.id,
+              orderNumber: order.orderNumber,
+              subtotal: Number(order.subtotal),
+              discount: Number(order.discount),
+              shippingCost: Number(order.shippingCost),
+              total: Number(order.total),
+            },
       },
       { status: 201 }
     );
   } catch (error) {
+    if (error instanceof CheckoutError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.status }
+      );
+    }
+
     console.error("Checkout error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Gagal membuat pesanan" },
       { status: 500 }
     );
   }

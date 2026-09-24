@@ -28,32 +28,93 @@ export async function auth() {
 }
 
 /**
+ * Error kontrol-flow internal Next (DYNAMIC_SERVER_USAGE, NEXT_REDIRECT,
+ * NEXT_NOT_FOUND) dipakai framework untuk menentukan mode render/redirect —
+ * JANGAN ditelan, harus dilempar ulang.
+ */
+function isNextControlFlowError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const digest = (error as { digest?: unknown }).digest;
+  return typeof digest === "string";
+}
+
+/**
+ * Ambil user Supabase tanpa pernah melempar error.
+ * Supabase bisa belum dikonfigurasi atau tidak terjangkau — dalam kasus itu
+ * pemanggil cukup dianggap belum login (bukan 500).
+ */
+async function fetchSupabaseUser() {
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    return data.user;
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
+    console.error(
+      "[auth] Supabase tidak dapat dihubungi atau belum dikonfigurasi:",
+      error instanceof Error ? error.message : error
+    );
+    return null;
+  }
+}
+
+/** Make sure the user has a cart (idempotent, never throws). */
+async function ensureCart(userId: string) {
+  try {
+    await prisma.cart.upsert({
+      where: { userId },
+      update: {},
+      create: { userId },
+    });
+  } catch (error) {
+    console.error("[auth] failed to ensure cart for user", userId, error);
+  }
+}
+
+/**
  * Get current authenticated user from Supabase Auth,
  * synced to our users table.
+ *
+ * - Supabase user without a Postgres row -> row + cart are created.
+ * - Postgres row found by email but with a different id -> the existing row wins
+ *   (never crash on the mismatch; a warning is logged instead).
  */
 export async function getCurrentUser(): Promise<AuthUser | null> {
-  const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
+  const authUser = await fetchSupabaseUser();
   if (!authUser?.email) return null;
 
-  // Find or create user in our users table
-  let dbUser = await prisma.user.findUnique({
-    where: { email: authUser.email },
-  });
+  const email = authUser.email.toLowerCase();
+
+  let dbUser = await prisma.user.findUnique({ where: { email } });
+
+  if (dbUser && dbUser.id !== authUser.id) {
+    console.warn(
+      `[auth] users row for ${email} has id ${dbUser.id} but the Supabase user id is ${authUser.id}; using the existing Postgres row.`
+    );
+  }
 
   if (!dbUser) {
-    dbUser = await prisma.user.create({
-      data: {
-        id: authUser.id,
-        email: authUser.email,
-        name: authUser.user_metadata?.full_name || authUser.user_metadata?.name || "",
-        image: authUser.user_metadata?.avatar_url || authUser.user_metadata?.picture || null,
-        role: "customer",
-      },
-    });
-    // Create cart for new user
-    await prisma.cart.create({ data: { userId: dbUser.id } });
+    const metadata = authUser.user_metadata ?? {};
+    try {
+      dbUser = await prisma.user.create({
+        data: {
+          id: authUser.id,
+          email,
+          name: metadata.full_name || metadata.name || null,
+          image: metadata.avatar_url || metadata.picture || null,
+          role: "customer",
+        },
+      });
+    } catch (error) {
+      // Most likely a concurrent request created the row first (or a legacy row
+      // with the same email) — fall back to reading it instead of failing.
+      console.error("[auth] failed to create users row from Supabase user:", error);
+      dbUser = await prisma.user.findUnique({ where: { email } });
+      if (!dbUser) throw error;
+    }
   }
+
+  await ensureCart(dbUser.id);
 
   return {
     id: dbUser.id,
@@ -79,5 +140,24 @@ export async function requireAuth(): Promise<AuthUser> {
 export async function requireAdmin(): Promise<AuthUser> {
   const user = await requireAuth();
   if (user.role === "customer") throw new Error("Forbidden");
+  return user;
+}
+
+/**
+ * Explicit admin/staff guard: throws unless the current user is admin or staff.
+ * Prefer this in new admin-only code paths.
+ */
+export async function requireAdminUser(): Promise<AuthUser> {
+  const user = await requireAuth();
+  if (user.role !== "admin" && user.role !== "staff") throw new Error("Forbidden");
+  return user;
+}
+
+/**
+ * Require admin role (staff excluded) or throw.
+ */
+export async function requireStrictAdmin(): Promise<AuthUser> {
+  const user = await requireAuth();
+  if (user.role !== "admin") throw new Error("Forbidden");
   return user;
 }

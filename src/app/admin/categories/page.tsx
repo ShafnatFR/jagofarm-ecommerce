@@ -1,18 +1,25 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { FolderTree, Plus, Edit, Trash2, ChevronRight, ChevronDown, AlertCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { useToast } from "@/components/ui/use-toast"
+
+/** Pesan error yang aman ditampilkan di UI (unknown -> string). */
+function toMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
 
 interface Category {
-  id: string; name: string; slug: string; description?: string;
+  id: string; name: string; slug: string; description?: string | null;
   parentId?: string | null; sortOrder?: number; isActive?: boolean;
-  _count?: { products?: number };
+  _count?: { products?: number; children?: number };
   children?: Category[];
   productCount?: number;
 }
@@ -22,6 +29,7 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
 }) {
   const [expanded, setExpanded] = useState(depth === 0)
   const hasChildren = (category.children?.length ?? 0) > 0
+  const productCount = category._count?.products ?? category.productCount ?? 0
 
   return (
     <div>
@@ -34,11 +42,12 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
           ) : <div className="w-4" />}
           <FolderTree className="h-4 w-4 text-[#1B4D3E]" />
           <span className="font-medium">{category.name}</span>
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{category._count?.products ?? category.productCount ?? 0} produk</span>
+          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{productCount} produk</span>
+          {category.isActive === false && <Badge variant="secondary">Nonaktif</Badge>}
         </div>
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8"><Edit className="h-3.5 w-3.5" /></Button>
-          <Button variant="ghost" size="icon" onClick={() => onDelete(category)} className="h-8 w-8 text-red-500 hover:text-red-600"><Trash2 className="h-3.5 w-3.5" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8" title="Edit kategori"><Edit className="h-3.5 w-3.5" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => onDelete(category)} className="h-8 w-8 text-red-500 hover:text-red-600" title="Hapus kategori"><Trash2 className="h-3.5 w-3.5" /></Button>
         </div>
       </div>
       <AnimatePresence>
@@ -52,16 +61,24 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
   )
 }
 
-function flattenCategories(cats: Category[], prefix = ""): { value: string; label: string }[] {
+function flattenCategories(
+  cats: Category[],
+  prefix = "",
+  excludeId: string | null = null
+): { value: string; label: string }[] {
   const result: { value: string; label: string }[] = []
   for (const cat of cats) {
+    // Kategori yang sedang diedit tidak boleh jadi induk bagi dirinya/turunannya.
+    if (excludeId && cat.id === excludeId) continue
     result.push({ value: cat.id, label: prefix + cat.name })
-    result.push(...flattenCategories(cat.children ?? [], prefix + cat.name + " / "))
+    result.push(...flattenCategories(cat.children ?? [], prefix + cat.name + " / ", excludeId))
   }
   return result
 }
 
 export default function CategoriesPage() {
+  const { toast } = useToast()
+
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -71,51 +88,119 @@ export default function CategoriesPage() {
   const [formSlug, setFormSlug] = useState("")
   const [formDesc, setFormDesc] = useState("")
   const [formParent, setFormParent] = useState("none")
+  const [formSortOrder, setFormSortOrder] = useState("0")
+  const [formIsActive, setFormIsActive] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetch("/api/admin/categories")
-      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setCategories(d.categories || []))
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    try {
+      const r = await fetch("/api/admin/categories", { cache: "no-store" })
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      const d = await r.json()
+      setCategories(d.categories || [])
+      setError(null)
+    } catch (e) {
+      setError(toMessage(e))
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
-  const allCategories = flattenCategories(categories)
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- pola fetch-saat-mount daftar kategori; setState ada di dalam fetchData()
+    fetchData()
+  }, [fetchData])
+
+  const allCategories = flattenCategories(categories, "", editingCategory?.id ?? null)
 
   const handleAdd = () => {
-    setEditingCategory(null); setFormName(""); setFormSlug(""); setFormDesc(""); setFormParent("none")
+    setEditingCategory(null)
+    setFormName(""); setFormSlug(""); setFormDesc(""); setFormParent("none")
+    setFormSortOrder("0"); setFormIsActive(true)
     setDialogOpen(true)
-  }
-  const handleEdit = (cat: Category) => {
-    setEditingCategory(cat); setFormName(cat.name); setFormSlug(cat.slug); setFormDesc(""); setFormParent("none")
-    setDialogOpen(true)
-  }
-  const handleDelete = async (cat: Category) => {
-    if (!confirm(`Hapus kategori "${cat.name}"?`)) return
-    try {
-      const r = await fetch(`/api/admin/categories/${cat.id}`, { method: "DELETE" })
-      if (!r.ok) throw new Error("Gagal menghapus")
-      setCategories((prev) => prev.filter((c) => c.id !== cat.id))
-    } catch (e: any) { alert(e.message) }
-  }
-  const handleSave = async () => {
-    setSaving(true)
-    try {
-      const body: any = { name: formName, slug: formSlug, description: formDesc }
-      if (formParent !== "none") body.parentId = formParent
-      const url = editingCategory ? `/api/admin/categories/${editingCategory.id}` : "/api/admin/categories"
-      const method = editingCategory ? "PATCH" : "POST"
-      const r = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-      if (!r.ok) throw new Error("Gagal menyimpan")
-      const fresh = await fetch("/api/admin/categories").then((r) => r.json())
-      setCategories(fresh.categories || [])
-      setDialogOpen(false)
-    } catch (e: any) { alert(e.message) }
-    finally { setSaving(false) }
   }
 
-  if (loading) {
+  const handleEdit = (cat: Category) => {
+    setEditingCategory(cat)
+    setFormName(cat.name)
+    setFormSlug(cat.slug)
+    setFormDesc(cat.description ?? "")
+    setFormParent(cat.parentId ?? "none")
+    setFormSortOrder(String(cat.sortOrder ?? 0))
+    setFormIsActive(cat.isActive ?? true)
+    setDialogOpen(true)
+  }
+
+  const handleDelete = async (cat: Category) => {
+    if (!confirm(`Hapus kategori "${cat.name}"? Tindakan ini tidak dapat dibatalkan.`)) return
+
+    setDeleting(cat.id)
+    try {
+      const r = await fetch(`/api/admin/categories/${cat.id}`, { method: "DELETE" })
+      const data = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(data?.error || `Gagal menghapus kategori (HTTP ${r.status})`)
+
+      toast({
+        title: "Kategori dihapus",
+        description: data?.message || `Kategori "${cat.name}" berhasil dihapus.`,
+      })
+      await fetchData()
+    } catch (e) {
+      toast({ title: "Gagal menghapus kategori", description: toMessage(e), variant: "destructive" })
+    } finally {
+      setDeleting(null)
+    }
+  }
+
+  const handleSave = async () => {
+    if (!formName.trim()) {
+      toast({
+        title: "Nama kategori wajib diisi",
+        description: "Isi nama kategori sebelum menyimpan.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setSaving(true)
+    try {
+      const body: Record<string, unknown> = {
+        name: formName.trim(),
+        description: formDesc,
+        parentId: formParent === "none" ? null : formParent,
+        sortOrder: Number(formSortOrder) || 0,
+        isActive: formIsActive,
+      }
+      if (formSlug.trim()) body.slug = formSlug.trim()
+
+      const url = editingCategory ? `/api/admin/categories/${editingCategory.id}` : "/api/admin/categories"
+      const method = editingCategory ? "PATCH" : "POST"
+
+      const r = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+      const data = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(data?.error || `Gagal menyimpan kategori (HTTP ${r.status})`)
+
+      toast({
+        title: editingCategory ? "Kategori diperbarui" : "Kategori ditambahkan",
+        description: data?.message || `Kategori "${body.name}" tersimpan.`,
+      })
+      setDialogOpen(false)
+      setEditingCategory(null)
+      await fetchData()
+    } catch (e) {
+      toast({ title: "Gagal menyimpan kategori", description: toMessage(e), variant: "destructive" })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading && categories.length === 0) {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-40 rounded bg-gray-200" />
@@ -124,7 +209,7 @@ export default function CategoriesPage() {
     )
   }
 
-  if (error) {
+  if (error && categories.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
@@ -155,12 +240,19 @@ export default function CategoriesPage() {
               <p className="mt-2">Belum ada kategori</p>
             </div>
           ) : (
-            <div className="divide-y">{categories.map((cat) => <CategoryNode key={cat.id} category={cat} onEdit={handleEdit} onDelete={handleDelete} />)}</div>
+            <div className="divide-y">
+              {categories.map((cat) => (
+                <CategoryNode key={cat.id} category={cat} onEdit={handleEdit} onDelete={handleDelete} />
+              ))}
+            </div>
+          )}
+          {deleting && (
+            <div className="border-t bg-gray-50 px-4 py-2 text-xs text-gray-500">Menghapus kategori...</div>
           )}
         </CardContent>
       </Card>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) setEditingCategory(null) }}>
         <DialogContent>
           <DialogHeader><DialogTitle>{editingCategory ? "Edit Kategori" : "Tambah Kategori"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
@@ -170,11 +262,20 @@ export default function CategoriesPage() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium">Slug</label>
-              <Input placeholder="hidroponik" value={formSlug} onChange={(e) => setFormSlug(e.target.value)} />
+              <Input
+                placeholder="otomatis dari nama bila dikosongkan"
+                value={formSlug}
+                onChange={(e) => setFormSlug(e.target.value)}
+              />
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium">Deskripsi</label>
-              <Input placeholder="Deskripsi singkat..." value={formDesc} onChange={(e) => setFormDesc(e.target.value)} />
+              <textarea
+                className="flex min-h-[70px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4D3E]"
+                placeholder="Deskripsi singkat..."
+                value={formDesc}
+                onChange={(e) => setFormDesc(e.target.value)}
+              />
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium">Kategori Induk</label>
@@ -185,6 +286,26 @@ export default function CategoriesPage() {
                   {allCategories.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
                 </SelectContent>
               </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="mb-1.5 block text-sm font-medium">Urutan</label>
+                <Input
+                  type="number"
+                  value={formSortOrder}
+                  onChange={(e) => setFormSortOrder(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium">Status</label>
+                <Select value={formIsActive ? "active" : "inactive"} onValueChange={(v) => setFormIsActive(v === "active")}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Aktif</SelectItem>
+                    <SelectItem value="inactive">Nonaktif</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
           <DialogFooter>

@@ -10,6 +10,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { formatPrice, formatDate } from "@/lib/utils"
 
+/** Pesan error yang aman ditampilkan di UI (unknown -> string). */
+function toMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+/** Bentuk mentah item dari GET /api/admin/coupons (dua penamaan field). */
+interface CouponApiItem {
+  id: string; code: string;
+  discountType?: string; type?: string;
+  discountValue?: number; value?: number;
+  minOrderValue?: number | null; minOrder?: number;
+  maxDiscount?: number | null;
+  usageLimit?: number | null;
+  usedCount?: number; usageCount?: number;
+  isActive?: boolean;
+  startsAt?: string; startDate?: string;
+  expiresAt?: string; endDate?: string;
+}
+
 interface Coupon {
   id: string; code: string; type: string; value: number; minOrder: number
   maxDiscount: number | null; usageLimit: number; usageCount: number
@@ -38,7 +57,7 @@ export default function CouponsPage() {
   useEffect(() => {
     fetch("/api/admin/coupons")
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setCoupons((d.coupons || []).map((c: any) => ({
+      .then((d) => setCoupons((d.coupons || []).map((c: CouponApiItem) => ({
         id: c.id, code: c.code,
         type: c.discountType || c.type || "percentage",
         value: c.discountValue ?? c.value ?? 0,
@@ -48,7 +67,7 @@ export default function CouponsPage() {
         usageCount: c.usedCount ?? c.usageCount ?? 0,
         startDate: c.startsAt || c.startDate || "",
         endDate: c.expiresAt || c.endDate || "",
-        status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate) < new Date() ? "EXPIRED" : "ACTIVE",
+        status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate || "") < new Date() ? "EXPIRED" : "ACTIVE",
       }))))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
@@ -76,7 +95,7 @@ export default function CouponsPage() {
       const r = await fetch(`/api/admin/coupons/${id}`, { method: "DELETE" })
       if (!r.ok) throw new Error("Gagal menghapus")
       setCoupons((prev) => prev.filter((c) => c.id !== id))
-    } catch (e: any) { alert(e.message) }
+    } catch (e) { alert(toMessage(e)) }
   }
 
   const handleSave = async () => {
@@ -94,7 +113,7 @@ export default function CouponsPage() {
       const fresh = await fetch("/api/admin/coupons").then((r) => r.json())
       setCoupons(fresh.coupons || [])
       setDialogOpen(false)
-    } catch (e: any) { alert(e.message) }
+    } catch (e) { alert(toMessage(e)) }
     finally { setSaving(false) }
   }
 

@@ -18,19 +18,32 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const notice =
+    searchParams.get("reset") === "true"
+      ? "Password berhasil diperbarui. Silakan masuk dengan password baru Anda."
+      : searchParams.get("registered") === "true"
+        ? "Registrasi berhasil. Silakan masuk."
+        : searchParams.get("error")
+          ? "Link konfirmasi/reset tidak valid atau sudah kadaluarsa. Silakan coba lagi."
+          : "";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
+    const { error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (authError) {
-      setError("Email atau password salah");
+    if (loginError) {
+      if (loginError.code === "email_not_confirmed" || /confirm/i.test(loginError.message)) {
+        setError("Email belum dikonfirmasi. Silakan cek inbox Anda dan klik tautan konfirmasi terlebih dahulu.");
+      } else {
+        setError("Email atau password salah");
+      }
       setLoading(false);
     } else {
       router.push(callbackUrl);
@@ -66,6 +79,9 @@ function LoginForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {notice && (
+            <div className="bg-green-50 text-green-700 text-sm p-3 rounded-lg">{notice}</div>
+          )}
           {error && (
             <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>
           )}

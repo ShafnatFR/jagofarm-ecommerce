@@ -17,6 +17,9 @@ import {
   Bell,
   Search,
   User,
+  ShieldAlert,
+  BarChart3,
+  Star,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -28,34 +31,98 @@ const sidebarLinks = [
   { href: "/admin/categories", label: "Kategori", icon: FolderTree },
   { href: "/admin/customers", label: "Pelanggan", icon: Users },
   { href: "/admin/coupons", label: "Kupon", icon: Tag },
+  { href: "/admin/reviews", label: "Ulasan", icon: Star },
+  { href: "/admin/reports", label: "Laporan", icon: BarChart3 },
 ]
+
+type GuardState = "checking" | "authorized" | "denied"
+type AdminIdentity = { name: string | null; email: string | null; role: string }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [guardState, setGuardState] = useState<GuardState>("checking")
+  const [admin, setAdmin] = useState<AdminIdentity | null>(null)
 
-  // Simulate role check — in production, use NextAuth session
-  const [isAdmin, setIsAdmin] = useState(true)
-  const [loading, setLoading] = useState(true)
-
+  // Guard nyata: hanya admin/staff yang boleh melihat isi /admin/*.
+  // Konten admin TIDAK dirender selama guardState === "checking" supaya
+  // tidak ada flash konten sebelum verifikasi selesai.
   useEffect(() => {
-    // Replace with real session check: const session = await auth()
-    // if (session?.user?.role !== "ADMIN") router.push("/")
-    setLoading(false)
+    let cancelled = false
+    // Halaman login membaca `callbackUrl`; `next` dipertahankan sebagai
+    // parameter eksplisit tujuan setelah login.
+    const nextParam = encodeURIComponent(pathname || "/admin")
+    const loginUrl = `/login?next=${nextParam}&callbackUrl=${nextParam}`
+
+    fetch("/api/user/profile", { cache: "no-store", credentials: "same-origin" })
+      .then(async (res) => {
+        if (res.status === 401) {
+          // Belum login -> arahkan ke halaman login.
+          if (!cancelled) router.replace(loginUrl)
+          return null
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        return res.json()
+      })
+      .then((payload: { user?: Record<string, unknown> } | Record<string, unknown> | null) => {
+        if (cancelled || !payload) return
+        const profile = ("user" in payload && payload.user ? payload.user : payload) as Record<string, unknown>
+        const role = typeof profile?.role === "string" ? profile.role.toLowerCase() : ""
+
+        if (!profile?.id || (role !== "admin" && role !== "staff")) {
+          setGuardState("denied")
+          return
+        }
+
+        setAdmin({
+          name: typeof profile.name === "string" ? profile.name : null,
+          email: typeof profile.email === "string" ? profile.email : null,
+          role,
+        })
+        setGuardState("authorized")
+      })
+      .catch(() => {
+        if (!cancelled) setGuardState("denied")
+      })
+
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
-  if (loading) {
+  if (guardState === "checking") {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#F8F7F4]">
+      <div className="flex h-screen flex-col items-center justify-center gap-3 bg-[#F8F7F4]">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#1B4D3E] border-t-transparent" />
+        <p className="text-sm text-gray-500">Memeriksa hak akses...</p>
       </div>
     )
   }
 
-  if (!isAdmin) {
-    return null
+  if (guardState === "denied") {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#F8F7F4] p-6">
+        <div className="w-full max-w-md rounded-xl border bg-white p-8 text-center shadow-sm">
+          <ShieldAlert className="mx-auto h-12 w-12 text-red-500" />
+          <h1 className="mt-4 text-xl font-bold text-gray-900">Akses ditolak</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            Halaman admin hanya dapat diakses oleh admin atau staf. Akun Anda tidak memiliki
+            wewenang untuk membuka halaman ini.
+          </p>
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <Link href="/">
+              <Button variant="secondary" className="w-full sm:w-auto">Kembali ke Beranda</Button>
+            </Link>
+            <Link href="/login?next=%2Fadmin&callbackUrl=%2Fadmin">
+              <Button className="w-full sm:w-auto">Masuk dengan akun lain</Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -156,8 +223,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1B4D3E] text-white">
                 <User className="h-4 w-4" />
               </div>
-              <span className="hidden text-sm font-medium md:block">Admin</span>
+              <div className="hidden leading-tight md:block">
+                <p className="text-sm font-medium">{admin?.name || "Admin"}</p>
+                <p className="text-xs capitalize text-gray-400">{admin?.role || "admin"}</p>
+              </div>
             </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Keluar"
+              onClick={async () => {
+                // Best-effort sign out, lalu kembali ke halaman login.
+                try {
+                  await fetch("/auth/signout", { method: "POST" })
+                } catch {
+                  // diabaikan: cookie sesi tetap dibersihkan di sisi server saat berhasil
+                }
+                router.replace("/login?next=%2Fadmin&callbackUrl=%2Fadmin")
+              }}
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
           </div>
         </header>
 
