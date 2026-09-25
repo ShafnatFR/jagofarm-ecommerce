@@ -151,7 +151,7 @@ export default function CartPage() {
           {items.map((item) => (
             <div key={item.id} className="flex gap-4 rounded-xl border border-border bg-card p-4">
               <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-secondary">
-                <Image src={item.image || "/placeholder-product.jpg"} alt={item.name}
+                <Image src={item.image || "/placeholder-product.png"} alt={item.name}
                   fill className="object-cover" />
               </div>
               <div className="flex flex-1 flex-col justify-between">

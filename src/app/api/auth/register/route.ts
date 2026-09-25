@@ -102,6 +102,7 @@ export async function POST(request: NextRequest) {
       user = await prisma.user.create({
         data: {
           id: data.user.id,
+          supabaseId: data.user.id,
           name,
           email,
           phone: phone || null,

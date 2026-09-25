@@ -136,7 +136,7 @@ export function ProductCard({
       <Link href={`/products/${product.slug}`} className="block overflow-hidden">
         <div className="relative aspect-square bg-secondary">
           <Image
-            src={product.image || "/placeholder-product.jpg"}
+            src={product.image || "/placeholder-product.png"}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"

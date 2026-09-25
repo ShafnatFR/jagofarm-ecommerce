@@ -119,7 +119,7 @@ export default function ProductDetailPage() {
   const basePrice = product.basePrice + priceMod;
   const displayPrice = (product.discountPrice ?? product.basePrice) + priceMod;
   const hasDiscount = product.discountPrice != null && product.discountPrice < product.basePrice;
-  const images = product.images?.length > 0 ? product.images : [{ url: "/placeholder-product.jpg", altText: product.name }];
+  const images = product.images?.length > 0 ? product.images : [{ url: "/placeholder-product.png", altText: product.name }];
 
   function handleAddToCart() {
     addItem({

@@ -293,8 +293,13 @@ export async function PATCH(
 
       data.shippedAt = existing.shippedAt ?? now;
 
-      // Input resi menandakan paket sudah jalan: naikkan status bila masih pending/processing.
-      if (!nextStatus && (currentStatus === "pending" || currentStatus === "processing")) {
+      // Input resi menandakan paket sudah jalan: naikkan status bila belum dikirim.
+      if (
+        !nextStatus &&
+        (currentStatus === "pending" ||
+          currentStatus === "paid" ||
+          currentStatus === "processing")
+      ) {
         nextStatus = "shipped";
       }
 

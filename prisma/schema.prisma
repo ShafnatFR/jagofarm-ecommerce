@@ -37,6 +37,8 @@ model User {
   email         String    @unique @db.VarChar(255)
   phone         String?   @db.VarChar(20)
   passwordHash  String?   @map("password_hash") @db.VarChar(255)
+  /// id user di Supabase Auth — dipakai untuk mencocokkan sesi tanpa mengandalkan email.
+  supabaseId    String?   @unique @map("supabase_id") @db.VarChar(64)
   role          Role      @default(customer)
   image         String?   @map("avatar_url") @db.Text
   emailVerified DateTime? @map("email_verified")

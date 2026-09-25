@@ -85,12 +85,28 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
 
   const email = authUser.email.toLowerCase();
 
-  let dbUser = await prisma.user.findUnique({ where: { email } });
+  // 1) Cocokkan lewat supabase_id (cara utama, tidak bergantung email).
+  let dbUser = await prisma.user.findUnique({
+    where: { supabaseId: authUser.id },
+  });
 
-  if (dbUser && dbUser.id !== authUser.id) {
-    console.warn(
-      `[auth] users row for ${email} has id ${dbUser.id} but the Supabase user id is ${authUser.id}; using the existing Postgres row.`
-    );
+  // 2) Belum tertaut: cari baris lama berdasarkan email (mis. hasil seed),
+  //    lalu tautkan supabase_id-nya supaya request berikutnya tidak ambigu.
+  if (!dbUser) {
+    const byEmail = await prisma.user.findUnique({ where: { email } });
+    if (byEmail) {
+      dbUser = byEmail.supabaseId
+        ? byEmail
+        : await prisma.user.update({
+            where: { id: byEmail.id },
+            data: { supabaseId: authUser.id },
+          });
+      if (!byEmail.supabaseId) {
+        console.info(
+          `[auth] baris users lama untuk ${email} ditautkan ke Supabase user ${authUser.id} (role ${byEmail.role} dipertahankan).`
+        );
+      }
+    }
   }
 
   if (!dbUser) {
@@ -99,6 +115,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       dbUser = await prisma.user.create({
         data: {
           id: authUser.id,
+          supabaseId: authUser.id,
           email,
           name: metadata.full_name || metadata.name || null,
           image: metadata.avatar_url || metadata.picture || null,

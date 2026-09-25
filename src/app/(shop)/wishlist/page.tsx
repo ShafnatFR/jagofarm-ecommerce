@@ -223,7 +223,7 @@ export default function WishlistPage() {
                     slug: product.slug,
                     price: product.basePrice,
                     discountPrice: product.discountPrice,
-                    image: product.images?.[0]?.url || "/placeholder-product.jpg",
+                    image: product.images?.[0]?.url || "/placeholder-product.png",
                     category: product.category?.name ?? "Produk",
                     isFeatured: product.isFeatured,
                     weightGram: product.weightGram,

@@ -316,7 +316,7 @@ function main(): void {
     sorted.forEach((img, index) => {
       checkEq(img.sortOrder, index, `sortOrder gambar tidak berurutan: ${label}`);
       check(
-        img.url === `/images/products/${p.slug}-${index + 1}.jpg`,
+        img.url === "/placeholder-product.png",
         `URL gambar tidak sesuai pola placeholder: ${label} -> ${img.url}`
       );
       check(typeof img.altText === "string" && img.altText.trim().length > 0, `altText gambar kosong: ${label}`);

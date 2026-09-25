@@ -69,7 +69,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Tambak",
     slug: "set-tambak",
     description: "Paket kolam tambak lengkap untuk budidaya ikan air tawar",
-    imageUrl: "/images/categories/set-tambak.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: null,
     sortOrder: 1,
     isActive: true,
@@ -78,7 +78,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Hidroponik",
     slug: "set-hidroponik",
     description: "Kit hidroponik NFT/DWC/Wick/Drip untuk pertanian modern",
-    imageUrl: "/images/categories/set-hidroponik.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: null,
     sortOrder: 2,
     isActive: true,
@@ -87,7 +87,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Aquaponik",
     slug: "set-aquaponik",
     description: "Sistem terpadu budidaya ikan dan tanaman",
-    imageUrl: "/images/categories/set-aquaponik.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: null,
     sortOrder: 3,
     isActive: true,
@@ -96,7 +96,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "IoT & Smart Farming",
     slug: "iot-smart-farming",
     description: "Sensor, monitor, dan kontroler otomatis untuk budidaya",
-    imageUrl: "/images/categories/iot-smart-farming.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: null,
     sortOrder: 4,
     isActive: true,
@@ -105,7 +105,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Benih",
     slug: "benih",
     description: "Benih sayuran, tanaman air, buah, dan media tanam",
-    imageUrl: "/images/categories/benih.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: null,
     sortOrder: 5,
     isActive: true,
@@ -114,7 +114,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Anakan Ikan",
     slug: "anakan-ikan",
     description: "Benih ikan lele, nila, gurami, patin, dan ikan hias",
-    imageUrl: "/images/categories/anakan-ikan.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: null,
     sortOrder: 6,
     isActive: true,
@@ -123,7 +123,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Tambak Lele",
     slug: "set-tambak-lele",
     description: "Set kolam dan paket budidaya lele sangkuriang",
-    imageUrl: "/images/categories/set-tambak-lele.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-tambak",
     sortOrder: 1,
     isActive: true,
@@ -132,7 +132,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Tambak Nila",
     slug: "set-tambak-nila",
     description: "Set kolam dan paket budidaya nila",
-    imageUrl: "/images/categories/set-tambak-nila.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-tambak",
     sortOrder: 2,
     isActive: true,
@@ -141,7 +141,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Tambak Gurami",
     slug: "set-tambak-gurami",
     description: "Set kolam dan paket budidaya gurami",
-    imageUrl: "/images/categories/set-tambak-gurami.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-tambak",
     sortOrder: 3,
     isActive: true,
@@ -150,7 +150,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Tambak Patin",
     slug: "set-tambak-patin",
     description: "Set kolam dan paket budidaya patin",
-    imageUrl: "/images/categories/set-tambak-patin.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-tambak",
     sortOrder: 4,
     isActive: true,
@@ -159,7 +159,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Tambak Udang",
     slug: "set-tambak-udang",
     description: "Set kolam dan paket budidaya udang vaname",
-    imageUrl: "/images/categories/set-tambak-udang.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-tambak",
     sortOrder: 5,
     isActive: true,
@@ -168,7 +168,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Sistem NFT",
     slug: "set-hidroponik-nft",
     description: "Sistem Nutrient Film Technique (NFT) siap pakai",
-    imageUrl: "/images/categories/set-hidroponik-nft.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-hidroponik",
     sortOrder: 1,
     isActive: true,
@@ -177,7 +177,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Sistem DWC",
     slug: "set-hidroponik-dwc",
     description: "Sistem Deep Water Culture (DWC) untuk sayuran daun",
-    imageUrl: "/images/categories/set-hidroponik-dwc.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-hidroponik",
     sortOrder: 2,
     isActive: true,
@@ -186,7 +186,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Sistem Wick",
     slug: "set-hidroponik-wick",
     description: "Sistem wick (sumbu) tanpa listrik, cocok pemula",
-    imageUrl: "/images/categories/set-hidroponik-wick.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-hidroponik",
     sortOrder: 3,
     isActive: true,
@@ -195,7 +195,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Sistem Drip",
     slug: "set-hidroponik-drip",
     description: "Sistem drip irigasi tetes hemat nutrisi",
-    imageUrl: "/images/categories/set-hidroponik-drip.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-hidroponik",
     sortOrder: 4,
     isActive: true,
@@ -204,7 +204,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Hidroponik Indoor",
     slug: "set-hidroponik-indoor",
     description: "Set hidroponik indoor dengan lampu grow LED",
-    imageUrl: "/images/categories/set-hidroponik-indoor.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-hidroponik",
     sortOrder: 5,
     isActive: true,
@@ -213,7 +213,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Aquaponik Mini",
     slug: "set-aquaponik-mini",
     description: "Aquaponik rumahan skala mini",
-    imageUrl: "/images/categories/set-aquaponik-mini.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-aquaponik",
     sortOrder: 1,
     isActive: true,
@@ -222,7 +222,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Aquaponik Medium",
     slug: "set-aquaponik-medium",
     description: "Aquaponik skala rumah besar, sekolah, komunitas",
-    imageUrl: "/images/categories/set-aquaponik-medium.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-aquaponik",
     sortOrder: 2,
     isActive: true,
@@ -231,7 +231,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Set Aquaponik Komersial",
     slug: "set-aquaponik-komersial",
     description: "Aquaponik skala bisnis dengan instalasi dan training",
-    imageUrl: "/images/categories/set-aquaponik-komersial.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "set-aquaponik",
     sortOrder: 3,
     isActive: true,
@@ -240,7 +240,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Sensor & Monitor",
     slug: "iot-sensor-monitor",
     description: "Sensor pH, DO, suhu, dan TDS untuk monitoring kualitas air",
-    imageUrl: "/images/categories/iot-sensor-monitor.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "iot-smart-farming",
     sortOrder: 1,
     isActive: true,
@@ -249,7 +249,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Auto Feeder",
     slug: "iot-auto-feeder",
     description: "Pemberi pakan otomatis terjadwal",
-    imageUrl: "/images/categories/iot-auto-feeder.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "iot-smart-farming",
     sortOrder: 2,
     isActive: true,
@@ -258,7 +258,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Smart Controller",
     slug: "iot-smart-controller",
     description: "Kontroler pintar berbasis ESP32",
-    imageUrl: "/images/categories/iot-smart-controller.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "iot-smart-farming",
     sortOrder: 3,
     isActive: true,
@@ -267,7 +267,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Paket Lengkap IoT",
     slug: "iot-paket-lengkap",
     description: "Paket IoT lengkap siap pakai dengan training",
-    imageUrl: "/images/categories/iot-paket-lengkap.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "iot-smart-farming",
     sortOrder: 4,
     isActive: true,
@@ -276,7 +276,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Benih Sayuran Hidroponik",
     slug: "benih-sayuran-hidroponik",
     description: "Benih sayuran untuk hidroponik dan tanam langsung",
-    imageUrl: "/images/categories/benih-sayuran-hidroponik.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "benih",
     sortOrder: 1,
     isActive: true,
@@ -285,7 +285,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Benih Tanaman Air",
     slug: "benih-tanaman-air",
     description: "Benih dan stek tanaman air untuk kolam",
-    imageUrl: "/images/categories/benih-tanaman-air.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "benih",
     sortOrder: 2,
     isActive: true,
@@ -294,7 +294,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Benih Buah",
     slug: "benih-buah",
     description: "Benih tanaman buah untuk kebun dan polibag",
-    imageUrl: "/images/categories/benih-buah.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "benih",
     sortOrder: 3,
     isActive: true,
@@ -303,7 +303,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Media Tanam",
     slug: "benih-media-tanam",
     description: "Rockwool, nutrisi AB Mix, dan media tanam lain",
-    imageUrl: "/images/categories/benih-media-tanam.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "benih",
     sortOrder: 4,
     isActive: true,
@@ -312,7 +312,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Anakan Lele",
     slug: "anakan-ikan-lele",
     description: "Benih lele sangkuriang siap tebar",
-    imageUrl: "/images/categories/anakan-ikan-lele.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "anakan-ikan",
     sortOrder: 1,
     isActive: true,
@@ -321,7 +321,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Anakan Nila",
     slug: "anakan-ikan-nila",
     description: "Benih nila merah dan nila hitam (gift)",
-    imageUrl: "/images/categories/anakan-ikan-nila.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "anakan-ikan",
     sortOrder: 2,
     isActive: true,
@@ -330,7 +330,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Anakan Gurami",
     slug: "anakan-ikan-gurami",
     description: "Benih gurami siap tebar",
-    imageUrl: "/images/categories/anakan-ikan-gurami.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "anakan-ikan",
     sortOrder: 3,
     isActive: true,
@@ -339,7 +339,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Anakan Patin",
     slug: "anakan-ikan-patin",
     description: "Benih patin siap tebar",
-    imageUrl: "/images/categories/anakan-ikan-patin.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "anakan-ikan",
     sortOrder: 4,
     isActive: true,
@@ -348,7 +348,7 @@ export const CATALOG_CATEGORIES: SeedCategory[] =
     name: "Anakan Ikan Hias",
     slug: "anakan-ikan-hias",
     description: "Benih ikan hias koi dan mas koki",
-    imageUrl: "/images/categories/anakan-ikan-hias.jpg",
+    imageUrl: "/placeholder-product.png",
     parentSlug: "anakan-ikan",
     sortOrder: 5,
     isActive: true,
@@ -377,9 +377,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Tambak Lele Starter - JagoFarm",
     metaDesc: "Paket lengkap budidaya lele untuk pemula, tanpa ribet cari komponen.",
     images: [
-      { url: "/images/products/set-tambak-lele-starter-1.jpg", altText: "Set Tambak Lele Starter - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-tambak-lele-starter-2.jpg", altText: "Set Tambak Lele Starter - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-tambak-lele-starter-3.jpg", altText: "Set Tambak Lele Starter - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Lele Starter - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Tambak Lele Starter - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Lele Starter - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Basic", sku: "JF-TMB-LELE-001-BAS", priceModifier: -150000, stock: 15, attributes: { paket: "Basic", ukuranKolam: "2x2m", kapasitas: "50 ekor", aerator: "2 lubang" } },
@@ -403,9 +403,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Tambak Nila Premium - JagoFarm",
     metaDesc: "Paket premium budidaya nila skala rumah tangga serius.",
     images: [
-      { url: "/images/products/set-tambak-nila-premium-1.jpg", altText: "Set Tambak Nila Premium - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-tambak-nila-premium-2.jpg", altText: "Set Tambak Nila Premium - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-tambak-nila-premium-3.jpg", altText: "Set Tambak Nila Premium - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Nila Premium - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Tambak Nila Premium - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Nila Premium - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Standard", sku: "JF-TMB-NILA-001-STD", priceModifier: 0, stock: 15, attributes: { paket: "Standard", ukuranKolam: "2x3m", kapasitas: "200 ekor" } },
@@ -428,9 +428,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Tambak Udang Vaname - JagoFarm",
     metaDesc: "Paket budidaya udang vaname dengan aerasi dan biofilter lengkap.",
     images: [
-      { url: "/images/products/set-tambak-udang-vaname-1.jpg", altText: "Set Tambak Udang Vaname - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-tambak-udang-vaname-2.jpg", altText: "Set Tambak Udang Vaname - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-tambak-udang-vaname-3.jpg", altText: "Set Tambak Udang Vaname - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Udang Vaname - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Tambak Udang Vaname - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Udang Vaname - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Komersial", sku: "JF-TMB-UDANG-001-KOM", priceModifier: 0, stock: 8, attributes: { paket: "Komersial", ukuranKolam: "4x4m", kapasitas: "5.000 ekor", blok: "1 petak" } },
@@ -453,8 +453,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Tambak Gurami - JagoFarm",
     metaDesc: "Set budidaya gurami dengan pelet apung dan aerasi memadai.",
     images: [
-      { url: "/images/products/set-tambak-gurami-1.jpg", altText: "Set Tambak Gurami - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-tambak-gurami-2.jpg", altText: "Set Tambak Gurami - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Gurami - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Tambak Gurami - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
       { name: "Paket Standard", sku: "JF-TMB-GURAMI-001-STD", priceModifier: 0, stock: 12, attributes: { paket: "Standard", ukuranKolam: "3x3m", kapasitas: "100 ekor" } },
@@ -477,8 +477,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Tambak Patin - JagoFarm",
     metaDesc: "Paket budidaya patin dengan pakan dan aerasi siap jalan.",
     images: [
-      { url: "/images/products/set-tambak-patin-1.jpg", altText: "Set Tambak Patin - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-tambak-patin-2.jpg", altText: "Set Tambak Patin - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Tambak Patin - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Tambak Patin - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
       { name: "Paket Standard", sku: "JF-TMB-PATIN-001-STD", priceModifier: 0, stock: 12, attributes: { paket: "Standard", ukuranKolam: "3x3m", kapasitas: "150 ekor" } },
@@ -502,9 +502,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Hidroponik NFT 6 Lubang - JagoFarm",
     metaDesc: "Sistem NFT siap pakai untuk pemula, panen mulai 3 minggu.",
     images: [
-      { url: "/images/products/set-hidroponik-nft-6-lubang-1.jpg", altText: "Set Hidroponik NFT 6 Lubang - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-hidroponik-nft-6-lubang-2.jpg", altText: "Set Hidroponik NFT 6 Lubang - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-hidroponik-nft-6-lubang-3.jpg", altText: "Set Hidroponik NFT 6 Lubang - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik NFT 6 Lubang - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik NFT 6 Lubang - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik NFT 6 Lubang - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket 6 Lubang", sku: "JF-HDR-NFT-001-P6", priceModifier: 0, stock: 30, attributes: { jumlahLubang: 6, tingkat: 1, rockwool: "1 slab" } },
@@ -527,8 +527,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Hidroponik DWC 12 Lubang - JagoFarm",
     metaDesc: "Sistem DWC 12 lubang, paling mudah dirawat untuk sayuran daun.",
     images: [
-      { url: "/images/products/set-hidroponik-dwc-12-lubang-1.jpg", altText: "Set Hidroponik DWC 12 Lubang - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-hidroponik-dwc-12-lubang-2.jpg", altText: "Set Hidroponik DWC 12 Lubang - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik DWC 12 Lubang - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik DWC 12 Lubang - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
       { name: "Paket 12 Lubang", sku: "JF-HDR-DWC-001-P12", priceModifier: 0, stock: 30, attributes: { jumlahLubang: 12, kapasitasAir: "40 liter" } },
@@ -551,9 +551,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Hidroponik Indoor LED - JagoFarm",
     metaDesc: "Hidroponik indoor dengan lampu grow LED, cocok apartemen.",
     images: [
-      { url: "/images/products/set-hidroponik-indoor-mini-1.jpg", altText: "Set Hidroponik Indoor LED - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-hidroponik-indoor-mini-2.jpg", altText: "Set Hidroponik Indoor LED - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-hidroponik-indoor-mini-3.jpg", altText: "Set Hidroponik Indoor LED - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Indoor LED - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Indoor LED - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Indoor LED - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Rak 2 Tingkat", sku: "JF-HDR-INDOOR-001-R2", priceModifier: -300000, stock: 10, attributes: { tingkat: 2, jumlahLubang: 12, led: "60 watt" } },
@@ -576,8 +576,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Hidroponik Wick System - JagoFarm",
     metaDesc: "Sistem wick tanpa listrik, paling ramah untuk pemula absolut.",
     images: [
-      { url: "/images/products/set-hidroponik-wick-1.jpg", altText: "Set Hidroponik Wick System - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-hidroponik-wick-2.jpg", altText: "Set Hidroponik Wick System - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Wick System - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Wick System - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
       { name: "Paket 6 Lubang", sku: "JF-HDR-WICK-001-P6", priceModifier: 0, stock: 60, attributes: { jumlahLubang: 6, sumbu: "kain flanel", listrik: "tidak perlu" } },
@@ -600,8 +600,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Hidroponik Drip 8 Lubang - JagoFarm",
     metaDesc: "Sistem drip tetes hemat nutrisi untuk buah dan cabai.",
     images: [
-      { url: "/images/products/set-hidroponik-drip-1.jpg", altText: "Set Hidroponik Drip 8 Lubang - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-hidroponik-drip-2.jpg", altText: "Set Hidroponik Drip 8 Lubang - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Drip 8 Lubang - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Hidroponik Drip 8 Lubang - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
       { name: "Paket 8 Lubang", sku: "JF-HDR-DRIP-001-P8", priceModifier: 0, stock: 25, attributes: { jumlahLubang: 8, debit: "2 liter/jam" } },
@@ -624,9 +624,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Aquaponik Mini (Rumahan) - JagoFarm",
     metaDesc: "Aquaponik rumahan: ikan dan sayur tumbuh dari satu sistem.",
     images: [
-      { url: "/images/products/set-aquaponik-mini-1.jpg", altText: "Set Aquaponik Mini (Rumahan) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-aquaponik-mini-2.jpg", altText: "Set Aquaponik Mini (Rumahan) - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-aquaponik-mini-3.jpg", altText: "Set Aquaponik Mini (Rumahan) - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Mini (Rumahan) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Mini (Rumahan) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Mini (Rumahan) - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Mini", sku: "JF-AQP-MINI-001-MIN", priceModifier: 0, stock: 15, attributes: { kapasitasBak: "60L", jumlahTanaman: 12, tingkatGrowBed: 2 } },
@@ -649,9 +649,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Aquaponik Medium - JagoFarm",
     metaDesc: "Aquaponik skala rumah besar, sekolah, dan komunitas.",
     images: [
-      { url: "/images/products/set-aquaponik-medium-1.jpg", altText: "Set Aquaponik Medium - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-aquaponik-medium-2.jpg", altText: "Set Aquaponik Medium - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-aquaponik-medium-3.jpg", altText: "Set Aquaponik Medium - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Medium - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Medium - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Medium - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Medium", sku: "JF-AQP-MED-001-MED", priceModifier: 0, stock: 8, attributes: { kapasitasBak: "200L", jumlahTanaman: 36, konsultasi: "2x" } },
@@ -674,10 +674,10 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Set Aquaponik Komersial - JagoFarm",
     metaDesc: "Aquaponik skala bisnis dengan instalasi, IoT, dan training onsite.",
     images: [
-      { url: "/images/products/set-aquaponik-komersial-1.jpg", altText: "Set Aquaponik Komersial - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/set-aquaponik-komersial-2.jpg", altText: "Set Aquaponik Komersial - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/set-aquaponik-komersial-3.jpg", altText: "Set Aquaponik Komersial - foto 3", sortOrder: 2, isPrimary: false },
-      { url: "/images/products/set-aquaponik-komersial-4.jpg", altText: "Set Aquaponik Komersial - foto 4", sortOrder: 3, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Komersial - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Komersial - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Komersial - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Set Aquaponik Komersial - foto 4", sortOrder: 3, isPrimary: false },
     ],
     variants: [
       { name: "Paket Komersial", sku: "JF-AQP-KOM-001-KOM", priceModifier: 0, stock: 3, attributes: { kapasitasBak: "1000L", jumlahTanaman: 120, garansi: "1 tahun" } },
@@ -701,8 +701,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Sensor pH Meter Digital - JagoFarm",
     metaDesc: "Sensor pH digital waterproof, akurasi ±0.1 pH untuk kolam dan hidroponik.",
     images: [
-      { url: "/images/products/sensor-ph-meter-digital-1.jpg", altText: "Sensor pH Meter Digital - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/sensor-ph-meter-digital-2.jpg", altText: "Sensor pH Meter Digital - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Sensor pH Meter Digital - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Sensor pH Meter Digital - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -723,8 +723,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Sensor DO (Dissolved Oxygen) Digital - JagoFarm",
     metaDesc: "Ukur oksigen terlarut 0-20 mg/L, kunci budidaya tambak dan aquaponik.",
     images: [
-      { url: "/images/products/sensor-do-digital-1.jpg", altText: "Sensor DO (Dissolved Oxygen) Digital - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/sensor-do-digital-2.jpg", altText: "Sensor DO (Dissolved Oxygen) Digital - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Sensor DO (Dissolved Oxygen) Digital - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Sensor DO (Dissolved Oxygen) Digital - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -745,8 +745,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Sensor Suhu Air Digital - JagoFarm",
     metaDesc: "Sensor DS18B20 waterproof, range -55 sampai 125°C.",
     images: [
-      { url: "/images/products/sensor-suhu-air-digital-1.jpg", altText: "Sensor Suhu Air Digital - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/sensor-suhu-air-digital-2.jpg", altText: "Sensor Suhu Air Digital - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Sensor Suhu Air Digital - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Sensor Suhu Air Digital - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -767,9 +767,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Auto Feeder Pakan Otomatis - JagoFarm",
     metaDesc: "Beri pakan otomatis 1-4x sehari, hemat waktu dan pakan.",
     images: [
-      { url: "/images/products/auto-feeder-pakan-otomatis-1.jpg", altText: "Auto Feeder Pakan Otomatis - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/auto-feeder-pakan-otomatis-2.jpg", altText: "Auto Feeder Pakan Otomatis - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/auto-feeder-pakan-otomatis-3.jpg", altText: "Auto Feeder Pakan Otomatis - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Auto Feeder Pakan Otomatis - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Auto Feeder Pakan Otomatis - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Auto Feeder Pakan Otomatis - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
     ],
@@ -790,9 +790,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Smart Controller ESP32 - JagoFarm",
     metaDesc: "Kontroler ESP32 dengan relay 4 channel dan dashboard real-time.",
     images: [
-      { url: "/images/products/smart-controller-esp32-1.jpg", altText: "Smart Controller ESP32 - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/smart-controller-esp32-2.jpg", altText: "Smart Controller ESP32 - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/smart-controller-esp32-3.jpg", altText: "Smart Controller ESP32 - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Smart Controller ESP32 - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Smart Controller ESP32 - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Smart Controller ESP32 - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
     ],
@@ -813,9 +813,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Paket IoT Kolam Lengkap - JagoFarm",
     metaDesc: "Smart controller, sensor pH/DO/suhu, auto feeder, plus training.",
     images: [
-      { url: "/images/products/paket-iot-kolam-lengkap-1.jpg", altText: "Paket IoT Kolam Lengkap - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/paket-iot-kolam-lengkap-2.jpg", altText: "Paket IoT Kolam Lengkap - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/paket-iot-kolam-lengkap-3.jpg", altText: "Paket IoT Kolam Lengkap - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Paket IoT Kolam Lengkap - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Paket IoT Kolam Lengkap - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Paket IoT Kolam Lengkap - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Standar", sku: "JF-IOT-KOLAM-001-PST", priceModifier: -300000, stock: 10, attributes: { jumlahSensor: 3, autoFeeder: "tidak termasuk", garansi: "1 tahun" } },
@@ -838,9 +838,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Paket IoT Hidroponik & Aquaponik - JagoFarm",
     metaDesc: "Otomasi pompa, LED, dan dosing nutrisi untuk hidroponik/aquaponik.",
     images: [
-      { url: "/images/products/paket-iot-hidroponik-aquaponik-1.jpg", altText: "Paket IoT Hidroponik & Aquaponik - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/paket-iot-hidroponik-aquaponik-2.jpg", altText: "Paket IoT Hidroponik & Aquaponik - foto 2", sortOrder: 1, isPrimary: false },
-      { url: "/images/products/paket-iot-hidroponik-aquaponik-3.jpg", altText: "Paket IoT Hidroponik & Aquaponik - foto 3", sortOrder: 2, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Paket IoT Hidroponik & Aquaponik - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Paket IoT Hidroponik & Aquaponik - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Paket IoT Hidroponik & Aquaponik - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
       { name: "Paket Hidroponik", sku: "JF-IOT-FULL-002-HID", priceModifier: 0, stock: 18, attributes: { sensor: "pH, TDS, suhu", kontrol: "pompa & LED" } },
@@ -863,8 +863,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Pakcoy Premium (100 biji) - JagoFarm",
     metaDesc: "Benih pakcoy F1 daya tumbuh di atas 95%, panen 25 hari.",
     images: [
-      { url: "/images/products/benih-pakcoy-premium-1.jpg", altText: "Benih Pakcoy Premium (100 biji) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-pakcoy-premium-2.jpg", altText: "Benih Pakcoy Premium (100 biji) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Pakcoy Premium (100 biji) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Pakcoy Premium (100 biji) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -885,7 +885,7 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Selada Hijau (200 biji) - JagoFarm",
     metaDesc: "Selada hijau cepat panen dan tahan panas, favorit hidroponik.",
     images: [
-      { url: "/images/products/benih-selada-hijau-1.jpg", altText: "Benih Selada Hijau (200 biji) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Selada Hijau (200 biji) - foto 1", sortOrder: 0, isPrimary: true },
     ],
     variants: [
     ],
@@ -906,7 +906,7 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Kangkung (500 biji) - JagoFarm",
     metaDesc: "Kangkung darat paling mudah ditanam, panen 21 hari.",
     images: [
-      { url: "/images/products/benih-kangkung-1.jpg", altText: "Benih Kangkung (500 biji) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Kangkung (500 biji) - foto 1", sortOrder: 0, isPrimary: true },
     ],
     variants: [
     ],
@@ -927,7 +927,7 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Cabe Rawit (100 biji) - JagoFarm",
     metaDesc: "Cabe rawit produktif, cocok pot dan hidroponik drip.",
     images: [
-      { url: "/images/products/benih-cabe-rawit-1.jpg", altText: "Benih Cabe Rawit (100 biji) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Cabe Rawit (100 biji) - foto 1", sortOrder: 0, isPrimary: true },
     ],
     variants: [
     ],
@@ -948,7 +948,7 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Tomat Cherry (50 biji) - JagoFarm",
     metaDesc: "Tomat cherry manis, berbuah lebat sepanjang musim.",
     images: [
-      { url: "/images/products/benih-tomat-cherry-1.jpg", altText: "Benih Tomat Cherry (50 biji) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Tomat Cherry (50 biji) - foto 1", sortOrder: 0, isPrimary: true },
     ],
     variants: [
     ],
@@ -969,7 +969,7 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Eceng Gondok (10 Stek) - JagoFarm",
     metaDesc: "Eceng gondok untuk pakan ternak dan penjernih kolam.",
     images: [
-      { url: "/images/products/benih-eceng-gondok-1.jpg", altText: "Benih Eceng Gondok (10 Stek) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Eceng Gondok (10 Stek) - foto 1", sortOrder: 0, isPrimary: true },
     ],
     variants: [
     ],
@@ -990,8 +990,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Rockwool Slab 75 Hole - JagoFarm",
     metaDesc: "Rockwool slab 75 lubang, media semai favorit hidroponik.",
     images: [
-      { url: "/images/products/rockwool-slab-75-hole-1.jpg", altText: "Rockwool Slab 75 Hole - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/rockwool-slab-75-hole-2.jpg", altText: "Rockwool Slab 75 Hole - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Rockwool Slab 75 Hole - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Rockwool Slab 75 Hole - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1012,8 +1012,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "AB Mix Nutrisi Hidroponik A+B 1L - JagoFarm",
     metaDesc: "Nutrisi AB Mix lengkap untuk sayuran daun, 2 botol 500ml.",
     images: [
-      { url: "/images/products/ab-mix-nutrisi-ab-1l-1.jpg", altText: "AB Mix Nutrisi Hidroponik A+B 1L - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/ab-mix-nutrisi-ab-1l-2.jpg", altText: "AB Mix Nutrisi Hidroponik A+B 1L - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "AB Mix Nutrisi Hidroponik A+B 1L - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "AB Mix Nutrisi Hidroponik A+B 1L - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1034,8 +1034,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Lele Sangkuriang (100 ekor) - JagoFarm",
     metaDesc: "Benih lele 5-7cm, tahan penyakit, dikirim pakai oksigen.",
     images: [
-      { url: "/images/products/benih-lele-sangkuriang-1.jpg", altText: "Benih Lele Sangkuriang (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-lele-sangkuriang-2.jpg", altText: "Benih Lele Sangkuriang (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Lele Sangkuriang (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Lele Sangkuriang (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1056,8 +1056,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Nila Gift (100 ekor) - JagoFarm",
     metaDesc: "Benih nila gift 5-7cm, konversi pakan baik.",
     images: [
-      { url: "/images/products/benih-nila-gift-1.jpg", altText: "Benih Nila Gift (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-nila-gift-2.jpg", altText: "Benih Nila Gift (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Nila Gift (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Nila Gift (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1078,8 +1078,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Nila Merah (100 ekor) - JagoFarm",
     metaDesc: "Nila merah ukuran 5-7cm, harga bersaing untuk restock.",
     images: [
-      { url: "/images/products/benih-nila-merah-1.jpg", altText: "Benih Nila Merah (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-nila-merah-2.jpg", altText: "Benih Nila Merah (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Nila Merah (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Nila Merah (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1100,8 +1100,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Gurami (20 ekor) - JagoFarm",
     metaDesc: "Benih gurami 5-7cm, dipesan sesuai jadwal panen benih.",
     images: [
-      { url: "/images/products/benih-gurami-1.jpg", altText: "Benih Gurami (20 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-gurami-2.jpg", altText: "Benih Gurami (20 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Gurami (20 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Gurami (20 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1122,8 +1122,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Patin (100 ekor) - JagoFarm",
     metaDesc: "Benih patin 5-7cm, tumbuh cepat di kolam terpal.",
     images: [
-      { url: "/images/products/benih-patin-1.jpg", altText: "Benih Patin (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-patin-2.jpg", altText: "Benih Patin (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Patin (100 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Patin (100 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1144,8 +1144,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Ikan Koi (20 ekor) - JagoFarm",
     metaDesc: "Benih koi 5-8cm, pola campur untuk kolam hias.",
     images: [
-      { url: "/images/products/benih-koi-1.jpg", altText: "Benih Ikan Koi (20 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-koi-2.jpg", altText: "Benih Ikan Koi (20 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Ikan Koi (20 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Ikan Koi (20 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],
@@ -1166,8 +1166,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
     metaTitle: "Benih Ikan Mas Koki (5 ekor) - JagoFarm",
     metaDesc: "Mas koki 3-5cm untuk akuarium dan kolam hias.",
     images: [
-      { url: "/images/products/benih-mas-koki-1.jpg", altText: "Benih Ikan Mas Koki (5 ekor) - foto 1", sortOrder: 0, isPrimary: true },
-      { url: "/images/products/benih-mas-koki-2.jpg", altText: "Benih Ikan Mas Koki (5 ekor) - foto 2", sortOrder: 1, isPrimary: false },
+      { url: "/placeholder-product.png", altText: "Benih Ikan Mas Koki (5 ekor) - foto 1", sortOrder: 0, isPrimary: true },
+      { url: "/placeholder-product.png", altText: "Benih Ikan Mas Koki (5 ekor) - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
     ],

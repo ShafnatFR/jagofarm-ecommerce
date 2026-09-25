@@ -239,7 +239,7 @@ function ProductsContent() {
                   product={{
                   id: p.id, name: p.name, slug: p.slug,
                   price: p.basePrice, discountPrice: p.discountPrice,
-                  image: p.images?.[0]?.url || "/placeholder-product.jpg",
+                  image: p.images?.[0]?.url || "/placeholder-product.png",
                   category: p.category.name, isFeatured: p.isFeatured,
                   weightGram: p.weightGram,
                 }} />
