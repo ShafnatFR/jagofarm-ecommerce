@@ -234,6 +234,12 @@ model Order {
   paymentMethod    String?     @map("payment_method") @db.VarChar(50)
   midtransOrderId  String?     @map("midtrans_order_id")
   midtransToken    String?     @map("midtrans_token")
+  /// Payment gateway yang dipakai order ini (mis. "mayar", "midtrans").
+  paymentProvider  String?     @map("payment_provider") @db.VarChar(30)
+  /// Referensi transaksi di gateway (Mayar transaction id / Midtrans order id).
+  paymentRef       String?     @map("payment_ref") @db.VarChar(120)
+  /// URL halaman pembayaran hosted (Mayar invoice link / Midtrans redirect url).
+  paymentUrl       String?     @map("payment_url") @db.Text
   shippingCourier  String?     @map("shipping_courier") @db.VarChar(20)
   shippingService  String?     @map("shipping_service") @db.VarChar(50)
   shippingCost     Decimal     @default(0) @map("shipping_cost") @db.Decimal(12, 2)

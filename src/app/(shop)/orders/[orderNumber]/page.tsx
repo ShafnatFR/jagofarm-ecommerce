@@ -32,6 +32,7 @@ import {
   Copy,
   Star,
   ShoppingCart,
+  ExternalLink,
 } from "lucide-react";
 
 /** Snap.js global (loaded on demand through loadSnapScript). */
@@ -75,6 +76,12 @@ interface OrderDetail {
   status: string;
   paymentStatus: string;
   paymentMethod: string | null;
+  /** Gateway pembayaran order ini ("midtrans" / "mayar"). */
+  paymentProvider?: string | null;
+  /** Referensi transaksi di gateway. */
+  paymentRef?: string | null;
+  /** URL halaman pembayaran hosted (Mayar) bila ada. */
+  paymentUrl?: string | null;
   trackingNumber: string | null;
   shippingCourier: string | null;
   shippingService: string | null;
@@ -121,12 +128,19 @@ interface PaymentStatusResponse {
   paymentInfo?: PaymentInfo;
 }
 
-/** Respons POST /api/payments/create (Midtrans Snap). */
+/** Respons POST /api/payments/create (Midtrans Snap atau provider redirect). */
 interface PaymentCreateResponse {
+  provider?: string;
+  providerRef?: string;
+  paymentUrl?: string;
   token?: string;
   redirectUrl?: string;
   clientKey?: string;
   snapScriptUrl?: string;
+  isProduction?: boolean;
+  orderNumber?: string;
+  grossAmount?: number;
+  expiresAt?: string;
 }
 
 /** Respons PATCH /api/orders/[orderNumber] (aksi batal). */
@@ -195,6 +209,18 @@ function orderItemName(item: OrderItemDetail): string {
 const FALLBACK_SNAP_SCRIPT_URL =
   "https://app.sandbox.midtrans.com/snap/snap.js";
 
+/** Label provider pembayaran untuk ditampilkan ke pengguna. */
+const PAYMENT_PROVIDER_LABELS: Record<string, string> = {
+  midtrans: "Midtrans",
+  mayar: "Mayar",
+};
+
+function providerLabel(id: string | null | undefined): string {
+  const raw = (id ?? "").trim();
+  if (!raw) return "-";
+  return PAYMENT_PROVIDER_LABELS[raw.toLowerCase()] ?? raw;
+}
+
 /** Load Snap.js once, with the client key attached as data-client-key. */
 function loadSnapScript(scriptUrl: string, clientKey: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -257,6 +283,10 @@ export default function OrderDetailPage() {
   const [canceling, setCanceling] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
   const [autoCheck, setAutoCheck] = useState(false);
+  /** URL halaman pembayaran provider redirect-based (Mayar). */
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  /** Provider dari respons create terakhir (dipakai bila order belum menyimpannya). */
+  const [createdProvider, setCreatedProvider] = useState<string | null>(null);
   /** Item yang sedang diulas lewat dialog ReviewForm. */
   const [reviewTarget, setReviewTarget] = useState<OrderItemDetail | null>(null);
   /** productId yang sudah diulas dari halaman ini (tidak bisa submit dua kali). */
@@ -437,21 +467,38 @@ export default function OrderDetailPage() {
 
       const token = data?.token as string | undefined;
       const redirectUrl = data?.redirectUrl as string | undefined;
+      const createdPaymentUrl = data?.paymentUrl as string | undefined;
       const clientKey =
         (process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY as string | undefined) ||
         (data?.clientKey as string | undefined);
       const snapScriptUrl =
         (data?.snapScriptUrl as string | undefined) || FALLBACK_SNAP_SCRIPT_URL;
 
+      if (data?.provider) setCreatedProvider(data.provider);
+
       if (!token) {
-        if (redirectUrl) {
-          window.location.href = redirectUrl;
+        // Provider redirect-based (Mayar): tampilkan panel pembayaran dulu,
+        // jangan langsung melempar pengguna keluar halaman.
+        const paymentPageUrl = createdPaymentUrl ?? redirectUrl;
+        if (createdPaymentUrl) {
+          setPaymentUrl(createdPaymentUrl);
+          toast({
+            title: "Halaman pembayaran siap",
+            description: `Selesaikan pembayaran lewat halaman ${providerLabel(
+              data?.provider
+            )}, lalu klik Cek Status Pembayaran.`,
+          });
+          await fetchOrder();
+          return;
+        }
+        if (paymentPageUrl) {
+          window.location.href = paymentPageUrl;
           return;
         }
         toast({
           variant: "destructive",
           title: "Pembayaran tidak tersedia",
-          description: "Token pembayaran tidak diterima dari Midtrans.",
+          description: "Link pembayaran tidak diterima dari penyedia pembayaran.",
         });
         return;
       }
@@ -676,6 +723,15 @@ export default function OrderDetailPage() {
     order.items.length > 0;
   const trackingInfo = getTrackingInfo(order.shippingCourier);
 
+  const paymentProviderId = order.paymentProvider ?? createdProvider;
+  const activePaymentUrl = paymentUrl ?? order.paymentUrl ?? null;
+  /**
+   * Panel pembayaran hosted hanya untuk provider redirect-based (Mayar).
+   * Midtrans tetap memakai Snap.js lewat token, jadi tidak perlu panel ini.
+   */
+  const showPaymentPanel =
+    isPending && Boolean(activePaymentUrl) && paymentProviderId !== "midtrans";
+
   const vaNumbers = paymentInfo?.vaNumbers ?? [];
   const hasPaymentInfo = Boolean(
     vaNumbers.length > 0 ||
@@ -867,6 +923,66 @@ export default function OrderDetailPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* Panel pembayaran provider redirect-based (mis. Mayar) */}
+          {showPaymentPanel && activePaymentUrl && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Pembayaran Online</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Penyedia</span>
+                  <span className="font-medium">
+                    {providerLabel(paymentProviderId)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Metode</span>
+                  <span className="font-medium uppercase">
+                    {order.paymentMethod || "Pilih di halaman pembayaran"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status</span>
+                  <Badge
+                    variant={order.paymentStatus === "paid" ? "default" : "secondary"}
+                  >
+                    {order.paymentStatus}
+                  </Badge>
+                </div>
+                <a
+                  href={activePaymentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Buka Halaman Pembayaran
+                </a>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    window.location.href = activePaymentUrl;
+                  }}
+                >
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Lanjutkan ke Pembayaran
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={() => void refreshStatus(true)}
+                  disabled={refreshing}
+                >
+                  <RefreshCw
+                    className={`mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
+                  />
+                  Cek Status Pembayaran
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Summary */}
@@ -903,6 +1019,12 @@ export default function OrderDetailPage() {
               <CardTitle className="text-lg">Pembayaran</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Penyedia</span>
+                <span className="font-medium">
+                  {providerLabel(paymentProviderId)}
+                </span>
+              </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Metode</span>
                 <span>{order.paymentMethod || "-"}</span>
@@ -985,7 +1107,7 @@ export default function OrderDetailPage() {
               </Button>
             )}
 
-            {isPending && (
+            {isPending && !showPaymentPanel && (
               <Button
                 variant="secondary"
                 className="w-full"

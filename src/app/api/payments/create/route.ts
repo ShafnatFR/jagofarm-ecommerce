@@ -3,31 +3,34 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import {
-  createTransaction,
-  getMidtransClientConfig,
-  type MidtransItemDetail,
-} from "@/lib/midtrans";
+  PaymentProviderError,
+  providerForOrder,
+  type PaymentLineItem,
+} from "@/lib/payments";
 
 /**
  * POST /api/payments/create
  * Body: { orderNumber: string }
  *
- * Creates (or re-creates) a Snap transaction for the current user's pending,
- * unpaid order and stores the Snap token on the order.
+ * Membuat (atau membuat ulang) transaksi pembayaran untuk order pending milik
+ * user yang sedang login, memakai provider yang tercatat pada order
+ * (`order.paymentProvider`) atau provider aktif dari env.
+ *
+ * Kontrak respons:
+ *  - Midtrans  : { token, redirectUrl, clientKey, snapScriptUrl, isProduction,
+ *                  orderNumber, grossAmount }
+ *  - Mayar     : { provider, paymentUrl, redirectUrl, providerRef, orderNumber,
+ *                  grossAmount, expiresAt }
+ * Respons selalu memuat gabungan kedua bentuk (field yang tidak relevan
+ * dihilangkan), sehingga klien lama maupun baru tetap bekerja.
  */
 
 const createPaymentSchema = z.object({
   orderNumber: z.string().min(1, "orderNumber wajib diisi").max(60),
 });
 
-/** Midtrans limits: item/customer names max 50 / 20 chars. */
-const MAX_ITEM_NAME = 50;
-const MAX_CUSTOMER_NAME = 20;
-
-function truncate(value: string, max: number): string {
-  const clean = value.replace(/\s+/g, " ").trim();
-  return clean.length > max ? clean.slice(0, max) : clean;
-}
+/** Masa berlaku pembayaran (jam) — harus cocok dengan default Snap. */
+const PAYMENT_EXPIRY_HOURS = 24;
 
 /** Absolute origin of this app, honouring reverse-proxy headers. */
 function resolveOrigin(request: NextRequest): string {
@@ -42,6 +45,22 @@ function resolveOrigin(request: NextRequest): string {
   } catch {
     return "";
   }
+}
+
+/** Nilai `expiredAt` dari respons gateway bila ada (Mayar: epoch ms). */
+function resolveExpiresAt(raw: unknown, fallback: Date): string {
+  if (raw !== null && typeof raw === "object" && "expiredAt" in raw) {
+    const value = (raw as { expiredAt?: unknown }).expiredAt;
+    if (typeof value === "number" && Number.isFinite(value)) {
+      const date = new Date(value < 1e12 ? value * 1000 : value);
+      if (!Number.isNaN(date.getTime())) return date.toISOString();
+    }
+    if (typeof value === "string") {
+      const date = new Date(value);
+      if (!Number.isNaN(date.getTime())) return date.toISOString();
+    }
+  }
+  return fallback.toISOString();
 }
 
 export async function POST(request: NextRequest) {
@@ -95,7 +114,10 @@ export async function POST(request: NextRequest) {
 
     if (order.paymentStatus === "paid") {
       return NextResponse.json(
-        { error: "Pesanan ini sudah dibayar. Tidak perlu membuat pembayaran baru." },
+        {
+          error:
+            "Pesanan ini sudah dibayar. Tidak perlu membuat pembayaran baru.",
+        },
         { status: 409 }
       );
     }
@@ -116,112 +138,113 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const provider = providerForOrder(order);
+    if (!provider.isConfigured()) {
+      return NextResponse.json(
+        {
+          error: `Provider pembayaran ${provider.label} belum dikonfigurasi. Hubungi admin toko untuk mengaktifkan pembayaran.`,
+        },
+        { status: 503 }
+      );
+    }
+
     const totalInt = Math.round(Number(order.total));
 
-    // ── item_details must sum exactly to gross_amount ──
-    const itemDetails: MidtransItemDetail[] = order.items.map((item) => ({
-      id: item.productId.slice(0, MAX_ITEM_NAME),
-      name: truncate(
-        item.variant ? `${item.product.name} - ${item.variant.name}` : item.product.name,
-        MAX_ITEM_NAME
-      ),
-      price: Math.round(Number(item.price)),
+    // ── Baris item: produk + diskon (negatif) + ongkir + penyesuaian ──────
+    const items: PaymentLineItem[] = order.items.map((item) => ({
+      description: item.variant
+        ? `${item.product.name} - ${item.variant.name}`
+        : item.product.name,
       quantity: item.quantity,
+      rate: Math.round(Number(item.price)),
     }));
 
-    let itemsSum = itemDetails.reduce((acc, i) => acc + i.price * i.quantity, 0);
+    let itemsSum = items.reduce(
+      (acc, item) => acc + item.rate * item.quantity,
+      0
+    );
 
     const discountInt = Math.round(Number(order.discount));
     if (discountInt > 0) {
-      itemDetails.push({
-        id: "DISCOUNT",
-        name: "Diskon",
-        price: -discountInt,
-        quantity: 1,
-      });
+      items.push({ description: "Diskon", quantity: 1, rate: -discountInt });
       itemsSum -= discountInt;
     }
 
     const shippingInt = Math.round(Number(order.shippingCost));
     if (shippingInt > 0) {
-      itemDetails.push({
-        id: "SHIPPING",
-        name: "Ongkos Kirim",
-        price: shippingInt,
+      items.push({
+        description: "Ongkos Kirim",
         quantity: 1,
+        rate: shippingInt,
       });
       itemsSum += shippingInt;
     }
 
     const adjustment = totalInt - itemsSum;
     if (adjustment !== 0) {
-      itemDetails.push({
-        id: "ADJUSTMENT",
-        name: "Penyesuaian",
-        price: adjustment,
+      items.push({
+        description: "Penyesuaian",
         quantity: 1,
+        rate: adjustment,
       });
     }
 
     const address = order.shippingAddress;
-    const customerName = truncate(
-      address?.recipientName || order.user?.name || "Pelanggan",
-      MAX_CUSTOMER_NAME
+    const origin = resolveOrigin(request);
+    const redirectUrl = `${origin}/orders/${order.orderNumber}`;
+    const expiresAt = new Date(
+      Date.now() + PAYMENT_EXPIRY_HOURS * 60 * 60 * 1000
     );
 
-    const origin = resolveOrigin(request);
-    const orderUrl = `${origin}/orders/${order.orderNumber}`;
-
-    const snap = await createTransaction({
-      orderId: order.orderNumber,
-      grossAmount: totalInt,
-      itemDetails,
-      customerDetails: {
-        first_name: customerName,
+    const result = await provider.createPayment({
+      orderNumber: order.orderNumber,
+      amount: totalInt,
+      customer: {
+        name: address?.recipientName || order.user?.name || "Pelanggan",
         email: order.user?.email || session.user.email,
-        phone: address?.phone || undefined,
-        shipping_address: {
-          first_name: customerName,
-          phone: address?.phone || undefined,
-          address: address?.detail
-            ? truncate(address.detail, 200)
-            : undefined,
-          city: address?.city || undefined,
-          postal_code: address?.postalCode || undefined,
-          country_code: "IDN",
-        },
+        mobile: address?.phone || undefined,
       },
-      callbacks: {
-        finish: orderUrl,
-        unfinish: `${orderUrl}?payment=unfinish`,
-        error: `${orderUrl}?payment=error`,
-      },
+      items,
+      redirectUrl,
+      expiresAt,
+      // Hanya dipakai provider yang mendukung pembatasan channel (Mayar).
+      paymentMethodHint: order.paymentMethod ?? undefined,
     });
 
     await prisma.order.update({
       where: { id: order.id },
       data: {
-        midtransToken: snap.token,
-        midtransOrderId: order.orderNumber,
+        paymentProvider: result.provider,
+        paymentRef: result.providerRef,
+        paymentUrl: result.paymentUrl,
+        // Snap token tetap disimpan supaya alur Midtrans lama (dan kolom
+        // midtrans_order_id) tidak berubah.
+        ...(result.token ? { midtransToken: result.token } : {}),
+        ...(result.provider === "midtrans"
+          ? { midtransOrderId: order.orderNumber }
+          : {}),
       },
     });
 
-    const clientConfig = getMidtransClientConfig();
-
     return NextResponse.json({
-      token: snap.token,
-      redirectUrl: snap.redirect_url,
-      // Helpers so the browser can load Snap.js without extra env wiring.
-      clientKey: clientConfig.clientKey,
-      snapScriptUrl: clientConfig.snapUrl,
-      isProduction: clientConfig.isProduction,
+      provider: result.provider,
+      providerRef: result.providerRef,
+      paymentUrl: result.paymentUrl,
+      redirectUrl: result.paymentUrl,
+      token: result.token,
+      clientKey: result.clientKey,
+      snapScriptUrl: result.snapScriptUrl,
+      isProduction: result.isProduction,
       orderNumber: order.orderNumber,
       grossAmount: totalInt,
+      expiresAt: resolveExpiresAt(result.raw, expiresAt),
     });
   } catch (error) {
     console.error("Create payment error:", error);
-    const message =
-      error instanceof Error ? error.message : "Unknown error";
+    const message = error instanceof Error ? error.message : "Unknown error";
+    if (error instanceof PaymentProviderError && error.statusCode < 500) {
+      return NextResponse.json({ error: message }, { status: error.statusCode });
+    }
     return NextResponse.json(
       {
         error:

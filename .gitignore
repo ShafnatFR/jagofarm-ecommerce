@@ -32,6 +32,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# template env ikut di-commit supaya rekan tim tahu variabel yang dibutuhkan
+!.env.example
 
 # vercel
 .vercel

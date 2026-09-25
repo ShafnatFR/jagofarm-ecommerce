@@ -4,12 +4,9 @@ import { auth } from "@/lib/auth";
 import { sendEmailSafe } from "@/lib/email";
 import { paymentReceivedEmail, toEmailOrder } from "@/lib/email-templates";
 import { prisma } from "@/lib/prisma";
-import {
-  getTransactionStatus,
-  mapToOrderStatus,
-  shouldReleaseStock,
-  type MidtransTransactionStatus,
-} from "@/lib/midtrans";
+import { mapToOrderStatus, shouldReleaseStock } from "@/lib/midtrans";
+import { providerForOrder, type PaymentStatusResult } from "@/lib/payments";
+import { asMidtransStatus } from "@/lib/payments/midtrans";
 
 /**
  * GET /api/payments/status/[orderId]
@@ -17,9 +14,13 @@ import {
  * `orderId` accepts either the order number or the order UUID.
  * The signed-in user must own the order (admins/staff may check any order).
  *
- * Pulls the freshest transaction status from Midtrans, syncs the local order
- * (idempotent — only writes when something actually changed), and returns
- * `{ order, transaction, paymentInfo }`.
+ * Provider-agnostic: provider diambil dari `order.paymentProvider` (fallback ke
+ * provider aktif). Status diambil lewat `provider.fetchStatus()`, lalu order
+ * disinkronkan dengan logika lama (idempoten: hanya menulis bila berubah,
+ * mengembalikan stok saat cancelled/expired, email saat transisi nyata ke paid).
+ *
+ * Nama field respons TIDAK berubah — `{ order, transaction, paymentInfo,
+ * statusChanged, stockRestored }` — karena halaman order memakainya.
  */
 
 type OrderWithRelations = Prisma.OrderGetPayload<{
@@ -91,41 +92,86 @@ export async function GET(
       );
     }
 
-    if (!order.midtransToken && !order.midtransOrderId) {
+    const hasPaymentRef = Boolean(
+      order.paymentRef ||
+        order.midtransOrderId ||
+        order.midtransToken ||
+        order.paymentUrl
+    );
+
+    if (!hasPaymentRef) {
       return NextResponse.json(
         {
           error:
-            "Pesanan ini belum memiliki transaksi Midtrans. Klik \"Bayar Sekarang\" terlebih dahulu.",
+            'Pesanan ini belum memiliki transaksi pembayaran. Klik "Bayar Sekarang" terlebih dahulu.',
           order: serializeOrder(order),
         },
         { status: 400 }
       );
     }
 
-    let transaction: MidtransTransactionStatus;
+    const provider = providerForOrder(order);
+    const providerRef =
+      order.paymentRef ?? order.midtransOrderId ?? order.orderNumber;
+
+    let payment: PaymentStatusResult;
     try {
-      transaction = await getTransactionStatus(order.orderNumber);
+      payment = await provider.fetchStatus(providerRef);
     } catch (error) {
-      console.error("Midtrans status lookup failed:", error);
+      console.error(`${provider.label} status lookup failed:`, error);
       return NextResponse.json(
         {
-          error:
-            "Gagal mengambil status pembayaran dari Midtrans. Coba lagi beberapa saat lagi.",
+          error: `Gagal mengambil status pembayaran dari ${provider.label}. Coba lagi beberapa saat lagi.`,
           order: serializeOrder(order),
         },
         { status: 502 }
       );
     }
 
-    const { orderStatus, paymentStatus } = mapToOrderStatus(
-      transaction.transaction_status,
-      transaction.fraud_status
-    );
+    // Payload mentah Midtrans (bila ada) dipertahankan supaya semantik lama
+    // (mis. refund -> paymentStatus "refunded") tidak berubah.
+    const midtransRaw = asMidtransStatus(payment.raw);
+
+    let orderStatus: OrderStatus;
+    let paymentStatus: PaymentStatus;
+    let releaseStock: boolean;
+
+    if (midtransRaw) {
+      const mapped = mapToOrderStatus(
+        midtransRaw.transaction_status,
+        midtransRaw.fraud_status
+      );
+      orderStatus = mapped.orderStatus;
+      paymentStatus = mapped.paymentStatus;
+      releaseStock = shouldReleaseStock(midtransRaw.transaction_status);
+    } else {
+      switch (payment.status) {
+        case "paid":
+          orderStatus = "paid";
+          paymentStatus = "paid";
+          break;
+        case "expired":
+          orderStatus = "expired";
+          paymentStatus = "failed";
+          break;
+        case "cancelled":
+        case "failed":
+          orderStatus = "cancelled";
+          paymentStatus = "failed";
+          break;
+        default:
+          orderStatus = "pending";
+          paymentStatus = "unpaid";
+      }
+      // Stok hanya dikembalikan saat transaksi benar-benar batal/kedaluwarsa.
+      releaseStock =
+        payment.status === "expired" || payment.status === "cancelled";
+    }
 
     const hasChanged =
       order.status !== orderStatus || order.paymentStatus !== paymentStatus;
 
-    // Never downgrade an order that Midtrans already settled.
+    // Never downgrade an order that the gateway already settled.
     const wouldDowngrade =
       order.paymentStatus === "paid" && paymentStatus !== "paid";
 
@@ -146,8 +192,7 @@ export async function GET(
     if (hasChanged && !wouldDowngrade) {
       const alreadyTerminal =
         order.status === "cancelled" || order.status === "expired";
-      const releaseStock =
-        shouldReleaseStock(transaction.transaction_status) && !alreadyTerminal;
+      const restoreStock = releaseStock && !alreadyTerminal;
 
       const data: Prisma.OrderUpdateInput = {
         status: orderStatus,
@@ -155,15 +200,21 @@ export async function GET(
       };
 
       if (paymentStatus === "paid") {
-        if (!order.paidAt) data.paidAt = new Date();
-        if (!order.paymentMethod && transaction.payment_type) {
-          data.paymentMethod = transaction.payment_type;
+        if (!order.paidAt) {
+          const paidAt = payment.paidAt ?? new Date();
+          data.paidAt = Number.isNaN(paidAt.getTime()) ? new Date() : paidAt;
         }
+        const method = midtransRaw?.payment_type ?? payment.paymentMethod;
+        if (!order.paymentMethod && method) {
+          data.paymentMethod = method;
+        }
+        if (!order.paymentProvider) data.paymentProvider = provider.id;
+        if (!order.paymentRef) data.paymentRef = payment.providerRef;
       }
 
       try {
         const updated = await prisma.$transaction(async (tx) => {
-          if (releaseStock) {
+          if (restoreStock) {
             // Stock was reserved when the order was created (see POST /api/orders).
             for (const item of order.items) {
               if (item.variantId) {
@@ -193,7 +244,7 @@ export async function GET(
           paymentMethod: updated.paymentMethod,
           updatedAt: updated.updatedAt,
         };
-        stockRestored = releaseStock;
+        stockRestored = restoreStock;
       } catch (error) {
         console.error("Order status sync failed:", error);
         return NextResponse.json(
@@ -203,18 +254,41 @@ export async function GET(
       }
     }
 
-    const paymentInfo = {
-      paymentType: transaction.payment_type ?? null,
-      vaNumbers: transaction.va_numbers ?? [],
-      permataVaNumber: transaction.permata_va_number ?? null,
-      billKey: transaction.bill_key ?? null,
-      billerCode: transaction.biller_code ?? null,
-      store: transaction.store ?? null,
-      qrString: transaction.qr_string ?? null,
-      transactionTime: transaction.transaction_time ?? null,
-      settlementTime: transaction.settlement_time ?? null,
-      transactionId: transaction.transaction_id ?? null,
+    // ── Bentuk respons lama dipertahankan ──────────────────────────────────
+    const transaction = payment.raw ?? {
+      provider: payment.provider,
+      providerRef: payment.providerRef,
+      status: payment.status,
     };
+
+    const paymentInfo = midtransRaw
+      ? {
+          paymentType: midtransRaw.payment_type ?? null,
+          vaNumbers: midtransRaw.va_numbers ?? [],
+          permataVaNumber: midtransRaw.permata_va_number ?? null,
+          billKey: midtransRaw.bill_key ?? null,
+          billerCode: midtransRaw.biller_code ?? null,
+          store: midtransRaw.store ?? null,
+          qrString: midtransRaw.qr_string ?? null,
+          transactionTime: midtransRaw.transaction_time ?? null,
+          settlementTime: midtransRaw.settlement_time ?? null,
+          transactionId:
+            midtransRaw.transaction_id ?? payment.providerRef ?? null,
+        }
+      : {
+          // Gateway redirect-based (Mayar) tidak menyediakan VA/QR di status
+          // transaksi: cukup metode + referensi transaksi.
+          paymentType: payment.paymentMethod ?? null,
+          vaNumbers: [] as { bank: string; va_number: string }[],
+          permataVaNumber: null,
+          billKey: null,
+          billerCode: null,
+          store: null,
+          qrString: null,
+          transactionTime: null,
+          settlementTime: null,
+          transactionId: payment.providerRef ?? null,
+        };
 
     const finalOrder: OrderWithRelations = updatedScalars
       ? { ...order, ...updatedScalars }
