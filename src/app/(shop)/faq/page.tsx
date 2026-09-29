@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
 type FaqItem = { q: string; a: string };
@@ -33,63 +33,64 @@ const categories: Record<string, FaqItem[]> = {
 
 const categoryNames = Object.keys(categories);
 
-function AccordionItem({ item, isOpen, toggle }: { item: FaqItem; isOpen: boolean; toggle: () => void }) {
-  return (
-    <div className="border border-border rounded-xl overflow-hidden">
-      <button onClick={toggle} className="flex w-full items-center justify-between p-4 text-left hover:bg-secondary/50 transition-colors">
-        <span className="text-sm font-medium pr-4">{item.q}</span>
-        <ChevronDown className={cn("h-4 w-4 shrink-0 text-muted-foreground transition-transform", isOpen && "rotate-180")} />
-      </button>
-      {isOpen && (
-        <div className="px-4 pb-4 pt-0">
-          <p className="text-sm text-muted-foreground leading-relaxed">{item.a}</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function FaqPage() {
   const [activeCategory, setActiveCategory] = useState(categoryNames[0]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
-          <HelpCircle className="h-4 w-4" /> FAQ
+    <>
+      <section className="relative pt-16 pb-12 bg-gradient-to-b from-white to-[#FAFBFB]">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-sm font-semibold mb-6 shadow-sm">
+            <Icon name="help" size={16} className="text-emerald-600" />
+            <span>FAQ</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
+            Pusat Bantuan &amp; FAQ
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Temukan jawaban untuk pertanyaan umum tentang JagoFarm
+          </p>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight">Pertanyaan yang Sering Diajukan</h1>
-        <p className="mt-2 text-muted-foreground">Temukan jawaban untuk pertanyaan umum tentang JagoFarm</p>
-      </div>
+      </section>
 
-      <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
-        {categoryNames.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => { setActiveCategory(cat); setOpenIndex(null); }}
-            className={cn(
-              "rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
-              activeCategory === cat
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-muted-foreground hover:text-foreground"
-            )}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+      <section className="mx-auto max-w-4xl px-4 py-12">
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {categoryNames.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => { setActiveCategory(cat); setOpenIndex(null); }}
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
+                activeCategory === cat
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
-      <div className="mt-6 space-y-3">
-        {categories[activeCategory].map((item, i) => (
-          <AccordionItem
-            key={i}
-            item={item}
-            isOpen={openIndex === i}
-            toggle={() => setOpenIndex(openIndex === i ? null : i)}
-          />
-        ))}
-      </div>
-    </div>
+        <div className="mt-6 space-y-3">
+          {categories[activeCategory].map((item, i) => (
+            <div key={i} className="rounded-2xl border border-emerald-100 bg-white shadow-sm overflow-hidden">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-emerald-50/50 transition-colors"
+              >
+                <span className="font-semibold text-gray-900 pr-4">{item.q}</span>
+                <Icon name={openIndex === i ? "expand_less" : "expand_more"} size={20} className="text-emerald-600 shrink-0" />
+              </button>
+              {openIndex === i && (
+                <div className="px-6 pb-4">
+                  <p className="text-sm text-gray-600 leading-relaxed">{item.a}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
