@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [guardState, setGuardState] = useState<GuardState>("checking")
   const [admin, setAdmin] = useState<AdminIdentity | null>(null)
 
-  // Guard nyata: hanya admin/staff yang boleh melihat isi /admin/*.
+  // Guard nyata: hanya admin yang boleh melihat isi /admin/*.
   // Konten admin TIDAK dirender selama guardState === "checking" supaya
   // tidak ada flash konten sebelum verifikasi selesai.
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         const profile = ("user" in payload && payload.user ? payload.user : payload) as Record<string, unknown>
         const role = typeof profile?.role === "string" ? profile.role.toLowerCase() : ""
 
-        if (!profile?.id || (role !== "admin" && role !== "staff")) {
+        if (!profile?.id || role !== "admin") {
           setGuardState("denied")
           return
         }

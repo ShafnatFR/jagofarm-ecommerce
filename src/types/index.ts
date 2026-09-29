@@ -2,7 +2,7 @@ import type { Decimal } from "@prisma/client/runtime/library";
 
 // ── Enums (mirror Prisma) ─────────────────────────────
 
-export type Role = "customer" | "admin" | "staff";
+export type Role = "customer" | "admin";
 
 export type OrderStatus =
   | "pending"

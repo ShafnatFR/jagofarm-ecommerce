@@ -12,7 +12,7 @@ import { asMidtransStatus } from "@/lib/payments/midtrans";
  * GET /api/payments/status/[orderId]
  *
  * `orderId` accepts either the order number or the order UUID.
- * The signed-in user must own the order (admins/staff may check any order).
+ * The signed-in user must own the order (admins may check any order).
  *
  * Provider-agnostic: provider diambil dari `order.paymentProvider` (fallback ke
  * provider aktif). Status diambil lewat `provider.fetchStatus()`, lalu order
@@ -66,7 +66,7 @@ export async function GET(
 
     const { orderId } = await params;
     const isAdmin =
-      session.user.role === "admin" || session.user.role === "staff";
+      session.user.role === "admin";
 
     const order = await prisma.order.findFirst({
       where: {

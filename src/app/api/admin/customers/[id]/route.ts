@@ -13,7 +13,7 @@ const RECENT_ORDER_LIMIT = 10;
 async function guardAdmin() {
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
-  if (!session?.user?.id || (role !== "admin" && role !== "staff")) {
+  if (!session?.user?.id || role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   return null;

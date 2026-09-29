@@ -54,11 +54,11 @@ function isOrderStatus(value: string): value is AdminOrderStatus {
   return (ORDER_STATUSES as readonly string[]).includes(value);
 }
 
-/** Admin/staff guard. Mengembalikan respons 403 bila tidak berhak, null bila lolos. */
+/** Admin guard. Mengembalikan respons 403 bila tidak berhak, null bila lolos. */
 async function guardAdmin() {
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
-  if (!session?.user?.id || (role !== "admin" && role !== "staff")) {
+  if (!session?.user?.id || role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   return null;

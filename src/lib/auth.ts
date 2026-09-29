@@ -6,7 +6,7 @@ export type AuthUser = {
   email: string;
   name: string | null;
   image: string | null;
-  role: "customer" | "admin" | "staff";
+  role: "customer" | "admin";
 };
 
 /**
@@ -138,7 +138,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     email: dbUser.email,
     name: dbUser.name,
     image: dbUser.image,
-    role: dbUser.role as "customer" | "admin" | "staff",
+    role: dbUser.role as "customer" | "admin",
   };
 }
 
@@ -152,7 +152,7 @@ export async function requireAuth(): Promise<AuthUser> {
 }
 
 /**
- * Require admin/staff role or throw
+ * Require admin role or throw
  */
 export async function requireAdmin(): Promise<AuthUser> {
   const user = await requireAuth();
@@ -161,17 +161,17 @@ export async function requireAdmin(): Promise<AuthUser> {
 }
 
 /**
- * Explicit admin/staff guard: throws unless the current user is admin or staff.
+ * Explicit admin guard: throws unless the current user is admin.
  * Prefer this in new admin-only code paths.
  */
 export async function requireAdminUser(): Promise<AuthUser> {
   const user = await requireAuth();
-  if (user.role !== "admin" && user.role !== "staff") throw new Error("Forbidden");
+  if (user.role !== "admin") throw new Error("Forbidden");
   return user;
 }
 
 /**
- * Require admin role (staff excluded) or throw.
+ * Require admin role or throw.
  */
 export async function requireStrictAdmin(): Promise<AuthUser> {
   const user = await requireAuth();

@@ -1,10 +1,9 @@
 /**
- * Promote an existing user to admin (or staff).
+ * Promote an existing user to admin.
  *
  * Usage:
  *   npx tsx scripts/promote-admin.ts <email>
- *   npx tsx scripts/promote-admin.ts <email> --staff
- *   npm run admin:promote -- <email> [--staff]
+ *   npm run admin:promote -- <email>
  *
  * The account must already exist in the `users` table: Supabase Auth is the
  * source of truth for credentials, so create the account first (register at
@@ -33,9 +32,8 @@ async function loadEnvFile() {
 }
 
 function printUsage() {
-  console.log("Cara pakai: npx tsx scripts/promote-admin.ts <email> [--staff]");
+  console.log("Cara pakai: npx tsx scripts/promote-admin.ts <email>");
   console.log("  <email>   email user yang sudah ada di tabel users");
-  console.log("  --staff   set role menjadi 'staff' (default: 'admin')");
 }
 
 async function main() {
@@ -43,7 +41,6 @@ async function main() {
 
   const args = process.argv.slice(2).filter((arg) => arg !== "--");
   const email = args.find((arg) => !arg.startsWith("--"))?.trim().toLowerCase();
-  const role: "admin" | "staff" = args.includes("--staff") ? "staff" : "admin";
 
   if (!email) {
     printUsage();
@@ -73,7 +70,7 @@ async function main() {
 
   const updated = await prisma.user.update({
     where: { id: existing.id },
-    data: { role },
+    data: { role: "admin" },
     select: { id: true, email: true, name: true, role: true },
   });
 

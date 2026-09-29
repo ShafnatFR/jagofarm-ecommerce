@@ -41,7 +41,6 @@ export const DESIGN_TOKENS = {
 export const ROLES = {
   CUSTOMER: "customer",
   ADMIN: "admin",
-  STAFF: "staff",
 } as const;
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];

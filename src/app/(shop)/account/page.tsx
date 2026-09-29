@@ -68,7 +68,7 @@ export default async function AccountPage() {
             <h2 className="text-xl font-semibold">{dbUser.name || "Tanpa Nama"}</h2>
             <p className="text-sm text-muted-foreground">{dbUser.email}</p>
             <span className="inline-block mt-2 px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-              {dbUser.role === "admin" ? "Admin" : dbUser.role === "staff" ? "Staff" : "Pelanggan"}
+              {dbUser.role === "admin" ? "Admin" : "Pelanggan"}
             </span>
             <p className="mt-3 text-xs text-muted-foreground">
               Bergabung sejak {formatDate(dbUser.createdAt)}
