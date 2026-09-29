@@ -2,16 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import {
-  Search,
-  Eye,
-  AlertCircle,
-  MoreVertical,
-  Truck,
-  ChevronLeft,
-  ChevronRight,
-  FileText,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -269,7 +260,7 @@ export default function OrdersPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat pesanan: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
@@ -290,7 +281,7 @@ export default function OrdersPage() {
       <Card>
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input placeholder="Cari no. pesanan atau pelanggan..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -313,7 +304,7 @@ export default function OrdersPage() {
         <CardContent className="p-0">
           {orders.length === 0 ? (
             <div className="py-12 text-center text-gray-400">
-              <Search className="mx-auto h-10 w-10 text-gray-300" />
+              <Icon name="search" size={40} className="mx-auto text-gray-300" />
               <p className="mt-2">Tidak ada pesanan ditemukan</p>
             </div>
           ) : (
@@ -372,17 +363,17 @@ export default function OrdersPage() {
                               title="Input Resi"
                               onClick={() => openResiDialog(order)}
                             >
-                              <Truck className="mr-1 h-4 w-4" /> Resi
+                              <Icon name="local_shipping" size={16} className="mr-1" /> Resi
                             </Button>
                             <Link href={`/admin/orders/${order.id}`}>
                               <Button variant="ghost" size="sm" title="Detail">
-                                <Eye className="mr-1 h-4 w-4" /> Detail
+                                <Icon name="visibility" size={16} className="mr-1" /> Detail
                               </Button>
                             </Link>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon" title="Ubah status / aksi lain">
-                                  <MoreVertical className="h-4 w-4" />
+                                  <Icon name="more_vert" size={16} />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="w-52">
@@ -404,11 +395,11 @@ export default function OrdersPage() {
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
                                   <Link href={`/admin/orders/${order.id}`} className="cursor-pointer">
-                                    <FileText className="mr-2 h-4 w-4" /> Detail Pesanan
+                                    <Icon name="description" size={16} className="mr-2" /> Detail Pesanan
                                   </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => openResiDialog(order)}>
-                                  <Truck className="mr-2 h-4 w-4" /> Input Resi
+                                  <Icon name="local_shipping" size={16} className="mr-2" /> Input Resi
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -434,7 +425,7 @@ export default function OrdersPage() {
                   disabled={page <= 1 || loading}
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                 >
-                  <ChevronLeft className="mr-1 h-4 w-4" /> Sebelumnya
+                  <Icon name="chevron_left" size={16} className="mr-1" /> Sebelumnya
                 </Button>
                 <span className="text-xs text-gray-500">
                   Halaman {page} / {totalPages}
@@ -445,7 +436,7 @@ export default function OrdersPage() {
                   disabled={page >= totalPages || loading}
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 >
-                  Berikutnya <ChevronRight className="ml-1 h-4 w-4" />
+                  Berikutnya <Icon name="chevron_right" size={16} className="ml-1" />
                 </Button>
               </div>
             </div>

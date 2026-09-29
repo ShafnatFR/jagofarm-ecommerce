@@ -4,35 +4,19 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  Users,
-  Tag,
-  FolderTree,
-  ChevronLeft,
-  Menu,
-  LogOut,
-  Bell,
-  Search,
-  User,
-  ShieldAlert,
-  BarChart3,
-  Star,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 const sidebarLinks = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/products", label: "Produk", icon: Package },
-  { href: "/admin/orders", label: "Pesanan", icon: ShoppingCart },
-  { href: "/admin/categories", label: "Kategori", icon: FolderTree },
-  { href: "/admin/customers", label: "Pelanggan", icon: Users },
-  { href: "/admin/coupons", label: "Kupon", icon: Tag },
-  { href: "/admin/reviews", label: "Ulasan", icon: Star },
-  { href: "/admin/reports", label: "Laporan", icon: BarChart3 },
+  { href: "/admin", label: "Dashboard", icon: "dashboard" },
+  { href: "/admin/products", label: "Produk", icon: "inventory_2" },
+  { href: "/admin/orders", label: "Pesanan", icon: "shopping_cart" },
+  { href: "/admin/categories", label: "Kategori", icon: "account_tree" },
+  { href: "/admin/customers", label: "Pelanggan", icon: "people" },
+  { href: "/admin/coupons", label: "Kupon", icon: "label" },
+  { href: "/admin/reviews", label: "Ulasan", icon: "star" },
+  { href: "/admin/reports", label: "Laporan", icon: "bar_chart" },
 ]
 
 type GuardState = "checking" | "authorized" | "denied"
@@ -106,7 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="flex h-screen items-center justify-center bg-[#F8F7F4] p-6">
         <div className="w-full max-w-md rounded-xl border bg-white p-8 text-center shadow-sm">
-          <ShieldAlert className="mx-auto h-12 w-12 text-red-500" />
+          <Icon name="shield" size={48} className="mx-auto text-red-500" />
           <h1 className="mt-4 text-xl font-bold text-gray-900">Akses ditolak</h1>
           <p className="mt-2 text-sm text-gray-500">
             Halaman admin hanya dapat diakses oleh admin atau staf. Akun Anda tidak memiliki
@@ -179,7 +163,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   collapsed && "justify-center px-0"
                 )}
               >
-                <link.icon className="h-5 w-5 shrink-0" />
+                <Icon name={link.icon} size={20} />
                 {!collapsed && <span>{link.label}</span>}
               </Link>
             )
@@ -192,7 +176,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             onClick={() => setCollapsed(!collapsed)}
             className="flex w-full items-center justify-center rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
           >
-            <ChevronLeft className={cn("h-5 w-5 transition-transform", collapsed && "rotate-180")} />
+            <Icon name="chevron_left" size={20} />
           </button>
         </div>
       </aside>
@@ -203,10 +187,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm lg:px-6">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
-              <Menu className="h-5 w-5" />
+              <Icon name="menu" size={20} />
             </Button>
             <div className="hidden items-center gap-2 rounded-lg bg-gray-100 px-3 py-2 md:flex">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Icon name="search" size={16} className="text-gray-400" />
               <input
                 type="text"
                 placeholder="Cari..."
@@ -216,12 +200,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
           <div className="flex items-center gap-3">
             <button className="relative rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100">
-              <Bell className="h-5 w-5" />
+              <Icon name="notifications" size={20} />
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
             </button>
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1B4D3E] text-white">
-                <User className="h-4 w-4" />
+                <Icon name="person" size={16} />
               </div>
               <div className="hidden leading-tight md:block">
                 <p className="text-sm font-medium">{admin?.name || "Admin"}</p>
@@ -242,7 +226,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 router.replace("/login?next=%2Fadmin&callbackUrl=%2Fadmin")
               }}
             >
-              <LogOut className="h-4 w-4" />
+              <Icon name="logout" size={16} />
             </Button>
           </div>
         </header>

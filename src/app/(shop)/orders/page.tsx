@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Package, ChevronRight, Eye, AlertCircle, LogIn, CreditCard, ShoppingCart, Star } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice, formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -160,11 +160,11 @@ export default function OrdersPage() {
   if (unauthorized) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <LogIn className="mx-auto h-16 w-16 text-muted-foreground" />
+        <Icon name="login" size={64} className="mx-auto text-muted-foreground" />
         <h1 className="mt-4 text-2xl font-bold">Masuk Diperlukan</h1>
         <p className="mt-2 text-muted-foreground">Silakan masuk untuk melihat riwayat pesanan Anda.</p>
         <Link href="/login" className="mt-6 inline-block">
-          <Button size="lg">Masuk <LogIn className="ml-2 h-4 w-4" /></Button>
+          <Button size="lg">Masuk <Icon name="login" size={16} className="ml-2" /></Button>
         </Link>
       </div>
     );
@@ -173,7 +173,7 @@ export default function OrdersPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <AlertCircle className="mx-auto h-12 w-12 text-destructive" />
+        <Icon name="info" size={48} className="mx-auto text-destructive" />
         <h1 className="mt-4 text-2xl font-bold">Gagal Memuat Pesanan</h1>
         <p className="mt-2 text-muted-foreground">{error}</p>
       </div>
@@ -187,7 +187,7 @@ export default function OrdersPage() {
 
       {orders.length === 0 ? (
         <div className="py-20 text-center">
-          <Package className="mx-auto h-16 w-16 text-muted-foreground" />
+          <Icon name="inventory_2" size={64} className="mx-auto text-muted-foreground" />
           <h2 className="mt-4 text-lg font-semibold">Belum Ada Pesanan</h2>
           <p className="mt-1 text-muted-foreground">Mulai belanja untuk melihat pesanan di sini.</p>
           <Link href="/products" className="mt-4 inline-block">
@@ -223,7 +223,7 @@ export default function OrdersPage() {
                       {order.status === "pending" && order.paymentStatus !== "paid" && (
                         <Link href={`/orders/${order.orderNumber}`}>
                           <Button size="sm">
-                            <CreditCard className="mr-1 h-3.5 w-3.5" /> Bayar
+                            <Icon name="credit_card" size={12} className="mr-1" /> Bayar
                           </Button>
                         </Link>
                       )}
@@ -233,20 +233,20 @@ export default function OrdersPage() {
                           size="sm"
                           onClick={() => handleReorder(order)}
                         >
-                          <ShoppingCart className="mr-1 h-3.5 w-3.5" /> Beli Lagi
+                          <Icon name="shopping_cart" size={12} className="mr-1" /> Beli Lagi
                         </Button>
                       )}
                       {order.status === "delivered" && (
                         <Link href={`/orders/${order.orderNumber}`}>
                           <Button variant="secondary" size="sm">
-                            <Star className="mr-1 h-3.5 w-3.5" /> Tulis Ulasan
+                            <Icon name="star" size={12} className="mr-1" /> Tulis Ulasan
                           </Button>
                         </Link>
                       )}
                       <Link href={`/orders/${order.orderNumber}`}>
                         <Button variant="secondary" size="sm">
-                          <Eye className="mr-1 h-3.5 w-3.5" /> Detail
-                          <ChevronRight className="ml-1 h-3.5 w-3.5" />
+                          <Icon name="visibility" size={12} className="mr-1" /> Detail
+                          <Icon name="chevron_right" size={12} className="ml-1" />
                         </Button>
                       </Link>
                     </div>

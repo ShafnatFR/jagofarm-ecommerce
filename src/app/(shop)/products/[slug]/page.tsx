@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  Star, ShoppingCart, Minus, Plus, Truck,
-  Shield, ChevronRight, AlertCircle,
-} from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -106,7 +103,7 @@ export default function ProductDetailPage() {
   if (error || !product) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
-        <AlertCircle className="mx-auto h-12 w-12 text-destructive" />
+        <Icon name="info" size={48} className="mx-auto text-destructive" />
         <h1 className="mt-4 text-2xl font-bold">Produk Tidak Ditemukan</h1>
         <p className="mt-2 text-muted-foreground">{error ?? "Produk tidak tersedia."}</p>
         <Link href="/products" className="mt-6 inline-block"><Button>Kembali ke Produk</Button></Link>
@@ -141,13 +138,13 @@ export default function ProductDetailPage() {
       {/* Breadcrumb */}
       <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-primary">Beranda</Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <Icon name="chevron_right" size={12} />
         <Link href="/products" className="hover:text-primary">Produk</Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <Icon name="chevron_right" size={12} />
         <Link href={`/products?category=${product.category.slug}`} className="hover:text-primary">
           {product.category.name}
         </Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <Icon name="chevron_right" size={12} />
         <span className="text-foreground">{product.name}</span>
       </nav>
 
@@ -213,16 +210,16 @@ export default function ProductDetailPage() {
             <div className="flex items-center rounded-lg border border-input">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className="px-3 py-2 transition-colors hover:bg-secondary">
-                <Minus className="h-4 w-4" />
+                <Icon name="remove" size={16} />
               </button>
               <span className="min-w-[3rem] text-center text-sm font-medium">{quantity}</span>
               <button onClick={() => setQuantity(Math.min(product.stock ?? 99, quantity + 1))}
                 className="px-3 py-2 transition-colors hover:bg-secondary">
-                <Plus className="h-4 w-4" />
+                <Icon name="add" size={16} />
               </button>
             </div>
             <Button size="lg" className="flex-1 sm:flex-none" onClick={handleAddToCart}>
-              <ShoppingCart className="mr-2 h-4 w-4" />
+              <Icon name="shopping_cart" size={16} className="mr-2" />
               {addedToCart ? "Ditambahkan ✓" : "Tambah ke Keranjang"}
             </Button>
           </div>
@@ -235,11 +232,11 @@ export default function ProductDetailPage() {
 
           <div className="mt-6 space-y-2 rounded-xl bg-secondary/50 p-4">
             <div className="flex items-center gap-2 text-sm">
-              <Truck className="h-4 w-4 text-primary" />
+              <Icon name="local_shipping" size={16} className="text-primary" />
               <span>Gratis ongkir untuk pembelian di atas Rp 500.000</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <Shield className="h-4 w-4 text-primary" />
+              <Icon name="shield" size={16} className="text-primary" />
               <span>Garansi 7 hari untuk kerusakan pengiriman</span>
             </div>
           </div>
@@ -277,15 +274,7 @@ export default function ProductDetailPage() {
                 <div>
                   <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={cn(
-                          "h-3.5 w-3.5",
-                          i < Math.round(reviewSummary.averageRating)
-                            ? "fill-accent text-accent"
-                            : "text-muted"
-                        )}
-                      />
+                      <Icon name="star" size={12} />
                     ))}
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -332,8 +321,7 @@ export default function ProductDetailPage() {
                   </div>
                   <div className="mt-1 flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={cn("h-3 w-3",
-                        i < r.rating ? "fill-accent text-accent" : "text-muted")} />
+                      <Icon name="star" size={12} />
                     ))}
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>

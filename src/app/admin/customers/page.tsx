@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { Search, Mail, Phone, Eye, AlertCircle, MapPin, ShoppingCart, Loader2 } from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -158,7 +158,7 @@ export default function CustomersPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat pelanggan: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
@@ -176,7 +176,7 @@ export default function CustomersPage() {
       <Card>
         <CardContent className="p-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input placeholder="Cari nama, email, atau telepon..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
         </CardContent>
@@ -186,7 +186,7 @@ export default function CustomersPage() {
         <CardContent className="p-0">
           {customers.length === 0 ? (
             <div className="py-12 text-center text-gray-400">
-              <Search className="mx-auto h-10 w-10 text-gray-300" />
+              <Icon name="search" size={40} className="mx-auto text-gray-300" />
               <p className="mt-2">Tidak ada pelanggan ditemukan</p>
             </div>
           ) : (
@@ -216,8 +216,8 @@ export default function CustomersPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-col gap-0.5">
-                          <span className="flex items-center gap-1.5 text-gray-600"><Mail className="h-3 w-3" /> {customer.email}</span>
-                          <span className="flex items-center gap-1.5 text-gray-400"><Phone className="h-3 w-3" /> {customer.phone}</span>
+                          <span className="flex items-center gap-1.5 text-gray-600"><Icon name="mail" size={12} /> {customer.email}</span>
+                          <span className="flex items-center gap-1.5 text-gray-400"><Icon name="call" size={12} /> {customer.phone}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3 text-center"><Badge variant="secondary">{customer.ordersCount}</Badge></td>
@@ -231,7 +231,7 @@ export default function CustomersPage() {
                           title="Detail pelanggan"
                           onClick={() => openDetail(customer)}
                         >
-                          <Eye className="h-4 w-4" />
+                          <Icon name="visibility" size={16} />
                         </Button>
                       </td>
                     </tr>
@@ -251,11 +251,11 @@ export default function CustomersPage() {
 
           {detailLoading ? (
             <div className="flex h-40 items-center justify-center gap-2 text-sm text-gray-500">
-              <Loader2 className="h-4 w-4 animate-spin" /> Memuat detail pelanggan...
+              <Icon name="progress_activity" size={16} className="animate-spin" /> Memuat detail pelanggan...
             </div>
           ) : detailError || !detail ? (
             <div className="flex h-40 flex-col items-center justify-center gap-2 text-center">
-              <AlertCircle className="h-8 w-8 text-red-400" />
+              <Icon name="info" size={32} className="text-red-400" />
               <p className="text-sm text-gray-600">{detailError || "Detail pelanggan tidak tersedia."}</p>
             </div>
           ) : (
@@ -295,7 +295,7 @@ export default function CustomersPage() {
               {/* Alamat */}
               <div>
                 <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-900">
-                  <MapPin className="h-4 w-4 text-[#1B4D3E]" /> Daftar Alamat ({detail.addresses.length})
+                  <Icon name="location_on" size={16} className="text-[#1B4D3E]" /> Daftar Alamat ({detail.addresses.length})
                 </p>
                 {detail.addresses.length === 0 ? (
                   <p className="text-xs text-gray-400">Belum ada alamat tersimpan.</p>
@@ -323,7 +323,7 @@ export default function CustomersPage() {
               {/* Order terakhir */}
               <div>
                 <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-900">
-                  <ShoppingCart className="h-4 w-4 text-[#1B4D3E]" /> Order Terakhir
+                  <Icon name="shopping_cart" size={16} className="text-[#1B4D3E]" /> Order Terakhir
                 </p>
                 {detail.summary.recentOrders.length === 0 ? (
                   <p className="text-xs text-gray-400">Belum ada pesanan.</p>

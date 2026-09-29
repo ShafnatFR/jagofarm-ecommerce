@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { Plus, Search, MoreVertical, Edit, Trash2, Package, AlertCircle } from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -93,7 +93,7 @@ export default function ProductsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat produk: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
@@ -108,13 +108,13 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Produk</h1>
           <p className="text-sm text-gray-500">{products.length} produk terdaftar</p>
         </div>
-        <Link href="/admin/products/new"><Button><Plus className="mr-2 h-4 w-4" />Tambah Produk</Button></Link>
+        <Link href="/admin/products/new"><Button><Icon name="add" size={16} className="mr-2" />Tambah Produk</Button></Link>
       </div>
 
       <Card>
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input placeholder="Cari produk..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
           <Select value={category} onValueChange={setCategory}>
@@ -131,7 +131,7 @@ export default function ProductsPage() {
         <CardContent className="p-0">
           {products.length === 0 ? (
             <div className="py-12 text-center text-gray-400">
-              <Package className="mx-auto h-10 w-10 text-gray-300" />
+              <Icon name="inventory_2" size={40} className="mx-auto text-gray-300" />
               <p className="mt-2">Tidak ada produk ditemukan</p>
             </div>
           ) : (
@@ -153,7 +153,7 @@ export default function ProductsPage() {
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                            <div className="flex h-full w-full items-center justify-center text-gray-400"><Package className="h-5 w-5" /></div>
+                            <div className="flex h-full w-full items-center justify-center text-gray-400"><Icon name="inventory_2" size={20} /></div>
                           </div>
                           <div>
                             <p className="font-medium text-gray-900">{product.name}</p>
@@ -181,15 +181,15 @@ export default function ProductsPage() {
                       <td className="px-4 py-3 text-right">
                         <div className="relative inline-block">
                           <Button variant="ghost" size="icon" onClick={() => setActiveMenu(activeMenu === product.id ? null : product.id)}>
-                            <MoreVertical className="h-4 w-4" />
+                            <Icon name="more_vert" size={16} />
                           </Button>
                           {activeMenu === product.id && (
                             <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border bg-white py-1 shadow-lg">
                               <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50" onClick={() => setActiveMenu(null)}>
-                                <Edit className="h-4 w-4" /> Edit
+                                <Icon name="edit" size={16} /> "edit"
                               </Link>
                               <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50" onClick={() => { setActiveMenu(null); handleDelete(product.id, product.name) }}>
-                                <Trash2 className="h-4 w-4" /> Hapus
+                                <Icon name="delete" size={16} /> Hapus
                               </button>
                             </div>
                           )}

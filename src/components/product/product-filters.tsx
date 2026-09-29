@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -63,7 +63,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
 
   const filterContent = (
     <div className="space-y-6">
-      {/* Search */}
+      {/* "search" */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-foreground">Cari Produk</h3>
         <form
@@ -92,7 +92,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
               aria-label="Hapus pencarian"
               className="absolute right-9 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
-              <X className="h-3.5 w-3.5" />
+              <Icon name="close" size={12} />
             </button>
           )}
           <button
@@ -100,7 +100,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
             aria-label="Cari"
             className="absolute right-1 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
           >
-            <Search className="h-4 w-4" />
+            <Icon name="search" size={16} />
           </button>
         </form>
         {activeSearch && (
@@ -181,7 +181,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
           onClick={clearFilters}
           className="w-full"
         >
-          <X className="mr-1 h-3 w-3" />
+          <Icon name="close" size={12} className="mr-1" />
           Hapus Filter
         </Button>
       )}
@@ -198,7 +198,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
           onClick={() => setMobileOpen(true)}
           className="mb-4"
         >
-          <SlidersHorizontal className="mr-2 h-4 w-4" />
+          <Icon name="tune" size={16} className="mr-2" />
           Filter
         </Button>
 
@@ -213,7 +213,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold">Filter</h2>
                 <button onClick={() => setMobileOpen(false)}>
-                  <X className="h-5 w-5" />
+                  <Icon name="close" size={20} />
                 </button>
               </div>
               {filterContent}

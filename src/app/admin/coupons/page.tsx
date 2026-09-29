@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Plus, Edit, Trash2, Copy, AlertCircle } from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -131,7 +131,7 @@ export default function CouponsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat kupon: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
@@ -146,7 +146,7 @@ export default function CouponsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Kupon</h1>
           <p className="text-sm text-gray-500">{coupons.length} kupon terdaftar</p>
         </div>
-        <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" />Buat Kupon</Button>
+        <Button onClick={openCreate}><Icon name="add" size={16} className="mr-2" />Buat Kupon</Button>
       </div>
 
       <Card>
@@ -182,7 +182,7 @@ export default function CouponsPage() {
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <code className="rounded bg-[#1B4D3E]/5 px-2 py-0.5 font-mono text-sm font-bold text-[#1B4D3E]">{coupon.code}</code>
-                          <button onClick={() => handleCopy(coupon.code)} className="text-gray-400 hover:text-gray-600"><Copy className="h-3.5 w-3.5" /></button>
+                          <button onClick={() => handleCopy(coupon.code)} className="text-gray-400 hover:text-gray-600"><Icon name="content_copy" size={12} /></button>
                         </div>
                       </td>
                       <td className="px-4 py-3"><Badge variant="secondary">{coupon.type === "PERCENTAGE" ? "Persentase" : "Nominal"}</Badge></td>
@@ -198,8 +198,8 @@ export default function CouponsPage() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(coupon)}><Edit className="h-3.5 w-3.5" /></Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(coupon.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(coupon)}><Icon name="edit" size={12} /></Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(coupon.id)}><Icon name="delete" size={12} /></Button>
                         </div>
                       </td>
                     </tr>

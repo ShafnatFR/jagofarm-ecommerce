@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
-import { Star, ShoppingCart, Heart, Loader2 } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -169,14 +169,9 @@ export function ProductCard({
         )}
       >
         {pending ? (
-          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          <Icon name="progress_activity" size={16} className="animate-spin text-muted-foreground" />
         ) : (
-          <Heart
-            className={cn(
-              "h-4 w-4",
-              wishlisted ? "fill-destructive text-destructive" : "text-muted-foreground"
-            )}
-          />
+          <Icon name="favorite" size={16} />
         )}
       </button>
 
@@ -192,7 +187,7 @@ export function ProductCard({
         {/* Rating */}
         {product.rating != null && (
           <div className="mt-1.5 flex items-center gap-1">
-            <Star className="h-3.5 w-3.5 fill-accent text-accent" />
+            <Icon name="star" size={12} className="fill-accent text-accent" />
             <span className="text-xs font-medium">{product.rating.toFixed(1)}</span>
             {product.reviewCount != null && (
               <span className="text-xs text-muted-foreground">
@@ -221,7 +216,7 @@ export function ProductCard({
             onClick={handleAddToCart}
             aria-label="Tambah ke keranjang"
           >
-            <ShoppingCart className="h-4 w-4" />
+            <Icon name="shopping_cart" size={16} />
           </Button>
         </div>
       </div>

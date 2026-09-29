@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, X, Plus, Trash2 } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -150,13 +150,13 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/products"><Button variant="ghost" size="icon"><ArrowLeft className="h-5 w-5" /></Button></Link>
+          <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Edit Produk</h1>
             <p className="text-sm text-gray-500">Edit informasi produk #{id}</p>
           </div>
         </div>
-        <Button variant="destructive" size="sm" type="button"><Trash2 className="mr-2 h-4 w-4" />Hapus</Button>
+        <Button variant="destructive" size="sm" type="button"><Icon name="delete" size={16} className="mr-2" />Hapus</Button>
       </div>
 
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
@@ -237,14 +237,14 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                   <label className="mb-1.5 block text-sm font-medium">Tag</label>
                   <div className="flex gap-2">
                     <Input placeholder="Tambah tag..." value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())} />
-                    <Button type="button" variant="secondary" size="icon" onClick={addTag}><Plus className="h-4 w-4" /></Button>
+                    <Button type="button" variant="secondary" size="icon" onClick={addTag}><Icon name="add" size={16} /></Button>
                   </div>
                   {form.tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {form.tags.map((tag) => (
                         <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-[#1B4D3E]/10 px-2.5 py-0.5 text-xs font-medium text-[#1B4D3E]">
                           {tag}
-                          <button type="button" onClick={() => removeTag(tag)} className="hover:text-red-500"><X className="h-3 w-3" /></button>
+                          <button type="button" onClick={() => removeTag(tag)} className="hover:text-red-500"><Icon name="close" size={12} /></button>
                         </span>
                       ))}
                     </div>

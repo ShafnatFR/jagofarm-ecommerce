@@ -3,17 +3,7 @@
 import { use, useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import {
-  ArrowLeft,
-  AlertCircle,
-  Package,
-  Truck,
-  StickyNote,
-  Clock,
-  User as UserIcon,
-  MapPin,
-  RefreshCw,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -233,7 +223,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   if (error || !order) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
-        <AlertCircle className="h-10 w-10 text-red-400" />
+        <Icon name="info" size={40} className="text-red-400" />
         <p className="text-sm text-gray-600">{error || "Pesanan tidak ditemukan"}</p>
         <Link href="/admin/orders"><Button variant="secondary">Kembali ke daftar pesanan</Button></Link>
       </div>
@@ -260,7 +250,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <Link href="/admin/orders">
-            <Button variant="ghost" size="icon"><ArrowLeft className="h-5 w-5" /></Button>
+            <Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button>
           </Link>
           <div>
             <h1 className="font-mono text-2xl font-bold text-gray-900">{order.orderNumber}</h1>
@@ -271,7 +261,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           <Badge variant={status.variant}>{status.label}</Badge>
           <Badge variant={payment.variant}>{payment.label}</Badge>
           <Button variant="secondary" size="sm" onClick={fetchOrder} disabled={loading}>
-            <RefreshCw className="mr-1 h-4 w-4" /> Muat ulang
+            <Icon name="refresh" size={16} className="mr-1" /> Muat ulang
           </Button>
         </div>
       </div>
@@ -308,7 +298,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                                   />
                                 ) : (
                                   <div className="flex h-full w-full items-center justify-center text-gray-400">
-                                    <Package className="h-5 w-5" />
+                                    <Icon name="inventory_2" size={20} />
                                   </div>
                                 )}
                               </div>
@@ -352,7 +342,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Clock className="h-4 w-4 text-[#1B4D3E]" /> Riwayat Waktu
+                  <Icon name="schedule" size={16} className="text-[#1B4D3E]" /> Riwayat Waktu
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -381,7 +371,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <StickyNote className="h-4 w-4 text-[#1B4D3E]" /> Catatan Internal
+                  <Icon name="sticky_note_2" size={16} className="text-[#1B4D3E]" />Catatan Internal
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -432,7 +422,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
                 <div className="space-y-2 border-t pt-4">
                   <label className="flex items-center gap-2 text-sm font-medium">
-                    <Truck className="h-4 w-4" /> Input Resi
+                    <Icon name="local_shipping" size={16} /> Input Resi
                   </label>
                   <Input
                     placeholder="Nomor resi"
@@ -461,7 +451,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <UserIcon className="h-4 w-4 text-[#1B4D3E]" /> Pelanggan
+                  <Icon name="person" size={16} className="text-[#1B4D3E]" />Pelanggan
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-1 text-sm">
@@ -476,7 +466,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <MapPin className="h-4 w-4 text-[#1B4D3E]" /> Alamat Pengiriman
+                  <Icon name="location_on" size={16} className="text-[#1B4D3E]" /> Alamat Pengiriman
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-1 text-sm">

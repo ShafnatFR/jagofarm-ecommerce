@@ -1,16 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  AlertCircle,
-  CheckCircle2,
-  KeyRound,
-  Loader2,
-  Mail,
-  RefreshCw,
-  ShieldCheck,
-  User,
-} from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -296,14 +287,14 @@ export function ProfileForm() {
     return (
       <div className="rounded-lg border border-border bg-card p-6" role="alert">
         <div className="flex items-start gap-3">
-          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
+          <Icon name="info" size={20} className="mt-0.5 shrink-0 text-destructive" />
           <div className="space-y-3">
             <div>
               <p className="font-semibold">Gagal memuat data profil</p>
               <p className="text-sm text-muted-foreground">{loadError}</p>
             </div>
             <Button variant="secondary" size="sm" onClick={() => void loadProfile()}>
-              <RefreshCw className="mr-2 h-4 w-4" />
+              <Icon name="refresh" size={16} className="mr-2" />
               Coba Lagi
             </Button>
           </div>
@@ -315,7 +306,7 @@ export function ProfileForm() {
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <div className="mb-4 flex items-center gap-2">
-        <User className="h-5 w-5 text-primary" />
+        <Icon name="person" size={20} className="text-primary" />
         <h3 className="text-lg font-semibold">Pengaturan Akun</h3>
       </div>
 
@@ -339,7 +330,7 @@ export function ProfileForm() {
                 className="bg-muted"
               />
               <p className="mt-1 flex items-start gap-1.5 text-xs text-muted-foreground">
-                <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <Icon name="mail" size={12} className="mt-0.5 shrink-0" />
                 Email terikat pada akun login dan tidak dapat diubah dari halaman ini.
               </p>
             </div>
@@ -384,9 +375,9 @@ export function ProfileForm() {
                 }
               >
                 {profileMessage.variant === "success" ? (
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                  <Icon name="check_circle" size={16} className="mt-0.5 shrink-0" />
                 ) : (
-                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                  <Icon name="info" size={16} className="mt-0.5 shrink-0" />
                 )}
                 <span>{profileMessage.text}</span>
               </div>
@@ -395,7 +386,7 @@ export function ProfileForm() {
             <Button type="submit" disabled={savingProfile}>
               {savingProfile ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Icon name="progress_activity" size={16} className="mr-2 animate-spin" />
                   Menyimpan...
                 </>
               ) : (
@@ -409,7 +400,7 @@ export function ProfileForm() {
         <TabsContent value="keamanan">
           <form onSubmit={handlePasswordSubmit} className="space-y-4 pt-4" noValidate>
             <div className="flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <Icon name="shield" size={16} className="mt-0.5 shrink-0 text-primary" />
               <span>
                 Gunakan password minimal {MIN_PASSWORD_LENGTH} karakter. Password baru
                 langsung berlaku untuk login berikutnya.
@@ -451,9 +442,9 @@ export function ProfileForm() {
                 }
               >
                 {passwordMessage.variant === "success" ? (
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                  <Icon name="check_circle" size={16} className="mt-0.5 shrink-0" />
                 ) : (
-                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                  <Icon name="info" size={16} className="mt-0.5 shrink-0" />
                 )}
                 <span>{passwordMessage.text}</span>
               </div>
@@ -462,12 +453,12 @@ export function ProfileForm() {
             <Button type="submit" disabled={savingPassword}>
               {savingPassword ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Icon name="progress_activity" size={16} className="mr-2 animate-spin" />
                   Menyimpan...
                 </>
               ) : (
                 <>
-                  <KeyRound className="mr-2 h-4 w-4" />
+                  <Icon name="key" size={16} className="mr-2" />
                   Ganti Password
                 </>
               )}

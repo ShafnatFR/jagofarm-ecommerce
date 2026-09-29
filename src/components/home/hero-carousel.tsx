@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, Droplets, Leaf, Sprout } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +18,7 @@ export interface HeroSlide {
   secondaryCta?: { label: string; href: string };
   /** Utility class Tailwind untuk latar (gradasi hijau tua, tanpa gambar eksternal). */
   gradient: string;
-  Icon: React.ComponentType<{ className?: string }>;
+  Icon: string;
 }
 
 /** Interval autoplay (ms). */
@@ -37,7 +37,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     cta: { label: "Lihat Set Tambak", href: "/products?category=set-tambak" },
     secondaryCta: { label: "Konsultasi Gratis", href: "/contact" },
     gradient: "bg-gradient-to-br from-[#0F2E22] via-[#1B4D3E] to-[#2C6E52]",
-    Icon: Droplets,
+    Icon: "water_drop",
   },
   {
     id: "set-hidroponik",
@@ -49,7 +49,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     cta: { label: "Lihat Set Hidroponik", href: "/products?category=set-hidroponik" },
     secondaryCta: { label: "Panduan Pemula", href: "/how-to-order" },
     gradient: "bg-gradient-to-br from-[#123326] via-[#1B4D3E] to-[#3E7C5A]",
-    Icon: Sprout,
+    Icon: "grass",
   },
   {
     id: "konsultasi",
@@ -61,7 +61,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     cta: { label: "Mulai Konsultasi", href: "/contact" },
     secondaryCta: { label: "Lihat Semua Produk", href: "/products" },
     gradient: "bg-gradient-to-br from-[#1B4D3E] via-[#245E4B] to-[#0F2E22]",
-    Icon: Leaf,
+    Icon: "eco",
   },
 ];
 
@@ -169,7 +169,7 @@ export function HeroCarousel({
   if (total === 0) return null;
 
   const slide = slides[index];
-  const { Icon } = slide;
+  const slideIcon = slide.Icon;
 
   return (
     <section
@@ -212,7 +212,7 @@ export function HeroCarousel({
             <div className="grid items-center gap-8 lg:grid-cols-2">
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full bg-accent/20 px-4 py-1.5 text-sm font-medium text-accent">
-                  <Icon className="h-4 w-4" />
+                  <Icon name={slideIcon} size={16} />
                   {slide.eyebrow}
                 </span>
                 <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
@@ -231,7 +231,7 @@ export function HeroCarousel({
                   <Link href={slide.cta.href}>
                     <Button size="lg" variant="accent">
                       {slide.cta.label}
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <Icon name="arrow_forward" size={16} className="ml-2" />
                     </Button>
                   </Link>
                   {slide.secondaryCta && (
@@ -250,7 +250,7 @@ export function HeroCarousel({
 
               <div className="hidden lg:block">
                 <div className="relative flex h-80 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-                  <Icon className="h-24 w-24 text-white/20" />
+                  <Icon name={slideIcon} size={96} className="text-white/20" />
                 </div>
               </div>
             </div>
@@ -266,7 +266,7 @@ export function HeroCarousel({
             aria-label="Slide sebelumnya"
             className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/20 bg-black/20 p-2 text-white transition-colors hover:bg-black/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <Icon name="chevron_left" size={20} />
           </button>
           <button
             type="button"
@@ -274,7 +274,7 @@ export function HeroCarousel({
             aria-label="Slide berikutnya"
             className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/20 bg-black/20 p-2 text-white transition-colors hover:bg-black/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
-            <ChevronRight className="h-5 w-5" />
+            <Icon name="chevron_right" size={20} />
           </button>
 
           <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2">

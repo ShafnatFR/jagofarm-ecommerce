@@ -1,17 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import {
-  AlertCircle,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  EyeOff,
-  MessageSquare,
-  Search,
-  Star,
-  Trash2,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -62,14 +52,7 @@ function Stars({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5" title={`${rating} dari 5 bintang`}>
       {[1, 2, 3, 4, 5].map((n) => (
-        <Star
-          key={n}
-          className={
-            n <= rating
-              ? "h-3.5 w-3.5 fill-[#D4A843] text-[#D4A843]"
-              : "h-3.5 w-3.5 text-gray-300"
-          }
-        />
+        <Icon name="star" size={12} />
       ))}
       <span className="ml-1 text-xs text-gray-500">{rating}/5</span>
     </div>
@@ -218,7 +201,7 @@ export default function AdminReviewsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat ulasan: {error}</p>
           <button
             onClick={() => fetchData()}
@@ -263,7 +246,7 @@ export default function AdminReviewsPage() {
           </Tabs>
 
           <div className="relative w-full lg:max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input
               placeholder="Cari komentar atau produk..."
               value={searchInput}
@@ -278,7 +261,7 @@ export default function AdminReviewsPage() {
         <CardContent className="p-0">
           {reviews.length === 0 ? (
             <div className="py-16 text-center">
-              <MessageSquare className="mx-auto h-10 w-10 text-gray-300" />
+              <Icon name="forum" size={40} className="mx-auto text-gray-300" />
               <p className="mt-3 text-sm font-medium text-gray-500">
                 {search.trim()
                   ? "Tidak ada ulasan yang cocok dengan pencarian"
@@ -367,7 +350,7 @@ export default function AdminReviewsPage() {
                               disabled={busyId === review.id}
                               onClick={() => moderate(review, false)}
                             >
-                              <EyeOff className="mr-1 h-3.5 w-3.5" />
+                              <Icon name="visibility_off" size={12} className="mr-1" />
                               Sembunyikan
                             </Button>
                           ) : (
@@ -378,7 +361,7 @@ export default function AdminReviewsPage() {
                               disabled={busyId === review.id}
                               onClick={() => moderate(review, true)}
                             >
-                              <Check className="mr-1 h-3.5 w-3.5" />
+                              <Icon name="check" size={12} className="mr-1" />
                               Setujui
                             </Button>
                           )}
@@ -390,7 +373,7 @@ export default function AdminReviewsPage() {
                             disabled={busyId === review.id}
                             onClick={() => remove(review)}
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Icon name="delete" size={12} />
                           </Button>
                         </div>
                       </td>
@@ -415,7 +398,7 @@ export default function AdminReviewsPage() {
               disabled={page <= 1 || loading}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
             >
-              <ChevronLeft className="mr-1 h-4 w-4" /> Sebelumnya
+              <Icon name="chevron_left" size={16} className="mr-1" /> Sebelumnya
             </Button>
             <span className="text-sm text-gray-500">
               Halaman {pagination.page} / {pagination.totalPages}
@@ -426,7 +409,7 @@ export default function AdminReviewsPage() {
               disabled={page >= pagination.totalPages || loading}
               onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
             >
-              Berikutnya <ChevronRight className="ml-1 h-4 w-4" />
+              Berikutnya <Icon name="chevron_right" size={16} className="ml-1" />
             </Button>
           </div>
         </div>

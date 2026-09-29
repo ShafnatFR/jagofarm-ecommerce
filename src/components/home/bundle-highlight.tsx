@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, Leaf, ShoppingCart } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useCartStore } from "@/lib/cart-store";
@@ -133,7 +133,7 @@ export function BundleHighlight({ product, contents }: BundleHighlightProps) {
               />
             ) : (
               <div className="flex h-full min-h-[240px] items-center justify-center sm:min-h-[320px]">
-                <Leaf className="h-20 w-20 text-primary/20" />
+                <Icon name="eco" size={80} className="text-primary/20" />
               </div>
             )}
             <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
@@ -165,7 +165,7 @@ export function BundleHighlight({ product, contents }: BundleHighlightProps) {
               <ul className="mt-2 space-y-1.5">
                 {points.map((point) => (
                   <li key={point} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <Icon name="check" size={16} className="mt-0.5 shrink-0 text-primary" />
                     <span>{point}</span>
                   </li>
                 ))}
@@ -192,7 +192,7 @@ export function BundleHighlight({ product, contents }: BundleHighlightProps) {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <Button size="lg" onClick={handleBuyNow}>
-                <ShoppingCart className="mr-2 h-4 w-4" />
+                <Icon name="shopping_cart" size={16} className="mr-2" />
                 Beli Sekarang
               </Button>
               <Link href={`/products/${product.slug}`}>

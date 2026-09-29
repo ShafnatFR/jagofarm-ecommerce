@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { AlertCircle, Heart, Loader2, ShoppingCart, Trash2 } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductCard } from "@/components/product/product-card";
@@ -166,7 +166,7 @@ export default function WishlistPage() {
         </div>
       ) : unauthorized ? (
         <div className="mt-10 rounded-xl border border-border bg-card px-6 py-12 text-center">
-          <Heart className="mx-auto h-10 w-10 text-muted-foreground" />
+          <Icon name="favorite" size={40} className="mx-auto text-muted-foreground" />
           <h2 className="mt-4 text-lg font-semibold">Masuk untuk melihat wishlist</h2>
           <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
             Simpan produk favorit Anda dan temukan kembali dengan mudah setelah masuk
@@ -183,7 +183,7 @@ export default function WishlistPage() {
         </div>
       ) : error ? (
         <div className="mt-10 rounded-xl border border-border bg-card px-6 py-12 text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-destructive" />
+          <Icon name="info" size={40} className="mx-auto text-destructive" />
           <p className="mt-4 text-sm text-muted-foreground">{error}</p>
           <Button variant="secondary" size="sm" className="mt-5" onClick={() => void load()}>
             Coba Lagi
@@ -191,7 +191,7 @@ export default function WishlistPage() {
         </div>
       ) : entries.length === 0 ? (
         <div className="mt-10 rounded-xl border border-border bg-card px-6 py-12 text-center">
-          <Heart className="mx-auto h-10 w-10 text-muted-foreground" />
+          <Icon name="favorite" size={40} className="mx-auto text-muted-foreground" />
           <h2 className="mt-4 text-lg font-semibold">Wishlist kamu masih kosong</h2>
           <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
             Tekan ikon hati pada kartu produk untuk menyimpannya di sini.
@@ -236,7 +236,7 @@ export default function WishlistPage() {
                     className="w-full"
                     onClick={() => addToCart(entry)}
                   >
-                    <ShoppingCart className="mr-1.5 h-3.5 w-3.5" />
+                    <Icon name="shopping_cart" size={12} className="mr-1.5" />
                     Tambah ke Keranjang
                   </Button>
                   <Button
@@ -247,9 +247,9 @@ export default function WishlistPage() {
                     onClick={() => void removeFromWishlist(entry)}
                   >
                     {pendingId === entry.productId ? (
-                      <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                      <Icon name="progress_activity" size={12} className="mr-1.5 animate-spin" />
                     ) : (
-                      <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+                      <Icon name="delete" size={12} className="mr-1.5" />
                     )}
                     Hapus
                   </Button>

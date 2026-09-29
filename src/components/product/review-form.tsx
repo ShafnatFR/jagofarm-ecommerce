@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AlertCircle, CheckCircle2, Loader2, Star } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -141,14 +141,14 @@ export function ReviewForm({ productId, onSuccess, className }: ReviewFormProps)
 
       {success && (
         <div className="mt-4 flex items-start gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-800">
-          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+          <Icon name="check_circle" size={16} className="mt-0.5 shrink-0" />
           <span>Ulasan Anda sudah dikirim dan langsung tayang.</span>
         </div>
       )}
 
       {error && (
         <div className="mt-4 flex items-start gap-2 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <Icon name="info" size={16} className="mt-0.5 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -176,14 +176,7 @@ export function ReviewForm({ productId, onSuccess, className }: ReviewFormProps)
               onClick={() => setRating(value)}
               className="rounded p-0.5 disabled:cursor-not-allowed"
             >
-              <Star
-                className={cn(
-                  "h-6 w-6 transition-colors",
-                  value <= activeRating
-                    ? "fill-accent text-accent"
-                    : "text-muted-foreground"
-                )}
-              />
+              <Icon name="star" size={24} />
             </button>
           ))}
           <span className="ml-2 text-sm text-muted-foreground">
@@ -230,7 +223,7 @@ export function ReviewForm({ productId, onSuccess, className }: ReviewFormProps)
       <Button type="submit" className="mt-5 w-full" disabled={loading}>
         {loading ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Mengirim...
+            <Icon name="progress_activity" size={16} className="mr-2 animate-spin" /> Mengirim...
           </>
         ) : (
           "Kirim Ulasan"

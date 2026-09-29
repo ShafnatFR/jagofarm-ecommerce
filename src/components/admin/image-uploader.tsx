@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { AlertCircle, Image as ImageIcon, Loader2, Star, Upload, X } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -179,7 +179,7 @@ export function ImageUploader({
                     aria-label={`Jadikan gambar ${index + 1} sebagai gambar utama`}
                     className="rounded-full bg-white/90 p-1 text-[#1B4D3E] shadow hover:bg-white disabled:opacity-50"
                   >
-                    <Star className="h-3.5 w-3.5" />
+                    <Icon name="star" size={12} />
                   </button>
                 )}
                 <button
@@ -190,7 +190,7 @@ export function ImageUploader({
                   aria-label={`Hapus gambar ${index + 1}`}
                   className="rounded-full bg-white/90 p-1 text-red-500 shadow hover:bg-white disabled:opacity-50"
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <Icon name="close" size={12} />
                 </button>
               </div>
             </div>
@@ -204,9 +204,9 @@ export function ImageUploader({
               className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 transition-colors hover:border-[#1B4D3E]/40 hover:text-[#1B4D3E] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isBusy ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Icon name="progress_activity" size={20} className="animate-spin" />
               ) : (
-                <ImageIcon className="h-5 w-5" />
+                <Icon name="image" size={20} />
               )}
               <span className="text-[11px] font-medium">Tambah</span>
             </button>
@@ -245,12 +245,12 @@ export function ImageUploader({
         >
           {isBusy ? (
             <>
-              <Loader2 className="mb-2 h-7 w-7 animate-spin text-[#1B4D3E]" />
+              <Icon name="progress_activity" size={28} className="mb-2 animate-spin text-[#1B4D3E]" />
               <p className="text-sm text-gray-600">Mengunggah {uploading} gambar...</p>
             </>
           ) : (
             <>
-              <Upload className={cn("mb-2 h-7 w-7", dragging ? "text-[#1B4D3E]" : "text-gray-300")} />
+              <Icon name="upload" size={28} />
               <p className="text-sm text-gray-600">Seret &amp; lepas gambar di sini</p>
               <p className="text-xs text-gray-400">atau klik untuk memilih (maks. {max} gambar, 5 MB/gambar)</p>
               <Button variant="secondary" size="sm" className="mt-3" type="button" disabled={locked}>
@@ -277,7 +277,7 @@ export function ImageUploader({
         <ul className="space-y-1 rounded-lg bg-red-50 p-3">
           {errors.map((message, i) => (
             <li key={`${message}-${i}`} className="flex items-start gap-1.5 text-xs text-red-600">
-              <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <Icon name="info" size={12} className="mt-0.5 shrink-0" />
               <span>{message}</span>
             </li>
           ))}

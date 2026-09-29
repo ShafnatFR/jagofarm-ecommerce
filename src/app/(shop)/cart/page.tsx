@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Trash2, Minus, Plus, ShoppingBag, Tag, ArrowRight, Loader2, AlertCircle,
-} from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
@@ -123,11 +121,11 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
-        <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground" />
+        <Icon name="shopping_bag" size={64} className="mx-auto text-muted-foreground" />
         <h1 className="mt-4 text-2xl font-bold">Keranjang Kosong</h1>
         <p className="mt-2 text-muted-foreground">Yuk, mulai belanja produk pertanian modern!</p>
         <Link href="/products" className="mt-6 inline-block">
-          <Button size="lg">Belanja Sekarang <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          <Button size="lg">Belanja Sekarang <Icon name="arrow_forward" size={16} className="ml-2" /></Button>
         </Link>
       </div>
     );
@@ -139,7 +137,7 @@ export default function CartPage() {
         <h1 className="text-2xl font-bold tracking-tight">Keranjang Belanja</h1>
         {isSyncing && (
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Menyinkronkan...
+            <Icon name="progress_activity" size={12} className="animate-spin" /> Menyinkronkan...
           </span>
         )}
       </div>
@@ -168,19 +166,19 @@ export default function CartPage() {
                   <div className="flex items-center rounded-lg border border-input">
                     <button onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       className="px-2 py-1 hover:bg-secondary transition-colors">
-                      <Minus className="h-3.5 w-3.5" />
+                      <Icon name="remove" size={12} />
                     </button>
                     <span className="min-w-[2.5rem] text-center text-sm font-medium">{item.quantity}</span>
                     <button onClick={() => updateQuantity(item.id, Math.min(99, item.quantity + 1))}
                       className="px-2 py-1 hover:bg-secondary transition-colors">
-                      <Plus className="h-3.5 w-3.5" />
+                      <Icon name="add" size={12} />
                     </button>
                   </div>
                   <div className="flex items-center gap-3">
                     <p className="text-sm font-bold text-primary">{formatPrice(item.price * item.quantity)}</p>
                     <button onClick={() => removeItem(item.id)}
                       className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive">
-                      <Trash2 className="h-4 w-4" />
+                      <Icon name="delete" size={16} />
                     </button>
                   </div>
                 </div>
@@ -205,7 +203,7 @@ export default function CartPage() {
                 <div className="flex items-center justify-between rounded-lg border border-primary/30 bg-primary/5 px-3 py-2">
                   <div>
                     <p className="flex items-center gap-1.5 text-sm font-semibold text-primary">
-                      <Tag className="h-3.5 w-3.5" /> {appliedCoupon.code}
+                      <Icon name="label" size={12} /> {appliedCoupon.code}
                     </p>
                     {discount > 0 && (
                       <p className="text-xs text-muted-foreground">Hemat {formatPrice(discount)}</p>
@@ -218,7 +216,7 @@ export default function CartPage() {
               ) : (
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Icon name="label" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <input type="text" placeholder="Kode kupon" value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
                       className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary disabled:opacity-50"
@@ -233,7 +231,7 @@ export default function CartPage() {
 
               {couponError && (
                 <p className="mt-2 flex items-start gap-1.5 text-xs text-destructive">
-                  <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {couponError}
+                  <Icon name="info" size={12} className="mt-0.5 shrink-0" /> {couponError}
                 </p>
               )}
             </div>
@@ -260,7 +258,7 @@ export default function CartPage() {
             </div>
 
             <Link href="/checkout" className="mt-4 block">
-              <Button size="lg" className="w-full">Checkout <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              <Button size="lg" className="w-full">Checkout <Icon name="arrow_forward" size={16} className="ml-2" /></Button>
             </Link>
             <Link href="/products" className="mt-3 block text-center text-sm text-primary hover:underline">
               ← Lanjut Belanja

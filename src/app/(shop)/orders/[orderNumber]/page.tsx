@@ -19,21 +19,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ReviewForm } from "@/components/product/review-form";
 import { useCartStore } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/utils";
-import {
-  Package,
-  Truck,
-  CheckCircle,
-  Clock,
-  XCircle,
-  ArrowLeft,
-  Loader2,
-  CreditCard,
-  RefreshCw,
-  Copy,
-  Star,
-  ShoppingCart,
-  ExternalLink,
-} from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 
 /** Snap.js global (loaded on demand through loadSnapScript). */
 declare global {
@@ -149,11 +135,11 @@ interface OrderCancelResponse {
 }
 
 const statusSteps = [
-  { key: "pending", label: "Menunggu Pembayaran", icon: Clock },
-  { key: "paid", label: "Dibayar", icon: CheckCircle },
-  { key: "processing", label: "Diproses", icon: Package },
-  { key: "shipped", label: "Dikirim", icon: Truck },
-  { key: "delivered", label: "Selesai", icon: CheckCircle },
+  { key: "pending", label: "Menunggu Pembayaran", icon: "schedule" },
+  { key: "paid", label: "Dibayar", icon: "check_circle" },
+  { key: "processing", label: "Diproses", icon: "inventory_2" },
+  { key: "shipped", label: "Dikirim", icon: "local_shipping" },
+  { key: "delivered", label: "Selesai", icon: "check_circle" },
 ];
 
 const statusColors: Record<string, string> = {
@@ -744,7 +730,7 @@ export default function OrderDetailPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Link href="/orders" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6">
-        <ArrowLeft className="w-4 h-4 mr-1" /> Kembali
+        <Icon name="arrow_back" size={16} className="mr-1" /> Kembali
       </Link>
 
       <div className="flex items-center justify-between mb-6">
@@ -763,12 +749,11 @@ export default function OrderDetailPage() {
           <CardContent className="pt-6">
             <div className="flex justify-between">
               {statusSteps.map((step, i) => {
-                const Icon = step.icon;
                 const isActive = i <= currentStepIndex;
                 return (
                   <div key={step.key} className="flex flex-col items-center text-center flex-1">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${isActive ? "bg-primary text-white" : "bg-gray-200 text-gray-400"}`}>
-                      <Icon className="w-5 h-5" />
+                      <Icon name={step.icon} size={20} />
                     </div>
                     <span className={`text-xs ${isActive ? "text-primary font-medium" : "text-muted-foreground"}`}>{step.label}</span>
                   </div>
@@ -808,7 +793,7 @@ export default function OrderDetailPage() {
                             }
                             onClick={() => setReviewTarget(item)}
                           >
-                            <Star className="mr-1 h-3.5 w-3.5" />
+                            <Icon name="star" size={12} className="mr-1" />
                             {reviewed ? "Sudah Diulas" : "Tulis Ulasan"}
                           </Button>
                         ) : isDelivered ? null : (
@@ -819,7 +804,7 @@ export default function OrderDetailPage() {
                               disabled
                               title="Ulasan bisa ditulis setelah pesanan diterima (status Selesai)"
                             >
-                              <Star className="mr-1 h-3.5 w-3.5" /> Tulis Ulasan
+                              <Icon name="star" size={12} className="mr-1" /> Tulis Ulasan
                             </Button>
                             <span className="text-[11px] text-muted-foreground">
                               Aktif setelah pesanan Selesai
@@ -831,7 +816,7 @@ export default function OrderDetailPage() {
                           variant="accent"
                           onClick={() => handleReorderItem(item)}
                         >
-                          <ShoppingCart className="mr-1 h-3.5 w-3.5" /> Beli Lagi
+                          <Icon name="shopping_cart" size={12} className="mr-1" /> Beli Lagi
                         </Button>
                       </div>
                     </div>
@@ -881,7 +866,7 @@ export default function OrderDetailPage() {
                       size="sm"
                       onClick={() => void copyValue(va.va_number, `VA ${va.bank.toUpperCase()}`)}
                     >
-                      <Copy className="mr-1 h-3.5 w-3.5" /> Salin
+                      <Icon name="content_copy" size={12} className="mr-1" /> Salin
                     </Button>
                   </div>
                 ))}
@@ -896,7 +881,7 @@ export default function OrderDetailPage() {
                       size="sm"
                       onClick={() => void copyValue(paymentInfo.permataVaNumber as string, "VA Permata")}
                     >
-                      <Copy className="mr-1 h-3.5 w-3.5" /> Salin
+                      <Icon name="content_copy" size={12} className="mr-1" /> Salin
                     </Button>
                   </div>
                 )}
@@ -957,7 +942,7 @@ export default function OrderDetailPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                 >
-                  <ExternalLink className="h-4 w-4" />
+                  <Icon name="open_in_new" size={16} />
                   Buka Halaman Pembayaran
                 </a>
                 <Button
@@ -966,7 +951,7 @@ export default function OrderDetailPage() {
                     window.location.href = activePaymentUrl;
                   }}
                 >
-                  <CreditCard className="mr-2 h-4 w-4" />
+                  <Icon name="credit_card" size={16} className="mr-2" />
                   Lanjutkan ke Pembayaran
                 </Button>
                 <Button
@@ -975,9 +960,7 @@ export default function OrderDetailPage() {
                   onClick={() => void refreshStatus(true)}
                   disabled={refreshing}
                 >
-                  <RefreshCw
-                    className={`mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
-                  />
+                  <Icon name="refresh" size={16} />
                   Cek Status Pembayaran
                 </Button>
               </CardContent>
@@ -1069,7 +1052,7 @@ export default function OrderDetailPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                 >
-                  <Truck className="h-4 w-4" />
+                  <Icon name="local_shipping" size={16} />
                   Lacak paket di {trackingInfo.label}
                 </a>
               )}
@@ -1089,7 +1072,7 @@ export default function OrderDetailPage() {
                 className="w-full"
                 onClick={handleReorderAll}
               >
-                <ShoppingCart className="mr-2 h-4 w-4" /> Beli Lagi Semua Item
+                <Icon name="shopping_cart" size={16} className="mr-2" /> Beli Lagi Semua Item
               </Button>
             )}
 
@@ -1097,11 +1080,11 @@ export default function OrderDetailPage() {
               <Button className="w-full" onClick={() => void handlePay()} disabled={paying}>
                 {paying ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Memproses...
+                    <Icon name="progress_activity" size={16} className="mr-2 animate-spin" /> Memproses...
                   </>
                 ) : (
                   <>
-                    <CreditCard className="mr-2 h-4 w-4" /> Bayar Sekarang
+                    <Icon name="credit_card" size={16} className="mr-2" /> Bayar Sekarang
                   </>
                 )}
               </Button>
@@ -1114,7 +1097,7 @@ export default function OrderDetailPage() {
                 onClick={() => void refreshStatus(true)}
                 disabled={refreshing}
               >
-                <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+                <Icon name="refresh" size={16} />
                 Cek Status Pembayaran
               </Button>
             )}
@@ -1126,7 +1109,7 @@ export default function OrderDetailPage() {
                 onClick={() => setCancelOpen(true)}
                 disabled={canceling}
               >
-                <XCircle className="mr-2 h-4 w-4" /> Batalkan Pesanan
+                <Icon name="cancel" size={16} className="mr-2" /> Batalkan Pesanan
               </Button>
             )}
           </div>
@@ -1157,7 +1140,7 @@ export default function OrderDetailPage() {
             >
               {canceling ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Membatalkan...
+                  <Icon name="progress_activity" size={16} className="mr-2 animate-spin" /> Membatalkan...
                 </>
               ) : (
                 "Ya, batalkan"

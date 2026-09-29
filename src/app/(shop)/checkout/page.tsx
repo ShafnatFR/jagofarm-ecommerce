@@ -4,10 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  MapPin, Truck, CreditCard, ChevronRight, Check, Banknote, Wallet, QrCode,
-  Loader2, AlertCircle,
-} from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
@@ -35,15 +32,15 @@ interface ShippingOption {
 }
 
 const paymentMethods = [
-  { id: "bank_transfer", name: "Transfer Bank", icon: Banknote, desc: "BCA, Mandiri, BNI, BRI" },
-  { id: "ewallet", name: "E-Wallet", icon: Wallet, desc: "GoPay, OVO, Dana, ShopeePay" },
-  { id: "qris", name: "QRIS", icon: QrCode, desc: "Bayar dengan scan QR" },
+  { id: "bank_transfer", name: "Transfer Bank", icon: "account_balance", desc: "BCA, Mandiri, BNI, BRI" },
+  { id: "ewallet", name: "E-Wallet", icon: "account_balance_wallet", desc: "GoPay, OVO, Dana, ShopeePay" },
+  { id: "qris", name: "QRIS", icon: "qr_code", desc: "Bayar dengan scan QR" },
 ];
 
 const steps = [
-  { num: 1, label: "Alamat", icon: MapPin },
-  { num: 2, label: "Pengiriman", icon: Truck },
-  { num: 3, label: "Pembayaran", icon: CreditCard },
+  { num: 1, label: "Alamat", icon: "location_on" },
+  { num: 2, label: "Pengiriman", icon: "local_shipping" },
+  { num: 3, label: "Pembayaran", icon: "credit_card" },
 ];
 
 /** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */
@@ -314,7 +311,7 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-bold tracking-tight">Checkout</h1>
         {isSyncing && (
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Menyinkronkan keranjang...
+            <Icon name="progress_activity" size={12} className="animate-spin" /> Menyinkronkan keranjang...
           </span>
         )}
       </div>
@@ -331,17 +328,17 @@ export default function CheckoutPage() {
                   : "bg-secondary text-muted-foreground"
               )}
             >
-              {step > s.num ? <Check className="h-4 w-4" /> : <s.icon className="h-4 w-4" />}
+              {step > s.num ? <Icon name="check" size={16} /> : <Icon name={s.icon} size={16} />}
               <span className="hidden sm:inline">{s.label}</span>
             </button>
-            {i < steps.length - 1 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+            {i < steps.length - 1 && <Icon name="chevron_right" size={16} className="text-muted-foreground" />}
           </div>
         ))}
       </div>
 
       {error && (
         <p className="mt-4 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" /> {error}
+          <Icon name="info" size={16} className="mt-0.5 shrink-0" /> {error}
         </p>
       )}
 
@@ -382,7 +379,7 @@ export default function CheckoutPage() {
               {addresses.length > 0 && (
                 <div className="pt-2">
                   <Button onClick={() => setStep(2)} disabled={!selectedAddress}>
-                    Lanjut ke Pengiriman <ChevronRight className="ml-1 h-4 w-4" />
+                    Lanjut ke Pengiriman <Icon name="chevron_right" size={16} className="ml-1" />
                   </Button>
                 </div>
               )}
@@ -430,7 +427,7 @@ export default function CheckoutPage() {
               <div className="flex gap-2 pt-2">
                 <Button variant="secondary" onClick={() => setStep(1)}>Kembali</Button>
                 <Button onClick={() => setStep(3)} disabled={shippingOptions.length === 0 || !selectedOption}>
-                  Lanjut ke Pembayaran <ChevronRight className="ml-1 h-4 w-4" />
+                  Lanjut ke Pembayaran <Icon name="chevron_right" size={16} className="ml-1" />
                 </Button>
               </div>
             </div>
@@ -446,7 +443,7 @@ export default function CheckoutPage() {
                     selectedPayment === m.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
                   )}>
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                    <m.icon className="h-5 w-5 text-primary" />
+                    <Icon name={m.icon} size={20} />
                   </div>
                   <div>
                     <p className="text-sm font-semibold">{m.name}</p>

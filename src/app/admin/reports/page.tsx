@@ -1,15 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useState } from "react"
-import {
-  AlertCircle,
-  BarChart3,
-  Download,
-  Package,
-  ShoppingCart,
-  TrendingUp,
-  Wallet,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -178,7 +170,7 @@ export default function AdminReportsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat laporan: {error}</p>
           <button onClick={() => fetchReport()} className="mt-2 text-sm text-[#1B4D3E] underline">
             Coba lagi
@@ -195,10 +187,10 @@ export default function AdminReportsPage() {
   const categoryMax = categoryBreakdown.reduce((max, row) => Math.max(max, row.revenue), 0)
 
   const cards = [
-    { title: "Total Pendapatan", value: formatPrice(summary?.totalRevenue ?? 0), icon: Wallet },
-    { title: "Jumlah Pesanan", value: (summary?.totalOrders ?? 0).toLocaleString("id-ID"), icon: ShoppingCart },
-    { title: "Item Terjual", value: (summary?.totalItems ?? 0).toLocaleString("id-ID"), icon: Package },
-    { title: "Rata-rata Pesanan", value: formatPrice(summary?.averageOrderValue ?? 0), icon: TrendingUp },
+    { title: "Total Pendapatan", value: formatPrice(summary?.totalRevenue ?? 0), icon: "account_balance_wallet" },
+    { title: "Jumlah Pesanan", value: (summary?.totalOrders ?? 0).toLocaleString("id-ID"), icon: "shopping_cart" },
+    { title: "Item Terjual", value: (summary?.totalItems ?? 0).toLocaleString("id-ID"), icon: "inventory_2" },
+    { title: "Rata-rata Pesanan", value: formatPrice(summary?.averageOrderValue ?? 0), icon: "trending_up" },
   ]
 
   const isEmpty = (summary?.totalOrders ?? 0) === 0
@@ -213,7 +205,7 @@ export default function AdminReportsPage() {
           </p>
         </div>
         <Button onClick={exportCsv} disabled={!from || !to}>
-          <Download className="mr-2 h-4 w-4" />
+          <Icon name="download" size={16} className="mr-2" />
           Export CSV
         </Button>
       </div>
@@ -319,7 +311,7 @@ export default function AdminReportsPage() {
           <Card key={card.title}>
             <CardContent className="p-6">
               <div className="rounded-lg bg-[#1B4D3E]/10 p-2 w-fit">
-                <card.icon className="h-5 w-5 text-[#1B4D3E]" />
+                <Icon name={card.icon} size={20} />
               </div>
               <div className="mt-4">
                 <p className="text-2xl font-bold text-gray-900">{card.value}</p>
@@ -333,7 +325,7 @@ export default function AdminReportsPage() {
       {isEmpty ? (
         <Card>
           <CardContent className="py-16 text-center">
-            <BarChart3 className="mx-auto h-10 w-10 text-gray-300" />
+            <Icon name="bar_chart" size={40} className="mx-auto text-gray-300" />
             <p className="mt-3 text-sm font-medium text-gray-500">
               Tidak ada penjualan pada rentang tanggal ini
             </p>

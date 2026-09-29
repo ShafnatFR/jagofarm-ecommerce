@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { DollarSign, ShoppingCart, Users, TrendingUp, ArrowUpRight, ArrowDownRight, AlertCircle } from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice, formatDate } from "@/lib/utils"
@@ -204,7 +204,7 @@ function MonthlyRevenueChart({
       ) : !hasData ? (
         <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50">
           <div className="text-center">
-            <TrendingUp className="mx-auto h-10 w-10 text-gray-300" />
+            <Icon name="trending_up" size={40} className="mx-auto text-gray-300" />
             <p className="mt-2 text-sm text-gray-500">Belum ada pendapatan pada {months} bulan terakhir</p>
             <p className="text-xs text-gray-400">Grafik akan terisi otomatis setelah ada pesanan masuk</p>
           </div>
@@ -294,7 +294,7 @@ export default function AdminDashboardPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat data: {error || "Unknown error"}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
@@ -303,10 +303,10 @@ export default function AdminDashboardPage() {
   }
 
   const stats = [
-    { title: "Total Pendapatan", value: data.stats.totalRevenue ?? data.stats.revenue ?? 0, icon: DollarSign, format: "price" as const, trend: "up" as const, change: "" },
-    { title: "Total Pesanan", value: data.stats.totalOrders ?? data.stats.orders ?? 0, icon: ShoppingCart, format: "number" as const, trend: "up" as const, change: "" },
-    { title: "Pelanggan", value: data.stats.totalCustomers ?? data.stats.customers ?? 0, icon: Users, format: "number" as const, trend: "up" as const, change: "" },
-    { title: "Rata-rata Pesanan", value: data.stats.avgOrderValue ?? 0, icon: TrendingUp, format: "price" as const, trend: "up" as const, change: "" },
+    { title: "Total Pendapatan", value: data.stats.totalRevenue ?? data.stats.revenue ?? 0, icon: "attach_money", format: "price" as const, trend: "up" as const, change: "" },
+    { title: "Total Pesanan", value: data.stats.totalOrders ?? data.stats.orders ?? 0, icon: "shopping_cart", format: "number" as const, trend: "up" as const, change: "" },
+    { title: "Pelanggan", value: data.stats.totalCustomers ?? data.stats.customers ?? 0, icon: "people", format: "number" as const, trend: "up" as const, change: "" },
+    { title: "Rata-rata Pesanan", value: data.stats.avgOrderValue ?? 0, icon: "trending_up", format: "price" as const, trend: "up" as const, change: "" },
   ]
 
   const statusCounts = data.stats.orderStatusCounts ?? {}
@@ -329,11 +329,11 @@ export default function AdminDashboardPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="rounded-lg bg-[#1B4D3E]/10 p-2">
-                  <stat.icon className="h-5 w-5 text-[#1B4D3E]" />
+                  <Icon name={stat.icon} size={20} />
                 </div>
                 {stat.change && (
                   <div className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-green-600" : "text-red-500"}`}>
-                    {stat.trend === "up" ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
+                    {stat.trend === "up" ? <Icon name="open_in_new" size={16} /> : <Icon name="south_west" size={16} />}
                     {stat.change}
                   </div>
                 )}

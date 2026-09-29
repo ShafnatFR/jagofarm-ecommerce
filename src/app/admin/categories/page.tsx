@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { FolderTree, Plus, Edit, Trash2, ChevronRight, ChevronDown, AlertCircle } from "lucide-react"
+import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -37,17 +37,17 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
         <div className="flex items-center gap-2">
           {hasChildren ? (
             <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-600">
-              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              {expanded ? <Icon name="expand_more" size={16} /> : <Icon name="chevron_right" size={16} />}
             </button>
           ) : <div className="w-4" />}
-          <FolderTree className="h-4 w-4 text-[#1B4D3E]" />
+          <Icon name="account_tree" size={16} className="text-[#1B4D3E]" />
           <span className="font-medium">{category.name}</span>
           <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{productCount} produk</span>
           {category.isActive === false && <Badge variant="secondary">Nonaktif</Badge>}
         </div>
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8" title="Edit kategori"><Edit className="h-3.5 w-3.5" /></Button>
-          <Button variant="ghost" size="icon" onClick={() => onDelete(category)} className="h-8 w-8 text-red-500 hover:text-red-600" title="Hapus kategori"><Trash2 className="h-3.5 w-3.5" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8" title="Edit kategori"><Icon name="edit" size={12} /></Button>
+          <Button variant="ghost" size="icon" onClick={() => onDelete(category)} className="h-8 w-8 text-red-500 hover:text-red-600" title="Hapus kategori"><Icon name="delete" size={12} /></Button>
         </div>
       </div>
       <AnimatePresence>
@@ -213,7 +213,7 @@ export default function CategoriesPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto h-10 w-10 text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-gray-600">Gagal memuat kategori: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
@@ -228,7 +228,7 @@ export default function CategoriesPage() {
           <h1 className="text-2xl font-bold text-gray-900">Kategori</h1>
           <p className="text-sm text-gray-500">Kelola kategori produk</p>
         </div>
-        <Button onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />Tambah Kategori</Button>
+        <Button onClick={handleAdd}><Icon name="add" size={16} className="mr-2" />Tambah Kategori</Button>
       </div>
 
       <Card>
@@ -236,7 +236,7 @@ export default function CategoriesPage() {
         <CardContent className="p-0">
           {categories.length === 0 ? (
             <div className="py-12 text-center text-gray-400">
-              <FolderTree className="mx-auto h-10 w-10 text-gray-300" />
+              <Icon name="account_tree" size={40} className="mx-auto text-gray-300" />
               <p className="mt-2">Belum ada kategori</p>
             </div>
           ) : (
