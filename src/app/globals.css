@@ -1,66 +1,168 @@
 @import "tailwindcss";
 
-:root {
-  --background: #F8FAF8;
-  --foreground: #1A1A1A;
-  --primary: #1B4D3E;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F1F5F2;
-  --secondary-foreground: #1A1A1A;
-  --accent: #FDBA45;
-  --accent-foreground: #1A1A1A;
-  --muted: #F1F5F2;
-  --muted-foreground: #6B7280;
-  --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
-  --border: #E2E8E4;
-  --input: #E2E8E4;
-  --ring: #1B4D3E;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --radius: 0.75rem;
-  --emerald-50: #ECFDF5;
-  --emerald-100: #D1FAE5;
-  --emerald-200: #A7F3D0;
-  --emerald-700: #047857;
-  --emerald-800: #065F46;
-  --amber-50: #FFFBEB;
-  --amber-100: #FEF3C7;
-  --amber-400: #FBBF24;
-  --amber-500: #F59E0B;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  /* New Theme Colors */
+  --color-background: #f9f9ff;
+  --color-secondary-fixed-dim: #fdba45;
+  --color-inverse-surface: #263143;
+  --color-tertiary-fixed: #6ffbbe;
+  --color-primary-fixed-dim: #9ed1bd;
+  --color-on-primary: #ffffff;
+  --color-on-tertiary: #ffffff;
+  --color-on-secondary-fixed-variant: #604100;
+  --color-on-surface-variant: #404945;
+  --color-on-error-container: #93000a;
+  --color-on-tertiary-fixed: #002113;
+  --color-primary: #003629;
+  --color-error-container: #ffdad6;
+  --color-on-primary-fixed-variant: #1d4f40;
+  --color-on-error: #ffffff;
+  --color-on-primary-fixed: #002117;
+  --color-secondary: #7f5700;
+  --color-on-tertiary-container: #32c98f;
+  --color-secondary-container: #fdba45;
+  --color-error: #ba1a1a;
+  --color-on-tertiary-fixed-variant: #005236;
+  --color-surface-tint: #376757;
+  --color-on-secondary: #ffffff;
+  --color-surface-bright: #f9f9ff;
+  --color-outline: #707974;
+  --color-surface-container-lowest: #ffffff;
+  --color-primary-fixed: #baeed9;
+  --color-surface-container-high: #dee8ff;
+  --color-tertiary: #003623;
+  --color-secondary-fixed: #ffdeae;
+  --color-on-background: #111c2d;
+  --color-on-secondary-container: #6f4b00;
+  --color-tertiary-container: #004f35;
+  --color-inverse-on-surface: #ecf1ff;
+  --color-surface-container-highest: #d8e3fb;
+  --color-surface-variant: #d8e3fb;
+  --color-surface-container-low: #f0f3ff;
+  --color-inverse-primary: #9ed1bd;
+  --color-on-secondary-fixed: #281900;
+  --color-surface: #f9f9ff;
+  --color-on-primary-container: #8abda9;
+  --color-on-surface: #111c2d;
+  --color-surface-dim: #cfdaf2;
+  --color-primary-container: #1b4d3e;
+  --color-tertiary-fixed-dim: #4edea3;
+  --color-outline-variant: #c0c9c3;
+  --color-surface-container: #e7eeff;
+
+  /* Legacy App Theme Variables */
+  --color-foreground: #111c2d;
+  --color-primary-foreground: #ffffff;
+  --color-secondary-foreground: #111c2d;
+  --color-accent: #fdba45;
+  --color-accent-foreground: #111c2d;
+  --color-muted: #f0f3ff;
+  --color-muted-foreground: #404945;
+  --color-card: #ffffff;
+  --color-card-foreground: #111c2d;
+  --color-border: #c0c9c3;
+  --color-input: #c0c9c3;
+  --color-ring: #003629;
+  --color-destructive: #ba1a1a;
+  --color-destructive-foreground: #ffffff;
+  
+  --radius: 0.75rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 16px);
-  --font-sans: var(--font-plus-jakarta);
+
+  --spacing-space-xl: 2.5rem;
+  --spacing-margin: 2rem;
+  --spacing-gutter: 1.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-xs: 0.25rem;
+  --spacing-gutter-mobile: 0.75rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-margin-mobile: 1rem;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: -0.02em;
+  --text-headline-lg--font-weight: 700;
+  --text-headline-lg-mobile: 26px;
+  --text-headline-lg-mobile--line-height: 34px;
+  --text-headline-lg-mobile--letter-spacing: -0.015em;
+  --text-headline-lg-mobile--font-weight: 700;
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+  --text-label-md--letter-spacing: 0.02em;
+  --text-label-md--font-weight: 600;
+  --text-body-sm: 12px;
+  --text-body-sm--line-height: 18px;
+  --text-body-sm--letter-spacing: 0.01em;
+  --text-body-sm--font-weight: 400;
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 700;
+  --text-headline-sm: 18px;
+  --text-headline-sm--line-height: 26px;
+  --text-headline-sm--letter-spacing: -0.005em;
+  --text-headline-sm--font-weight: 600;
+  --text-body-md: 14px;
+  --text-body-md--line-height: 22px;
+  --text-body-md--letter-spacing: 0em;
+  --text-body-md--font-weight: 400;
+  --text-price-md: 16px;
+  --text-price-md--line-height: 22px;
+  --text-price-md--letter-spacing: -0.01em;
+  --text-price-md--font-weight: 700;
+  --text-display-hero-mobile: 34px;
+  --text-display-hero-mobile--line-height: 42px;
+  --text-display-hero-mobile--letter-spacing: -0.02em;
+  --text-display-hero-mobile--font-weight: 800;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 26px;
+  --text-body-lg--letter-spacing: 0em;
+  --text-body-lg--font-weight: 400;
+  --text-price-lg: 22px;
+  --text-price-lg--line-height: 28px;
+  --text-price-lg--letter-spacing: -0.02em;
+  --text-price-lg--font-weight: 700;
+  --text-label-sm: 10px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--letter-spacing: 0.04em;
+  --text-label-sm--font-weight: 700;
+  --text-display-hero: 52px;
+  --text-display-hero--line-height: 60px;
+  --text-display-hero--letter-spacing: -0.03em;
+  --text-display-hero--font-weight: 800;
+  --text-label-lg: 14px;
+  --text-label-lg--line-height: 20px;
+  --text-label-lg--letter-spacing: 0.01em;
+  --text-label-lg--font-weight: 600;
+
+  --font-plus-jakarta: "Plus Jakarta Sans";
+  --font-headline-lg: var(--font-plus-jakarta);
+  --font-headline-lg-mobile: var(--font-plus-jakarta);
+  --font-label-md: var(--font-plus-jakarta);
+  --font-body-sm: var(--font-plus-jakarta);
+  --font-headline-md: var(--font-plus-jakarta);
+  --font-headline-sm: var(--font-plus-jakarta);
+  --font-body-md: var(--font-plus-jakarta);
+  --font-price-md: var(--font-plus-jakarta);
+  --font-display-hero-mobile: var(--font-plus-jakarta);
+  --font-body-lg: var(--font-plus-jakarta);
+  --font-price-lg: var(--font-plus-jakarta);
+  --font-label-sm: var(--font-plus-jakarta);
+  --font-display-hero: var(--font-plus-jakarta);
+  --font-label-lg: var(--font-plus-jakarta);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 html {
@@ -69,18 +171,19 @@ html {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--secondary);
+  background: var(--color-surface-container-low);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c0c9c3;
+  background: var(--color-outline-variant);
   border-radius: 9999px;
 }
 
 ::selection {
-  background: var(--primary);
-  color: white;
+  background: var(--color-secondary-fixed-dim);
+  color: var(--color-primary);
 }
 
 /* Material Symbols */
@@ -94,4 +197,12 @@ html {
 /* Smooth transitions */
 a, button {
   transition: all 0.15s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 9999px;
 }
