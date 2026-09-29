@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { ProfileForm } from "@/components/account/profile-form";
 
 export default async function AccountPage() {
@@ -42,83 +42,191 @@ export default async function AccountPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Profil Saya</h1>
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+      {/* Breadcrumb and Page Title */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
+          <Link href="/" className="hover:text-primary transition-colors">Beranda</Link>
+          <span>/</span>
+          <Link href="/account" className="hover:text-primary transition-colors">Akun Saya</Link>
+          <span>/</span>
+          <span className="text-slate-700 font-medium">Profil</span>
+        </div>
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Profil Saya</h1>
+        <p className="text-sm text-slate-500 mt-1">Kelola data informasi akun, preferensi keamanan, dan tinjau riwayat pesanan Anda.</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-1">
-          <div className="bg-card p-6 rounded-lg border border-border text-center">
-            {dbUser.image ? (
-              <Image
-                src={dbUser.image}
-                alt={dbUser.name || "Profile"}
-                width={100}
-                height={100}
-                className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-primary/10 flex items-center justify-center">
-                <span className="text-3xl font-bold text-primary">
+      {/* Layout Grid: Left Sidebar & Right Form/Stats Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: User Profile Card & Account Menu */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Main User Summary Card */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-md text-center relative overflow-hidden">
+            {/* Subtle decorative background accent */}
+            <div className="absolute -top-12 -right-12 w-36 h-36 bg-emerald-100/50 rounded-full blur-2xl pointer-events-none" />
+            {/* Avatar */}
+            <div className="relative mx-auto w-28 h-28 mb-5">
+              {dbUser.image ? (
+                <Image
+                  src={dbUser.image}
+                  alt={dbUser.name || "Profile"}
+                  width={112}
+                  height={112}
+                  className="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
+                />
+              ) : (
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-100 via-teal-100 to-slate-200 flex items-center justify-center text-4xl font-extrabold text-primary border-4 border-white shadow-md">
                   {dbUser.name?.[0]?.toUpperCase() || dbUser.email[0].toUpperCase()}
+                </div>
+              )}
+              <button
+                className="absolute bottom-1 right-1 p-2 bg-primary text-white rounded-full shadow hover:bg-primary/90 transition-all scale-95 hover:scale-105"
+                title="Ubah Foto Profil"
+                type="button"
+              >
+                <Icon name="photo_camera" size={16} />
+              </button>
+            </div>
+            {/* User Details */}
+            <h2 className="text-xl font-bold text-slate-800">{dbUser.name || "Tanpa Nama"}</h2>
+            <p className="text-sm text-slate-500 mt-0.5">{dbUser.email}</p>
+            <div className="mt-3.5 flex items-center justify-center gap-2">
+              <span className="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5" />
+                {dbUser.role === "admin" ? "Admin" : "Pelanggan"}
+              </span>
+            </div>
+            <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400">
+              <Icon name="calendar_today" size={16} />
+              <span>Bergabung sejak {formatDate(dbUser.createdAt)}</span>
+            </div>
+          </div>
+
+          {/* Quick Side Navigation Menu */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-2 shadow-md">
+            <Link
+              href="/account"
+              className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-primary font-semibold text-sm transition-all"
+            >
+              <div className="flex items-center gap-3">
+                <span className="p-2 rounded-lg bg-emerald-200/50 text-primary">
+                  <Icon name="person" size={16} />
                 </span>
+                <span>Informasi Profil</span>
               </div>
-            )}
-            <h2 className="text-xl font-semibold">{dbUser.name || "Tanpa Nama"}</h2>
-            <p className="text-sm text-muted-foreground">{dbUser.email}</p>
-            <span className="inline-block mt-2 px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-              {dbUser.role === "admin" ? "Admin" : "Pelanggan"}
-            </span>
-            <p className="mt-3 text-xs text-muted-foreground">
-              Bergabung sejak {formatDate(dbUser.createdAt)}
-            </p>
+              <Icon name="chevron_right" size={16} />
+            </Link>
+            <Link
+              href="/account/addresses"
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium text-sm transition-all"
+            >
+              <div className="flex items-center gap-3">
+                <span className="p-2 rounded-lg bg-slate-100 text-slate-500">
+                  <Icon name="location_on" size={16} />
+                </span>
+                <span>Daftar Alamat Pengiriman</span>
+              </div>
+              <Icon name="chevron_right" size={16} className="text-slate-400" />
+            </Link>
+            <Link
+              href="/orders"
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium text-sm transition-all"
+            >
+              <div className="flex items-center gap-3">
+                <span className="p-2 rounded-lg bg-slate-100 text-slate-500">
+                  <Icon name="receipt_long" size={16} />
+                </span>
+                <span>Riwayat Transaksi &amp; Pesanan</span>
+              </div>
+              <Icon name="chevron_right" size={16} className="text-slate-400" />
+            </Link>
+            <Link
+              href="/api/auth/signout"
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-red-50 text-slate-600 hover:text-rose-600 font-medium text-sm transition-all mt-1"
+            >
+              <div className="flex items-center gap-3">
+                <span className="p-2 rounded-lg bg-rose-50 text-rose-500">
+                  <Icon name="logout" size={16} />
+                </span>
+                <span>Keluar dari Akun</span>
+              </div>
+            </Link>
           </div>
         </div>
 
-        <div className="md:col-span-2 space-y-6">
+        {/* Right Column: Settings Form, Stats & Quick Actions */}
+        <div className="lg:col-span-8 space-y-8">
+          {/* SECTION 1: Account Settings Form */}
           <ProfileForm />
 
-          <div className="bg-card p-6 rounded-lg border border-border">
-            <h3 className="text-lg font-semibold mb-4">Statistik</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <p className="text-2xl font-bold">{dbUser._count.orders}</p>
-                <p className="text-sm text-muted-foreground">Pesanan</p>
+          {/* SECTION 2: Statistik Ringkas Akun */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-md">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                <Icon name="bar_chart" size={20} className="text-primary" />
+                Statistik Akun
+              </h3>
+              <span className="text-xs font-medium text-slate-400">Ringkasan aktivitas terkini</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Metric 1: Pesanan */}
+              <div className="bg-slate-50/80 hover:bg-emerald-50/40 transition-colors border border-slate-100 rounded-2xl p-6 text-center group">
+                <div className="w-12 h-12 mx-auto rounded-full bg-white shadow-sm flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform">
+                  <Icon name="shopping_bag" size={24} />
+                </div>
+                <span className="block text-4xl font-extrabold text-slate-900 group-hover:text-primary transition-colors">
+                  {dbUser._count.orders}
+                </span>
+                <span className="text-sm font-medium text-slate-500 mt-1 block">Pesanan</span>
               </div>
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <p className="text-2xl font-bold">{dbUser._count.addresses}</p>
-                <p className="text-sm text-muted-foreground">Alamat Tersimpan</p>
+              {/* Metric 2: Alamat Tersimpan */}
+              <div className="bg-slate-50/80 hover:bg-emerald-50/40 transition-colors border border-slate-100 rounded-2xl p-6 text-center group">
+                <div className="w-12 h-12 mx-auto rounded-full bg-white shadow-sm flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform">
+                  <Icon name="location_on" size={24} />
+                </div>
+                <span className="block text-4xl font-extrabold text-slate-900 group-hover:text-primary transition-colors">
+                  {dbUser._count.addresses}
+                </span>
+                <span className="text-sm font-medium text-slate-500 mt-1 block">Alamat Tersimpan</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-card p-6 rounded-lg border border-border">
-            <h3 className="text-lg font-semibold mb-4">Aksi Cepat</h3>
-            <div className="flex flex-wrap gap-4">
-              <a
+          {/* SECTION 3: Aksi Cepat (Quick Actions) */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-md">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                <Icon name="bolt" size={20} className="text-primary" />
+                Aksi Cepat
+              </h3>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
                 href="/account/addresses"
-                className="px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:border-primary hover:bg-emerald-50/50 text-slate-700 hover:text-primary text-sm font-semibold transition-all shadow-sm"
               >
+                <Icon name="location_on" size={16} className="text-slate-500" />
                 Kelola Alamat
-              </a>
+              </Link>
               <Link
                 href="/orders"
-                className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary border border-border rounded-lg hover:bg-muted transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:border-primary hover:bg-emerald-50/50 text-slate-700 hover:text-primary text-sm font-semibold transition-all shadow-sm"
               >
+                <Icon name="receipt_long" size={16} className="text-slate-500" />
                 Lihat Pesanan
               </Link>
-              <a
+              <Link
                 href="/wishlist"
-                className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-foreground hover:text-primary border border-border rounded-lg hover:bg-muted transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:border-primary hover:bg-emerald-50/50 text-slate-700 hover:text-primary text-sm font-semibold transition-all shadow-sm"
               >
-                <Heart className="h-4 w-4" />
+                <Icon name="favorite" size={16} className="text-slate-500" />
                 Wishlist Saya
-              </a>
+              </Link>
               <Link
                 href="/products"
-                className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-sm font-semibold shadow-md shadow-primary/20 transition-all hover:scale-105 active:scale-95"
               >
+                <Icon name="shopping_bag" size={16} />
                 Belanja Lagi
               </Link>
             </div>

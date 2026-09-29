@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  ArrowRight, Droplets, Sprout, Fish, Cpu, Leaf, Egg,
-  Truck, Shield, Headphones, CreditCard, AlertCircle,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { ProductCard } from "@/components/product/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HeroCarousel } from "@/components/home/hero-carousel";
@@ -27,17 +23,20 @@ interface ApiProduct {
   _count?: { reviews?: number };
 }
 
-const categoryIcons: Record<string, React.ElementType> = {
-  "set-tambak": Droplets, "set-hidroponik": Sprout,
-  "set-aquaponik": Fish, "iot-smart-farming": Cpu,
-  benih: Leaf, "anakan-ikan": Egg,
+const categoryIcons: Record<string, string> = {
+  "set-tambak": "water_drop",
+  "set-hidroponik": "grass",
+  "set-aquaponik": "phishing",
+  "iot-smart-farming": "memory",
+  benih: "eco",
+  "anakan-ikan": "egg",
 };
 
 const features = [
-  { icon: Truck, title: "Pengiriman Cepat", desc: "Kirim ke seluruh Indonesia" },
-  { icon: Shield, title: "Garansi Produk", desc: "Jaminan kualitas 100%" },
-  { icon: Headphones, title: "Konsultasi Gratis", desc: "Tim ahli siap membantu" },
-  { icon: CreditCard, title: "Pembayaran Aman", desc: "Midtrans & transfer bank" },
+  { icon: "local_shipping", title: "Pengiriman Cepat", desc: "Kirim ke seluruh Indonesia" },
+  { icon: "verified_user", title: "Garansi Produk", desc: "Jaminan kualitas 100%" },
+  { icon: "support_agent", title: "Konsultasi Gratis", desc: "Tim ahli siap membantu" },
+  { icon: "credit_card", title: "Pembayaran Aman", desc: "Midtrans & transfer bank" },
 ];
 
 export default function HomePage() {
@@ -67,8 +66,6 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  // Set bundle terlaris diambil dari katalog unggulan yang sudah di-fetch
-  // (tag "bestseller" kalau ada, kalau tidak produk dengan harga tertinggi).
   const bundleProduct = pickBundleProduct(products);
 
   return (
@@ -83,7 +80,7 @@ export default function HomePage() {
             {features.map((f) => (
               <div key={f.title} className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary">
-                  <f.icon className="h-5 w-5 text-primary" />
+                  <Icon name={f.icon} size={20} className="text-primary" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold">{f.title}</p>
@@ -103,7 +100,7 @@ export default function HomePage() {
             <p className="mt-1 text-muted-foreground">Temukan kebutuhan pertanian modern Anda</p>
           </div>
           <Link href="/products" className="hidden text-sm font-medium text-primary hover:underline sm:flex items-center gap-1">
-            Lihat Semua <ArrowRight className="h-4 w-4" />
+            Lihat Semua <Icon name="arrow_forward" size={16} />
           </Link>
         </div>
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -117,19 +114,19 @@ export default function HomePage() {
             ))
           ) : error ? (
             <div className="col-span-full py-8 text-center">
-              <AlertCircle className="mx-auto h-8 w-8 text-destructive" />
+              <Icon name="error" size={32} className="mx-auto text-destructive" />
               <p className="mt-2 text-sm text-muted-foreground">{error}</p>
             </div>
           ) : categories.length === 0 ? (
             <div className="col-span-full py-8 text-center text-muted-foreground">Belum ada kategori.</div>
           ) : (
             categories.map((cat) => {
-              const Icon = categoryIcons[cat.slug] || Leaf;
+              const iconName = categoryIcons[cat.slug] || "eco";
               return (
                 <Link key={cat.slug} href={`/products?category=${cat.slug}`}
-                  className="group flex flex-col items-center rounded-xl border border-border bg-card p-5 text-center transition-all hover:border-primary hover:shadow-md">
+                  className="group flex flex-col items-center rounded-2xl border border-border bg-card p-5 text-center transition-all hover:border-primary hover:shadow-md">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary transition-colors group-hover:bg-primary/10">
-                    <Icon className="h-7 w-7 text-primary" />
+                    <Icon name={iconName} size={28} className="text-primary" />
                   </div>
                   <h3 className="mt-3 text-sm font-semibold">{cat.name}</h3>
                   {cat.description && (
@@ -151,15 +148,15 @@ export default function HomePage() {
               <p className="mt-1 text-muted-foreground">Pilihan terbaik petani modern Indonesia</p>
             </div>
             <Link href="/products" className="hidden text-sm font-medium text-primary hover:underline sm:flex items-center gap-1">
-              Lihat Semua <ArrowRight className="h-4 w-4" />
+              Lihat Semua <Icon name="arrow_forward" size={16} />
             </Link>
           </div>
           <div className="mt-6">
             {loading ? (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 {Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="rounded-xl border border-border bg-card p-3">
-                    <Skeleton className="aspect-square rounded-lg" />
+                  <div key={i} className="rounded-2xl border border-border bg-card p-3">
+                    <Skeleton className="aspect-square rounded-xl" />
                     <Skeleton className="mt-3 h-3 w-16" />
                     <Skeleton className="mt-1 h-4 w-full" />
                     <Skeleton className="mt-2 h-5 w-20" />
@@ -168,7 +165,7 @@ export default function HomePage() {
               </div>
             ) : error ? (
               <div className="py-12 text-center">
-                <AlertCircle className="mx-auto h-8 w-8 text-destructive" />
+                <Icon name="error" size={32} className="mx-auto text-destructive" />
                 <p className="mt-2 text-sm text-muted-foreground">{error}</p>
               </div>
             ) : products.length === 0 ? (
@@ -187,8 +184,8 @@ export default function HomePage() {
             )}
           </div>
           <div className="mt-8 text-center sm:hidden">
-            <Link href="/products">
-              <Button variant="secondary">Lihat Semua Produk <ArrowRight className="ml-2 h-4 w-4" /></Button>
+            <Link href="/products" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-secondary text-foreground font-semibold text-sm hover:bg-slate-200 transition-colors">
+              Lihat Semua Produk <Icon name="arrow_forward" size={16} />
             </Link>
           </div>
         </div>
@@ -197,21 +194,30 @@ export default function HomePage() {
       {/* Set Bundle Terlaris */}
       <BundleHighlight product={bundleProduct} />
 
-      {/* CTA */}
+      {/* CTA / Consultation */}
       <section className="mx-auto max-w-7xl px-4 py-16">
-        <div className="rounded-2xl bg-primary p-8 text-center text-primary-foreground sm:p-12">
-          <h2 className="text-2xl font-bold sm:text-3xl">Butuh Konsultasi untuk Proyek Pertanian Anda?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-primary-foreground/80">
-            Tim ahli JagoFarm siap membantu merancang sistem pertanian modern
-            yang sesuai dengan kebutuhan dan budget Anda.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link href="/products"><Button size="lg" variant="accent">Mulai Belanja</Button></Link>
-            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-              <Button size="lg" variant="secondary" className="border-white/30 text-white hover:bg-white/10">
-                Chat via WhatsApp
-              </Button>
-            </a>
+        <div className="rounded-2xl bg-gradient-to-r from-primary to-emerald-800 p-8 text-center text-primary-foreground sm:p-12 relative overflow-hidden">
+          <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -left-10 -top-10 w-64 h-64 bg-emerald-300/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="relative z-10">
+            <h2 className="text-2xl font-bold sm:text-3xl">Butuh Konsultasi untuk Proyek Pertanian Anda?</h2>
+            <p className="mx-auto mt-3 max-w-xl text-primary-foreground/80">
+              Tim ahli JagoFarm siap membantu merancang sistem pertanian modern
+              yang sesuai dengan kebutuhan dan budget Anda.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Link href="/products">
+                <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-slate-900 font-bold text-sm hover:bg-amber-400 transition-colors shadow-lg">
+                  Mulai Belanja
+                </span>
+              </Link>
+              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 border border-white/30 text-white font-bold text-sm hover:bg-white/20 transition-colors">
+                  <Icon name="chat" size={18} />
+                  Chat via WhatsApp
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </section>

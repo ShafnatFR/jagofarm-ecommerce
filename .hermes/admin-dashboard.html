@@ -1,0 +1,670 @@
+<!-- BEGIN: LeftSidebar -->
+<aside class="w-64 bg-[#12382c] flex-shrink-0 flex flex-col justify-between border-r border-[#0d2a21] z-20 hidden lg:flex sticky top-0 h-screen select-none" data-purpose="admin-sidebar">
+<!-- Top Brand & Navigation -->
+<div class="flex flex-col flex-1 overflow-y-auto">
+<!-- Logo Container -->
+<div class="h-20 px-6 flex items-center justify-between border-b border-emerald-900/40">
+<a class="flex items-center space-x-3 group" href="#">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-300 flex items-center justify-center shadow-lg shadow-emerald-950/40">
+<!-- Sprout / Agriculture Icon -->
+<svg class="w-5 h-5 text-emerald-950 stroke-[2.2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+              Jago<span class="text-emerald-400">Farm</span>
+</span>
+<span class="text-[10px] font-semibold tracking-wider uppercase text-emerald-300/70 block -mt-1">Agri-Aquaculture</span>
+</div>
+</a>
+<span class="bg-emerald-900/80 text-emerald-300 border border-emerald-700/50 text-[10px] font-medium px-2 py-0.5 rounded-full">v2.4</span>
+</div>
+<!-- Navigation Links -->
+<nav aria-label="Menu Utama" class="p-4 space-y-1.5">
+<p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-emerald-400/50 mb-2">Utama</p>
+<!-- Active Nav Item: Dashboard -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-emerald-500/15 text-white font-medium shadow-sm border border-emerald-500/20 group transition-all" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm tracking-wide">Dashboard</span>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+</a>
+<!-- Produk -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Produk</span>
+</div>
+<span class="text-xs bg-emerald-900/60 text-emerald-300/80 px-2 py-0.5 rounded-full border border-emerald-700/40">142</span>
+</a>
+<!-- Pesanan -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Pesanan</span>
+</div>
+<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-semibold px-2 py-0.5 rounded-full">3 baru</span>
+</a>
+<!-- Kategori -->
+<a class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Kategori</span>
+</a>
+<!-- Pelanggan -->
+<a class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Pelanggan</span>
+</a>
+<p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-emerald-400/50 pt-4 mb-2">Pemasaran &amp; Data</p>
+<!-- Kupon & Diskon -->
+<a class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Kupon &amp; Promo</span>
+</a>
+<!-- Ulasan -->
+<a class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Ulasan</span>
+</a>
+<!-- Laporan & Analitik -->
+<a class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-emerald-100/70 hover:bg-[#184738] hover:text-white font-medium transition-all group" href="#">
+<svg class="w-5 h-5 text-emerald-300/60 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm">Laporan</span>
+</a>
+</nav>
+</div>
+<!-- Bottom User Profile Card -->
+<div class="p-4 border-t border-emerald-900/50 bg-[#0d2a21]/50">
+<div class="flex items-center justify-between bg-[#153f32] p-2.5 rounded-xl border border-emerald-800/40">
+<div class="flex items-center space-x-3 min-w-0">
+<div class="relative flex-shrink-0">
+<div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-sm text-white border-2 border-emerald-400/40 shadow-inner">
+              TA
+            </div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#12382c]"></span>
+</div>
+<div class="truncate text-left">
+<p class="text-xs font-semibold text-white truncate">Test Admin</p>
+<p class="text-[11px] text-emerald-300/70 truncate">Super Admin</p>
+</div>
+</div>
+<button class="p-1.5 text-emerald-400 hover:text-white hover:bg-emerald-800/50 rounded-lg transition-colors" title="Logout">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+</aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContentArea -->
+<div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- BEGIN: TopBar -->
+<header class="h-20 bg-white border-b border-slate-200/80 px-6 lg:px-8 flex items-center justify-between sticky top-0 z-10 backdrop-blur-md bg-white/95" data-purpose="top-navigation-header">
+<!-- Search Input -->
+<div class="flex-1 max-w-lg">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<input class="w-full pl-10 pr-12 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-slate-700 placeholder-slate-400 transition" placeholder="Cari pesanan, produk, atau pelanggan..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<kbd class="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-white border border-slate-200 rounded shadow-xs">/</kbd>
+</div>
+</div>
+</div>
+<!-- Quick Action Tools on the Right -->
+<div class="flex items-center space-x-3 lg:space-x-4 pl-4">
+<!-- Date Badge Filter -->
+<div class="hidden sm:flex items-center bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-600 space-x-2">
+<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span>25 September 2026</span>
+</div>
+<!-- Notification Button -->
+<button class="relative p-2 text-slate-500 hover:text-emerald-700 hover:bg-slate-100 rounded-xl transition" title="Notifikasi">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-white"></span>
+</button>
+<!-- CTA Button -->
+<button class="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs sm:text-sm px-3.5 sm:px-4 py-2 rounded-xl transition-all shadow-sm shadow-emerald-700/20">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+<span class="hidden sm:inline">Tambah Produk</span>
+</button>
+<div class="h-6 w-px bg-slate-200"></div>
+<!-- Mobile User Avatar -->
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs ring-2 ring-emerald-500/20">
+            TA
+          </div>
+<span class="text-xs font-semibold text-slate-700 hidden xl:inline">Test Admin</span>
+</div>
+</div>
+</header>
+<!-- END: TopBar -->
+<!-- BEGIN: DashboardBody -->
+<main class="p-6 lg:p-8 space-y-6 max-w-7xl w-full mx-auto" data-purpose="dashboard-main-canvas">
+<!-- Page Title & Greeting -->
+<section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3" data-purpose="page-header">
+<div>
+<h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
+<p class="text-sm text-slate-500 mt-1">Ringkasan performa toko, penjualan benih, pakan, dan panen Anda.</p>
+</div>
+<!-- Live Status Pill -->
+<div class="flex items-center space-x-2 self-start sm:self-auto bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-xs font-medium text-emerald-800">Toko Online Aktif</span>
+</div>
+</section>
+<!-- BEGIN: KeyMetricsCards -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5" data-purpose="metrics-summary-grid">
+<!-- Card 1: Total Pendapatan -->
+<div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-[0_2px_10px_-3px_rgba(6,81,46,0.05)] hover:shadow-md transition-shadow group">
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-medium text-slate-500 tracking-wide uppercase">Total Pendapatan</span>
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-2xl font-bold text-slate-900 tracking-tight">Rp 879.000</h3>
+<div class="flex items-center space-x-1.5 text-xs">
+<span class="font-semibold text-emerald-600 flex items-center">
+<svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+                +12.5%
+              </span>
+<span class="text-slate-400">vs bulan lalu</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Total Pesanan -->
+<div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-[0_2px_10px_-3px_rgba(6,81,46,0.05)] hover:shadow-md transition-shadow group">
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-medium text-slate-500 tracking-wide uppercase">Total Pesanan</span>
+<div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-2xl font-bold text-slate-900 tracking-tight">7</h3>
+<div class="flex items-center space-x-1.5 text-xs">
+<span class="font-semibold text-emerald-600 flex items-center">
+<svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+                +4 pesanan
+              </span>
+<span class="text-slate-400">minggu ini</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Pelanggan -->
+<div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-[0_2px_10px_-3px_rgba(6,81,46,0.05)] hover:shadow-md transition-shadow group">
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-medium text-slate-500 tracking-wide uppercase">Pelanggan</span>
+<div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-2xl font-bold text-slate-900 tracking-tight">1</h3>
+<div class="flex items-center space-x-1.5 text-xs">
+<span class="font-semibold text-emerald-600 flex items-center">
+<svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+                +100%
+              </span>
+<span class="text-slate-400">pelanggan aktif</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Rata-rata Pesanan (AOV) -->
+<div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-[0_2px_10px_-3px_rgba(6,81,46,0.05)] hover:shadow-md transition-shadow group">
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-medium text-slate-500 tracking-wide uppercase">Rata-rata Pesanan</span>
+<div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-2xl font-bold text-slate-900 tracking-tight">Rp 125.571</h3>
+<div class="flex items-center space-x-1.5 text-xs">
+<span class="text-slate-500 font-medium">Berdasarkan 7 pesanan</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: KeyMetricsCards -->
+<!-- BEGIN: ChartsAndAnalyticsSection -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6" data-purpose="charts-and-order-status-breakdown">
+<!-- Left: Pendapatan Bulanan Bar Chart (Spans 2 Cols) -->
+<div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm flex flex-col justify-between" data-purpose="monthly-revenue-chart">
+<div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+<div>
+<h2 class="text-base font-bold text-slate-900">Pendapatan Bulanan</h2>
+<p class="text-xs text-slate-500 mt-0.5">Total 6 bulan terakhir: <span class="font-bold text-emerald-800">Rp 879.000</span></p>
+</div>
+<!-- Timeframe Toggle Buttons -->
+<div class="inline-flex p-1 bg-slate-100 rounded-xl self-start sm:self-auto">
+<button class="px-3 py-1 text-xs font-semibold rounded-lg bg-white text-slate-800 shadow-xs">6 bulan</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-500 hover:text-slate-800 transition">12 bulan</button>
+</div>
+</div>
+<!-- Custom Modern CSS Bar Chart Visualizer -->
+<div class="pt-8 pb-3 px-2">
+<div class="h-64 flex items-end justify-between gap-3 sm:gap-6 border-b border-slate-200 relative pb-1">
+<!-- Background Gridlines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-30">
+<div class="w-full border-b border-dashed border-slate-300"></div>
+<div class="w-full border-b border-dashed border-slate-300"></div>
+<div class="w-full border-b border-dashed border-slate-300"></div>
+<div class="w-full border-b border-dashed border-slate-300"></div>
+</div>
+<!-- Apr Bar -->
+<div class="flex-1 flex flex-col items-center h-full justify-end group z-1">
+<div class="text-[10px] font-semibold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-1">Rp 0</div>
+<div class="w-full max-w-[48px] h-[3%] bg-slate-200/70 rounded-t-lg bar-transition"></div>
+<span class="text-xs font-medium text-slate-500 mt-3">Apr</span>
+</div>
+<!-- Mei Bar -->
+<div class="flex-1 flex flex-col items-center h-full justify-end group z-1">
+<div class="text-[10px] font-semibold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-1">Rp 0</div>
+<div class="w-full max-w-[48px] h-[3%] bg-slate-200/70 rounded-t-lg bar-transition"></div>
+<span class="text-xs font-medium text-slate-500 mt-3">Mei</span>
+</div>
+<!-- Jun Bar -->
+<div class="flex-1 flex flex-col items-center h-full justify-end group z-1">
+<div class="text-[10px] font-semibold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-1">Rp 0</div>
+<div class="w-full max-w-[48px] h-[3%] bg-slate-200/70 rounded-t-lg bar-transition"></div>
+<span class="text-xs font-medium text-slate-500 mt-3">Jun</span>
+</div>
+<!-- Jul Bar -->
+<div class="flex-1 flex flex-col items-center h-full justify-end group z-1">
+<div class="text-[10px] font-semibold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-1">Rp 0</div>
+<div class="w-full max-w-[48px] h-[3%] bg-slate-200/70 rounded-t-lg bar-transition"></div>
+<span class="text-xs font-medium text-slate-500 mt-3">Jul</span>
+</div>
+<!-- Agu Bar -->
+<div class="flex-1 flex flex-col items-center h-full justify-end group z-1">
+<div class="text-[10px] font-semibold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-1">Rp 0</div>
+<div class="w-full max-w-[48px] h-[3%] bg-slate-200/70 rounded-t-lg bar-transition"></div>
+<span class="text-xs font-medium text-slate-500 mt-3">Agu</span>
+</div>
+<!-- Sep Bar (Current Active Month with Spike) -->
+<div class="flex-1 flex flex-col items-center h-full justify-end group z-1 relative">
+<!-- Highlight Tag Tooltip -->
+<div class="absolute -top-3 bg-emerald-900 text-white font-bold text-[11px] px-2.5 py-1 rounded-md shadow-md shadow-emerald-950/20 flex items-center gap-1">
+<span>Rp 879 rb</span>
+</div>
+<!-- Main Green Bar matching original #1b4d3e / #3e685c tone -->
+<div class="w-full max-w-[48px] h-[82%] bg-[#2d5f50] group-hover:bg-[#1f473b] rounded-t-lg bar-transition shadow-sm"></div>
+<span class="text-xs font-bold text-emerald-800 mt-3">Sep</span>
+</div>
+</div>
+</div>
+</div>
+<p class="text-[11px] text-slate-400 mt-3 pt-3 border-t border-slate-100 leading-relaxed">
+            * Angka di atas batang adalah pendapatan bulan tersebut. Arahkan kursor ke batang untuk detail lengkap (bulan, rupiah, jumlah pesanan).
+          </p>
+</div>
+<!-- Right: Status Pesanan Distribution Card -->
+<div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm flex flex-col justify-between" data-purpose="order-status-card">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-slate-100">
+<h2 class="text-base font-bold text-slate-900">Status Pesanan</h2>
+<span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">Total 7</span>
+</div>
+<!-- Progress Rows -->
+<div class="mt-6 space-y-5">
+<!-- Menunggu -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<span class="font-medium text-slate-700 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    Menunggu
+                  </span>
+<span class="font-bold text-slate-800">2 <span class="text-slate-400 font-normal">(29%)</span></span>
+</div>
+<div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-amber-400 rounded-full" style="width: 29%"></div>
+</div>
+</div>
+<!-- Selesai -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<span class="font-medium text-slate-700 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                    Selesai
+                  </span>
+<span class="font-bold text-slate-800">1 <span class="text-slate-400 font-normal">(14%)</span></span>
+</div>
+<div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-teal-500 rounded-full" style="width: 14%"></div>
+</div>
+</div>
+<!-- Dibayar / Diproses -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<span class="font-medium text-slate-700 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Dibayar
+                  </span>
+<span class="font-bold text-slate-800">3 <span class="text-slate-400 font-normal">(43%)</span></span>
+</div>
+<div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 43%"></div>
+</div>
+</div>
+<!-- Dibatalkan -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<span class="font-medium text-slate-700 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                    Dibatalkan
+                  </span>
+<span class="font-bold text-slate-800">1 <span class="text-slate-400 font-normal">(14%)</span></span>
+</div>
+<div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-rose-500 rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Operational Hint Box -->
+<div class="mt-6 p-3.5 bg-emerald-50/70 border border-emerald-100 rounded-xl flex items-center gap-3">
+<div class="p-2 bg-emerald-100 text-emerald-800 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<p class="text-xs text-emerald-900 leading-tight">
+              3 pesanan yang telah dibayar siap dikemas dan dikirimkan oleh tim ekspedisi.
+            </p>
+</div>
+</div>
+</section>
+<!-- END: ChartsAndAnalyticsSection -->
+<!-- BEGIN: RecentOrdersTableSection -->
+<section class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden" data-purpose="recent-orders-table-wrapper">
+<!-- Table Header & Controls -->
+<div class="p-6 pb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="text-base font-bold text-slate-900">Pesanan Terbaru</h2>
+<p class="text-xs text-slate-500 mt-0.5">Daftar transaksi pelanggan terkini melalui platform JagoFarm</p>
+</div>
+<a class="inline-flex items-center text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition gap-1 self-start sm:self-auto group" href="#">
+            Lihat Semua Pesanan
+            <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</div>
+<!-- Orders Table Responsive Container -->
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs text-slate-600" id="recent-orders-table">
+<thead class="bg-slate-50/80 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200/80 text-[11px]">
+<tr>
+<th class="py-3.5 px-6" scope="col">No. Pesanan</th>
+<th class="py-3.5 px-6" scope="col">Pelanggan</th>
+<th class="py-3.5 px-6" scope="col">Produk Item</th>
+<th class="py-3.5 px-6" scope="col">Tanggal &amp; Waktu</th>
+<th class="py-3.5 px-6" scope="col">Total Tagihan</th>
+<th class="py-3.5 px-6 text-center" scope="col">Status</th>
+<th class="py-3.5 px-6 text-right" scope="col">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1: Direct from screenshot data (JF-260925-7FD1 / Budi Petani / Rp 84.000 / Dibayar) -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-4 px-6 font-semibold text-slate-900 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<span>#JF-260925-7FD1</span>
+<button class="text-slate-400 hover:text-slate-600" title="Salin ID">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">
+                      BP
+                    </div>
+<div>
+<span class="font-semibold text-slate-900 block">Budi Petani</span>
+<span class="text-[11px] text-slate-400">budi@tambaksubur.id</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="text-slate-700 font-medium line-clamp-1">Benih Ikan Nila Gift Super x500</span>
+<span class="text-[10px] text-slate-400">Pakan Tambak 2x</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-slate-500">
+<span>25 September 2026</span>
+<span class="block text-[11px] text-slate-400">14:20 WIB</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<span class="font-bold text-slate-900 text-sm">Rp 84.000</span>
+<span class="block text-[10px] text-emerald-600 font-medium">QRIS / Instant</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100/90 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                    Dibayar
+                  </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-right">
+<button class="px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg border border-slate-200 transition">
+                    Kelola
+                  </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-4 px-6 font-semibold text-slate-900 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<span>#JF-260925-5AA2</span>
+<button class="text-slate-400 hover:text-slate-600" title="Salin ID">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-xs">
+                      HS
+                    </div>
+<div>
+<span class="font-semibold text-slate-900 block">Hendra Santoso</span>
+<span class="text-[11px] text-slate-400">hendra.aquafarm@gmail.com</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="text-slate-700 font-medium line-clamp-1">Vitamin &amp; Probiotik Kolam 1L</span>
+<span class="text-[10px] text-slate-400">+ Aerator Venturi</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-slate-500">
+<span>25 September 2026</span>
+<span class="block text-[11px] text-slate-400">11:15 WIB</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<span class="font-bold text-slate-900 text-sm">Rp 350.000</span>
+<span class="block text-[10px] text-blue-600 font-medium">BCA Virtual Account</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100/90 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                    Dibayar
+                  </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-right">
+<button class="px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg border border-slate-200 transition">
+                    Kelola
+                  </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-4 px-6 font-semibold text-slate-900 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<span>#JF-260924-81C3</span>
+<button class="text-slate-400 hover:text-slate-600" title="Salin ID">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-xs">
+                      WP
+                    </div>
+<div>
+<span class="font-semibold text-slate-900 block">Wahyu Pratama</span>
+<span class="text-[11px] text-slate-400">wahyu@hidroponik.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="text-slate-700 font-medium line-clamp-1">Nutrisi AB Mix Hidroponik 5L</span>
+<span class="text-[10px] text-slate-400">Rockwool Cultilene x1 Ball</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-slate-500">
+<span>24 September 2026</span>
+<span class="block text-[11px] text-slate-400">19:40 WIB</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<span class="font-bold text-slate-900 text-sm">Rp 210.000</span>
+<span class="block text-[10px] text-amber-600 font-medium">Menunggu Transfer</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
+                    Menunggu
+                  </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-right">
+<button class="px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg border border-slate-200 transition">
+                    Kelola
+                  </button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-4 px-6 font-semibold text-slate-900 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<span>#JF-260923-3B99</span>
+<button class="text-slate-400 hover:text-slate-600" title="Salin ID">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs">
+                      SL
+                    </div>
+<div>
+<span class="font-semibold text-slate-900 block">Sari Lestari Farm</span>
+<span class="text-[11px] text-slate-400">orders@sarilestari.com</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="text-slate-700 font-medium line-clamp-1">Benih Lele Dumbo Grade A</span>
+<span class="text-[10px] text-slate-400">Karantina Express</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-slate-500">
+<span>23 September 2026</span>
+<span class="block text-[11px] text-slate-400">09:12 WIB</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap">
+<span class="font-bold text-slate-900 text-sm">Rp 235.000</span>
+<span class="block text-[10px] text-slate-500 font-medium">Mandiri Transfer</span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-100 text-teal-800 border border-teal-200">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-500 mr-1.5"></span>
+                    Selesai
+                  </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-right">
+<button class="px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg border border-slate-200 transition">
+                    Kelola
+                  </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+<span>Menampilkan <strong>4</strong> dari <strong>7</strong> pesanan</span>
+<div class="inline-flex space-x-1.5">
+<button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-400 cursor-not-allowed">Sebelumnya</button>
+<button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-medium">Berikutnya</button>
+</div>
+</div>
+</section>
+<!-- END: RecentOrdersTableSection -->
+</main>
+<!-- END: DashboardBody -->
+<!-- BEGIN: Footer -->
+<footer class="mt-auto px-6 lg:px-8 py-4 border-t border-slate-200/80 bg-white text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2" data-purpose="admin-portal-footer">
+<div>
+        © 2026 <strong class="text-slate-600 font-semibold">JagoFarm</strong> — Agri-Aquaculture Ecosystem Management Console.
+      </div>
+<div class="flex items-center space-x-4">
+<a class="hover:text-emerald-700 transition" href="#">Bantuan &amp; Dokumentasi</a>
+<span>•</span>
+<a class="hover:text-emerald-700 transition" href="#">Kebijakan Privasi</a>
+</div>
+</footer>
+<!-- END: Footer -->
+</div>
+<!-- END: MainContentArea -->
