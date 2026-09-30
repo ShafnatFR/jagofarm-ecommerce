@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product/product-card";
+import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 
 export const dynamic = "force-dynamic";
 
@@ -80,44 +81,20 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-            {/* Right Hero — 5 Random Products Showcase */}
+            {/* Right Hero — Product Carousel */}
             <div className="lg:col-span-5 relative">
-              <div className="grid grid-cols-2 gap-3">
-                {/* Main featured product (first random) */}
-                {heroProducts[0] && (
-                  <Link href={`/products/${heroProducts[0].slug}`} className="col-span-2 relative group rounded-2xl overflow-hidden aspect-[16/9] bg-surface-container-highest/20 border border-white/10">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={heroProducts[0].name} src={heroProducts[0].image_url || "/placeholder-product.png"}/>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                    <div className="absolute bottom-3 left-3 right-3">
-                      <span className="text-label-sm font-label-sm bg-secondary-fixed-dim text-primary px-2 py-0.5 rounded-full font-bold">{heroProducts[0].category_name}</span>
-                      <h3 className="text-headline-sm font-headline-sm text-white mt-1.5 line-clamp-1">{heroProducts[0].name}</h3>
-                      <p className="text-label-md font-label-md text-white/80 mt-0.5">Rp {Number(heroProducts[0].discount_price || heroProducts[0].base_price).toLocaleString("id-ID")}</p>
-                    </div>
-                  </Link>
-                )}
-                {/* 4 smaller product cards */}
-                {heroProducts.slice(1, 5).map((p) => (
-                  <Link key={p.id} href={`/products/${p.slug}`} className="relative group rounded-xl overflow-hidden aspect-square bg-surface-container-highest/20 border border-white/10">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.name} src={p.image_url || "/placeholder-product.png"}/>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                    <div className="absolute bottom-2 left-2 right-2">
-                      <h3 className="text-label-md font-label-md text-white line-clamp-1 font-semibold">{p.name}</h3>
-                      <p className="text-label-sm font-label-sm text-white/70">Rp {Number(p.discount_price || p.base_price).toLocaleString("id-ID")}</p>
-                    </div>
-                  </Link>
-                ))}
-                {/* Fallback if less than 5 products */}
-                {heroProducts.length === 0 && (
-                  <div className="col-span-2 flex items-center justify-center aspect-[16/9] rounded-2xl bg-white/10 border border-white/20">
-                    <p className="text-primary-fixed-dim text-body-md">Produk segera hadir</p>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center justify-center gap-2 mt-4">
-                <span className="text-label-sm font-label-sm text-primary-fixed-dim">↻ Refresh untuk produk lain</span>
-              </div>
+              <HeroProductCarousel
+                products={heroProducts.map((p) => ({
+                  id: p.id,
+                  name: p.name,
+                  slug: p.slug,
+                  basePrice: Number(p.base_price),
+                  discountPrice: p.discount_price ? Number(p.discount_price) : null,
+                  imageUrl: p.image_url || "/placeholder-product.png",
+                  categoryName: p.category_name || "Produk",
+                }))}
+                intervalMs={4000}
+              />
             </div>
           </div>
         </div>
