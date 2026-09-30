@@ -22,48 +22,7 @@ export default function Page() {
 <i className="w-4 h-4 text-slate-400" data-lucide="list"></i>
               Daftar Isi Kebijakan
             </h3>
-<nav className="space-y-1 text-sm font-medium">
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-1">
-<span className="w-5 text-xs text-slate-400 font-mono">01</span>
-<span>Data yang Kami Kumpulkan</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-2">
-<span className="w-5 text-xs text-slate-400 font-mono">02</span>
-<span>Tujuan Penggunaan Data</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-3">
-<span className="w-5 text-xs text-slate-400 font-mono">03</span>
-<span>Pihak Ketiga yang Terlibat</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-4">
-<span className="w-5 text-xs text-slate-400 font-mono">04</span>
-<span>Cookie &amp; Teknologi Serupa</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-5">
-<span className="w-5 text-xs text-slate-400 font-mono">05</span>
-<span>Retensi Penyimpanan Data</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-6">
-<span className="w-5 text-xs text-slate-400 font-mono">06</span>
-<span>Keamanan &amp; Enkripsi Data</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-7">
-<span className="w-5 text-xs text-slate-400 font-mono">07</span>
-<span>Hak Anda atas Data Pribadi</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-8">
-<span className="w-5 text-xs text-slate-400 font-mono">08</span>
-<span>Data Anak-anak</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-9">
-<span className="w-5 text-xs text-slate-400 font-mono">09</span>
-<span>Perubahan Kebijakan</span>
-</a>
-<a className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-10">
-<span className="w-5 text-xs text-slate-400 font-mono">10</span>
-<span>Kontak &amp; Saluran DPO</span>
-</a>
-</nav>
+
 </div>
 
 <div className="bg-gradient-to-br from-brand-900 to-brand-950 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden">
@@ -145,8 +104,8 @@ export default function Page() {
 </li>
 </ul>
 
-<div className="mt-6 p-4 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs sm:text-sm text-emerald-900 flex items-start gap-3">
-<i className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" data-lucide="shield-alert"></i>
+<div className="mt-6 p-4 rounded-xl bg-green-50/80 border border-emerald-200 text-xs sm:text-sm text-emerald-900 flex items-start gap-3">
+<i className="w-5 h-5 text-green-700 flex-shrink-0 mt-0.5" data-lucide="shield-alert"></i>
 <div>
 <span className="font-bold">Keamanan Finansial:</span> 
               Kami <strong>tidak pernah menyimpan data nomor kartu kredit/debit</strong>, nomor CVV, maupun kredensial perbankan Anda di server kami. Seluruh proses penagihan diproses secara langsung melalui payment gateway resmi berlisensi Bank Indonesia.
@@ -251,7 +210,7 @@ export default function Page() {
 <div className="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
 <div className="flex items-center justify-between mb-1">
 <strong className="text-slate-900 font-bold">Supabase</strong>
-<span className="text-xs px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-medium border border-emerald-200/50">Database &amp; Autentikasi</span>
+<span className="text-xs px-2 py-0.5 rounded-md bg-green-50 text-green-700 font-medium border border-emerald-200/50">Database &amp; Autentikasi</span>
 </div>
 <p className="text-xs text-slate-600">Penyimpanan basis data cloud dengan enkripsi at-rest dan in-transit, serta pengelolaan token autentikasi sesi akun pengguna secara aman.</p>
 </div>

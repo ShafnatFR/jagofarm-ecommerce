@@ -48,7 +48,7 @@ export default function Page() {
 
 <div className="flex-1">
 <div className="flex items-center gap-2 mb-2">
-<span className="inline-flex p-1.5 rounded-lg bg-emerald-50 text-brand-700">
+<span className="inline-flex p-1.5 rounded-lg bg-green-50 text-brand-700">
 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
 </svg>
@@ -76,7 +76,7 @@ export default function Page() {
 
 <div className="flex-1">
 <div className="flex items-center gap-2 mb-2">
-<span className="inline-flex p-1.5 rounded-lg bg-emerald-50 text-brand-700">
+<span className="inline-flex p-1.5 rounded-lg bg-green-50 text-brand-700">
 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
 </svg>
@@ -91,7 +91,7 @@ export default function Page() {
 <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 text-xs font-medium rounded-md border border-amber-200">
                 ⚡ Diskon Paket Bundle Otomatis
               </span>
-<span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-brand-800 text-xs font-medium rounded-md border border-emerald-200">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-brand-800 text-xs font-medium rounded-md border border-emerald-200">
                 📋 Pre-order Terfasilitasi
               </span>
 </div>
@@ -106,7 +106,7 @@ export default function Page() {
 
 <div className="flex-1">
 <div className="flex items-center gap-2 mb-2">
-<span className="inline-flex p-1.5 rounded-lg bg-emerald-50 text-brand-700">
+<span className="inline-flex p-1.5 rounded-lg bg-green-50 text-brand-700">
 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
 <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
@@ -123,7 +123,7 @@ export default function Page() {
 <span className="px-2.5 py-1 bg-slate-100 rounded text-xs font-semibold text-slate-700">JNE Yes/Trucking</span>
 <span className="px-2.5 py-1 bg-slate-100 rounded text-xs font-semibold text-slate-700">SiCepat Cargo</span>
 <span className="px-2.5 py-1 bg-slate-100 rounded text-xs font-semibold text-slate-700">AnterAja</span>
-<span className="px-2.5 py-1 bg-emerald-100/80 text-brand-900 rounded text-xs font-semibold">Kargo Bandara Khusus Bibit</span>
+<span className="px-2.5 py-1 bg-green-100/80 text-brand-900 rounded text-xs font-semibold">Kargo Bandara Khusus Bibit</span>
 </div>
 </div>
 </div>
@@ -136,7 +136,7 @@ export default function Page() {
 
 <div className="flex-1">
 <div className="flex items-center gap-2 mb-2">
-<span className="inline-flex p-1.5 rounded-lg bg-emerald-50 text-brand-700">
+<span className="inline-flex p-1.5 rounded-lg bg-green-50 text-brand-700">
 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
 </svg>
@@ -147,7 +147,7 @@ export default function Page() {
               Lakukan pembayaran sesuai metode yang dipilih. Kami menerima transfer Virtual Account, QRIS instan, e-wallet (GoPay, OVO, ShopeePay), dan transfer manual. Batas waktu pelunasan adalah 24 jam dengan verifikasi otomatis detik itu juga.
             </p>
 <div className="flex items-center gap-3 text-xs text-slate-600">
-<span className="inline-flex items-center gap-1 font-semibold text-emerald-700">
+<span className="inline-flex items-center gap-1 font-semibold text-green-700">
 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
                 Auto-Confirmed
               </span>
@@ -167,7 +167,7 @@ export default function Page() {
 
 <div className="flex-1">
 <div className="flex items-center gap-2 mb-2">
-<span className="inline-flex p-1.5 rounded-lg bg-emerald-50 text-brand-700">
+<span className="inline-flex p-1.5 rounded-lg bg-green-50 text-brand-700">
 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
 </svg>
@@ -178,8 +178,8 @@ export default function Page() {
               Pesanan Anda dikemas secara higienis menggunakan wadah standar agroindustri. Lacak posisi kiriman melalui menu <strong>"Pesanan Saya"</strong>. Saat barang sampai di depan pintu Anda, nikmati garansi perlindungan produk.
             </p>
 
-<div className="p-3.5 bg-emerald-50/70 border border-emerald-200/70 rounded-xl flex items-center gap-3">
-<svg className="w-6 h-6 text-emerald-700 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div className="p-3.5 bg-green-50/70 border border-emerald-200/70 rounded-xl flex items-center gap-3">
+<svg className="w-6 h-6 text-green-700 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
 </svg>
 <div className="text-xs sm:text-sm text-emerald-950 font-medium">
@@ -192,11 +192,11 @@ export default function Page() {
 
 <div className="mt-12 bg-gradient-to-br from-brand-900 to-slate-900 rounded-3xl p-8 sm:p-10 text-white shadow-xl shadow-brand-900/10 relative overflow-hidden">
 
-<div className="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-2xl" />
+<div className="absolute -right-16 -top-16 w-64 h-64 bg-green-500/10 rounded-full blur-2xl" />
 <div className="absolute right-10 bottom-0 w-48 h-48 bg-amber-500/10 rounded-full blur-xl" />
 <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
 <div className="max-w-xl text-center md:text-left">
-<span className="inline-block px-3 py-1 bg-white/10 text-emerald-300 text-xs font-semibold rounded-full mb-3 uppercase tracking-wider">
+<span className="inline-block px-3 py-1 bg-white/10 text-green-300 text-xs font-semibold rounded-full mb-3 uppercase tracking-wider">
               Layanan Bantuan Pelanggan
             </span>
 <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">

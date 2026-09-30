@@ -5,15 +5,9 @@ export default function Page() {
     <div dangerouslySetInnerHTML={{__html: `<section className="bg-gradient-to-b from-emerald-50/50 via-white to-[#f8fafc] pt-8 pb-12 border-b border-slate-100">
 <div className="max-w-4xl mx-auto px-4 text-center">
 
-<nav className="flex items-center justify-center space-x-2 text-xs text-slate-500 font-medium mb-6">
-<a className="hover:text-emerald-700 transition" href="#">Beranda</a>
-<span>/</span>
-<a className="hover:text-emerald-700 transition" href="#">Kebijakan</a>
-<span>/</span>
-<span className="text-slate-800">Kebijakan Pengembalian &amp; Refund</span>
-</nav>
 
-<div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/70 text-emerald-800 border border-emerald-200/60 text-xs font-semibold tracking-wide uppercase mb-4 shadow-xs">
+
+<div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-green-100/70 text-green-800 border border-emerald-200/60 text-xs font-semibold tracking-wide uppercase mb-4 shadow-xs">
 <svg className="w-3.5 h-3.5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
 </svg>
@@ -30,15 +24,15 @@ export default function Page() {
 
 <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
 <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 shadow-2xs">
-<span className="w-2 h-2 rounded-full bg-emerald-500" />
+<span className="w-2 h-2 rounded-full bg-green-500" />
             Garansi 100% Ikan Hidup
           </div>
 <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 shadow-2xs">
-<span className="w-2 h-2 rounded-full bg-emerald-500" />
+<span className="w-2 h-2 rounded-full bg-green-500" />
             Pengembalian 7 Hari Kerja
           </div>
 <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 shadow-2xs">
-<span className="w-2 h-2 rounded-full bg-emerald-500" />
+<span className="w-2 h-2 rounded-full bg-green-500" />
             Verifikasi Cepat 1x24 Jam
           </div>
 </div>
@@ -49,7 +43,7 @@ export default function Page() {
 
 <section className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs hover:border-emerald-200 transition-all" data-purpose="syarat-pengembalian">
 <div className="flex items-start gap-4">
-<div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
+<div className="w-12 h-12 rounded-xl bg-green-50 text-green-700 flex items-center justify-center shrink-0 border border-emerald-100">
 
 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
@@ -63,7 +57,7 @@ export default function Page() {
 <p className="text-sm text-slate-500 mt-1 mb-5">Pengembalian barang dapat diajukan jika memenuhi kriteria berikut:</p>
 <ul className="space-y-3.5">
 <li className="flex items-start gap-3">
-<span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+<span className="w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0 mt-0.5">
 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
 </svg>
@@ -73,7 +67,7 @@ export default function Page() {
                 </span>
 </li>
 <li className="flex items-start gap-3">
-<span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+<span className="w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0 mt-0.5">
 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
 </svg>
@@ -83,7 +77,7 @@ export default function Page() {
                 </span>
 </li>
 <li className="flex items-start gap-3">
-<span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+<span className="w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0 mt-0.5">
 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
 </svg>
@@ -93,7 +87,7 @@ export default function Page() {
                 </span>
 </li>
 <li className="flex items-start gap-3">
-<span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+<span className="w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0 mt-0.5">
 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
 </svg>
@@ -257,7 +251,7 @@ export default function Page() {
           </p>
 </div>
 <div className="flex flex-wrap items-center gap-3 shrink-0">
-<a className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-xs transition" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<a className="inline-flex items-center gap-2 bg-green-500 hover:bg-emerald-400 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-xs transition" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
 
 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />

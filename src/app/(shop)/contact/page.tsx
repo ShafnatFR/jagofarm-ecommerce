@@ -86,7 +86,7 @@ export default function Page() {
 </div>
 
 <div className="pt-5 flex items-start gap-4">
-<div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 text-emerald-600 shadow-sm mt-0.5">
+<div className="w-11 h-11 rounded-xl bg-green-50 border border-emerald-100 flex items-center justify-center shrink-0 text-emerald-600 shadow-sm mt-0.5">
 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.964 9.964 0 001.533 5.337L2 22l4.823-1.504a9.95 9.95 0 005.19 1.487h.004c5.507 0 9.99-4.478 9.99-9.985 0-2.667-1.04-5.174-2.927-7.06A9.929 9.929 0 0012.012 2zm5.82 14.125c-.24.675-1.393 1.29-1.927 1.373-.509.078-1.171.11-1.895-.121a11.954 11.954 0 01-4.707-2.923 11.83 11.83 0 01-2.03-2.528c-.522-.898-.553-1.688-.04-2.222.253-.264.555-.436.745-.436.19 0 .381.002.547.01.177.008.413-.067.645.49.24.577.818 1.996.89 2.143.072.147.12.32.024.513-.096.194-.144.316-.288.486-.144.17-.303.38-.432.51-.144.143-.294.3-.127.585.168.286.746 1.23 1.602 1.991 1.102.98 2.032 1.284 2.32 1.428.288.143.456.12.624-.072.169-.192.721-.84.914-1.127.192-.287.384-.24.648-.143.264.095 1.68.792 1.968.936.288.144.48.216.552.336.072.12.072.696-.168 1.371z" />
 </svg>
@@ -94,8 +94,8 @@ export default function Page() {
 <div className="space-y-1 flex-1">
 <div className="flex items-center justify-between">
 <h3 className="text-sm font-semibold text-slate-900">WhatsApp</h3>
-<span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-<span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+<span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green-800 bg-green-50 px-2 py-0.5 rounded-full border border-emerald-200">
+<span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                     Respon Cepat
                   </span>
 </div>
@@ -125,7 +125,7 @@ export default function Page() {
 <div className="absolute w-[140%] h-5 bg-white/90 rotate-[-18deg] -top-2 -left-10 shadow-sm border-y border-slate-200/60" />
 <div className="absolute w-[140%] h-8 bg-white/90 rotate-[35deg] top-12 -left-10 shadow-sm border-y border-slate-200/60" />
 <div className="absolute h-[160%] w-6 bg-white/90 -rotate-[12deg] left-1/3 -top-10 shadow-sm border-x border-slate-200/60" />
-<div className="absolute w-24 h-24 rounded-full bg-emerald-100/70 border border-emerald-200 top-10 right-8 pointer-events-none" />
+<div className="absolute w-24 h-24 rounded-full bg-green-100/70 border border-emerald-200 top-10 right-8 pointer-events-none" />
 
 <div className="relative z-10 flex flex-col items-center cursor-pointer transition transform group-hover:-translate-y-1">
 <div className="relative">

@@ -2,7 +2,7 @@ export const metadata = { title: "Kebijakan Pengiriman - JagoFarm" };
 
 export default function Page() {
   return (
-    <div dangerouslySetInnerHTML={{__html: `<section className="bg-white rounded-2xl border border-slate-200 shadow-soft p-6 sm:p-8 transition-all hover:shadow-float" data-purpose="courier-partners" id="kurir-rekanan">
+    <div dangerouslySetInnerHTML={{__html: `<section className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 sm:p-8 transition-all hover:shadow-float" data-purpose="courier-partners" id="kurir-rekanan">
 
 <div className="flex items-center justify-between pb-6 border-b border-slate-100 flex-wrap gap-3">
 <div className="flex items-center gap-3">
@@ -16,8 +16,8 @@ export default function Page() {
 <p className="text-sm text-slate-500">Pilihan ekspedisi dengan standard handling aman khusus perlengkapan pertanian &amp; perikanan</p>
 </div>
 </div>
-<span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
-<span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+<span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 bg-green-50 text-green-700 rounded-full border border-emerald-200">
+<span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           Semua Layanan Aktif
         </span>
 </div>
@@ -40,14 +40,14 @@ export default function Page() {
 </div>
 <div className="flex items-start gap-2">
 <span className="font-semibold text-slate-800 min-w-[55px]">Estimasi:</span>
-<span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">1 - 5 hari kerja</span>
+<span className="text-green-700 font-bold bg-green-50 px-1.5 py-0.5 rounded">1 - 5 hari kerja</span>
 </div>
 <p className="pt-1 text-[11px] text-slate-500 italic">Rekomendasi untuk kolam terpal bulat, pupuk sak, dan pipa hidroponik panjang.</p>
 </div>
 </div>
 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
 <span className="flex items-center gap-1">
-<svg className="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" /></svg>
+<svg className="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd" /></svg>
               Asuransi Opsional
             </span>
 <span className="font-semibold text-brand-700">Resi Otomatis</span>
@@ -70,14 +70,14 @@ export default function Page() {
 </div>
 <div className="flex items-start gap-2">
 <span className="font-semibold text-slate-800 min-w-[55px]">Estimasi:</span>
-<span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">1 - 4 hari kerja</span>
+<span className="text-green-700 font-bold bg-green-50 px-1.5 py-0.5 rounded">1 - 4 hari kerja</span>
 </div>
 <p className="pt-1 text-[11px] text-slate-500 italic">Cocok untuk nutrisi AB Mix cair, bibit tanaman botolan, dan sensor pH / IoT.</p>
 </div>
 </div>
 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
 <span className="flex items-center gap-1">
-<svg className="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" /></svg>
+<svg className="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd" /></svg>
               Pelacakan GPS
             </span>
 <span className="font-semibold text-brand-700">Resi Otomatis</span>
@@ -99,14 +99,14 @@ export default function Page() {
 </div>
 <div className="flex items-start gap-2">
 <span className="font-semibold text-slate-800 min-w-[55px]">Estimasi:</span>
-<span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">1 - 3 hari kerja</span>
+<span className="text-green-700 font-bold bg-green-50 px-1.5 py-0.5 rounded">1 - 3 hari kerja</span>
 </div>
 <p className="pt-1 text-[11px] text-slate-500 italic">Optimal untuk pengiriman spare part pompa, aerator, dan benih microgreens.</p>
 </div>
 </div>
 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
 <span className="flex items-center gap-1">
-<svg className="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" /></svg>
+<svg className="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd" /></svg>
               Foto Bukti Antar
             </span>
 <span className="font-semibold text-brand-700">Resi Otomatis</span>
@@ -124,7 +124,7 @@ export default function Page() {
 
 
 
-<section className="bg-white rounded-2xl border border-slate-200 shadow-soft p-6 sm:p-8" data-purpose="shipping-rates-volumetric" id="biaya-pengiriman">
+<section className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 sm:p-8" data-purpose="shipping-rates-volumetric" id="biaya-pengiriman">
 
 <div className="flex items-center gap-3 pb-6 border-b border-slate-100">
 <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center font-bold">
@@ -162,12 +162,12 @@ export default function Page() {
 
 <div className="lg:col-span-5 bg-gradient-to-br from-brand-900 to-brand-forest text-white p-6 rounded-2xl shadow-md border border-brand-800">
 <div className="flex items-center justify-between pb-3 border-b border-brand-700/60 mb-4">
-<span className="text-xs uppercase font-bold tracking-wider text-emerald-300">Rumus Baku Logistik</span>
+<span className="text-xs uppercase font-bold tracking-wider text-green-300">Rumus Baku Logistik</span>
 <span className="text-[11px] bg-brand-800 text-brand-200 px-2 py-0.5 rounded">Standar Asperindo</span>
 </div>
 <p className="text-xs text-slate-200 mb-3">Formula Berat Volumetrik untuk ekspedisi darat &amp; udara:</p>
 <div className="bg-black/25 rounded-xl p-4 text-center border border-white/10 font-mono mb-4">
-<div className="text-xs text-emerald-300 mb-1">Berat Volumetrik (Kg) =</div>
+<div className="text-xs text-green-300 mb-1">Berat Volumetrik (Kg) =</div>
 <div className="text-base sm:text-lg font-bold text-white tracking-wide">
               ( P × L × T cm ) / 6.000
             </div>
@@ -180,7 +180,7 @@ export default function Page() {
 
 <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-600">
 <div className="flex items-center gap-2">
-<span className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700">
+<span className="p-1.5 rounded-lg bg-green-50 text-green-700">
 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
 </span>
 <span>Gratis bubble wrap tebal 3 lapis untuk seluruh produk elektronik &amp; panel sensor smart farming</span>
@@ -194,9 +194,9 @@ export default function Page() {
 
 
 
-<section className="relative overflow-hidden bg-gradient-to-r from-emerald-50/90 via-brand-50/50 to-white rounded-2xl border-2 border-emerald-200/90 shadow-soft p-6 sm:p-8" data-purpose="free-shipping-tiers" id="gratis-ongkir">
+<section className="relative overflow-hidden bg-gradient-to-r from-emerald-50/90 via-brand-50/50 to-white rounded-2xl border-2 border-emerald-200/90 shadow-md p-6 sm:p-8" data-purpose="free-shipping-tiers" id="gratis-ongkir">
 
-<div className="absolute -right-8 -bottom-8 opacity-10 pointer-events-none text-emerald-800">
+<div className="absolute -right-8 -bottom-8 opacity-10 pointer-events-none text-green-800">
 <svg className="w-64 h-64" fill="currentColor" viewBox="0 0 24 24">
 <path d="M12 8v13m0-13V4.5A2.5 2.5 0 009.5 2H5a3 3 0 00-3 3v12a3 3 0 003 3h4.5a2.5 2.5 0 002.5-2.5V13m0-5h6.5A2.5 2.5 0 0121 10.5V15a3 3 0 01-3 3h-6m0-10V4.5A2.5 2.5 0 0114.5 2H19a3 3 0 013 3v3" />
 </svg>
@@ -222,7 +222,7 @@ export default function Page() {
 <div className="bg-white rounded-xl p-5 border border-emerald-300/80 shadow-sm flex flex-col justify-between">
 <div>
 <div className="flex items-center justify-between mb-3">
-<span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/70 px-2.5 py-1 rounded-md">Wilayah Pulau Jawa</span>
+<span className="text-xs font-bold uppercase tracking-wider text-green-800 bg-green-100/70 px-2.5 py-1 rounded-md">Wilayah Pulau Jawa</span>
 <span className="text-xs font-semibold text-emerald-600">100% Gratis Ongkir</span>
 </div>
 <div className="flex items-baseline gap-1 my-2">
@@ -234,7 +234,7 @@ export default function Page() {
             </p>
 </div>
 <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">
-<svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path clipRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fillRule="evenodd" /></svg>
+<svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd" /></svg>
             Berlaku untuk ekspedisi layanan reguler (JNE, SiCepat, AnterAja).
           </div>
 </div>
@@ -254,21 +254,21 @@ export default function Page() {
             </p>
 </div>
 <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">
-<svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path clipRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fillRule="evenodd" /></svg>
+<svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd" /></svg>
             Potongan langsung terhitung otomatis di ringkasan pembayaran.
           </div>
 </div>
 </div>
 
 <div className="mt-5 text-xs text-slate-600 bg-white/70 p-3.5 rounded-xl border border-emerald-200/50 flex items-center gap-2">
-<svg className="w-4 h-4 text-emerald-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
+<svg className="w-4 h-4 text-green-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
 <span>Program Bebas Ongkir <strong>tidak memerlukan kode voucher</strong>. Potongan akan diterapkan otomatis selama memenuhi syarat minimum keranjang belanja (sebelum ongkos kirim).</span>
 </div>
 </section>
 
 
 
-<section className="bg-white rounded-2xl border-2 border-amber-300 shadow-soft p-6 sm:p-8 relative" data-purpose="live-fish-aquaculture-shipping" id="pengiriman-ikan">
+<section className="bg-white rounded-2xl border-2 border-amber-300 shadow-md p-6 sm:p-8 relative" data-purpose="live-fish-aquaculture-shipping" id="pengiriman-ikan">
 
 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-amber-500 text-white text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
@@ -341,7 +341,7 @@ export default function Page() {
 
 <section className="bg-gradient-to-r from-brand-forest to-brand-900 text-white rounded-2xl shadow-float p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6" data-purpose="tracking-support" id="bantuan-lacak">
 <div className="space-y-2 text-center md:text-left max-w-xl">
-<div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/30">
+<div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-500/20 text-green-300 text-xs font-semibold border border-emerald-500/30">
 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
           Respons Cepat Tim Ekspedisi
         </div>
@@ -351,7 +351,7 @@ export default function Page() {
         </p>
 </div>
 <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
-<a className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-brand-950 font-bold text-sm shadow-md hover:shadow-lg transition-all" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<a className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-green-500 hover:bg-emerald-400 text-brand-950 font-bold text-sm shadow-md hover:shadow-lg transition-all" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
 
 <svg className="w-5 h-5 text-brand-950" fill="currentColor" viewBox="0 0 24 24">
 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
