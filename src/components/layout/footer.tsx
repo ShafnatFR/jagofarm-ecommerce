@@ -118,6 +118,7 @@ export function Footer() {
         </Link>
         <Link className="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary relative" href="/cart">
           <span className="material-symbols-outlined text-[22px]">shopping_cart</span>
+          <span className="absolute -top-1 right-2 bg-error text-on-error text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">3</span>
           <span className="text-label-sm font-label-sm">Toko</span>
         </Link>
         <Link className="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary" href="/account">
