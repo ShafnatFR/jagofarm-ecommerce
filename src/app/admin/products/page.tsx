@@ -186,7 +186,7 @@ export default function ProductsPage() {
                           {activeMenu === product.id && (
                             <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border bg-white py-1 shadow-lg">
                               <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50" onClick={() => setActiveMenu(null)}>
-                                <Icon name="edit" size={16} /> "edit"
+                                <Icon name="edit" size={16} /> Edit
                               </Link>
                               <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50" onClick={() => { setActiveMenu(null); handleDelete(product.id, product.name) }}>
                                 <Icon name="delete" size={16} /> Hapus

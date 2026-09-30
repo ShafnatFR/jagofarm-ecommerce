@@ -274,7 +274,7 @@ export default function ProductDetailPage() {
                 <div>
                   <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Icon name="star" size={12} />
+                      <Icon key={i} name="star" size={12} />
                     ))}
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -321,7 +321,7 @@ export default function ProductDetailPage() {
                   </div>
                   <div className="mt-1 flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
-                      <Icon name="star" size={12} />
+                      <Icon key={i} name="star" size={12} />
                     ))}
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>

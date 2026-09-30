@@ -17,14 +17,14 @@ interface IconProps {
 export function Icon({
   name,
   size = 24,
-  filled = false,
+  filled: _filled = false,
   className = "",
   style,
 }: IconProps) {
   return (
     <span
       className={`material-symbols-outlined ${className}`}
-      style={{ fontSize: size, ...style }}
+      style={{ fontSize: size, fontVariationSettings: _filled ? "'FILL' 1" : undefined, ...style }}
       aria-hidden="true"
     >
       {name}

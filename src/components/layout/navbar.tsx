@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, type FocusEvent } from "react";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { MobileNav } from "./mobile-nav";
 import { useCartStore } from "@/lib/cart-store";
-import { useCategories } from "@/hooks/use-categories";
+
 
 const SEARCH_PLACEHOLDER = "Cari paket tambak, kit hidroponik, sensor IoT, benih...";
 

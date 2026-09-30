@@ -52,7 +52,7 @@ function Stars({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5" title={`${rating} dari 5 bintang`}>
       {[1, 2, 3, 4, 5].map((n) => (
-        <Icon name="star" size={12} />
+        <Icon key={n} name="star" size={12} />
       ))}
       <span className="ml-1 text-xs text-gray-500">{rating}/5</span>
     </div>
