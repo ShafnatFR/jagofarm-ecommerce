@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Icon } from "@/components/ui/icon";
-import { cn } from "@/lib/utils";
 
 type FaqItem = { q: string; a: string };
 
@@ -38,59 +36,75 @@ export default function FaqPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <>
-      <section className="relative pt-16 pb-12 bg-gradient-to-b from-white to-[#FAFBFB]">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-sm font-semibold mb-6 shadow-sm">
-            <Icon name="help" size={16} className="text-emerald-600" />
+    <div className="w-full">
+      {/* Hero */}
+      <section className="bg-primary text-on-primary py-16 md:py-20">
+        <div className="max-w-4xl mx-auto px-margin text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-secondary-fixed-dim text-label-md font-label-md mb-6 backdrop-blur-sm">
+            <span className="material-symbols-outlined text-[16px]">help</span>
             <span>FAQ</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
+          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-on-primary font-extrabold tracking-tight mb-4">
             Pusat Bantuan &amp; FAQ
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-body-lg font-body-lg text-primary-fixed max-w-2xl mx-auto">
             Temukan jawaban untuk pertanyaan umum tentang JagoFarm
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 py-12">
-        <div className="flex gap-2 overflow-x-auto pb-2">
+      {/* FAQ Content */}
+      <section className="max-w-4xl mx-auto px-margin py-12">
+        {/* Category tabs */}
+        <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
           {categoryNames.map((cat) => (
             <button
               key={cat}
               onClick={() => { setActiveCategory(cat); setOpenIndex(null); }}
-              className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
+              className={`rounded-full px-4 py-1.5 text-label-md font-label-md whitespace-nowrap transition-colors ${
                 activeCategory === cat
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-muted-foreground hover:text-foreground"
-              )}
+                  ? "bg-primary text-on-primary shadow-sm"
+                  : "bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant border border-outline-variant"
+              }`}
             >
               {cat}
             </button>
           ))}
         </div>
 
+        {/* Accordion */}
         <div className="mt-6 space-y-3">
           {categories[activeCategory].map((item, i) => (
-            <div key={i} className="rounded-2xl border border-emerald-100 bg-white shadow-sm overflow-hidden">
+            <div key={i} className="rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-sm overflow-hidden">
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-emerald-50/50 transition-colors"
+                className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-surface-container-low transition-colors"
               >
-                <span className="font-semibold text-gray-900 pr-4">{item.q}</span>
-                <Icon name={openIndex === i ? "expand_less" : "expand_more"} size={20} className="text-emerald-600 shrink-0" />
+                <span className="text-headline-sm font-headline-sm text-on-surface pr-4">{item.q}</span>
+                <span className="material-symbols-outlined text-[20px] text-primary shrink-0">
+                  {openIndex === i ? "expand_less" : "expand_more"}
+                </span>
               </button>
               {openIndex === i && (
                 <div className="px-6 pb-4">
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.a}</p>
+                  <p className="text-body-md font-body-md text-on-surface-variant leading-relaxed">{item.a}</p>
                 </div>
               )}
             </div>
           ))}
         </div>
+
+        {/* Contact CTA */}
+        <div className="mt-12 rounded-3xl bg-primary p-8 text-center text-on-primary">
+          <h2 className="text-headline-lg font-headline-lg">Masih Punya Pertanyaan?</h2>
+          <p className="mt-2 text-body-lg font-body-lg text-primary-fixed/80">Tim kami siap membantu Anda</p>
+          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-6 bg-secondary-fixed-dim hover:bg-secondary text-primary font-headline-sm text-headline-sm px-7 py-3.5 rounded-full shadow-md transition-all active:scale-95">
+            <span className="material-symbols-outlined text-[20px]">chat</span>
+            Chat via WhatsApp
+          </a>
+        </div>
       </section>
-    </>
+    </div>
   );
 }
