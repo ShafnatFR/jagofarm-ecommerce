@@ -223,6 +223,20 @@ export default async function AccountPage() {
                 Wishlist Saya
               </Link>
               <Link
+                href="/account/security"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-outline-variant hover:border-primary hover:bg-surface-container-low/50 text-on-surface-variant hover:text-primary text-sm font-semibold transition-all shadow-sm"
+              >
+                <Icon name="shield" size={16} className="text-slate-500" />
+                Keamanan
+              </Link>
+              <Link
+                href="/account/transactions"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-outline-variant hover:border-primary hover:bg-surface-container-low/50 text-on-surface-variant hover:text-primary text-sm font-semibold transition-all shadow-sm"
+              >
+                <Icon name="receipt_long" size={16} className="text-slate-500" />
+                Riwayat Transaksi
+              </Link>
+              <Link
                 href="/products"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-sm font-semibold shadow-md shadow-primary/20 transition-all hover:scale-105 active:scale-95"
               >

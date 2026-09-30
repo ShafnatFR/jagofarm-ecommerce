@@ -740,7 +740,15 @@ export default function OrderDetailPage() {
             {new Date(order.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
           </p>
         </div>
-        <Badge className={statusColors[order.status]}>{order.status}</Badge>
+        <div className="flex items-center gap-2">
+          {["shipped", "delivered"].includes(order.status) && (
+            <Link href={`/orders/${order.orderNumber}/tracking`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-on-primary text-sm font-semibold hover:bg-primary-container transition-colors">
+              <Icon name="local_shipping" size={16} />
+              Lacak
+            </Link>
+          )}
+          <Badge className={statusColors[order.status]}>{order.status}</Badge>
+        </div>
       </div>
 
       {/* Status Timeline */}
