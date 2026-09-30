@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>JagoFarm - Modern Agri-Aquaculture Marketplace Mobile</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#005236",
+            "tertiary-fixed": "#6ffbbe",
+            "on-secondary": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "secondary": "#7f5700",
+            "surface-container-highest": "#d8e3fb",
+            "inverse-primary": "#9ed1bd",
+            "surface-container-high": "#dee8ff",
+            "inverse-on-surface": "#ecf1ff",
+            "inverse-surface": "#263143",
+            "tertiary-fixed-dim": "#4edea3",
+            "outline": "#707974",
+            "error": "#ba1a1a",
+            "on-secondary-fixed-variant": "#604100",
+            "surface-variant": "#d8e3fb",
+            "primary": "#003629",
+            "surface-container-low": "#f0f3ff",
+            "on-surface": "#111c2d",
+            "surface-dim": "#cfdaf2",
+            "surface-container": "#e7eeff",
+            "primary-fixed-dim": "#9ed1bd",
+            "tertiary": "#003623",
+            "background": "#f9f9ff",
+            "on-secondary-fixed": "#281900",
+            "on-primary-fixed": "#002117",
+            "surface": "#f9f9ff",
+            "secondary-container": "#fdba45",
+            "outline-variant": "#c0c9c3",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-error-container": "#93000a",
+            "on-primary-container": "#8abda9",
+            "primary-fixed": "#baeed9",
+            "on-primary": "#ffffff",
+            "on-error": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-container": "#32c98f",
+            "secondary-fixed": "#ffdeae",
+            "on-tertiary-fixed": "#002113",
+            "error-container": "#ffdad6",
+            "tertiary-container": "#004f35",
+            "surface-tint": "#376757",
+            "on-background": "#111c2d",
+            "on-secondary-container": "#6f4b00",
+            "primary-container": "#1b4d3e",
+            "secondary-fixed-dim": "#fdba45",
+            "on-surface-variant": "#404945"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.25rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 12px);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md selection:bg-tertiary-fixed selection:text-primary">
+<!-- WRAPPER MOBILE CONTAINER (Optimized for Mobile Screens max 480px, centered on larger viewports) -->
+<div class="mx-auto min-h-screen max-w-[480px] bg-surface relative flex flex-col shadow-2xl">
+<!-- 1. TOP APP BAR (from Shared Components JSON: TopAppBar) -->
+<header class="fixed top-0 left-0 right-0 max-w-[480px] mx-auto z-50 flex items-center justify-between px-margin-mobile py-space-sm bg-surface/95 backdrop-blur-md border-b border-outline-variant/40 shadow-sm transition-all duration-200">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="agriculture" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">JagoFarm</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<button aria-label="Notifikasi" class="relative p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-transform active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary-container rounded-full ring-2 ring-surface"></span>
+</button>
+<button aria-label="Keranjang Belanja" class="relative p-2 text-primary hover:bg-surface-container rounded-full transition-transform active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute 1 top-1 right-1 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-1.5 py-0.5 rounded-full ring-2 ring-surface leading-none font-bold">2</span>
+</button>
+</div>
+</header>
+<!-- SPACER for fixed TopAppBar -->
+<div class="h-14"></div>
+<!-- GLOBAL SEARCH BAR (MOBILE TOUCH OPTIMIZED) -->
+<div class="px-margin-mobile pt-3 pb-2 bg-surface">
+<div class="relative flex items-center w-full">
+<div class="absolute left-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-xl" data-icon="search">search</span>
+</div>
+<input class="w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest border border-outline-variant/70 rounded-full text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all shadow-sm" placeholder="Cari bibit, kit tambak, sensor IoT..." type="text"/>
+<button aria-label="Filter atau Barcode" class="absolute right-3 text-outline hover:text-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-xl" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+<!-- MAIN SCROLLABLE CONTENT CANVAS -->
+<main class="flex-1 pb-24">
+<!-- 2. HERO BANNER CAROUSEL (Mobile Forest Green Elegance) -->
+<section class="px-margin-mobile pt-2 pb-4">
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#0c2a20] via-primary-container to-[#13382d] p-4 text-on-primary shadow-lg border border-primary-container/60">
+<!-- Background Ambient Glow & Geometric Accent -->
+<div class="absolute -right-16 -top-16 w-48 h-48 bg-tertiary-container/40 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -left-10 -bottom-10 w-36 h-36 bg-secondary-container/10 rounded-full blur-xl pointer-events-none"></div>
+<!-- Tag Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-tertiary-fixed text-label-sm font-label-sm mb-2.5 shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="water_drop" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<span>Set Tambak Siap Pakai</span>
+</div>
+<!-- Headline -->
+<h1 class="text-display-hero-mobile font-display-hero-mobile text-white tracking-tight leading-tight mb-2">
+            Budi Daya Tambak <br/><span class="text-secondary-fixed-dim">Lebih Terukur</span>
+</h1>
+<!-- Subtitle -->
+<p class="text-surface-variant font-body-sm text-body-sm mb-4 leading-relaxed line-clamp-2">
+            Set tambak lengkap — dari pompa, aerator, hingga sensor pintar kualitas air untuk panen stabil sepanjang musim.
+          </p>
+<!-- IoT Live Card Preview (Mobile Glassmorphism) -->
+<div class="bg-surface-container-lowest/10 backdrop-blur-md rounded-lg p-2.5 border border-white/15 mb-4 shadow-inner">
+<div class="flex items-center justify-between border-b border-white/10 pb-1.5 mb-2">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-white font-medium">IoT Tambak Vaname #04</span>
+</div>
+<span class="text-[10px] text-tertiary-fixed font-label-sm">Live Telemetri</span>
+</div>
+<div class="grid grid-cols-4 gap-1 text-center">
+<div class="p-1 rounded bg-black/20">
+<div class="text-[10px] text-slate-300 font-label-sm">DO</div>
+<div class="text-label-md font-label-md text-white font-bold">6.8 <span class="text-[9px] font-normal">mg/L</span></div>
+</div>
+<div class="p-1 rounded bg-black/20">
+<div class="text-[10px] text-slate-300 font-label-sm">pH</div>
+<div class="text-label-md font-label-md text-white font-bold">7.4</div>
+</div>
+<div class="p-1 rounded bg-black/20">
+<div class="text-[10px] text-slate-300 font-label-sm">Suhu</div>
+<div class="text-label-md font-label-md text-white font-bold">28.5°</div>
+</div>
+<div class="p-1 rounded bg-black/20">
+<div class="text-[10px] text-slate-300 font-label-sm">Kondisi</div>
+<div class="text-label-md font-label-md text-tertiary-fixed font-bold">98.2%</div>
+</div>
+</div>
+</div>
+<!-- CTA Buttons -->
+<div class="flex items-center gap-2">
+<a class="flex-1 flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed transition-colors rounded-lg font-label-md text-label-md font-bold shadow-md active:scale-95 text-center" href="#katalog">
+<span>Lihat Set Tambak</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<a class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/25 backdrop-blur-md rounded-lg font-label-md text-label-md transition-colors active:scale-95 text-center" href="#konsultasi">
+              Konsultasi Gratis
+            </a>
+</div>
+<!-- Carousel Slider Dots Indicator -->
+<div class="flex items-center justify-center gap-1.5 mt-4">
+<span class="w-5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+</div>
+</div>
+</section>
+<!-- 3. VALUE PROPOSITION STRIP (Compact Horizontal Scroll / 2x2 Clean Layout) -->
+<section class="px-margin-mobile py-2">
+<div class="grid grid-cols-2 gap-2">
+<!-- Pillar 1 -->
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/50 shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="local_shipping">local_shipping</span>
+</div>
+<div class="min-w-0">
+<div class="text-label-sm font-label-sm font-bold text-on-surface truncate">Pengiriman Cepat</div>
+<div class="text-[10px] text-on-surface-variant truncate">Seluruh Nusantara</div>
+</div>
+</div>
+<!-- Pillar 2 -->
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/50 shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="verified">verified</span>
+</div>
+<div class="min-w-0">
+<div class="text-label-sm font-label-sm font-bold text-on-surface truncate">Garansi 100%</div>
+<div class="text-[10px] text-on-surface-variant truncate">Kualitas Terjamin</div>
+</div>
+</div>
+<!-- Pillar 3 -->
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/50 shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="support_agent">support_agent</span>
+</div>
+<div class="min-w-0">
+<div class="text-label-sm font-label-sm font-bold text-on-surface truncate">Konsultasi Gratis</div>
+<div class="text-[10px] text-on-surface-variant truncate">Bimbingan Agronomis</div>
+</div>
+</div>
+<!-- Pillar 4 -->
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/50 shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="lock">lock</span>
+</div>
+<div class="min-w-0">
+<div class="text-label-sm font-label-sm font-bold text-on-surface truncate">Pembayaran Aman</div>
+<div class="text-[10px] text-on-surface-variant truncate">Midtrans, VA, QRIS</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. KATEGORI PRODUK (Ergonomic Touch Rail & Quick Access Grid) -->
+<section class="px-margin-mobile pt-4 pb-2">
+<div class="flex items-center justify-between mb-2.5">
+<div>
+<h2 class="text-headline-sm font-headline-sm font-bold text-primary">Kategori Produk</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Solusi teruji kebutuhan agribisnis</p>
+</div>
+<a class="inline-flex items-center gap-0.5 text-label-sm font-label-sm text-primary font-bold hover:underline" href="#semua-kategori">
+<span>Lihat Semua</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<!-- Kategori 1 -->
+<a class="flex flex-col items-center text-center p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary transition-all shadow-sm active:scale-95 group" href="#">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors mb-1.5">
+<span class="material-symbols-outlined text-2xl" data-icon="water">water</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Set Tambak</span>
+<span class="text-[10px] text-outline mt-0.5 line-clamp-1">Air tawar &amp; payau</span>
+</a>
+<!-- Kategori 2 -->
+<a class="flex flex-col items-center text-center p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary transition-all shadow-sm active:scale-95 group" href="#">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors mb-1.5">
+<span class="material-symbols-outlined text-2xl" data-icon="potted_plant">potted_plant</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Hidroponik</span>
+<span class="text-[10px] text-outline mt-0.5 line-clamp-1">NFT &amp; Dutch Bucket</span>
+</a>
+<!-- Kategori 3 -->
+<a class="flex flex-col items-center text-center p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary transition-all shadow-sm active:scale-95 group" href="#">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors mb-1.5">
+<span class="material-symbols-outlined text-2xl" data-icon="set_meal">set_meal</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Aquaponik</span>
+<span class="text-[10px] text-outline mt-0.5 line-clamp-1">Sistem sirkulasi ganda</span>
+</a>
+<!-- Kategori 4 -->
+<a class="flex flex-col items-center text-center p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary transition-all shadow-sm active:scale-95 group relative" href="#">
+<span class="absolute top-1 right-1 bg-secondary-container text-on-secondary-container text-[9px] font-bold px-1.5 py-0.2 rounded-full">IoT</span>
+<div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-primary-container group-hover:bg-primary-container group-hover:text-white transition-colors mb-1.5">
+<span class="material-symbols-outlined text-2xl" data-icon="memory">memory</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Smart Farm</span>
+<span class="text-[10px] text-outline mt-0.5 line-clamp-1">Sensor &amp; Otomasi</span>
+</a>
+<!-- Kategori 5 -->
+<a class="flex flex-col items-center text-center p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary transition-all shadow-sm active:scale-95 group" href="#">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors mb-1.5">
+<span class="material-symbols-outlined text-2xl" data-icon="spa">spa</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Benih Unggul</span>
+<span class="text-[10px] text-outline mt-0.5 line-clamp-1">Sayur &amp; Buah F1</span>
+</a>
+<!-- Kategori 6 -->
+<a class="flex flex-col items-center text-center p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary transition-all shadow-sm active:scale-95 group" href="#">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors mb-1.5">
+<span class="material-symbols-outlined text-2xl" data-icon="egg">egg</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Anakan Ikan</span>
+<span class="text-[10px] text-outline mt-0.5 line-clamp-1">Lele, Nila, Patin</span>
+</a>
+</div>
+</section>
+<!-- 5. FILTER CHIPS & PRODUK UNGGULAN (2-Column Mobile Touch Grid) -->
+<section class="px-margin-mobile pt-4 pb-2" id="katalog">
+<div class="flex items-center justify-between mb-2">
+<div>
+<h2 class="text-headline-sm font-headline-sm font-bold text-primary">Produk Unggulan</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Pilihan terbaik petani modern Indonesia</p>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-primary bg-primary-fixed/60 px-2 py-0.5 rounded-full">Top 2026</span>
+</div>
+<!-- Filter Chips (Horizontal Scrollable) -->
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 mb-3">
+<button class="px-3 py-1.5 rounded-full bg-primary-container text-white text-label-sm font-label-sm font-bold whitespace-nowrap shadow-sm">
+            Semua
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant text-label-sm font-label-sm hover:border-primary whitespace-nowrap">
+            IoT &amp; Smart Sensor
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant text-label-sm font-label-sm hover:border-primary whitespace-nowrap">
+            Set Tambak
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant text-label-sm font-label-sm hover:border-primary whitespace-nowrap">
+            Hidroponik
+          </button>
+</div>
+<!-- 2-Column Product Grid -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Product Card 1 -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full bg-[#f1f5f2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Pack of high grade commercial pakcoy vegetable seeds in a premium protective green foil pouch packaging, resting on clean organic peat moss soil in a well-lit modern agronomy laboratory with soft warm sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDx-PpTxdEOyjs728k9O5UuvpbHsO_Wo53tbczIMiFb165kAowJGZKGTKwaEFVa7FyIlwpe-kn1lMsyVg-PuukbWr0ztfa71F7T93oBAeE2cyH8VT0bs4VVNZ8JVhOToacQrHKhRRu714UKZBmGnz3_YYP_uBDcj59TbKuKhRRHtRirOS-02F88mMOgf0hGohOaCCq-A8dR5SWRLw2PNq11E0KVGbGD0P7RHsQuNAXORum_noYj6erCQ"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-amber-100/90 backdrop-blur-md text-amber-800 text-[10px] font-bold border border-amber-200">
+                Unggulan
+              </span>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">Benih F1</span>
+<h3 class="text-label-md font-label-md font-bold text-on-surface line-clamp-2 mt-0.5 leading-snug">
+                  Benih Pakcoy Premium (100 Biji)
+                </h3>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-amber-600">
+<span class="material-symbols-outlined text-[13px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span class="text-outline text-[10px]">(1.2k)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1.5 border-t border-outline-variant/40">
+<div>
+<span class="text-price-md font-price-md text-primary font-bold">Rp 25.000</span>
+</div>
+<button aria-label="Tambah ke keranjang" class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary-container transition-colors active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full bg-[#f1f5f2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Smart aquaculture IoT controller hardware kit with waterproof probe sensors, digital LCD telemetry screen displaying dissolved oxygen, clean industrial electronic casing in an aquaculture pond facility with crystal clear water." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiUdJf8DiTenw-YDCwMS_X_0bXAsrNYw_3ef0P_J4oemeuuZCNfDuU50epS-tdsIvDYuTNgKX_VdfT07JjEFHrr5T2XdrkTHoP_NtuMNPHlhDrg0euhc0QDZ73MuW0ZJJxHl-Q2Q2Y92ffFC__mwV173nvwz1LvilWNddojwJizF8sASg9aSf6eD-6NWtttwQE2GjhaYn_OTHVaBYgZrBA8mRdfY08dyPyJbjxXPA8syO28x_O_Q7sag"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-emerald-100/90 backdrop-blur-md text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                Smart IoT
+              </span>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">IoT Tambak</span>
+<h3 class="text-label-md font-label-md font-bold text-on-surface line-clamp-2 mt-0.5 leading-snug">
+                  Paket IoT Kolam Lengkap Pro
+                </h3>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-amber-600">
+<span class="material-symbols-outlined text-[13px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">5.0</span>
+<span class="text-outline text-[10px]">(420)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1.5 border-t border-outline-variant/40">
+<div>
+<span class="text-price-md font-price-md text-primary font-bold">Rp 2.200.000</span>
+</div>
+<button aria-label="Tambah ke keranjang" class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary-container transition-colors active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full bg-[#f1f5f2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Automatic fish feeder device with solar powered battery casing, food hopper container mounted neatly on a modern biofloc aquaculture pond edge, sleek matte green finish under bright daytime lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQgn1-5_3fx2P6CHvjO2xe6ktIPX2oVemxtbAx8fwvGC_DOIcwKOJtz8bS1ZLRqzjq588o_nwpxVya5L8g6SvMrvFvyPHnau-wurbu9uMk1locVpvJ_37L_n82tRxOg5Bn80nFEv1wCclra7JSTh7skhDkfYEmmPip0gT_Mw0egWtn1O1cXvyegHfOPcfr68BjRgAR3Pdpx5tGwXs0pA9kHe5Rqg-gEsThBtA5a0vf2bBtdYDhAHXbZQ"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-amber-100/90 backdrop-blur-md text-amber-800 text-[10px] font-bold border border-amber-200">
+                Unggulan
+              </span>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">Otomasi</span>
+<h3 class="text-label-md font-label-md font-bold text-on-surface line-clamp-2 mt-0.5 leading-snug">
+                  Auto Feeder Pakan Wi-Fi
+                </h3>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-amber-600">
+<span class="material-symbols-outlined text-[13px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.8</span>
+<span class="text-outline text-[10px]">(89)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1.5 border-t border-outline-variant/40">
+<div>
+<span class="text-price-md font-price-md text-primary font-bold">Rp 350.000</span>
+</div>
+<button aria-label="Tambah ke keranjang" class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary-container transition-colors active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full bg-[#f1f5f2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Digital handheld precision pH meter sensor pen with backlit blue LED numeric display, calibrated glass probe tip dipped into a beaker of clear agricultural nutrient water on a clean wooden lab table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMn-3aJihifbhfj6oAybrnUqzSO23-8EcAs6ELQoVcaK0V1uVtjya2SROK_pDq8nQpa-lpoCz-CpXt-0vHO6itz7cVS3frAJhaHptZ131WXclwUZNkVw9cYCYJVINDKy7ktO08rNZm82j81fJoiqw36Uziolmpsh9cVEFysxX4VdAZ0iOG-BGoqhH_UETT-i7Usdw6cv-EDv8n6iqXa22nUR5LaQElw0NSD3CjH_3-EvDF3ImsTWuvjg"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-amber-100/90 backdrop-blur-md text-amber-800 text-[10px] font-bold border border-amber-200">
+                Unggulan
+              </span>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">Alat Ukur</span>
+<h3 class="text-label-md font-label-md font-bold text-on-surface line-clamp-2 mt-0.5 leading-snug">
+                  Sensor pH Meter Digital Akurat
+                </h3>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-amber-600">
+<span class="material-symbols-outlined text-[13px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span class="text-outline text-[10px]">(312)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1.5 border-t border-outline-variant/40">
+<div>
+<span class="text-price-md font-price-md text-primary font-bold">Rp 285.000</span>
+</div>
+<button aria-label="Tambah ke keranjang" class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary-container transition-colors active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full bg-[#f1f5f2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Hydroponic wick starter kit box set with net pots, rockwool cubes, nutrient solution bottles and reservoir tank for home gardening with fresh butterhead lettuce seedlings growing vigorously." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFobwY2jgt1sxI4TQdz9LZFectaexKMGFnM7Q2sUEX6g8B3p3wnEAOr-5m3fAvyTHs4lhMWiYAU_6P45CsbPkOo6-EQK9gfeqIxJ8r1aE1cFuTmFOHRxkAGegYlJbovAF9QUyL91GSXKkuEt9YvnRCeZQ0ac1_XA9foTiTX8NyqR8KztYf36o81QqmYsSQSg9_4LcCDPSm3ASgc83JoKLnpBc07GpjL_IcURVK-251_io5DhnULd6oaw"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-emerald-100/90 backdrop-blur-md text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                Pemula
+              </span>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">Hidroponik</span>
+<h3 class="text-label-md font-label-md font-bold text-on-surface line-clamp-2 mt-0.5 leading-snug">
+                  Set Hidroponik Wick System
+                </h3>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-amber-600">
+<span class="material-symbols-outlined text-[13px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.7</span>
+<span class="text-outline text-[10px]">(95)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1.5 border-t border-outline-variant/40">
+<div>
+<span class="text-price-md font-price-md text-primary font-bold">Rp 450.000</span>
+</div>
+<button aria-label="Tambah ke keranjang" class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary-container transition-colors active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 6 (With Discount Badge) -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full bg-[#f1f5f2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Round biofloc catfish pond pool kit with heavy duty tarpaulin liner, galvanized wire mesh frame, aeration diffuser tubes and water drain valve installed on a neat tropical farm backyard setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxPcfLyUKVmmmSBYCacz8GjMSbAp-jSoXh5QEH1akUHHnbqzt-ynl4sAM2NzCLvIjG5_8_jVwwIIg4Bcz8uNj9tapw92peBVka5ZMWrEU-msK3qGUsh2d5WEUstPClyVba1vjRQVK6X_nsshjF-Yox27E47feEib2u1bKi3gdO3e8g4wUDyPepr0XJUGJJdlYVY2nAbrLzjyUdED0e012HDVXrSKW9ObaSJw8VJwXchXovVFqdkxz5CA"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-red-100/90 backdrop-blur-md text-red-700 text-[10px] font-bold border border-red-200">
+                -11%
+              </span>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">Set Tambak</span>
+<h3 class="text-label-md font-label-md font-bold text-on-surface line-clamp-2 mt-0.5 leading-snug">
+                  Set Tambak Bioflok Lele Starter
+                </h3>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-amber-600">
+<span class="material-symbols-outlined text-[13px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span class="text-outline text-[10px]">(180)</span>
+</div>
+</div>
+<div class="mt-2.5 pt-1.5 border-t border-outline-variant/40">
+<div class="text-[10px] text-outline line-through">Rp 1.850.000</div>
+<div class="flex items-center justify-between">
+<span class="text-price-md font-price-md text-primary font-bold">Rp 1.650.000</span>
+<button aria-label="Tambah ke keranjang" class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary-container transition-colors active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Catalog View More CTA -->
+<div class="mt-4">
+<button class="w-full py-2.5 rounded-xl border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 transition-colors active:scale-98">
+<span>Buka Katalog Lengkap (120+ Produk)</span>
+<span class="material-symbols-outlined text-base" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</section>
+<!-- 6. FEATURED BUNDLE HIGHLIGHT (Mobile Showcase) -->
+<section class="px-margin-mobile pt-3 pb-2">
+<div class="p-3.5 rounded-xl bg-gradient-to-r from-surface-container-low to-surface-container border border-outline-variant/60 shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2.5 py-0.5 rounded-full bg-primary-container text-white text-[10px] font-bold tracking-wide">
+              Set Bundle Terlaris
+            </span>
+<span class="text-label-sm font-label-sm font-bold text-secondary">Hemat s/d 20%</span>
+</div>
+<div class="flex gap-3 items-center">
+<div class="w-24 h-24 rounded-lg bg-surface-container-lowest overflow-hidden flex-shrink-0 border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="Harvest of fresh vibrant green hydroponic pakcoy vegetables in a rustic wooden crate with fine water droplets on leaves in soft natural morning sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQaSZ8SZJDunv-DGtnAmVIAnwGOxgLWUc95KD_aUjeqLsoPPsxElIfGHogi6LUdJ7Bg7_rt5nJQrHcDIi7Rv2rD0YgAj8kCFtZSOnzRYncY_sjg9GtAmVl-elljcbjsQQA5PGJInDib8wzdySHEMJf-8LKaINUpUm2b2NgtuhelitE2yj_fF5ysIFWfqmIw8-JGEvTVPNarFEX2umrt8xNTZwQfYw4zzx7xUhx_mXhCnbl6ovqxcAPmg"/>
+</div>
+<div class="flex-1 min-w-0">
+<span class="text-[10px] font-label-sm text-outline uppercase tracking-wider">Benih + Nutrisi</span>
+<h4 class="text-label-lg font-label-lg font-bold text-on-surface truncate">Benih Pakcoy (100 Biji)</h4>
+<p class="text-[11px] text-on-surface-variant line-clamp-1 mt-0.5">Daya tumbuh di atas 95%, panen cepat 25 hari.</p>
+<ul class="mt-1 space-y-0.5 text-[10px] text-on-surface-variant font-medium">
+<li class="flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-600 text-xs" data-icon="check_circle">check_circle</span>
+<span>Ready stock siap kirim</span>
+</li>
+<li class="flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-600 text-xs" data-icon="local_shipping">local_shipping</span>
+<span>Free ongkir min. order 4 pcs</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-2.5 border-t border-outline-variant/40">
+<div>
+<span class="text-[10px] text-outline block leading-none">Harga Spesial</span>
+<span class="text-price-lg font-price-lg text-primary font-bold">Rp 25.000</span>
+</div>
+<div class="flex gap-1.5">
+<button class="px-3 py-1.5 bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm font-semibold rounded-lg active:scale-95">
+                Lihat Detail
+              </button>
+<button class="px-3.5 py-1.5 bg-primary-container text-white font-label-sm text-label-sm font-bold rounded-lg hover:bg-primary active:scale-95 shadow-sm">
+                Beli Sekarang
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. CONSULTATION PROJECT BANNER (WhatsApp Interactive Hub) -->
+<section class="px-margin-mobile pt-3 pb-4" id="konsultasi">
+<div class="rounded-xl bg-gradient-to-br from-[#003629] via-[#1b4d3e] to-[#002117] p-4 text-center text-white relative overflow-hidden shadow-md">
+<div class="w-12 h-12 rounded-full bg-white/10 mx-auto flex items-center justify-center text-tertiary-fixed mb-2.5 backdrop-blur-md">
+<span class="material-symbols-outlined text-2xl" data-icon="psychology">psychology</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-white mb-1">
+            Butuh Konsultasi untuk Proyek Pertanian Anda?
+          </h3>
+<p class="text-surface-variant font-body-sm text-body-sm leading-relaxed mb-4 max-w-xs mx-auto">
+            Tim ahli JagoFarm siap membantu merancang sistem pertanian modern yang sesuai dengan kebutuhan dan budget Anda.
+          </p>
+<div class="flex flex-col gap-2">
+<a class="w-full py-2.5 px-4 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-label-md text-label-md font-bold flex items-center justify-center gap-2 shadow-md active:scale-98 transition-transform" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+<span>Chat via WhatsApp (Respon &lt; 15 Menit)</span>
+</a>
+<a class="w-full py-2 px-4 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold hover:bg-secondary-fixed transition-colors active:scale-98" href="#katalog">
+              Mulai Belanja
+            </a>
+</div>
+</div>
+</section>
+<!-- 8. MOBILE FOOTER -->
+<footer class="px-margin-mobile pt-4 pb-6 bg-surface-container-low border-t border-outline-variant/40 text-on-surface-variant">
+<div class="flex items-center space-x-2 mb-2">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="agriculture" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">JagoFarm</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed mb-3">
+          Platform terintegrasi pengadaan sistem pertanian modern, smart sensor IoT, akuaponik, dan budidaya tambak di Indonesia.
+        </p>
+<div class="space-y-1.5 text-[11px] mb-4">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="location_on">location_on</span>
+<span>Jl. Pertanian Modern No. 123, Surabaya, Jawa Timur</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="call">call</span>
+<span>+62 812-3456-7890 (Customer Care 24/7)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="verified_user">verified_user</span>
+<span>Terdaftar &amp; Terverifikasi Kementerian Pertanian RI</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/50 text-[10px] text-outline flex items-center justify-between">
+<span>© 2026 JagoFarm. All rights reserved.</span>
+<div class="flex gap-2">
+<a class="hover:underline" href="#">Privasi</a>
+<a class="hover:underline" href="#">Syarat &amp; Ketentuan</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- 9. FIXED BOTTOM NAVIGATION BAR (from Shared Components JSON: BottomNavBar) -->
+<!-- Destination count: 4, label_texts: ["Beranda", "Katalog", "Konsultasi", "Akun"] -->
+<!-- Active Tab: Beranda (Current Screen is Home) -->
+<nav aria-label="Navigasi Utama Bawah" class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 flex justify-around items-center px-margin-mobile py-space-xs bg-surface/95 backdrop-blur-md pb-safe border-t border-outline-variant/40 shadow-sm">
+<!-- Tab 1: Beranda (ACTIVE STATE APPLIED EXACTLY FROM JSON) -->
+<a aria-current="page" class="flex flex-col items-center justify-center text-primary font-bold py-1 transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Beranda</span>
+</a>
+<!-- Tab 2: Katalog (INACTIVE STATE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#katalog">
+<span class="material-symbols-outlined text-2xl" data-icon="inventory_2">inventory_2</span>
+<span class="text-label-sm font-label-sm mt-0.5">Katalog</span>
+</a>
+<!-- Tab 3: Konsultasi (INACTIVE STATE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#konsultasi">
+<span class="material-symbols-outlined text-2xl" data-icon="psychology">psychology</span>
+<span class="text-label-sm font-label-sm mt-0.5">Konsultasi</span>
+</a>
+<!-- Tab 4: Akun (INACTIVE STATE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#akun">
+<span class="material-symbols-outlined text-2xl" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Akun</span>
+</a>
+</nav>
+</div>
+</body></html>

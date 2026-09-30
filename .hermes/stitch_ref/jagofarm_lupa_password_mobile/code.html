@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lupa Password - JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#002117",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-background": "#111c2d",
+            "surface-variant": "#d8e3fb",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-container-low": "#f0f3ff",
+            "on-secondary-fixed-variant": "#604100",
+            "inverse-primary": "#9ed1bd",
+            "surface": "#f9f9ff",
+            "tertiary-container": "#004f35",
+            "surface-container": "#e7eeff",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container-high": "#dee8ff",
+            "secondary-fixed-dim": "#fdba45",
+            "on-primary-fixed-variant": "#1d4f40",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c0c9c3",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary-fixed": "#ffdeae",
+            "surface-dim": "#cfdaf2",
+            "surface-tint": "#376757",
+            "on-surface": "#111c2d",
+            "on-tertiary-container": "#32c98f",
+            "on-primary-container": "#8abda9",
+            "on-secondary": "#ffffff",
+            "tertiary": "#003623",
+            "background": "#f9f9ff",
+            "inverse-surface": "#263143",
+            "on-error": "#ffffff",
+            "primary-container": "#1b4d3e",
+            "primary-fixed": "#baeed9",
+            "surface-container-highest": "#d8e3fb",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "on-surface-variant": "#404945",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-fixed": "#281900",
+            "inverse-on-surface": "#ecf1ff",
+            "outline": "#707974",
+            "on-primary": "#ffffff",
+            "secondary-container": "#fdba45",
+            "secondary": "#7f5700",
+            "on-secondary-container": "#6f4b00",
+            "primary": "#003629"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "0.75rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-ring:focus-within {
+      box-shadow: 0 0 0 2px #1b4d3e;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed relative overflow-x-hidden">
+<!-- Subtle organic background pattern elements -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+<div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-primary-fixed/20 blur-3xl"></div>
+<div class="absolute top-1/2 -left-32 w-72 h-72 rounded-full bg-tertiary-fixed/15 blur-3xl"></div>
+<div class="absolute -bottom-20 right-0 w-96 h-96 rounded-full bg-secondary-fixed/20 blur-3xl"></div>
+</div>
+<!-- Header Navigasi Atas (Linear/Task Recovery Journey - BottomNavBar suppressed) -->
+<header class="sticky top-0 z-40 w-full bg-surface-container-lowest/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile py-space-sm flex items-center justify-between transition-all">
+<a aria-label="Kembali" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</a>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">JagoFarm</span>
+</div>
+<a class="flex items-center gap-1 text-primary hover:text-primary-container font-label-md text-label-md font-semibold px-2.5 py-1.5 rounded-full hover:bg-surface-container transition-colors" href="#bantuan">
+<span>Bantuan Teknis</span>
+<span class="material-symbols-outlined text-[16px]">support_agent</span>
+</a>
+</header>
+<!-- Main Recovery Card Container -->
+<main class="relative z-10 flex-1 flex flex-col justify-center px-margin-mobile py-space-lg max-w-md mx-auto w-full">
+<!-- Outer Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-6 sm:p-7 shadow-sm transition-all duration-300 hover:border-outline-variant relative">
+<!-- Leaf Icon Circle -->
+<div class="flex justify-center mb-5">
+<div class="relative w-16 h-16 rounded-full bg-primary-fixed/35 flex items-center justify-center ring-8 ring-primary-fixed/15 shadow-inner">
+<span class="material-symbols-outlined text-primary-container text-[32px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+<div class="absolute -bottom-1 -right-1 bg-secondary-container text-on-secondary-container w-6 h-6 rounded-full flex items-center justify-center shadow-xs border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[14px]">lock_reset</span>
+</div>
+</div>
+</div>
+<!-- Header Copy -->
+<div class="text-center mb-6">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-label-sm font-label-sm font-semibold uppercase tracking-wider mb-2">
+<span>Pemulihan Akun</span>
+</div>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mb-2 font-bold tracking-tight">
+          Lupa Password
+        </h1>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed px-1">
+          Masukkan email Anda dan kami akan mengirimkan tautan verifikasi untuk mengatur ulang kata sandi.
+        </p>
+</div>
+<!-- Recovery Form -->
+<form class="space-y-4" id="recoveryForm" onsubmit="event.preventDefault(); handleResetSubmit();">
+<!-- Input Group -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface font-semibold" for="emailInput">
+            Email Terdaftar
+          </label>
+<div class="relative rounded-lg custom-ring transition-all">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:border-primary-container focus:outline-none transition-colors" id="emailInput" name="email" placeholder="nama@email.com" required="" type="email"/>
+</div>
+<p class="text-body-sm font-body-sm text-outline flex items-center gap-1 pt-0.5">
+<span class="material-symbols-outlined text-[14px]">info</span>
+            Pastikan email aktif dan sesuai akun JagoFarm Anda.
+          </p>
+</div>
+<!-- Feedback Alert Container (Hidden by default) -->
+<div class="hidden p-3.5 rounded-lg bg-surface-container text-primary-container border border-primary-fixed flex items-start gap-2.5 transition-all text-body-sm font-body-sm" id="alertFeedback">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
+<span id="alertMessage">Tautan reset password berhasil dikirim. Silakan periksa kotak masuk atau spam email Anda.</span>
+</div>
+<!-- Primary CTA Button -->
+<div class="pt-2">
+<button class="w-full bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg font-bold py-3.5 px-6 rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 active:scale-[0.99] group cursor-pointer" id="submitBtn" type="submit">
+<span>Kirim Tautan Reset</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Secondary CTA: Return to Login -->
+<div class="pt-1 text-center">
+<a class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 text-primary hover:text-primary-container border border-outline-variant/60 hover:border-primary font-label-md text-label-md font-semibold rounded-lg hover:bg-surface-container-low transition-all active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[18px]">keyboard_backspace</span>
+<span>Kembali ke Halaman Masuk</span>
+</a>
+</div>
+</form>
+<!-- Customer Support Section -->
+<div class="mt-6 pt-5 border-t border-outline-variant/40" id="bantuan">
+<div class="bg-surface-container-low/70 rounded-lg p-3.5 flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">headset_mic</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface leading-tight">
+                Butuh bantuan akses akun?
+              </p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Tim agronomis &amp; support siap membantu.
+              </p>
+</div>
+</div>
+<a aria-label="Hubungi WhatsApp CS JagoFarm" class="shrink-0 px-3 py-1.5 bg-surface-container-lowest hover:bg-surface-container-high border border-outline-variant/60 text-primary-container font-label-sm text-label-sm font-bold rounded-full flex items-center gap-1 shadow-xs transition-colors" href="https://wa.me/" rel="noopener noreferrer" target="_blank">
+<span>WhatsApp</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Security & Trust Badges Strip -->
+<div class="mt-6 flex flex-col items-center justify-center gap-2">
+<div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest/90 border border-outline-variant/40 shadow-xs backdrop-blur-sm">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-label-sm font-label-sm font-semibold text-on-surface">Enkripsi SSL 256-Bit</span>
+<span class="text-outline text-label-sm">•</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Data Agronomi Terlindungi</span>
+</div>
+<p class="text-body-sm font-body-sm text-outline text-center">
+        © 2025 JagoFarm Indonesia. Semua hak cipta dilindungi.
+      </p>
+</div>
+</main>
+<script>
+    function handleResetSubmit() {
+      const emailInput = document.getElementById('emailInput');
+      const submitBtn = document.getElementById('submitBtn');
+      const alertFeedback = document.getElementById('alertFeedback');
+      
+      if (!emailInput.value) return;
+
+      // Temporary button state to simulate feedback
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+        <span>Mengirim Tautan...</span>
+      `;
+      submitBtn.classList.add('opacity-85');
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        submitBtn.classList.remove('opacity-85');
+        
+        // Show success alert
+        alertFeedback.classList.remove('hidden');
+        alertFeedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 1000);
+    }
+  </script>
+</body></html>

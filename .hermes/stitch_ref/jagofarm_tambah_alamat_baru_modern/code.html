@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JagoFarm - Tambah Alamat Baru</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#d8e3fb",
+            "on-error": "#ffffff",
+            "tertiary-container": "#004f35",
+            "surface-tint": "#376757",
+            "primary-fixed": "#baeed9",
+            "primary": "#003629",
+            "surface-container": "#e7eeff",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-container-low": "#f0f3ff",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#002117",
+            "surface-variant": "#d8e3fb",
+            "on-surface": "#111c2d",
+            "on-surface-variant": "#404945",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary-fixed": "#281900",
+            "error-container": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "inverse-surface": "#263143",
+            "on-tertiary-container": "#32c98f",
+            "primary-fixed-dim": "#9ed1bd",
+            "inverse-primary": "#9ed1bd",
+            "secondary-container": "#fdba45",
+            "surface": "#f9f9ff",
+            "surface-bright": "#f9f9ff",
+            "secondary-fixed-dim": "#fdba45",
+            "on-tertiary-fixed": "#002113",
+            "surface-container-high": "#dee8ff",
+            "on-tertiary-fixed-variant": "#005236",
+            "background": "#f9f9ff",
+            "primary-container": "#1b4d3e",
+            "outline-variant": "#c0c9c3",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed-variant": "#604100",
+            "outline": "#707974",
+            "on-primary-container": "#8abda9",
+            "on-secondary-container": "#6f4b00",
+            "secondary-fixed": "#ffdeae",
+            "surface-dim": "#cfdaf2",
+            "on-background": "#111c2d",
+            "on-error-container": "#93000a",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary": "#7f5700",
+            "tertiary": "#003623",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-tertiary": "#ffffff",
+            "error": "#ba1a1a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem",
+            "margin": "2rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem",
+            "gutter-mobile": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Custom light ambient shadows */
+    .shadow-agri {
+      box-shadow: 0 4px 20px -2px rgba(27, 77, 62, 0.08), 0 2px 6px -1px rgba(27, 77, 62, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ================= TOP NAV BAR (Shared Component) ================= -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full gap-4">
+<!-- Brand & Search cluster -->
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<a class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight flex items-center gap-2 shrink-0" href="#">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+</span>
+          JagoFarm
+        </a>
+<!-- Global Search Bar -->
+<div class="relative w-full max-w-md hidden md:block">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+</div>
+<input class="w-full pl-10 pr-4 py-2 bg-surface rounded-full border border-outline-variant text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Cari benih unggul, bibit ikan, pakan, atau sensor IoT..." type="text"/>
+</div>
+</div>
+<!-- Navigation links (Desktop) -->
+<nav class="hidden lg:flex items-center space-x-6 shrink-0">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Kategori</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Set Tambak</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Konsultasi</a>
+</nav>
+<!-- Trailing Action Icons -->
+<div class="flex items-center gap-3 shrink-0">
+<!-- Shopping Cart Icon with Badge -->
+<button class="relative p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all duration-200" title="Keranjang Belanja">
+<span class="material-symbols-outlined text-[24px]" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-secondary text-on-secondary rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">3</span>
+</button>
+<!-- Divider -->
+<div class="h-6 w-[1px] bg-outline-variant"></div>
+<!-- User Profile Pill -->
+<button class="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-surface-container transition-all duration-200 border border-outline-variant/60">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-label-md">
+            BS
+          </div>
+<div class="text-left hidden sm:block">
+<p class="text-label-md font-label-md text-on-surface leading-tight">Budi Santoso</p>
+<p class="text-[11px] text-outline leading-tight font-medium">Petambak Sleman</p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+</header>
+<!-- ================= SUB-NAVIGATION: BREADCRUMBS & ACCOUNT TABS ================= -->
+<section class="bg-surface-container-lowest border-b border-outline-variant/50">
+<div class="max-w-7xl mx-auto px-margin pt-4">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 text-body-sm font-body-sm text-outline mb-4 overflow-x-auto whitespace-nowrap">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="home">home</span>
+          Beranda
+        </a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Akun Saya</a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Alamat Pengiriman</a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-semibold">Tambah Alamat Baru</span>
+</nav>
+<!-- Account Sub-tabs -->
+<div class="flex items-center gap-8 border-b border-transparent overflow-x-auto scrollbar-none">
+<a class="pb-3 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="badge">badge</span>
+          Profil Akun
+        </a>
+<a class="pb-3 text-label-md font-label-md text-primary font-bold border-b-2 border-primary-container flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+          Alamat Pengiriman
+        </a>
+<a class="pb-3 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+          Wishlist &amp; Favorit
+        </a>
+<a class="pb-3 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="receipt_long">receipt_long</span>
+          Daftar Transaksi / Pesanan
+        </a>
+</div>
+</div>
+</section>
+<!-- ================= MAIN CONTENT CANVAS ================= -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-margin py-8">
+<!-- Page Header with Return Button -->
+<div class="mb-8">
+<div class="flex items-center gap-3 mb-2">
+<a class="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container hover:border-outline transition-all active:scale-95" href="#" title="Kembali ke Daftar Alamat">
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_back">arrow_back</span>
+</a>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-fixed inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="local_shipping">local_shipping</span>
+          Buku Alamat Logistik &amp; Titik Tambak
+        </span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-primary tracking-tight">Tambah Alamat Baru</h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-3xl mt-1">
+        Lengkapi rincian lokasi pengiriman bibit, pakan curah kargo, dan modul kolam agar kurir spesialis kargo beroksigen tiba tepat waktu di lokasi tambak/kebun Anda.
+      </p>
+</div>
+<!-- Two-Column Layout (7 cols Form / 5 cols Map & Logistics Insights) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- ================= LEFT COLUMN: MAIN FORM (7 / 12) ================= -->
+<div class="lg:col-span-7 space-y-6">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 sm:p-8 shadow-agri">
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<!-- Section 1: Label Alamat & Tipe Tempat -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center text-xs font-bold">1</span>
+<h2 class="text-headline-sm font-headline-sm text-primary">Tipe &amp; Label Lokasi</h2>
+</div>
+<!-- Chips Selector -->
+<label class="block text-label-md font-label-md text-on-surface mb-2">Tipe Fasilitas Operasional</label>
+<div class="grid grid-cols-2 sm:grid-cols-2 gap-2.5 mb-4">
+<label class="relative flex items-center gap-3 p-3 rounded-lg border-2 border-primary-container bg-primary-fixed/20 cursor-pointer transition-all">
+<input checked="" class="text-primary-container focus:ring-primary-container h-4 w-4" name="address_type" type="radio"/>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="water">water</span>
+                      Tambak Pembesaran
+                    </span>
+<span class="text-[11px] text-on-surface-variant">Ikan, udang vaname, bioflok</span>
+</div>
+</label>
+<label class="relative flex items-center gap-3 p-3 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container cursor-pointer transition-all">
+<input class="text-primary-container focus:ring-primary-container h-4 w-4" name="address_type" type="radio"/>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="potted_plant">potted_plant</span>
+                      Kantor &amp; Hidroponik
+                    </span>
+<span class="text-[11px] text-outline">NFT, Dutch bucket, semai</span>
+</div>
+</label>
+<label class="relative flex items-center gap-3 p-3 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container cursor-pointer transition-all">
+<input class="text-primary-container focus:ring-primary-container h-4 w-4" name="address_type" type="radio"/>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="warehouse">warehouse</span>
+                      Gudang &amp; Greenhouse
+                    </span>
+<span class="text-[11px] text-outline">Silo pakan, transit modul</span>
+</div>
+</label>
+<label class="relative flex items-center gap-3 p-3 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container cursor-pointer transition-all">
+<input class="text-primary-container focus:ring-primary-container h-4 w-4" name="address_type" type="radio"/>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="home">home</span>
+                      Rumah Tinggal
+                    </span>
+<span class="text-[11px] text-outline">Domisili peternak pribadi</span>
+</div>
+</label>
+</div>
+<!-- Input Label Alamat -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1" for="label_name">
+                  Nama Label Alamat <span class="text-error">*</span>
+</label>
+<div class="relative">
+<input class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="label_name" placeholder="Contoh: Tambak Bioflok Nila Sleman, Greenhouse Melon 2" type="text" value="Tambak Bioflok Nila Sleman (Unit B)"/>
+<div class="absolute right-3 top-2.5 text-outline">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</div>
+</div>
+<p class="text-[11px] text-outline mt-1">Gunakan nama yang mudah dikenali saat checkout pengiriman pakan/benih.</p>
+</div>
+</div>
+<hr class="border-outline-variant/60"/>
+<!-- Section 2: Kontak Penerima di Lokasi -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center text-xs font-bold">2</span>
+<h2 class="text-headline-sm font-headline-sm text-primary">Kontak Penerima di Lokasi</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1" for="recipient_name">
+                    Nama Lengkap Penerima <span class="text-error">*</span>
+</label>
+<input class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="recipient_name" placeholder="Nama mandor kolam / manajer kebun" type="text" value="Pak Hendra Wardana"/>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1" for="recipient_phone">
+                    Nomor WhatsApp / Telepon Aktif <span class="text-error">*</span>
+</label>
+<div class="flex rounded-lg border border-outline-variant bg-surface focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container transition-all overflow-hidden">
+<span class="inline-flex items-center px-3 bg-surface-container-high text-on-surface-variant font-label-md text-sm border-r border-outline-variant">
+                      +62
+                    </span>
+<input class="flex-1 px-3 py-2.5 bg-transparent border-0 text-body-md font-body-md text-on-surface focus:ring-0 focus:outline-none" id="recipient_phone" placeholder="812-xxxx-xxxx" type="tel" value="812-3456-7890"/>
+</div>
+</div>
+</div>
+<div class="mt-2.5 p-3 rounded-lg bg-secondary-fixed/30 border border-secondary-container flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-secondary mt-0.5 shrink-0" data-icon="info">info</span>
+<p class="text-body-sm font-body-sm text-on-secondary-fixed">
+<strong>Penting:</strong> Wajib aktif 24 jam untuk koordinasi kedatangan kurir kargo berpendingin atau truk pembawa bibit ikan hidup.
+                </p>
+</div>
+</div>
+<hr class="border-outline-variant/60"/>
+<!-- Section 3: Detail Alamat & Wilayah Administratif -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center text-xs font-bold">3</span>
+<h2 class="text-headline-sm font-headline-sm text-primary">Detail Wilayah Administratif</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+<!-- Provinsi -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Provinsi <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container appearance-none pr-8">
+<option selected="">D.I. Yogyakarta</option>
+<option>Jawa Tengah</option>
+<option>Jawa Timur</option>
+<option>Jawa Barat</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-[18px] text-outline pointer-events-none" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+</div>
+<!-- Kota / Kabupaten -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Kota / Kabupaten <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container appearance-none pr-8">
+<option selected="">Kabupaten Sleman</option>
+<option>Kabupaten Bantul</option>
+<option>Kota Yogyakarta</option>
+<option>Kabupaten Kulon Progo</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-[18px] text-outline pointer-events-none" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+</div>
+<!-- Kecamatan -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Kecamatan <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container appearance-none pr-8">
+<option selected="">Ngaglik</option>
+<option>Mlati</option>
+<option>Depok</option>
+<option>Kalasan</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-[18px] text-outline pointer-events-none" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+</div>
+<!-- Kode Pos -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Kode Pos <span class="text-error">*</span></label>
+<input class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="text" value="55581"/>
+</div>
+</div>
+<!-- Alamat Lengkap & Patokan -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1" for="full_address">
+                  Alamat Lengkap &amp; Patokan Jalan <span class="text-error">*</span>
+</label>
+<textarea class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="full_address" placeholder="Nama jalan, RT/RW, nomor petak lahan atau nomor rumah..." rows="3">Jl. Kaliurang KM 9.5, RT 03 / RW 12, Dusun Tambakan, Desa Sinduharjo. Patokan: Masuk gerbang bambu hijau 150 meter ke timur dari jalan raya, persis di seberang pos kamling komplek.</textarea>
+</div>
+</div>
+<hr class="border-outline-variant/60"/>
+<!-- Section 4: Catatan Khusus Pengiriman Agrikultur & Kargo (Special JagoFarm Field) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center text-xs font-bold">4</span>
+<h2 class="text-headline-sm font-headline-sm text-primary">Instruksi Khusus Logistik Agrikultur</h2>
+</div>
+<span class="text-xs bg-tertiary-fixed-dim/30 text-tertiary px-2 py-0.5 rounded font-semibold">Khusus Kargo</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">
+                Beri arahan kondisi jalan tambak (lebar gang, jembatan kayu, portal malam) demi kelancaran bongkar muat benih &amp; pakan.
+              </p>
+<textarea class="w-full px-3.5 py-2.5 bg-surface rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container text-sm" placeholder="Contoh: Akses jalan cor muat truk Colt Diesel / L300. Jika gerbang tambak terkunci, hubungi mandor Joko di pos kolam." rows="2">Akses jalan cor beton muat truk engkel / pick-up L300. Jika gerbang tambak tertutup, hubungi mandor jaga kolam (Bpk. Joko) di nomor tertera.</textarea>
+</div>
+<hr class="border-outline-variant/60"/>
+<!-- Section 5: Preference Toggles -->
+<div class="space-y-3 pt-1">
+<label class="flex items-start gap-3 cursor-pointer select-none">
+<input checked="" class="mt-1 h-4 w-4 rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
+<div>
+<span class="text-label-md font-label-md text-on-surface font-semibold block">Jadikan sebagai Alamat Utama</span>
+<span class="text-body-sm font-body-sm text-outline">Alamat ini akan otomatis terpilih untuk setiap checkout benih ikan dan peralatan tambak.</span>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer select-none">
+<input checked="" class="mt-1 h-4 w-4 rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
+<div>
+<span class="text-label-md font-label-md text-on-surface font-semibold block">Aktifkan Presisi GPS untuk Kurir Real-Time Tracking</span>
+<span class="text-body-sm font-body-sm text-outline">Mengunci titik peta satelit agar armada truk kargo langsung menuju bibir kolam tanpa singgah tanya penduduk.</span>
+</div>
+</label>
+</div>
+<!-- Form Action Buttons -->
+<div class="pt-4 flex flex-col sm:flex-row items-center gap-3">
+<button class="w-full sm:w-auto px-8 py-3 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Simpan Alamat Baru
+              </button>
+<a class="w-full sm:w-auto px-6 py-3 rounded-lg border border-outline-variant bg-transparent text-on-surface font-label-lg text-label-lg hover:bg-surface-container text-center transition-all" href="#">
+                Batal
+              </a>
+</div>
+</form>
+</div>
+</div>
+<!-- ================= RIGHT COLUMN: INTERACTIVE MAP & LOGISTICS GUIDANCE (5 / 12) ================= -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Card 1: Interactive Pinpoint Map -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-agri">
+<div class="p-5 border-b border-outline-variant/60 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="pin_drop" style="font-variation-settings: 'FILL' 1;">pin_drop</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Pinpoint Lokasi Presisi</h3>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-bold text-tertiary bg-tertiary-fixed-dim/30 px-2 py-0.5 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+              GPS Aktif
+            </span>
+</div>
+<!-- Realistic Map Viewport -->
+<div class="relative h-64 bg-surface-container-high w-full overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="High resolution aerial satellite view of modern rectangular bioflok aquaculture fish ponds and greenhouse farming plots in tropical Yogyakarta Indonesia. Clean blue water ponds bordered by lush tropical foliage and neat access roads under bright sunny morning illumination. Modern agricultural landscape rendered with vibrant emerald tones and natural lighting." data-location="Sleman, Yogyakarta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5jc5zTkKDEDlvd3bt_yErateasKz_Ee0merJotj-weoiIg_LxKCzTKTJE9xhVQk4YFaFQ_Wro04u4mKlNtO-Rz3eUc7JgBtBDnng0pSotGNfsd4onRI6kw_LT_9TEY5T3Ijbl_iHqlV87I2XU3CQnsUywKH7Wi8AEGOAlV_DJtKppPj0OjazuWQf6psrPaisyR-Xw4Z2To3w-6vnDSXdtSoRRhqSicT2xOqNLTtKCB8V5vuRvrBWgyA"/>
+<!-- Pinpoint Graphic Marker Centered -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative flex flex-col items-center">
+<!-- Floating tooltip above pin -->
+<div class="bg-primary text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap mb-1 flex items-center gap-1 border border-primary-fixed/40">
+<span class="material-symbols-outlined text-[14px]" data-icon="water">water</span>
+                  Kolam Nila Bioflok B
+                </div>
+<!-- Pin icon -->
+<span class="material-symbols-outlined text-[42px] text-secondary drop-shadow-md" data-icon="location_pin" style="font-variation-settings: 'FILL' 1;">location_pin</span>
+<!-- Ripple ring effect -->
+<div class="w-4 h-1.5 bg-on-surface/40 rounded-full blur-[2px] mt-[-4px]"></div>
+</div>
+</div>
+<!-- Floating Map Controls -->
+<div class="absolute right-3 top-3 flex flex-col gap-1.5 shadow-md">
+<button class="w-8 h-8 rounded bg-surface-container-lowest/90 backdrop-blur text-on-surface flex items-center justify-center hover:bg-surface-container font-bold text-sm">
+                +
+              </button>
+<button class="w-8 h-8 rounded bg-surface-container-lowest/90 backdrop-blur text-on-surface flex items-center justify-center hover:bg-surface-container font-bold text-sm">
+                -
+              </button>
+</div>
+<div class="absolute left-3 bottom-3">
+<span class="bg-surface-container-lowest/90 backdrop-blur border border-outline-variant text-[11px] px-2.5 py-1 rounded-md text-on-surface font-mono shadow-sm">
+                Lat: -7.701290, Long: 110.398110
+              </span>
+</div>
+</div>
+<!-- Pinpoint Controls & Status -->
+<div class="p-5 space-y-3 bg-surface">
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span class="flex items-center gap-1.5 text-xs text-primary font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+                Koordinat Terverifikasi Akurat
+              </span>
+<span class="text-xs text-outline">Radius Akurasi: 5 meter</span>
+</div>
+<button class="w-full py-2.5 px-4 rounded-lg border border-primary-container text-primary-container font-label-md text-label-md hover:bg-primary-container/10 transition-colors flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="my_location">my_location</span>
+              Pilih / Geser Titik Lokasi dari Peta
+            </button>
+<p class="text-[11px] text-outline text-center">
+              Kurir kargo live-tracking akan menggunakan titik ini untuk memandu langsung ke gerbang masuk area tambak.
+            </p>
+</div>
+</div>
+<!-- Card 2: Logistics & Bio-security Guarantee Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 shadow-agri">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary text-[22px]" data-icon="verified_user">verified_user</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Standar Pengiriman Kargo JagoFarm</h3>
+</div>
+<div class="space-y-4">
+<!-- Item 1 -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="local_shipping">local_shipping</span>
+</div>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold">Akses Angkutan Berat Fleksibel</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                  Spesifikasi jalan membantu armada kami menentukan apakah pengiriman bibit/pakan memakai truk Colt Diesel atau pickup 4x4.
+                </p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="air">air</span>
+</div>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold">Penerimaan Benih Beroksigen</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                  Pastikan mandor siap menerima dalam kurun waktu 30 menit kedatangan untuk tahap aklimatisasi suhu air kolam.
+                </p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="security">security</span>
+</div>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold">Garansi D.O.A (Death on Arrival) 100%</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                  Data alamat valid dengan catatan jalan memastikan proteksi klaim ganti benih hidup terlindungi penuh.
+                </p>
+</div>
+</div>
+</div>
+<!-- Quick Help / CS Support Callout -->
+<div class="mt-6 pt-4 border-t border-outline-variant/60 flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-outline">Perlu bantuan setting titik tambak?</span>
+<a class="text-label-md font-label-md text-primary font-bold hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="support_agent">support_agent</span>
+              Tanya CS Logistik
+            </a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- ================= TRUST & VALUE HIGHLIGHTS STRIP ================= -->
+<section class="bg-surface-container-low border-t border-outline-variant/60 py-6 mt-12">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-primary font-bold">Pengiriman Cepat</p>
+<p class="text-body-sm font-body-sm text-outline">Kargo oksigen &amp; pick-up khusus</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-primary font-bold">Garansi 100%</p>
+<p class="text-body-sm font-body-sm text-outline">Benih segar &amp; modul aman</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-primary font-bold">Konsultasi Ahli</p>
+<p class="text-body-sm font-body-sm text-outline">Agronom &amp; teknisi IoT siap bantu</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-primary font-bold">Transaksi Aman</p>
+<p class="text-body-sm font-body-sm text-outline">Rekening bersama &amp; escrow</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FOOTER (Shared Component) ================= -->
+<footer class="bg-primary dark:bg-surface-container-lowest w-full border-t border-primary-container dark:border-outline-variant flat no shadows">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
+<!-- Brand Summary -->
+<div class="md:col-span-2 space-y-4">
+<a class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary flex items-center gap-2" href="#">
+<span class="w-8 h-8 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+</span>
+            JagoFarm
+          </a>
+<p class="text-on-primary-container dark:text-on-surface-variant text-body-sm font-body-sm max-w-sm">
+            Platform ekosistem agrikultur dan akuakultur terpadu di Indonesia. Menyediakan bibit berkualitas tinggi, pakan terverifikasi, perangkat IoT presisi, dan logistik terstandarisasi.
+          </p>
+<div class="text-body-sm font-body-sm text-on-primary-container">
+<p class="font-semibold text-secondary-fixed-dim">Pusat Distribusi &amp; Hub Logistik:</p>
+<p>Jl. Raya Rungkut Industri No. 45, Surabaya, Jawa Timur</p>
+<p>Hotline Logistik: +62 31 8920 112</p>
+</div>
+</div>
+<!-- Navigation Columns -->
+<div>
+<h4 class="text-label-lg font-label-lg text-secondary-fixed-dim font-semibold mb-4">Layanan &amp; Info</h4>
+<ul class="space-y-2 text-body-sm font-body-sm">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Tentang Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Cara Pemesanan</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">FAQ</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Hubungi Kami</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-secondary-fixed-dim font-semibold mb-4">Kebijakan Logistik</h4>
+<ul class="space-y-2 text-body-sm font-body-sm">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengembalian</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Privasi</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Syarat dan Ketentuan</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-secondary-fixed-dim font-semibold mb-4">Metode Logistik Agrikultur</h4>
+<p class="text-body-sm font-body-sm text-on-primary-container mb-3">Armada berlisensi penanganan benih hidup &amp; kargo pakan curah:</p>
+<div class="flex flex-wrap gap-2 text-xs text-on-primary font-medium">
+<span class="px-2.5 py-1 rounded bg-primary-container border border-primary-fixed-dim/30">SiCepat Cargo</span>
+<span class="px-2.5 py-1 rounded bg-primary-container border border-primary-fixed-dim/30">KALOG Ekpress</span>
+<span class="px-2.5 py-1 rounded bg-primary-container border border-primary-fixed-dim/30">JagoFarm Fleet</span>
+</div>
+</div>
+</div>
+<!-- Copyright Bottom Bar -->
+<div class="pt-8 border-t border-primary-container dark:border-outline-variant/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-body-sm font-body-sm text-on-primary-container">
+<p>© 2026 JagoFarm. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<a class="hover:text-on-primary transition-colors" href="#">Keamanan Transaksi</a>
+<a class="hover:text-on-primary transition-colors" href="#">Sertifikasi Karantina Ikan</a>
+<a class="hover:text-on-primary transition-colors" href="#">Status Server IoT</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Masuk ke JagoFarm - Solusi Pertanian &amp; Akuakultur Modern</title>
+<!-- Tailwind CSS CDN with forms plugin -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              700: '#15803d',
+              800: '#1b4d3e',
+              900: '#12392e',
+              950: '#0a231c',
+            },
+            leaf: '#10b981',
+            aqua: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-elements">
+    /* Subtle custom dot pattern and custom scroll */
+    .bg-pattern-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-slate-800 bg-slate-50 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+<!-- BEGIN: MainContainer -->
+<main class="flex-1 flex flex-col lg:flex-row w-full min-h-screen">
+<!-- BEGIN: LeftHeroSection -->
+<!-- Showcase smart agriculture & aquaculture tech ecosystem -->
+<section class="hidden lg:flex lg:w-1/2 xl:w-7/12 relative bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 text-white p-12 xl:p-16 flex-col justify-between overflow-hidden" data-purpose="brand-showcase">
+<!-- Background Decorative Layers -->
+<div class="absolute inset-0 bg-pattern-grid opacity-30 pointer-events-none"></div>
+<div class="absolute -top-32 -left-32 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-aqua/20 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Top Brand Navigation / Return Link -->
+<div class="relative z-10 flex items-center justify-between">
+<a class="inline-flex items-center gap-2.5 text-white/80 hover:text-white text-sm font-medium transition-colors group" href="#">
+<svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          Kembali ke Beranda
+        </a>
+<div class="glass-pill px-3.5 py-1.5 rounded-full text-xs font-medium text-emerald-300 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          IoT Sensor Aktif 24/7
+        </div>
+</div>
+<!-- Center Value Proposition -->
+<div class="relative z-10 max-w-xl my-auto py-12">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-6 border border-white/15">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+          Platform Agroteknologi Terpadu
+        </div>
+<h1 class="text-3xl xl:text-4xl 2xl:text-5xl font-extrabold tracking-tight text-white leading-tight mb-5">
+          Solusi Pertanian &amp; Akuakultur Modern Berbasis IoT
+        </h1>
+<p class="text-slate-300 text-base xl:text-lg leading-relaxed mb-8">
+          Kelola kolam bioflok, monitoring kualitas air, otomasi fertigasi, dan pantau hasil panen dalam satu ekosistem presisi terpercaya.
+        </p>
+<!-- Feature Points -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+<div class="glass-pill p-4 rounded-xl flex items-start gap-3">
+<div class="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg shrink-0">
+<!-- Water/Fish Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<h2 class="text-sm font-semibold text-white">Monitoring Kolam</h2>
+<p class="text-xs text-slate-300 mt-0.5">Suhu, pH, DO, &amp; amonia terpantau otomatis</p>
+</div>
+</div>
+<div class="glass-pill p-4 rounded-xl flex items-start gap-3">
+<div class="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg shrink-0">
+<!-- Leaf Plant Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<h2 class="text-sm font-semibold text-white">Bibit &amp; Agronomi</h2>
+<p class="text-xs text-slate-300 mt-0.5">Jaminan bibit unggul &amp; panduan ahli agronomi</p>
+</div>
+</div>
+</div>
+<!-- Metric Badges -->
+<div class="flex items-center gap-8 pt-4 border-t border-white/10">
+<div>
+<div class="text-2xl font-bold text-white tracking-tight">12.500+</div>
+<div class="text-xs text-emerald-300/80">Petani &amp; Pembudidaya</div>
+</div>
+<div class="h-8 w-px bg-white/15"></div>
+<div>
+<div class="text-2xl font-bold text-white tracking-tight">99.4%</div>
+<div class="text-xs text-emerald-300/80">Tingkat Keberhasilan Panen</div>
+</div>
+<div class="h-8 w-px bg-white/15"></div>
+<div>
+<div class="text-2xl font-bold text-white tracking-tight">34 Provinsi</div>
+<div class="text-xs text-emerald-300/80">Jangkauan Distribusi</div>
+</div>
+</div>
+</div>
+<!-- Footer Info on Left -->
+<div class="relative z-10 text-xs text-white/50 flex items-center justify-between">
+<p>© 2025 JagoFarm Agro Nusantara. Hak Cipta Dilindungi.</p>
+<div class="flex gap-4">
+<a class="hover:text-white transition-colors" href="#">Privasi</a>
+<a class="hover:text-white transition-colors" href="#">Ketentuan</a>
+</div>
+</div>
+</section>
+<!-- END: LeftHeroSection -->
+<!-- BEGIN: RightAuthSection -->
+<section class="flex-1 flex flex-col justify-center items-center px-6 py-12 lg:px-12 xl:px-20 bg-white" data-purpose="login-form-wrapper">
+<div class="w-full max-w-md mx-auto">
+<!-- Mobile back to home link -->
+<div class="lg:hidden mb-6 flex justify-between items-center">
+<a class="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-brand-800 font-medium" href="#">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+            Kembali ke Beranda
+          </a>
+<span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+            JagoFarm v3.2
+          </span>
+</div>
+<!-- Brand Header with Logo -->
+<div class="text-center mb-8">
+<!-- Logo Icon -->
+<div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-800 text-white shadow-md shadow-brand-900/20 mb-4 ring-4 ring-emerald-50">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<!-- Leaf & Aqua sprout path -->
+<path d="M12 21a9 9 0 0 1-9-9c0-4.97 4.03-9 9-9 4.14 0 7.6 2.8 8.65 6.66A9.006 9.006 0 0 1 12 21Z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M12 3v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M12 12c3 0 5-2 5-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h2 class="text-2xl font-bold text-slate-900 tracking-tight">Masuk ke JagoFarm</h2>
+<p class="text-sm text-slate-500 mt-1.5">
+            Belum punya akun? 
+            <a class="text-brand-800 font-semibold hover:text-brand-900 hover:underline" href="#">Daftar sekarang</a>
+</p>
+</div>
+<!-- Social Sign-in (Google) -->
+<div class="space-y-4">
+<button class="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-slate-300 rounded-xl bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 text-sm font-semibold transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-brand-800" data-purpose="google-login-button" type="button">
+<!-- Google official G logo SVG -->
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
+</svg>
+            Masuk dengan Google
+          </button>
+<!-- Divider -->
+<div class="relative flex items-center justify-center my-6">
+<div class="border-t border-slate-200 w-full"></div>
+<div class="bg-white px-3 text-xs uppercase tracking-wider text-slate-400 font-medium">atau masuk dengan email</div>
+<div class="border-t border-slate-200 w-full"></div>
+</div>
+<!-- BEGIN: FormBlock -->
+<form action="#" class="space-y-4" data-purpose="credential-form" method="POST">
+<!-- Email Input -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5" for="email">
+                Email
+              </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<!-- Mail Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<input class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-800 focus:border-brand-800 transition-colors" id="email" name="email" placeholder="nama@email.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider" for="password">
+                  Password
+                </label>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<!-- Lock Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<input class="w-full pl-11 pr-11 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-800 focus:border-brand-800 transition-colors" id="password" name="password" placeholder="Masukkan password" required="" type="password"/>
+<!-- Toggle Password Visibility Button -->
+<button aria-label="Tampilkan atau sembunyikan password" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none" id="togglePassword" type="button">
+<!-- Eye Icon -->
+<svg class="w-5 h-5" fill="none" id="eyeIcon" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+<path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Remember Me & Forgot Password -->
+<div class="flex items-center justify-between pt-1">
+<label class="flex items-center text-xs text-slate-600 cursor-pointer select-none">
+<input class="w-4 h-4 rounded text-brand-800 border-slate-300 focus:ring-brand-800" type="checkbox"/>
+<span class="ml-2">Ingat saya</span>
+</label>
+<a class="text-xs font-semibold text-brand-800 hover:text-brand-900 hover:underline" href="#">
+                Lupa password?
+              </a>
+</div>
+<!-- Submit Button -->
+<button class="w-full mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-800 hover:bg-brand-900 active:bg-brand-950 text-white font-semibold text-sm transition-all shadow-md shadow-brand-900/20 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-800" type="submit">
+<span>Masuk ke Akun</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</form>
+<!-- END: FormBlock -->
+</div>
+<!-- Trust & Security Badges -->
+<div class="mt-8 pt-6 border-t border-slate-100 flex flex-col items-center justify-center text-center">
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<!-- Shield Lock Icon -->
+<svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span>Dilindungi enkripsi SSL 256-bit • JagoFarm Ecosystem</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-2">
+            Dengan masuk, Anda menyetujui Ketentuan Layanan &amp; Kebijakan Privasi JagoFarm.
+          </p>
+</div>
+</div>
+</section>
+<!-- END: RightAuthSection -->
+</main>
+<!-- END: MainContainer -->
+<!-- Simple script for password show/hide toggle -->
+<script data-purpose="password-toggle">
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    if (togglePasswordBtn && passwordInput) {
+      togglePasswordBtn.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // Slightly change icon opacity to indicate active state
+        if (type === 'text') {
+          togglePasswordBtn.classList.add('text-brand-800');
+          togglePasswordBtn.classList.remove('text-slate-400');
+        } else {
+          togglePasswordBtn.classList.remove('text-brand-800');
+          togglePasswordBtn.classList.add('text-slate-400');
+        }
+      });
+    }
+  </script>
+</body></html>

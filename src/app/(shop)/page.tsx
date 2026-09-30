@@ -5,28 +5,38 @@ import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 
 export const dynamic = "force-dynamic";
 
+const CATEGORY_ICONS: Record<string, { icon: string; desc: string; badge?: string }> = {
+  "set-tambak": { icon: "water", desc: "Paket kolam terpal bulat & bioflok air tawar" },
+  "set-hidroponik": { icon: "potted_plant", desc: "Kit NFT, DWC & Wick pipa talang lengkap" },
+  "set-aquaponik": { icon: "set_meal", desc: "Sistem simbiosis terpadu ikan & tanaman" },
+  "iot-smart-farming": { icon: "developer_board", desc: "Sensor, monitoring & kontroler otomatis", badge: "POPULER" },
+  "benih": { icon: "spa", desc: "Bibit sayuran, buah hibrida, & media tanam" },
+  "anakan-ikan": { icon: "waves", desc: "Benih lele sangkuriang, nila merah, & gurame" },
+};
+
 export default async function HomePage() {
-  const featuredProducts = await prisma.product.findMany({
-    where: { isActive: true, isFeatured: true },
-    orderBy: { createdAt: "desc" },
-    take: 8,
-    include: {
-      images: { where: { isPrimary: true }, take: 1 },
-      category: { select: { id: true, name: true, slug: true } },
-      _count: { select: { reviews: { where: { isApproved: true } } } },
-    },
-  });
-  // 5 random products for hero showcase (changes every reload)
-  const heroProducts = await prisma.$queryRaw<{id:string;name:string;slug:string;base_price:any;discount_price:any;image_url:string|null;category_name:string}[]>`
-    SELECT p.id, p.name, p.slug, p.base_price, p.discount_price,
-           pi.url as image_url, c.name as category_name
-    FROM products p
-    LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
-    LEFT JOIN categories c ON c.id = p.category_id
-    WHERE p.is_active = true
-    ORDER BY RANDOM()
-    LIMIT 5
-  `;
+  const [categories, featuredProducts, heroProducts] = await Promise.all([
+    prisma.category.findMany({ where: { parentId: null }, orderBy: { name: "asc" } }),
+    prisma.product.findMany({
+      where: { isActive: true, isFeatured: true },
+      orderBy: { createdAt: "desc" },
+      take: 8,
+      include: {
+        images: { where: { isPrimary: true }, take: 1 },
+        category: { select: { id: true, name: true, slug: true } },
+        _count: { select: { reviews: { where: { isApproved: true } } } },
+      },
+    }),
+    prisma.$queryRaw<{id:string;name:string;slug:string;base_price:any;discount_price:any;image_url:string|null;category_name:string}[]>`
+      SELECT p.id, p.name, p.slug, p.base_price, p.discount_price,
+             pi.url as image_url, c.name as category_name
+      FROM products p
+      LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
+      LEFT JOIN categories c ON c.id = p.category_id
+      WHERE p.is_active = true
+      ORDER BY RANDOM() LIMIT 5
+    `,
+  ]);
   return (
     <div className="w-full">
       {/* HERO SECTION */}
@@ -158,49 +168,19 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <Link className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md" href="/products?category=set-tambak">
-            <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
-              <span className="material-symbols-outlined text-[28px]">water</span>
-            </div>
-            <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">Set Tambak</h3>
-            <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">Paket kolam terpal bulat &amp; bioflok air tawar</p>
-          </Link>
-          <Link className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md" href="/products?category=set-hidroponik">
-            <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
-              <span className="material-symbols-outlined text-[28px]">potted_plant</span>
-            </div>
-            <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">Set Hidroponik</h3>
-            <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">Kit NFT, DWC &amp; Wick pipa talang lengkap</p>
-          </Link>
-          <Link className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md" href="/products?category=set-aquaponik">
-            <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
-              <span className="material-symbols-outlined text-[28px]">set_meal</span>
-            </div>
-            <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">Set Aquaponik</h3>
-            <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">Sistem simbiosis terpadu ikan &amp; tanaman</p>
-          </Link>
-          <Link className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md relative overflow-hidden" href="/products?category=iot-smart-farming">
-            <span className="absolute top-2 right-2 text-[9px] bg-secondary-fixed-dim text-primary font-bold px-1.5 py-0.5 rounded-full">POPULER</span>
-            <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
-              <span className="material-symbols-outlined text-[28px]">developer_board</span>
-            </div>
-            <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">IoT &amp; Smart Farming</h3>
-            <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">Sensor, monitoring &amp; kontroler otomatis</p>
-          </Link>
-          <Link className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md" href="/products?category=benih">
-            <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
-              <span className="material-symbols-outlined text-[28px]">spa</span>
-            </div>
-            <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">Benih Unggulan</h3>
-            <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">Bibit sayuran, buah hibrida, &amp; media tanam</p>
-          </Link>
-          <Link className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md" href="/products?category=anakan-ikan">
-            <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
-              <span className="material-symbols-outlined text-[28px]">waves</span>
-            </div>
-            <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">Bibit Ikan</h3>
-            <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">Benih lele sangkuriang, nila merah, &amp; gurame</p>
-          </Link>
+          {categories.map((cat) => {
+            const meta = CATEGORY_ICONS[cat.slug] || { icon: "category", desc: "Produk berkualitas tinggi" };
+            return (
+              <Link key={cat.id} className="group bg-surface-container-lowest border border-outline-variant hover:border-primary rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md relative overflow-hidden" href={`/products?category=${cat.slug}`}>
+                {meta.badge && <span className="absolute top-2 right-2 text-[9px] bg-secondary-fixed-dim text-primary font-bold px-1.5 py-0.5 rounded-full">{meta.badge}</span>}
+                <div className="w-14 h-14 rounded-2xl bg-surface-container-low group-hover:bg-primary-fixed flex items-center justify-center text-primary transition-colors mb-3.5">
+                  <span className="material-symbols-outlined text-[28px]">{meta.icon}</span>
+                </div>
+                <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">{cat.name}</h3>
+                <p className="text-body-sm font-body-sm text-outline mt-1 line-clamp-2">{meta.desc}</p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -277,15 +257,23 @@ export default async function HomePage() {
                   Produk Unggulan
                 </span>
               </div>
+              <div className="absolute bottom-4 left-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md p-3 rounded-xl border border-white/40 flex items-center justify-between">
+                <div><p className="text-label-sm font-label-sm text-outline">Kategori</p><p className="text-headline-sm font-headline-sm font-bold text-primary">{spot.category.name}</p></div>
+                <div className="text-right"><p className="text-label-sm font-label-sm text-outline">Stok Tersedia</p><p className="text-headline-sm font-headline-sm font-bold text-secondary">{spot.stock} unit</p></div>
+              </div>
             </div>
             <div className="lg:col-span-6 flex flex-col items-start space-y-4">
               <span className="text-label-md font-label-md text-secondary font-bold uppercase tracking-wider">{spot.category.name}</span>
-              <h2 className="text-headline-lg font-headline-lg text-on-surface">
-                {spot.name}
-              </h2>
-              <p className="text-body-md font-body-md text-on-surface-variant leading-relaxed">
-                {spot.shortDesc || spot.description?.slice(0, 200) || "Produk pilihan berkualitas tinggi untuk kebutuhan pertanian dan akuakultur modern Anda."}
-              </p>
+              <h2 className="text-headline-lg font-headline-lg text-on-surface">{spot.name}</h2>
+              <p className="text-body-md font-body-md text-on-surface-variant leading-relaxed">{spot.shortDesc || spot.description?.slice(0, 200) || "Produk pilihan berkualitas tinggi untuk kebutuhan pertanian modern."}</p>
+              <div className="space-y-2.5 py-2 w-full">
+                {["Ready stock siap kirim instan hari ini", "Garansi produk resmi & berkualitas", "Konsultasi gratis via WhatsApp"].map((feat) => (
+                  <div key={feat} className="flex items-center gap-2.5 text-body-md font-body-md text-on-surface">
+                    <span className="w-5 h-5 rounded-full bg-tertiary-fixed/40 text-tertiary flex items-center justify-center shrink-0"><span className="material-symbols-outlined text-[16px]">check</span></span>
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
               <div className="pt-2 w-full">
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-price-lg font-price-lg text-primary text-[28px]">Rp {spotPrice.toLocaleString("id-ID")}</span>

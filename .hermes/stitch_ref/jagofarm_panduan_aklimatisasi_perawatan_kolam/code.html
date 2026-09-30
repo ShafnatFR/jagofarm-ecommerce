@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panduan Aklimatisasi &amp; Perawatan Benih Ikan Mas Koki | JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#ffffff",
+            "surface-tint": "#376757",
+            "surface-variant": "#d8e3fb",
+            "tertiary": "#003623",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-bright": "#f9f9ff",
+            "on-surface-variant": "#404945",
+            "on-secondary-fixed": "#281900",
+            "inverse-primary": "#9ed1bd",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f0f3ff",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary": "#7f5700",
+            "on-tertiary-fixed": "#002113",
+            "background": "#f9f9ff",
+            "on-background": "#111c2d",
+            "primary-container": "#1b4d3e",
+            "secondary-container": "#fdba45",
+            "on-error": "#ffffff",
+            "on-secondary-container": "#6f4b00",
+            "error-container": "#ffdad6",
+            "on-surface": "#111c2d",
+            "outline-variant": "#c0c9c3",
+            "surface": "#f9f9ff",
+            "surface-container-highest": "#d8e3fb",
+            "surface-dim": "#cfdaf2",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdeae",
+            "primary-fixed": "#baeed9",
+            "on-tertiary-container": "#32c98f",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-primary-container": "#8abda9",
+            "surface-container": "#e7eeff",
+            "outline": "#707974",
+            "primary": "#003629",
+            "on-secondary-fixed-variant": "#604100",
+            "inverse-surface": "#263143",
+            "tertiary-container": "#004f35",
+            "surface-container-high": "#dee8ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed": "#002117",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#fdba45",
+            "tertiary-fixed-dim": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "gutter": "1.25rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md selection:bg-primary selection:text-on-primary min-h-screen flex flex-col justify-between">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full gap-4">
+<!-- Brand Logo & Search Bar on Left -->
+<div class="flex items-center gap-6 flex-1">
+<a class="flex items-center gap-2 group transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight">JagoFarm</span>
+</a>
+<!-- Global Search Bar with Search Glyph -->
+<div class="relative w-full max-w-md hidden md:block">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-lg">search</span>
+</div>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-bright border border-outline-variant rounded-full text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Cari benih ikan, pakan, IoT akuakultur, kit kolam..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Kategori</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Set Tambak</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a>
+<a class="text-primary dark:text-inverse-primary font-bold text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 flex items-center gap-1" href="#">
+<span>Konsultasi</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim"></span>
+</a>
+</nav>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-3">
+<button aria-label="Keranjang Belanja" class="relative p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-secondary text-on-primary font-label-sm text-[9px] flex items-center justify-center font-bold">1</span>
+</button>
+<button aria-label="Akun Pengguna" class="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Breadcrumb Bar -->
+<div class="bg-surface-bright border-b border-outline-variant/40">
+<div class="max-w-7xl mx-auto px-margin py-2.5">
+<nav class="flex items-center gap-2 text-label-sm font-label-sm text-outline overflow-x-auto whitespace-nowrap">
+<a class="hover:text-primary transition-colors" href="#">Beranda</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Produk</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Anakan Ikan</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Benih Ikan Mas Koki (5 ekor)</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-bold">Panduan Perawatan &amp; Aklimatisasi</span>
+</nav>
+</div>
+</div>
+<!-- Main Content Container -->
+<main class="max-w-7xl mx-auto px-margin py-8 space-y-8 flex-1 w-full">
+<!-- Section 1: Product Snapshot Ribbon (Card Banner) -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/80 p-4 md:p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-container"></div>
+<div class="flex items-center gap-4 w-full md:w-auto">
+<div class="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close up photographic shot of five vibrant Oranda and Ranchu baby goldfish with plump bellies swimming harmoniously in a crystal clear, aerated quarantine aquatic tank with subtle botanical green aquatic reflections and modern studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDPi5Kgs8iN01NqYoa9SFsux1UG4BACn8T5eI5mxpdGqNnqWTZbK_9L5m0D5Bgdok4w94jDTz6zsA83IxAW_R2yM6p2Lah1p3AquB2Z1vMTRFiZB7c_7gQ2TRlzBP8_OVUq6F22beR0cFEzn70KKuCPb8u_oU-I0IUXCr8Icx9Hecys6vTt_msBrKuGbtBBJ8ePOv5FfEOl2eD5aQ3aDwFGgziq9Ep9otFHUrqr6k-jCsQm01BktN1Lw"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded-full font-label-sm text-label-sm">Rujukan Produk</span>
+<div class="flex items-center text-secondary font-label-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="ml-1 text-on-surface font-bold">5.0</span>
+<span class="text-outline ml-1">(1 ulasan)</span>
+</div>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Benih Ikan Mas Koki Oranda &amp; Ranchu (5 ekor)</h2>
+<p class="text-price-md font-price-md text-primary-container mt-0.5">Rp 75.000 <span class="text-body-sm font-body-sm text-outline font-normal">/ paket 3-5 cm</span></p>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto justify-end">
+<a class="px-4 py-2.5 rounded-lg border border-primary-container text-primary-container font-label-lg hover:bg-surface-container transition-all text-center flex-1 md:flex-initial" href="#">
+          Kembali ke Detail Produk
+        </a>
+<button class="px-5 py-2.5 rounded-lg bg-primary-container text-on-primary font-label-lg hover:bg-primary transition-all shadow-sm flex items-center justify-center gap-2 flex-1 md:flex-initial active:scale-95">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+<span>Beli Produk Ini</span>
+</button>
+</div>
+</section>
+<!-- Section 2: Header Hero Title & SOP Subtitle -->
+<section class="bg-gradient-to-r from-primary-container to-primary rounded-2xl p-6 md:p-10 text-on-primary shadow-md relative overflow-hidden">
+<!-- Ambient light effect -->
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-secondary-fixed-dim/10 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 max-w-3xl space-y-3">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-on-primary/10 backdrop-blur-md border border-on-primary/20 text-secondary-fixed text-label-md font-label-md">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span>Standar Operasional Akuakultur Profesional JagoFarm</span>
+</div>
+<h1 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-on-primary tracking-tight">
+          Panduan Lengkap Aklimatisasi &amp; Pemeliharaan Benih Ikan Mas Koki
+        </h1>
+<p class="text-body-lg font-body-lg text-on-primary-container">
+          Prosedur standar operasional (SOP) karantina dan adaptasi kolam/akuarium agar tingkat kelangsungan hidup (survival rate) mencapai 100% pasca pengiriman kurir.
+        </p>
+</div>
+</section>
+<!-- Section 3: Water Parameters (Metric Bento Grid) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Parameter Kualitas Air Ideal</h2>
+<p class="text-body-sm font-body-sm text-outline">Kondisi air wajib dikondisikan sebelum membuka paket kantung benih.</p>
+</div>
+<span class="hidden sm:inline-flex items-center gap-1 text-label-sm font-label-sm text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-xs">water_drop</span> Standar Budidaya Sehat
+        </span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Metric 1: Temp -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant hover:border-surface-tint transition-all shadow-sm">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="text-label-md font-label-md">Suhu Kolam</span>
+<span class="material-symbols-outlined text-primary">thermostat</span>
+</div>
+<div class="text-headline-md font-headline-md text-primary">22°C - 27°C</div>
+<p class="text-body-sm font-body-sm text-outline mt-1">Hindari fluktuasi mendadak &gt;2°C per jam.</p>
+</div>
+<!-- Metric 2: pH -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant hover:border-surface-tint transition-all shadow-sm">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="text-label-md font-label-md">Keasaman (pH)</span>
+<span class="material-symbols-outlined text-primary">science</span>
+</div>
+<div class="text-headline-md font-headline-md text-primary">7.0 - 7.8</div>
+<p class="text-body-sm font-body-sm text-outline mt-1">Netral hingga basa ringan yang stabil.</p>
+</div>
+<!-- Metric 3: DO -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant hover:border-surface-tint transition-all shadow-sm">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="text-label-md font-label-md">Oksigen Terlarut (DO)</span>
+<span class="material-symbols-outlined text-primary">air</span>
+</div>
+<div class="text-headline-md font-headline-md text-primary">&gt; 6.0 mg/L</div>
+<p class="text-body-sm font-body-sm text-outline mt-1">Gunakan aerator gelembung mikro.</p>
+</div>
+<!-- Metric 4: Salinitas -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant hover:border-surface-tint transition-all shadow-sm">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="text-label-md font-label-md">Salinitas Karantina</span>
+<span class="material-symbols-outlined text-primary">grain</span>
+</div>
+<div class="text-headline-md font-headline-md text-primary">0.1% - 0.3%</div>
+<p class="text-body-sm font-body-sm text-outline mt-1">1-3 gram garam non-yodium per liter.</p>
+</div>
+</div>
+</section>
+<!-- Section 4: Step-by-Step Acclimatization SOP -->
+<section class="space-y-6">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Prosedur 4 Tahap Aklimatisasi Saat Paket Tiba</h2>
+<p class="text-body-sm font-body-sm text-outline">Jangan langsung melepaskan ikan mas koki ke dalam akuarium utama atau kolam taman!</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 flex flex-col justify-between hover:shadow-md transition-all relative">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-md">1</span>
+<span class="material-symbols-outlined text-outline">timer</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-primary">Pengapungan Kantung (Floating)</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">
+              Apungkan kantung oksigen tertutup di atas permukaan air kolam karantina selama <strong>15 - 20 menit</strong>. Tujuannya menyamakan suhu air kantung dan kolam secara perlahan agar benih tidak mengalami kejut suhu (temperature shock).
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1.5 text-secondary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>Durasi: 15-20 Menit</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 flex flex-col justify-between hover:shadow-md transition-all relative">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-md">2</span>
+<span class="material-symbols-outlined text-outline">water</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-primary">Water Mixing &amp; Adaptasi pH</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">
+              Buka ikatan kantung. Masukkan 1 cangkir air kolam ke dalam kantung setiap 5 menit (lakukan 3-4 kali pencampuran). Langkah ini membantu organ osmoregulasi benih menyesuaikan perbedaan pH dan TDS tanpa stres berat.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1.5 text-secondary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-sm">cycle</span>
+<span>Interval: 4x tiap 5 menit</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 flex flex-col justify-between hover:shadow-md transition-all relative border-t-4 border-t-secondary-fixed-dim">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-md">3</span>
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-primary">Pemindahan Tanpa Air Kiriman</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">
+              Gunakan serokan lembut untuk memindahkan hanya benih ikan ke kolam karantina. <strong>JANGAN menuangkan air kantung kiriman</strong> ke dalam kolam karena air tersebut telah terakumulasi amonia dan karbon dioksida selama transit logistik.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1.5 text-error text-label-sm font-label-sm font-bold">
+<span class="material-symbols-outlined text-sm">block</span>
+<span>Buang air kiriman</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 flex flex-col justify-between hover:shadow-md transition-all relative">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-md">4</span>
+<span class="material-symbols-outlined text-outline">no_food</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-primary">Puasa 24 Jam &amp; Karantina</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">
+              Tutup sebagian kolam dengan ram/jaring agar ikan tidak lompat. <strong>Jangan memberi pakan selama 24 jam pertama</strong>. Nyalakan aerasi tinggi. Saluran pencernaan ikan mas koki memerlukan masa tenang untuk relaksasi metabolik pasca transit.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1.5 text-primary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Masa Karantina: 3-5 Hari</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Feeding, Filtration & Maintenance Matrix (Bento Layout) -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Card: Pakan & Pola Nutrisi -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Pola Pakan Optimal</h3>
+<p class="text-body-sm font-body-sm text-outline">Kebutuhan protein tinggi 40-45%</p>
+</div>
+</div>
+<ul class="space-y-3 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Hari ke-2 s/d ke-4:</strong> Berikan pakan hidup yang higienis seperti cacing sutra steril atau kutu air (Moina/Daphnia) dalam porsi kecil.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Hari ke-5 seterusnya:</strong> Mulai kenalkan pelet butir mikro (0.8 - 1.0 mm) tenggelam (sinking pellet) untuk menjaga bentuk wen &amp; punggung.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Frekuensi:</strong> 2-3 kali sehari, dengan prinsip pakan habis dalam 3 menit untuk meminimalkan residu organik.</span>
+</li>
+</ul>
+</div>
+<!-- Card: Filtrasi & Sanitasi -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">filter_alt</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Filtrasi &amp; Aerasi</h3>
+<p class="text-body-sm font-body-sm text-outline">Kombinasi 3 tahap filtrasi</p>
+</div>
+</div>
+<ul class="space-y-3 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Mekanis:</strong> Busa filter &amp; japmat untuk menyaring kotoran padat koki yang bervolume tinggi.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Biologis:</strong> Bio-ring atau batu apung matang untuk bakteri nitrifikasi (pengurai amonia &amp; nitrit).</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Arus Air:</strong> Setel aliran arus lembut (gentle flow); ikan mas koki ranchu tidak tahan terhadap pusaran arus kencang.</span>
+</li>
+</ul>
+</div>
+<!-- Card: Jadwal Maintenance Mingguan -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Jadwal Perawatan Kolam</h3>
+<p class="text-body-sm font-body-sm text-outline">Rutinitas kebersihan berkelanjutan</p>
+</div>
+</div>
+<div class="space-y-2.5">
+<div class="p-3 bg-surface-bright rounded-lg border border-outline-variant/60">
+<p class="font-label-md font-label-md text-primary">Setiap 2 Hari (Sifon Dasar)</p>
+<p class="text-body-sm font-body-sm text-outline">Sedot kotoran feses di dasar kolam sebanyak 10-15% volume air, ganti dengan air endapan segar.</p>
+</div>
+<div class="p-3 bg-surface-bright rounded-lg border border-outline-variant/60">
+<p class="font-label-md font-label-md text-primary">Mingguan (Water Change 30%)</p>
+<p class="text-body-sm font-body-sm text-outline">Ganti sepertiga air, cuci busa mekanis dengan air kolam (bukan air keran kaporit).</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 6: Penanganan Masalah & Gejala Penyakit Umum -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-6">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Identifikasi Gejala &amp; Tindakan Medis Cepat</h2>
+<p class="text-body-sm font-body-sm text-outline">Tindakan darurat jika benih menunjukkan perilaku anomali pasca pengiriman.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Penyakit 1 -->
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/70 space-y-2">
+<div class="flex items-center justify-between text-error">
+<span class="font-headline-sm font-headline-sm">Bintik Putih (White Spot / Ich)</span>
+<span class="material-symbols-outlined">bug_report</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+<strong>Gejala:</strong> Titik putih halus menyerupai garam di sirip dan tubuh, ikan sering menggesekkan badan ke dinding kolam.
+          </p>
+<div class="text-body-sm font-body-sm pt-2 text-primary font-medium">
+<strong>Solusi:</strong> Naikkan suhu heater ke 29°C-30°C, tambahkan garam ikan 0.3% dan obat Methylen Blue dosis standar selama 3-5 hari.
+          </div>
+</div>
+<!-- Penyakit 2 -->
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/70 space-y-2">
+<div class="flex items-center justify-between text-secondary">
+<span class="font-headline-sm font-headline-sm">Gangguan Swim Bladder</span>
+<span class="material-symbols-outlined">swap_driving_apps_wheel</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+<strong>Gejala:</strong> Ikan berenang terbalik, mengambang di permukaan tanpa bisa menyelam, atau terjebak di dasar.
+          </p>
+<div class="text-body-sm font-body-sm pt-2 text-primary font-medium">
+<strong>Solusi:</strong> Puasakan 48 jam. Berikan rebusan kacang polong (green pea) yang dikupas kulit arinya untuk melancarkan saluran cerna.
+          </div>
+</div>
+<!-- Penyakit 3 -->
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/70 space-y-2">
+<div class="flex items-center justify-between text-error">
+<span class="font-headline-sm font-headline-sm">Kutu Jarum &amp; Parasit Kulit</span>
+<span class="material-symbols-outlined">pest_control</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+<strong>Gejala:</strong> Terlihat parasit mirip serangga kecil menancap di sisik, sirip kemerahan, atau sirip kuncup.
+          </p>
+<div class="text-body-sm font-body-sm pt-2 text-primary font-medium">
+<strong>Solusi:</strong> Cabut kutu dengan pinset secara manual, obati bekas luka dengan antiseptik povidone, dan karantina dengan Dimilin / Abate terukur.
+          </div>
+</div>
+</div>
+</section>
+<!-- Section 7: DOA Warranty & Live Consultation Bar -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- DOA Callout (2 Cols) -->
+<div class="lg:col-span-2 bg-surface-container-low rounded-xl border border-secondary-fixed-dim/60 p-6 flex flex-col md:flex-row items-start md:items-center gap-6 relative overflow-hidden">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed flex-shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div class="space-y-2 flex-1">
+<div class="flex items-center gap-2">
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Garansi Ikan Hidup (Death On Arrival / DOA)</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold">100% Proteksi</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Jika benih mati dalam perjalanan, kami ganti penuh atau kirim ulang gratis. Syarat klaim: Wajib menyertakan <strong>video unboxing utuh tanpa terpotong (cut/pause)</strong> dan dilaporkan maksimal <strong>2 jam</strong> setelah kurir menyerahkan paket.
+          </p>
+</div>
+</div>
+<!-- Expert Consultation CTA (1 Col) -->
+<div class="bg-primary rounded-xl p-6 text-on-primary flex flex-col justify-between space-y-4 shadow-sm">
+<div>
+<div class="flex items-center gap-2 text-secondary-fixed-dim font-label-md font-label-md mb-2">
+<span class="material-symbols-outlined text-sm">support_agent</span>
+<span>Layanan Pendamping Peternak</span>
+</div>
+<h4 class="text-headline-sm font-headline-sm text-on-primary">Butuh Bantuan Spesialis Akuakultur?</h4>
+<p class="text-body-sm font-body-sm text-on-primary-container mt-1">Konsultasikan kendala kondisi air kolam atau kondisi benih Anda langsung dengan tim agronomis kami.</p>
+</div>
+<a class="w-full py-3 px-4 rounded-lg bg-secondary-fixed-dim text-on-secondary-fixed font-label-lg font-label-lg hover:brightness-105 transition-all flex items-center justify-center gap-2 font-bold shadow-sm" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined">chat</span>
+<span>Konsultasi via WhatsApp</span>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-primary dark:bg-surface-container-lowest border-t border-primary-container dark:border-outline-variant w-full mt-12">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-10">
+<!-- Brand & Description -->
+<div class="md:col-span-2 space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-2xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary tracking-tight">JagoFarm</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-primary-container dark:text-on-surface-variant max-w-sm">
+            Solusi pertanian dan akuakultur modern Indonesia. Menyediakan bibit berkualitas unggul, peralatan sistem resirkulasi kolam (RAS), pakan teruji, serta teknologi smart farming berbasis IoT.
+          </p>
+<div class="flex items-center gap-3 pt-2 text-on-primary-container">
+<span class="p-2 rounded-full bg-primary-container flex items-center justify-center cursor-pointer hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">share</span>
+</span>
+<span class="p-2 rounded-full bg-primary-container flex items-center justify-center cursor-pointer hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">public</span>
+</span>
+</div>
+</div>
+<!-- Links Column 1: Produk -->
+<div class="space-y-3">
+<h4 class="text-headline-sm font-headline-sm text-on-primary dark:text-primary">Produk</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Tambak</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Hidroponik</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="text-secondary-fixed-dim font-semibold" href="#">Anakan Ikan</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Pakan &amp; Suplemen</a></li>
+</ul>
+</div>
+<!-- Links Column 2: Informasi -->
+<div class="space-y-3">
+<h4 class="text-headline-sm font-headline-sm text-on-primary dark:text-primary">Informasi</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Tentang Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Cara Pemesanan</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">FAQ</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Hubungi Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Konsultasi</a></li>
+</ul>
+</div>
+<!-- Links Column 3: Kontak & Kebijakan -->
+<div class="space-y-3">
+<h4 class="text-headline-sm font-headline-sm text-on-primary dark:text-primary">Kebijakan &amp; Kontak</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengembalian</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Privasi</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Syarat dan Ketentuan</a></li>
+</ul>
+<div class="pt-2 text-body-sm font-body-sm text-on-primary-container">
+<p class="flex items-center gap-1.5"><span class="material-symbols-outlined text-xs">location_on</span> Surabaya, Jawa Timur</p>
+<p class="flex items-center gap-1.5 mt-1"><span class="material-symbols-outlined text-xs">mail</span> hello@jagofarm.id</p>
+</div>
+</div>
+</div>
+<!-- Copyright row -->
+<div class="pt-6 border-t border-primary-container/60 text-center text-body-sm font-body-sm text-on-primary-container dark:text-on-surface-variant">
+        © 2026 JagoFarm. All rights reserved.
+      </div>
+</div>
+</footer>
+</body></html>

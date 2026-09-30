@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tanya Jawab &amp; Diskusi - Benih Ikan Mas Koki (5 ekor) | JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim as mandated -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#ffffff",
+            "surface-tint": "#376757",
+            "surface-variant": "#d8e3fb",
+            "tertiary": "#003623",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-bright": "#f9f9ff",
+            "on-surface-variant": "#404945",
+            "on-secondary-fixed": "#281900",
+            "inverse-primary": "#9ed1bd",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f0f3ff",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary": "#7f5700",
+            "on-tertiary-fixed": "#002113",
+            "background": "#f9f9ff",
+            "on-background": "#111c2d",
+            "primary-container": "#1b4d3e",
+            "secondary-container": "#fdba45",
+            "on-error": "#ffffff",
+            "on-secondary-container": "#6f4b00",
+            "error-container": "#ffdad6",
+            "on-surface": "#111c2d",
+            "outline-variant": "#c0c9c3",
+            "surface": "#f9f9ff",
+            "surface-container-highest": "#d8e3fb",
+            "surface-dim": "#cfdaf2",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdeae",
+            "primary-fixed": "#baeed9",
+            "on-tertiary-container": "#32c98f",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-primary-container": "#8abda9",
+            "surface-container": "#e7eeff",
+            "outline": "#707974",
+            "primary": "#003629",
+            "on-secondary-fixed-variant": "#604100",
+            "inverse-surface": "#263143",
+            "tertiary-container": "#004f35",
+            "surface-container-high": "#dee8ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed": "#002117",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#fdba45",
+            "tertiary-fixed-dim": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem"
+          },
+          "fontFamily": {
+            "label-sm": [
+              "Plus Jakarta Sans"
+            ],
+            "display-hero-mobile": [
+              "Plus Jakarta Sans"
+            ],
+            "price-md": [
+              "Plus Jakarta Sans"
+            ],
+            "body-md": [
+              "Plus Jakarta Sans"
+            ],
+            "display-hero": [
+              "Plus Jakarta Sans"
+            ],
+            "headline-lg": [
+              "Plus Jakarta Sans"
+            ],
+            "body-lg": [
+              "Plus Jakarta Sans"
+            ],
+            "body-sm": [
+              "Plus Jakarta Sans"
+            ],
+            "headline-sm": [
+              "Plus Jakarta Sans"
+            ],
+            "headline-lg-mobile": [
+              "Plus Jakarta Sans"
+            ],
+            "headline-md": [
+              "Plus Jakarta Sans"
+            ],
+            "label-md": [
+              "Plus Jakarta Sans"
+            ],
+            "label-lg": [
+              "Plus Jakarta Sans"
+            ],
+            "price-lg": [
+              "Plus Jakarta Sans"
+            ]
+          },
+          "fontSize": {
+            "label-sm": [
+              "10px",
+              {
+                "lineHeight": "14px",
+                "letterSpacing": "0.04em",
+                "fontWeight": "700"
+              }
+            ],
+            "display-hero-mobile": [
+              "34px",
+              {
+                "lineHeight": "42px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "800"
+              }
+            ],
+            "price-md": [
+              "16px",
+              {
+                "lineHeight": "22px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "700"
+              }
+            ],
+            "body-md": [
+              "14px",
+              {
+                "lineHeight": "22px",
+                "letterSpacing": "0em",
+                "fontWeight": "400"
+              }
+            ],
+            "display-hero": [
+              "52px",
+              {
+                "lineHeight": "60px",
+                "letterSpacing": "-0.03em",
+                "fontWeight": "800"
+              }
+            ],
+            "headline-lg": [
+              "32px",
+              {
+                "lineHeight": "40px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ],
+            "body-lg": [
+              "16px",
+              {
+                "lineHeight": "26px",
+                "letterSpacing": "0em",
+                "fontWeight": "400"
+              }
+            ],
+            "body-sm": [
+              "12px",
+              {
+                "lineHeight": "18px",
+                "letterSpacing": "0.01em",
+                "fontWeight": "400"
+              }
+            ],
+            "headline-sm": [
+              "18px",
+              {
+                "lineHeight": "26px",
+                "letterSpacing": "-0.005em",
+                "fontWeight": "600"
+              }
+            ],
+            "headline-lg-mobile": [
+              "26px",
+              {
+                "lineHeight": "34px",
+                "letterSpacing": "-0.015em",
+                "fontWeight": "700"
+              }
+            ],
+            "headline-md": [
+              "24px",
+              {
+                "lineHeight": "32px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "700"
+              }
+            ],
+            "label-md": [
+              "12px",
+              {
+                "lineHeight": "16px",
+                "letterSpacing": "0.02em",
+                "fontWeight": "600"
+              }
+            ],
+            "label-lg": [
+              "14px",
+              {
+                "lineHeight": "20px",
+                "letterSpacing": "0.01em",
+                "fontWeight": "600"
+              }
+            ],
+            "price-lg": [
+              "22px",
+              {
+                "lineHeight": "28px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c0c9c3;
+      border-radius: 9999px;
+    }
+    .frosted-glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md min-h-screen flex flex-col selection:bg-primary selection:text-on-primary">
+<!-- ==================== TOP NAVIGATION BAR ==================== -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full gap-4">
+<!-- Brand & Search cluster -->
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<!-- Logo -->
+<a class="flex items-center gap-2 group transition-all duration-200 active:scale-95 flex-shrink-0" href="#">
+<div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight">JagoFarm</span>
+</a>
+<!-- Global Search Field -->
+<div class="relative w-full hidden sm:block">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full pl-10 pr-24 py-2 bg-surface-container-low border border-outline-variant/80 rounded-full font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Cari kebutuhan tambak, akuaponik, pakan, bibit..." type="text"/>
+<button class="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1 bg-surface-container-lowest text-primary text-label-sm font-label-sm rounded-full border border-outline-variant hover:bg-surface-container transition-colors">
+            Katalog
+          </button>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center space-x-7">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Kategori</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Set Tambak</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a>
+<a class="text-primary dark:text-inverse-primary font-bold text-label-lg font-label-lg hover:text-primary transition-colors duration-150 relative py-1" href="#">
+          Konsultasi
+          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full"></span>
+</a>
+</nav>
+<!-- Trailing Action Icons -->
+<div class="flex items-center space-x-3">
+<button aria-label="Keranjang Belanja" class="relative p-2 rounded-full text-on-surface hover:bg-surface-container transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">shopping_cart</span>
+<span class="absolute top-1 right-1 w-4 h-4 bg-secondary-container text-on-secondary-container text-label-sm font-label-sm rounded-full flex items-center justify-center font-bold">2</span>
+</button>
+<button aria-label="Akun Pengguna" class="p-2 rounded-full text-on-surface hover:bg-surface-container transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- ==================== BREADCRUMB STRIP ==================== -->
+<div class="bg-surface-container-low/50 border-b border-outline-variant/40">
+<div class="max-w-7xl mx-auto px-margin py-3">
+<nav class="flex items-center flex-wrap gap-2 font-label-md text-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Beranda</a>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Produk</a>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Anakan Ikan</a>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<a class="hover:text-primary transition-colors font-medium" href="#">Benih Ikan Mas Koki (5 ekor)</a>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<span class="text-primary font-bold">Tanya Jawab &amp; Diskusi</span>
+</nav>
+</div>
+</div>
+<!-- ==================== MAIN CONTENT CANVAS ==================== -->
+<main class="flex-grow max-w-7xl mx-auto px-margin py-6 w-full space-y-6">
+<!-- REFERENCED PRODUCT QUICK CARD (Bento Accent) -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-4 sm:p-5 shadow-sm transition-all hover:shadow-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<!-- Left: Product Snapshot -->
+<div class="flex items-center gap-4">
+<div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="Close up photography of vibrant orange and white calico Oranda and Ranchu goldfish swimming in crystal clear oxygenated aquatic tank water, soft studio agricultural lighting with subtle underwater plant reflections, high key commercial aquaculture catalog product visual style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-nU0QJIny5fLbyqNcFneMLDsqRlISJasvBnlQlD1Qr0wMbX2qyZMOINlHZ8kP-aC16HixhwDg6RU93EchOr62VAPJSGyHO_PAQja65cNQbTO-TRTXCy-adUkztsFEN2_4sCRFkiqz74lxhBJjE-HFeaCh0DZkBa97yo8_NqrPVaS7pUn0JLxKysT0jZ9cNMAaY0ABWA1OmdxPJd9DODh4j-WPxCNeJ_X7v7ZyVLeycr8-QbUy13HZLg"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary text-on-primary">5 Ekor</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Anakan Ikan Air Tawar</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed-variant font-semibold">Pre-Order 3-7 Hari</span>
+</div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-surface">Benih Ikan Mas Koki Oranda &amp; Ranchu (3-5 cm)</h1>
+<div class="flex items-center gap-4 flex-wrap pt-0.5">
+<span class="text-price-lg font-price-lg text-primary">Rp 75.000</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">5.0</span> (1 ulasan) • 12 Pertanyaan Terjawab
+              </span>
+</div>
+</div>
+</div>
+<!-- Right: Actions CTA -->
+<div class="flex items-center gap-3 self-end md:self-center w-full md:w-auto">
+<a class="flex-1 md:flex-initial text-center px-4 py-2.5 rounded-lg border border-primary text-primary font-label-lg hover:bg-surface-container-low transition-colors" href="#">
+            Lihat Spesifikasi
+          </a>
+<button class="flex-1 md:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-primary-container text-on-primary font-label-lg font-semibold hover:bg-primary transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-lg">shopping_bag</span>
+<span>Beli Sekarang</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Q&A HERO BANNER -->
+<section class="rounded-xl overflow-hidden relative bg-gradient-to-r from-primary to-primary-container text-on-primary p-6 sm:p-8 shadow-sm">
+<div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[200px]">forum</span>
+</div>
+<div class="max-w-3xl space-y-4 relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-on-primary/10 backdrop-blur-sm border border-on-primary/20 text-label-sm font-label-sm text-secondary-fixed">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+          Agronomis Terverifikasi &amp; Komunitas Peternak
+        </div>
+<h2 class="text-headline-lg font-headline-lg font-bold leading-tight">
+          Tanya Jawab &amp; Diskusi Budidaya Ikan Mas Koki
+        </h2>
+<p class="text-body-lg font-body-lg text-primary-fixed-dim leading-relaxed">
+          Punya pertanyaan seputar ukuran, daya tahan pengiriman kargo, jenis pakan bibit muda, atau parameter filtrasi kolam? Tanyakan langsung kepada tim agronomis JagoFarm dan pembudidaya berpengalaman.
+        </p>
+<!-- Search Bar and Quick Ask Button -->
+<div class="pt-2 flex flex-col sm:flex-row gap-3">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest text-on-surface rounded-full text-body-md font-body-md border-0 focus:ring-2 focus:ring-secondary-container placeholder:text-outline shadow-inner" placeholder="Cari topik: kargo luar pulau, pelet 1mm, klaim garansi..." type="text"/>
+</div>
+<a class="px-6 py-3 bg-secondary-container hover:bg-secondary-fixed text-on-secondary-fixed font-label-lg font-bold rounded-full transition-all duration-150 flex items-center justify-center gap-2 flex-shrink-0 shadow-md" href="#form-pertanyaan">
+<span class="material-symbols-outlined text-xl">add_comment</span>
+<span>+ Ajukan Pertanyaan Baru</span>
+</a>
+</div>
+</div>
+</section>
+<!-- MAIN TWO-COLUMN LAYOUT (Bento Discussion Canvas) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT / MAIN: Thread List (8 Cols) -->
+<section class="lg:col-span-8 space-y-6">
+<!-- CATEGORY FILTER PILLS -->
+<div class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/60 flex items-center gap-2 overflow-x-auto custom-scrollbar">
+<button class="px-4 py-2 rounded-full text-label-md font-label-md bg-primary text-on-primary font-bold shadow-sm whitespace-nowrap">
+            Semua Pertanyaan (12)
+          </button>
+<button class="px-4 py-2 rounded-full text-label-md font-label-md bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-medium transition-colors whitespace-nowrap">
+            Pengiriman &amp; Kargo Oksigen (5)
+          </button>
+<button class="px-4 py-2 rounded-full text-label-md font-label-md bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-medium transition-colors whitespace-nowrap">
+            Pemilihan Ukuran &amp; Gender (3)
+          </button>
+<button class="px-4 py-2 rounded-full text-label-md font-label-md bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-medium transition-colors whitespace-nowrap">
+            Pakan &amp; Perawatan (2)
+          </button>
+<button class="px-4 py-2 rounded-full text-label-md font-label-md bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-medium transition-colors whitespace-nowrap">
+            Garansi &amp; Klaim DOA (2)
+          </button>
+</div>
+<!-- DISCUSSION THREAD LIST -->
+<div class="space-y-4">
+<!-- ITEM 1: Rizky (Surabaya) - Luar Pulau -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm space-y-4 transition-all hover:border-outline">
+<!-- User Question Block -->
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-label-lg flex-shrink-0">
+                R
+              </div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<div class="flex items-center gap-2">
+<span class="font-bold text-label-lg text-on-surface">Rizky</span>
+<span class="text-body-sm text-outline">• Surabaya, Jawa Timur</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-low text-on-surface-variant">Pembeli Terverifikasi</span>
+</div>
+<span class="text-body-sm text-outline">2 hari lalu</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface pt-1">
+                  Apakah aman dikirim ke luar pulau Jawa, misalnya ke Lampung atau Bali?
+                </h3>
+<p class="text-body-md text-on-surface-variant">
+                  Rencana mau order 2 paket (10 ekor) untuk kolam taman di Denpasar. Berapa hari estimasi sampai dan bagaimana penanganan oksigennya di jalan?
+                </p>
+</div>
+</div>
+<!-- Official Answer: Agronomist -->
+<div class="ml-4 sm:ml-12 pl-4 border-l-2 border-primary-container space-y-3 bg-surface-container-low/40 p-4 rounded-r-xl">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+</div>
+<span class="font-bold text-label-md text-primary">Tim Agronomis JagoFarm</span>
+<span class="px-2 py-0.5 bg-tertiary-container text-tertiary-fixed rounded-full text-label-sm font-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    Official Answer
+                  </span>
+</div>
+<span class="text-body-sm text-outline">1 hari lalu</span>
+</div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                Halo Kak Rizky! Untuk anakan ikan hidup ke luar Pulau Jawa, kami menyediakan pengiriman kargo udara khusus (Port-to-Port / Next Day Express) dengan kemasan tabung oksigen murni ganda bergaransi hidup 100% (DOA - Dead On Arrival). Paket dilapisi styrofoam tebal tahan benturan dan suhu stabil hingga 48 jam perjalanan. Harap sertakan video unboxing tanpa jeda saat paket diterima untuk validasi garansi ya!
+              </p>
+<!-- Helpful Reaction Bar -->
+<div class="flex items-center gap-4 pt-1 border-t border-outline-variant/30 text-body-sm text-outline">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+<span>Membantu (14)</span>
+</button>
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">chat</span>
+<span>Balas (1)</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 2: Bayu A. (Bandung) - Pakan Pelet -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm space-y-4 transition-all hover:border-outline">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-label-lg flex-shrink-0">
+                B
+              </div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<div class="flex items-center gap-2">
+<span class="font-bold text-label-lg text-on-surface">Bayu A.</span>
+<span class="text-body-sm text-outline">• Bandung</span>
+</div>
+<span class="text-body-sm text-outline">3 hari lalu</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface pt-1">
+                  Apakah benih ukuran 3-5 cm sudah bisa langsung diberi pelet ukuran 1mm?
+                </h3>
+</div>
+</div>
+<!-- Official Answer -->
+<div class="ml-4 sm:ml-12 pl-4 border-l-2 border-primary-container space-y-3 bg-surface-container-low/40 p-4 rounded-r-xl">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+</div>
+<span class="font-bold text-label-md text-primary">Tim Agronomis JagoFarm</span>
+<span class="px-2 py-0.5 bg-tertiary-container text-tertiary-fixed rounded-full text-label-sm font-label-sm font-semibold">Official Answer</span>
+</div>
+<span class="text-body-sm text-outline">3 hari lalu</span>
+</div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                Bisa Kak, disarankan menggunakan pelet mikro atau merendam pelet selama 1-2 menit sebelum ditebar agar teksturnya lunak untuk bibit muda. Bisa juga diselingi pakan alami bernutrisi tinggi seperti cacing darah beku (bloodworm) atau kutu air (daphnia magna) 2 hari sekali untuk percepatan pertumbuhan jenong oranda.
+              </p>
+<div class="flex items-center gap-4 pt-1 border-t border-outline-variant/30 text-body-sm text-outline">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+<span>Membantu (8)</span>
+</button>
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">chat</span>
+<span>Balas</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 3: Doni (Malang) - Variasi Jenis Oranda / Ranchu -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm space-y-4 transition-all hover:border-outline">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-label-lg flex-shrink-0">
+                D
+              </div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<div class="flex items-center gap-2">
+<span class="font-bold text-label-lg text-on-surface">Doni</span>
+<span class="text-body-sm text-outline">• Malang</span>
+</div>
+<span class="text-body-sm text-outline">5 hari lalu</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface pt-1">
+                  Bisa request jenis Oranda saja atau campur dengan Ranchu?
+                </h3>
+</div>
+</div>
+<!-- Answer with Multiple Contributors -->
+<div class="ml-4 sm:ml-12 pl-4 border-l-2 border-primary-container space-y-3 bg-surface-container-low/40 p-4 rounded-r-xl">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+</div>
+<span class="font-bold text-label-md text-primary">Tim Agronomis JagoFarm</span>
+<span class="px-2 py-0.5 bg-tertiary-container text-tertiary-fixed rounded-full text-label-sm font-label-sm font-semibold">Official Answer</span>
+</div>
+<span class="text-body-sm text-outline">4 hari lalu</span>
+</div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                Bisa dituliskan di catatan pesanan saat checkout ya Kak. Default pengiriman adalah kombinasi 3 ekor Oranda (calico / red cap) dan 2 ekor Ranchu. Apabila stok varian spesifik sedang melimpah, kami akan penuhi sesuai preferensi catatan Anda!
+              </p>
+<!-- Community reply nested -->
+<div class="mt-3 p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/50 space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-bold text-label-sm text-on-surface">Agung Peternak Mas</span>
+<span class="text-[11px] text-outline">• Pembeli 2 Minggu Lalu</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">
+                  "Saya kemarin request 5 Oranda semua di notes dikabulkan seller, ikannya lincah dan langsung makan pas diaklimatisasi."
+                </p>
+</div>
+<div class="flex items-center gap-4 pt-1 border-t border-outline-variant/30 text-body-sm text-outline">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+<span>Membantu (21)</span>
+</button>
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">chat</span>
+<span>Balas</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 4: Hendra - Kapasitas Liter Akuarium -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm space-y-4 transition-all hover:border-outline">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-label-lg flex-shrink-0">
+                H
+              </div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<div class="flex items-center gap-2">
+<span class="font-bold text-label-lg text-on-surface">Hendra</span>
+<span class="text-body-sm text-outline">• Yogyakarta</span>
+</div>
+<span class="text-body-sm text-outline">1 minggu lalu</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface pt-1">
+                  Berapa liter kapasitas minimal akuarium untuk 5 ekor ini?
+                </h3>
+</div>
+</div>
+<div class="ml-4 sm:ml-12 pl-4 border-l-2 border-primary-container space-y-3 bg-surface-container-low/40 p-4 rounded-r-xl">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+</div>
+<span class="font-bold text-label-md text-primary">Tim Agronomis JagoFarm</span>
+<span class="px-2 py-0.5 bg-tertiary-container text-tertiary-fixed rounded-full text-label-sm font-label-sm font-semibold">Official Answer</span>
+</div>
+<span class="text-body-sm text-outline">1 minggu lalu</span>
+</div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                Untuk 5 ekor masa pembesaran awal (3-5cm), idealnya akuarium kapasitas minimal 40-60 liter dengan filtrasi biologis yang matang. Ikan koki membutuhkan dissolved oxygen tinggi dan menghasilkan feses cukup banyak, sehingga siklus filter mekanik-biologis sangat disarankan.
+              </p>
+<div class="flex items-center gap-4 pt-1 border-t border-outline-variant/30 text-body-sm text-outline">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+<span>Membantu (11)</span>
+</button>
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">chat</span>
+<span>Balas</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination or View More -->
+<div class="text-center pt-2">
+<button class="px-6 py-2.5 bg-surface-container-lowest border border-outline-variant hover:border-primary text-primary font-label-lg rounded-full transition-all shadow-sm">
+            Muat 8 Diskusi Lainnya
+          </button>
+</div>
+</section>
+<!-- RIGHT / SIDEBAR: Form Tanya & Live Support Widget (4 Cols) -->
+<aside class="lg:col-span-4 space-y-6">
+<!-- SUBMIT QUESTION FORM CARD -->
+<div class="bg-surface-container-lowest p-5 sm:p-6 rounded-xl border border-outline-variant/60 shadow-sm space-y-5" id="form-pertanyaan">
+<div class="space-y-1">
+<div class="flex items-center gap-2 text-primary font-bold text-label-md">
+<span class="material-symbols-outlined text-lg">edit_note</span>
+<span>Formulir Pertanyaan</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Ajukan Pertanyaan Baru</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              Pertanyaan Anda akan dijawab oleh staf agronomis dan dibagikan ke komunitas pembudidaya.
+            </p>
+</div>
+<form class="space-y-4" onsubmit="event.preventDefault(); alert('Pertanyaan Anda berhasil dikirim ke moderator agronomis JagoFarm!');">
+<!-- Category select -->
+<div class="space-y-1">
+<label class="block text-label-sm font-label-sm font-semibold text-on-surface">Kategori Topik</label>
+<select class="w-full rounded-lg border-outline-variant text-body-md text-on-surface bg-surface-container-low/50 focus:border-primary focus:ring-primary">
+<option>Pengiriman &amp; Kargo Oksigen</option>
+<option>Pemilihan Ukuran &amp; Gender</option>
+<option>Pakan &amp; Nutrisi Pembesaran</option>
+<option>Kualitas Air &amp; Filtrasi Kolam</option>
+<option>Garansi &amp; Penggantian Mati (DOA)</option>
+<option>Lainnya</option>
+</select>
+</div>
+<!-- Question text area -->
+<div class="space-y-1">
+<label class="block text-label-sm font-label-sm font-semibold text-on-surface">Pertanyaan Anda *</label>
+<textarea class="w-full rounded-lg border-outline-variant text-body-md text-on-surface bg-surface-container-low/50 focus:border-primary focus:ring-primary placeholder:text-outline" placeholder="Tuliskan detail pertanyaan spesifik Anda seputar benih ikan mas koki..." required="" rows="4"></textarea>
+<div class="flex justify-between text-body-sm text-outline">
+<span>Minimal 15 karakter</span>
+<span>0/500</span>
+</div>
+</div>
+<!-- Notification Preferences -->
+<div class="space-y-2 pt-1 border-t border-outline-variant/30">
+<label class="block text-label-sm font-label-sm font-semibold text-on-surface">Kirim Notifikasi Jawaban ke:</label>
+<label class="flex items-center gap-2 cursor-pointer text-body-sm text-on-surface">
+<input checked="" class="rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span>WhatsApp Aktif (Respon tercepat)</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer text-body-sm text-on-surface">
+<input class="rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span>Email Akun Terdaftar</span>
+</label>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary font-label-lg font-bold rounded-lg hover:bg-primary-container transition-all duration-150 shadow-sm flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-lg">send</span>
+<span>Kirim Pertanyaan</span>
+</button>
+<p class="text-[11px] text-outline text-center">
+              Dengan mengirimkan pertanyaan, Anda menyetujui pedoman diskusi komunitas JagoFarm.
+            </p>
+</form>
+</div>
+<!-- FAST LIVE CHAT AGRONOMIST WIDGET -->
+<div class="bg-gradient-to-br from-surface-container to-surface-container-low p-5 rounded-xl border border-outline-variant/50 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-tertiary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+</div>
+<div>
+<h4 class="font-bold text-label-lg text-on-surface">Butuh Solusi Cepat?</h4>
+<p class="text-body-sm text-outline">Konsultasi Darurat &amp; Kargo</p>
+</div>
+</div>
+<p class="text-body-sm text-on-surface-variant leading-relaxed">
+            Jika membutuhkan koordinasi kargo port-to-port 같은 hari atau konsultasi air kolam mendesak, hubungi tim veteriner kami langsung via WhatsApp.
+          </p>
+<a class="w-full py-2.5 px-4 bg-tertiary text-on-tertiary hover:bg-tertiary-container rounded-lg font-label-md font-bold flex items-center justify-center gap-2 transition-colors" href="https://wa.me/6281234567890" target="_blank">
+<span class="material-symbols-outlined text-lg">chat</span>
+<span>Chat WhatsApp (&lt;15 Menit)</span>
+</a>
+</div>
+<!-- AQUACULTURE GUARANTEE PILLARS CARD -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/60 space-y-3">
+<h4 class="font-bold text-label-md text-on-surface uppercase tracking-wider text-outline">Standar Pengiriman Bibit JagoFarm</h4>
+<div class="space-y-3 text-body-sm">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<strong class="text-on-surface block">Karantina &amp; Puasa 24 Jam</strong>
+<span class="text-on-surface-variant">Mencegah amonia air naik drastis selama perjalanan darat/udara.</span>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<strong class="text-on-surface block">Tabung Plastik Double Oxygen</strong>
+<span class="text-on-surface-variant">Kadar oksigen murni bertahan optimal hingga 48 jam perjalanan.</span>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<strong class="text-on-surface block">Garansi Hidup 100% (DOA)</strong>
+<span class="text-on-surface-variant">Penggantian bibit atau refund dana penuh jika terjadi mortalitas.</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- ==================== TRUST & VALUE HIGHLIGHTS STRIP ==================== -->
+<section class="bg-surface-container-lowest border-t border-b border-outline-variant/40 mt-12 py-8">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl">local_shipping</span>
+</div>
+<div>
+<h5 class="font-bold text-label-lg text-on-surface">Kargo Oksigen Cepat</h5>
+<p class="text-body-sm text-outline">Spesialis anakan hidup</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl">verified_user</span>
+</div>
+<div>
+<h5 class="font-bold text-label-lg text-on-surface">Garansi DOA 100%</h5>
+<p class="text-body-sm text-outline">Klaim mudah 7 hari</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl">science</span>
+</div>
+<div>
+<h5 class="font-bold text-label-lg text-on-surface">Konsultasi Ahli</h5>
+<p class="text-body-sm text-outline">Bimbingan agronomis</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl">lock_clock</span>
+</div>
+<div>
+<h5 class="font-bold text-label-lg text-on-surface">Transaksi Aman</h5>
+<p class="text-body-sm text-outline">Escrow marketplace resmi</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== FOOTER ==================== -->
+<footer class="bg-primary dark:bg-surface-container-lowest border-t border-primary-container dark:border-outline-variant w-full mt-auto">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 text-on-primary">
+<!-- Col 1: Brand Info -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">JagoFarm</span>
+</div>
+<p class="text-on-primary-container dark:text-on-surface-variant text-body-sm font-body-sm max-w-sm leading-relaxed">
+            Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak, dan IoT smart farming berkualitas tinggi.
+          </p>
+<div class="flex items-center gap-2 pt-2">
+<a aria-label="Share" class="w-9 h-9 rounded-full bg-primary-container/80 flex items-center justify-center text-on-primary hover:bg-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">share</span>
+</a>
+<a aria-label="Website" class="w-9 h-9 rounded-full bg-primary-container/80 flex items-center justify-center text-on-primary hover:bg-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+</div>
+</div>
+<!-- Col 2: Kategori Produk -->
+<div class="space-y-3">
+<h6 class="text-headline-sm font-headline-sm text-on-primary font-bold">Produk</h6>
+<ul class="space-y-2 text-body-sm font-body-sm">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Tambak</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Hidroponik</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Aquaponik</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Benih</a></li>
+<li><a class="text-secondary-fixed-dim font-semibold hover:text-on-primary transition-colors duration-150" href="#">Anakan Ikan</a></li>
+</ul>
+</div>
+<!-- Col 3: Informasi & Edukasi -->
+<div class="space-y-3">
+<h6 class="text-headline-sm font-headline-sm text-on-primary font-bold">Informasi</h6>
+<ul class="space-y-2 text-body-sm font-body-sm">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Tentang Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Cara Pemesanan</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">FAQ</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Hubungi Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengembalian</a></li>
+</ul>
+</div>
+<!-- Col 4: Kontak & Alamat -->
+<div class="space-y-3">
+<h6 class="text-headline-sm font-headline-sm text-on-primary font-bold">Kontak</h6>
+<ul class="space-y-2 text-body-sm font-body-sm text-on-primary-container dark:text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm mt-0.5 text-secondary-fixed-dim">location_on</span>
+<span>Jl. Pertanian No. 123, Surabaya, Jawa Timur</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary-fixed-dim">call</span>
+<a class="hover:text-on-primary transition-colors" href="tel:+6281234567890">+62 812-3456-7890</a>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary-fixed-dim">mail</span>
+<a class="hover:text-on-primary transition-colors" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Legal Row -->
+<div class="border-t border-primary-container/80 dark:border-outline-variant mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-on-primary-container dark:text-on-surface-variant gap-4">
+<div>
+          © 2026 JagoFarm. All rights reserved.
+        </div>
+<div class="flex items-center space-x-6">
+<a class="hover:text-on-primary transition-colors" href="#">Kebijakan Privasi</a>
+<a class="hover:text-on-primary transition-colors" href="#">Syarat dan Ketentuan</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

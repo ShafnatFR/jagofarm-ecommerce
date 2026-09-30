@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JagoFarm - Lacak Pengiriman Pesanan Mobile</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-container": "#8abda9",
+            "on-background": "#111c2d",
+            "on-primary-fixed-variant": "#1d4f40",
+            "background": "#f9f9ff",
+            "inverse-surface": "#263143",
+            "primary-container": "#1b4d3e",
+            "inverse-primary": "#9ed1bd",
+            "surface-variant": "#d8e3fb",
+            "surface-container-low": "#f0f3ff",
+            "surface-container-highest": "#d8e3fb",
+            "on-secondary-fixed-variant": "#604100",
+            "on-surface": "#111c2d",
+            "on-tertiary-container": "#32c98f",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary-fixed": "#ffdeae",
+            "on-secondary-fixed": "#281900",
+            "outline-variant": "#c0c9c3",
+            "primary-fixed-dim": "#9ed1bd",
+            "inverse-on-surface": "#ecf1ff",
+            "secondary-fixed-dim": "#fdba45",
+            "on-surface-variant": "#404945",
+            "surface-tint": "#376757",
+            "tertiary-container": "#004f35",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#baeed9",
+            "surface-container-high": "#dee8ff",
+            "on-secondary": "#ffffff",
+            "on-error": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "outline": "#707974",
+            "on-primary-fixed": "#002117",
+            "on-tertiary": "#ffffff",
+            "tertiary": "#003623",
+            "on-tertiary-fixed": "#002113",
+            "surface-dim": "#cfdaf2",
+            "secondary-container": "#fdba45",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#6ffbbe",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#6f4b00",
+            "surface-container": "#e7eeff",
+            "surface": "#f9f9ff",
+            "error": "#ba1a1a",
+            "secondary": "#7f5700",
+            "primary": "#003629"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F4F7F5] text-on-surface antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary min-h-screen pb-28">
+<!-- Container Mobile Emulation (~390px centered) -->
+<div class="max-w-[420px] mx-auto min-h-screen bg-background relative shadow-2xl flex flex-col">
+<!-- 1. TopAppBar Task-Focused (Header Navigation) -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md px-margin-mobile py-space-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<button aria-label="Kembali" class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:bg-surface-container-low transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</button>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Lacak Pengiriman</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Order #JF-882194B</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Bantuan Logistik" class="w-9 h-9 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors active:scale-95" type="button">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</button>
+<button aria-label="Bagikan Status" class="w-9 h-9 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors active:scale-95" type="button">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+</header>
+<!-- Main Content Stream -->
+<main class="flex-1 px-margin-mobile py-space-md space-y-space-md">
+<!-- 2. Header Status Ringkas & Kargo Highlights -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-[#E2E8F0] shadow-sm relative overflow-hidden">
+<!-- Accent Aura Glow -->
+<div class="absolute -top-12 -right-12 w-32 h-32 bg-primary-container/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div>
+<div class="flex items-center gap-1.5 mb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">SiCepat Cargo</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-md text-label-md text-primary font-semibold">SC982341290</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0]">
+<span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+<span class="font-label-md text-label-md font-bold">Sedang Diantar Kurir</span>
+</div>
+</div>
+<button class="inline-flex items-center gap-1 text-primary hover:text-primary-container px-2.5 py-1.5 rounded-lg border border-outline-variant/60 hover:border-primary text-label-sm font-label-sm bg-surface-container-low transition-all active:scale-95" id="copyBtn" onclick="copyResi()" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="content_copy">content_copy</span>
+<span id="copyText">Salin</span>
+</button>
+</div>
+<!-- Estimasi Waktu Tiba -->
+<div class="p-3 bg-[#F4F9F6] rounded-lg border border-primary/10 mb-3 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="schedule">schedule</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Estimasi Tiba di Tambak</p>
+<p class="font-headline-sm text-headline-sm text-primary font-bold">Besok, 26 Okt 2026</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md font-bold text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded">14:00 - 18:00 WIB</span>
+</div>
+</div>
+<!-- Spesifikasi Kargo Khusus Aqua-Tech -->
+<div class="grid grid-cols-2 gap-2 pt-1 border-t border-dashed border-[#E2E8F0]">
+<div class="flex items-center gap-2 p-2 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="thermostat">thermostat</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Suhu Termal</p>
+<p class="font-label-md text-label-md text-primary font-bold">24°C - 27°C</p>
+</div>
+</div>
+<div class="flex items-center gap-2 p-2 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="material-symbols-outlined text-[#D99B26] text-[20px]" data-icon="inventory">inventory</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Proteksi Fisik</p>
+<p class="font-label-md text-label-md text-on-surface font-bold">Palet Kayu Extra</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Mobile Live Map Card: Surabaya -> Sleman DIY -->
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-[#E2E8F0] shadow-sm">
+<div class="p-3 bg-surface-container-low/70 flex items-center justify-between border-b border-[#E2E8F0]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-label-md text-label-md text-primary font-bold tracking-tight">Pelacakan Satelit Rute Kargo</span>
+</div>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-emerald-700 font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> GPS Aktif
+          </span>
+</div>
+<!-- Interactive Map Visual Representation -->
+<div class="relative h-56 w-full bg-[#E8EFEA] overflow-hidden" data-location="Sleman, DI Yogyakarta" style="">
+<!-- Stylized Map Canvas Graphics -->
+<div class="absolute inset-0 opacity-80" style="background: radial-gradient(circle at 75% 35%, #D4E7DC 0%, #E8EFEA 60%);">
+<!-- Simulated GIS Road Network Vector Lines -->
+<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="routeGradient" x1="0%" x2="100%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#707974" stop-opacity="0.4"></stop>
+<stop offset="70%" stop-color="#1B4D3E" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#10B981" stop-opacity="1"></stop>
+</lineargradient>
+</defs>
+<!-- Secondary Roads -->
+<path d="M-20,180 Q100,160 210,130 T430,90" fill="none" stroke="#D3DFD8" stroke-width="6"></path>
+<path d="M50,230 Q160,110 320,80 T430,40" fill="none" stroke="#D3DFD8" stroke-width="4"></path>
+<!-- Primary Trajectory Highway (Surabaya to Sleman) -->
+<path d="M40,210 C140,190 190,140 280,105 C330,85 360,70 380,45" fill="none" stroke="#CBD5E1" stroke-dasharray="6 4" stroke-width="5"></path>
+<path d="M40,210 C140,190 190,140 270,108" fill="none" stroke="url(#routeGradient)" stroke-linecap="round" stroke-width="5"></path>
+</svg>
+</div>
+<!-- Origin Tag: Surabaya Hub -->
+<div class="absolute bottom-5 left-4 z-10 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full border border-outline-variant/60 shadow-xs">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Surabaya Hub</span>
+</div>
+<!-- Active Courier GPS Pin (Mid-journey near Sleman) -->
+<div class="absolute top-[96px] left-[254px] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group cursor-pointer">
+<div class="bg-primary text-on-primary px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md mb-1 flex items-center gap-1 whitespace-nowrap animate-bounce">
+<span class="material-symbols-outlined text-[12px]" data-icon="local_shipping">local_shipping</span>
+              42 km/jam
+            </div>
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-primary/20 animate-ping absolute inset-0"></div>
+<div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center shadow-lg border-2 border-white relative z-10">
+<span class="material-symbols-outlined text-[18px]" data-icon="navigation">navigation</span>
+</div>
+</div>
+</div>
+<!-- Destination Tag: Sleman Tambak -->
+<div class="absolute top-4 right-4 z-10 flex items-center gap-1.5 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-xl border border-primary/30 shadow-md">
+<span class="material-symbols-outlined text-error text-[18px]" data-icon="location_on" data-weight="fill" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<div class="text-left">
+<p class="font-label-sm text-label-sm font-bold text-primary">Sleman, DIY</p>
+<p class="text-[9px] text-on-surface-variant font-medium">Tambak Bioflok KM 9.5</p>
+</div>
+</div>
+<!-- Floating Map Compass/Zoom Controls -->
+<div class="absolute bottom-3 right-3 flex flex-col gap-1 z-10">
+<button aria-label="Pusatkan Peta" class="w-8 h-8 bg-white/90 hover:bg-white rounded-lg shadow-sm flex items-center justify-center text-primary border border-outline-variant/50" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="my_location">my_location</span>
+</button>
+</div>
+</div>
+<!-- Courier Info Panel Attached to Map Card -->
+<div class="p-space-md bg-surface-container-lowest flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-[#1B4D3E]/10 border-2 border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of an Indonesian professional logistics courier driver named Pak Rizky wearing a clean dark green uniform with a reflective safety vest, warm friendly smile, under soft morning daylight outdoors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2ZnARS_D3yZOfIKHJTBZXqosPgnWQCWTuhyCfshwNqTX8JCn3OEDdwQPsb2LpZBDkETxfXGj3_4fpnBVGanCOceyJqSxRU__uL73001I_C69GxnfZFDsf3YxwVQeWA2rifHerSOLYp15lL4d95ASIcDkkuqO2TrTyZBfigvc8wjnQui6-FsB-S45MSQGJW2aLTO8l0MrRHVmcc2rzKBXLVCiQCx2kWCDKDYgqOcb4c6ZcqAyvF1wsVw"/>
+</div>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h2 class="font-headline-sm text-label-lg font-bold text-on-surface">Bpk. M. Rizky</h2>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kurir Kargo Spesialis Sleman</p>
+<p class="font-label-sm text-label-sm text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+                4.9/5.0 (310+ pengiriman)
+              </p>
+</div>
+</div>
+<a class="px-3.5 py-2 rounded-full bg-[#1B4D3E] text-on-primary hover:bg-[#13382D] transition-all flex items-center gap-1.5 shadow-sm active:scale-95 font-label-md text-label-md shrink-0" href="tel:081298765432">
+<span class="material-symbols-outlined text-[18px]" data-icon="call">call</span>
+<span>Hubungi</span>
+</a>
+</div>
+</section>
+<!-- 4. Ringkasan Produk Dalam Paket -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-[#E2E8F0] shadow-sm">
+<div class="flex items-center justify-between pb-2 mb-3 border-b border-[#E2E8F0]">
+<h2 class="font-label-lg text-label-lg font-bold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="inventory_2">inventory_2</span>
+            Barang Dalam Kargo (1 Item)
+          </h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded-full">Total Berat: 185 kg</span>
+</div>
+<div class="flex gap-3 items-center">
+<div class="w-20 h-20 rounded-lg bg-[#F1F5F2] border border-[#CBD5E1] p-1 flex-shrink-0 relative overflow-hidden">
+<img class="w-full h-full object-cover rounded" data-alt="A complete professional aquaculture shrimp farming pool kit with durable tarpaulin liners, biofloc aerator components, PVC pipes, and pumps displayed neatly packed in wooden freight crates on a clean warehouse platform with soft modern commercial studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW7746yFc2e2a8ZGAB0CQgwNwDoOZRSMz2htaK1lJK0UctjCpaWAaejA5LIQS__N32IvvzxnTjxr1rvt5NVw57XPZfeF2mKIdh-sfgJ_sYbdQ1KamegX54omcQUzj0m7nD1yaUASbjf7BYuLMC5qeCH4ycQ24IE1CqKqFWI516w4MGpLtGbiydfyF_9PjxmVky7IPezSZszXVNwgFcH6hxv_yoK3SrCusxNv3qDXNmQmf7no2uKNEobw"/>
+<span class="absolute top-1 left-1 bg-primary text-on-primary text-[9px] font-bold px-1 rounded">50m²</span>
+</div>
+<div class="flex-1 min-w-0">
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider">Aquaculture Equipment</span>
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate">Set Tambak Udang Vaname Komplit 50m²</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">1 Peti Kayu + 2 Boks Aerasi Filter</p>
+<div class="flex items-center justify-between mt-1">
+<span class="font-price-md text-price-md text-primary font-bold">Rp 4.500.000</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Jml: 1 Unit</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Riwayat Perjalanan Paket (Mobile Stepper Logistik Vertikal) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-[#E2E8F0] shadow-sm">
+<div class="flex items-center justify-between mb-4 pb-2 border-b border-[#E2E8F0]">
+<h2 class="font-label-lg text-label-lg font-bold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="timeline">timeline</span>
+            Status &amp; Riwayat Perjalanan
+          </h2>
+<span class="font-label-sm text-label-sm text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold">Tepat Waktu</span>
+</div>
+<div class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-3 before:w-0.5 before:bg-[#CBD5E1]">
+<!-- Step 1: Terkini / Aktif -->
+<div class="relative group">
+<div class="absolute -left-[24px] top-0 w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center ring-4 ring-emerald-100 shadow-sm z-10">
+<span class="material-symbols-outlined text-[14px]" data-icon="local_shipping">local_shipping</span>
+</div>
+<div class="bg-[#F2FAF6] p-3 rounded-lg border border-primary/20">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md font-bold text-primary">Sedang Diantar Kurir Menuju Lokasi</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">08:30 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Armada Box Colt Diesel Berpendingin (AB-8104-YN). Radius <strong>8.2 km</strong> dari gerbang tambak Sleman.</p>
+<div class="mt-2 flex items-center gap-2 text-[11px] text-on-surface-variant font-medium">
+<span class="inline-flex items-center gap-0.5 text-emerald-700">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+                  Suhu Tangki Stabil: 25.4°C
+                </span>
+<span>•</span>
+<span>25 Okt 2026</span>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<div class="absolute -left-[24px] top-1 w-6 h-6 rounded-full bg-surface-container-highest text-primary border-2 border-primary flex items-center justify-center z-10">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div>
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-label-md text-label-md font-bold text-on-surface">Tiba di Sorting Hub Yogyakarta (Krapyak)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">21:15 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Verifikasi kelayakan aerator, pengecekan seal barcode karantina, &amp; segel tangki.</p>
+<span class="text-[11px] text-outline font-medium">24 Okt 2026</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<div class="absolute -left-[24px] top-1 w-6 h-6 rounded-full bg-surface-container-highest text-outline flex items-center justify-center z-10">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+</div>
+<div>
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Diberangkatkan dari Hub Logistik Surabaya</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:00 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kargo keluar lewat jalur tol trans Jawa via armada kargo ekspres malam.</p>
+<span class="text-[11px] text-outline font-medium">24 Okt 2026</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative">
+<div class="absolute -left-[24px] top-1 w-6 h-6 rounded-full bg-surface-container-highest text-outline flex items-center justify-center z-10">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+</div>
+<div>
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Diserahkan ke Kurir SiCepat Cargo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">10:20 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Penimbangan volumetrik kargo berat &amp; pemasangan packing pallet kayu proteksi air.</p>
+<span class="text-[11px] text-outline font-medium">24 Okt 2026</span>
+</div>
+</div>
+<!-- Step 5 -->
+<div class="relative">
+<div class="absolute -left-[24px] top-1 w-6 h-6 rounded-full bg-surface-container-highest text-outline flex items-center justify-center z-10">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+</div>
+<div>
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Pesanan Telah Selesai Dikemas</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">08:00 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Gudang JagoFarm Rungkut Industri telah menginspeksi kelengkapan paket.</p>
+<span class="text-[11px] text-outline font-medium">24 Okt 2026</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Kartu Alamat Tujuan & Catatan Kurir -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-[#E2E8F0] shadow-sm space-y-3">
+<h2 class="font-label-lg text-label-lg font-bold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="pin_drop">pin_drop</span>
+          Alamat Tujuan Pengiriman
+        </h2>
+<div class="p-3 rounded-lg bg-surface-bright border border-outline-variant/50">
+<div class="flex items-start justify-between">
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Pak Hendra Wardana</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+62 812-9876-5432</p>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-high text-primary font-bold">Tambak Sleman</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mt-2 leading-relaxed">
+            Jl. Kaliurang KM 9.5 (Kompleks Budidaya Bioflok Sari Makmur No. 14), Sardonoharjo, Ngaglik, Sleman, D.I. Yogyakarta 55581.
+          </p>
+</div>
+<!-- Catatan Khusus untuk Driver -->
+<div class="p-3 rounded-lg bg-[#FEF9EE] border border-[#FDE68A] flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5" data-icon="sticky_note_2">sticky_note_2</span>
+<div>
+<p class="font-label-sm text-label-sm font-bold text-on-secondary-container">Instruksi Khusus Penerima:</p>
+<p class="font-body-sm text-body-sm text-on-surface italic mt-0.5">
+              "Titipkan di pos gerbang tambak bioflok jika penerima sedang memantau kualitas air di kolam belakang."
+            </p>
+</div>
+</div>
+</section>
+<!-- Safety & Guarantee Badge -->
+<div class="p-3 rounded-xl bg-surface-container-low/60 border border-outline-variant/40 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="verified_user">verified_user</span>
+<div>
+<p class="font-label-md text-label-md font-bold text-primary">JagoFarm AgriCare Protection</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Garansi penggantian 100% jika modul kolam bocor atau pompa cacat saat diterima.</p>
+</div>
+</div>
+</main>
+<!-- 7. Action Bar Bawah (Fixed Bottom Task-Focused Bar) -->
+<!-- Prohibiting BottomNavBar as this is a focused transactional Tracking flow -->
+<div class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto z-50 bg-surface-container-lowest/95 backdrop-blur-md px-margin-mobile py-space-sm border-t border-[#E2E8F0] shadow-lg flex items-center gap-2">
+<!-- Tombol Sekunder: Rincian Lengkap -->
+<button class="flex-1 py-2.5 px-3 rounded-lg border-2 border-primary text-primary hover:bg-surface-container-low font-label-md text-label-md font-bold text-center transition-all active:scale-95 flex items-center justify-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="receipt_long">receipt_long</span>
+<span>Rincian Pesanan</span>
+</button>
+<!-- Tombol Utama: Hubungi Dispatcher WA -->
+<a class="flex-1 py-2.5 px-3 rounded-lg bg-primary-container hover:bg-[#13382D] text-on-primary font-label-md text-label-md font-bold text-center transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5" href="https://wa.me/6281298765432?text=Halo%20Admin%20JagoFarm%20mohon%20konfirmasi%20pengiriman%20kargo%20SC982341290" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]" data-icon="chat">chat</span>
+<span>WA Dispatcher</span>
+</a>
+</div>
+</div>
+<script>
+    function copyResi() {
+      const resiText = "SC982341290";
+      navigator.clipboard.writeText(resiText).then(() => {
+        const copyTextEl = document.getElementById("copyText");
+        const originalText = copyTextEl.innerText;
+        copyTextEl.innerText = "Tersalin!";
+        setTimeout(() => {
+          copyTextEl.innerText = originalText;
+        }, 2000);
+      }).catch(err => {
+        console.error("Gagal menyalin resi: ", err);
+      });
+    }
+  </script>
+</body></html>

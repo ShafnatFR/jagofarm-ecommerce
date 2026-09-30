@@ -1,0 +1,582 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Profil Saya | JagoFarm - Solusi Pertanian &amp; Tambak Modern</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN with forms and container-queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#003629',
+            'primary-container': '#1b4d3e',
+            'primary-light': '#245a4a',
+            'brand-forest': '#003629',
+            'brand-forestDark': '#00261d',
+            'brand-footerDark': '#07241c',
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              forest: '#003629'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-shadow {
+      box-shadow: 0 4px 20px -2px rgba(0, 54, 41, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 antialiased text-slate-800">
+<!-- BEGIN: Top Announcement Bar -->
+<div class="bg-emerald-50 border-b border-emerald-100 py-1.5 px-4 text-xs font-medium text-emerald-900 hidden sm:block">
+<div class="max-w-7xl mx-auto flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-700 text-white">BARU</span>
+<span class="">🌱 Ekosistem Pertanian, Aquaponik &amp; Tambak Pintar Berkelanjutan Indonesia</span>
+</div>
+<div class="flex items-center space-x-5 text-slate-600">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[15px]">headset_mic</span>
+          Bantuan Pelanggan
+        </a>
+<span class="">•</span>
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[15px]">handshake</span>
+          Mitra Petani &amp; Petambak
+        </a>
+</div>
+</div>
+</div>
+<!-- END: Top Announcement Bar -->
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white border-b border-slate-200/80 shadow-xs">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20 gap-4 md:gap-6">
+<!-- Logo -->
+<a class="flex items-center gap-3 flex-shrink-0 group" href="#">
+<div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-primary to-emerald-600 flex items-center justify-center text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-2xl">eco</span>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl font-extrabold tracking-tight text-primary">JagoFarm</span>
+<span class="text-[10px] -mt-1 font-bold uppercase tracking-wider text-emerald-600">Smart Agrotech</span>
+</div>
+</a>
+<!-- Global Search Input -->
+<div class="flex-1 max-w-xl hidden md:block">
+<div class="relative">
+<input class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Cari produk pertanian, akuakultur, IoT smart farming..." type="text">
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+</div>
+</div>
+<!-- Navigation Links & Actions -->
+<div class="flex items-center gap-3 lg:gap-5">
+<!-- Category Dropdown Button -->
+<button class="hidden lg:flex items-center gap-1.5 text-sm font-semibold text-slate-700 hover:text-primary transition-colors py-1.5 px-3 rounded-lg hover:bg-slate-100" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+<span class="">Kategori</span>
+<span class="material-symbols-outlined text-[16px] text-slate-400">expand_more</span>
+</button>
+<!-- Key Agro Links -->
+<nav class="hidden xl:flex items-center gap-4 text-xs font-semibold text-slate-600">
+<a class="hover:text-primary transition-colors" href="#">Set Tambak</a>
+<a class="hover:text-primary transition-colors" href="#">IoT &amp; Smart Farming</a>
+<a class="hover:text-primary transition-colors" href="#">Konsultasi</a>
+</nav>
+<div class="h-6 w-px bg-slate-200 hidden lg:block"></div>
+<!-- Wishlist Icon with count badge -->
+<a class="relative p-2 text-slate-600 hover:text-primary hover:bg-slate-100 rounded-full transition-colors" href="#" title="Wishlist">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+<span class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+</a>
+<!-- Cart Icon with count badge -->
+<a class="relative p-2 text-slate-600 hover:text-primary hover:bg-slate-100 rounded-full transition-colors" href="#" title="Keranjang Belanja">
+<span class="material-symbols-outlined text-[24px]">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">2</span>
+</a>
+<!-- User Profile Icon / Pill -->
+<div class="flex items-center gap-2 pl-2">
+<a class="flex items-center gap-2.5 p-1 sm:pr-3 rounded-full border border-emerald-200 bg-emerald-50/70 hover:bg-emerald-100/60 transition-colors" href="#">
+<div class="w-8 h-8 rounded-full bg-primary text-emerald-100 font-bold flex items-center justify-center text-sm shadow-sm">
+                TA
+              </div>
+<span class="text-sm font-semibold text-slate-800 hidden sm:inline-block">Test Admin</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Nav: Breadcrumbs + Navigation Horizontal Strip -->
+<div class="border-t border-slate-100 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2 py-2">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-1.5 text-xs text-slate-500">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">home</span>
+              Beranda
+            </a>
+<span class="text-slate-300">/</span>
+<a class="hover:text-primary transition-colors" href="#">Akun Saya</a>
+<span class="text-slate-300">/</span>
+<span class="text-primary font-semibold">Profil Saya</span>
+</div>
+<!-- Secondary Horizontal Tabs -->
+<nav class="flex space-x-6 overflow-x-auto text-sm font-medium scrollbar-none">
+<a class="text-primary border-b-2 border-primary pb-1 pt-1 font-bold whitespace-nowrap flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-[18px]">account_circle</span>
+              Profil
+            </a>
+<a class="text-slate-600 hover:text-primary border-b-2 border-transparent pb-1 pt-1 whitespace-nowrap flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+              Alamat
+            </a>
+<a class="text-slate-600 hover:text-primary border-b-2 border-transparent pb-1 pt-1 whitespace-nowrap flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+              Wishlist
+            </a>
+<a class="text-slate-600 hover:text-primary border-b-2 border-transparent pb-1 pt-1 whitespace-nowrap flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+              Pesanan &amp; Transaksi
+            </a>
+<a class="text-slate-600 hover:text-primary border-b-2 border-transparent pb-1 pt-1 whitespace-nowrap flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">security</span>
+              Pengaturan Keamanan
+            </a>
+</nav>
+</div>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT SIDEBAR (Konsisten dengan SCREEN_2, SCREEN_4, SCREEN_5) -->
+<aside class="lg:col-span-4 space-y-6">
+<!-- User ID Card -->
+<div class="bg-white rounded-2xl p-6 border border-slate-200/80 custom-shadow text-center relative overflow-hidden" data-purpose="user-profile-card">
+<div class="absolute -top-12 -right-12 w-36 h-36 bg-emerald-100/40 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Avatar Bulat TA -->
+<div class="relative mx-auto w-24 h-24 mb-4">
+<div class="w-full h-full rounded-full bg-primary text-emerald-200 flex items-center justify-center text-3xl font-extrabold border-4 border-emerald-50 shadow-md">
+              TA
+            </div>
+<button class="absolute bottom-0 right-0 p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-md transition-all scale-95 hover:scale-105" title="Ubah Foto Profil">
+<span class="material-symbols-outlined text-[16px] block">photo_camera</span>
+</button>
+</div>
+<h2 class="text-xl font-bold text-slate-900">Test Admin</h2>
+<p class="text-xs text-slate-500 mt-0.5">test@jagofarm.id</p>
+<div class="mt-3 flex items-center justify-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5"></span>
+              Mitra Komersial
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+<span class="material-symbols-outlined text-[14px] text-emerald-600">verified</span>
+              Terverifikasi
+            </span>
+</div>
+<!-- Bar Info Ringkas: JagoPay & Koin Tani -->
+<div class="mt-5 grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100 text-left">
+<div class="pr-2 border-r border-slate-200">
+<span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">JagoPay</span>
+<span class="text-sm font-bold text-primary block mt-0.5">Rp 1.240.000</span>
+</div>
+<div class="pl-2">
+<span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Koin Tani</span>
+<span class="text-sm font-bold text-amber-600 block mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-amber-500">monetization_on</span>
+                500 Koin
+              </span>
+</div>
+</div>
+</div>
+<!-- Vertical Navigation Menu -->
+<nav class="bg-white rounded-2xl border border-slate-200/80 p-2.5 custom-shadow space-y-1">
+<!-- Biodata Diri / Profil (AKTIF) -->
+<a class="flex items-center justify-between p-3 rounded-xl bg-primary/10 text-primary font-semibold text-sm transition-all border border-primary/20" href="#">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-[18px] block">person</span>
+</span>
+<span class="">Biodata Diri / Profil</span>
+</div>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<!-- Daftar Alamat Pengiriman -->
+<a class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium text-sm transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-lg bg-slate-100 text-slate-500">
+<span class="material-symbols-outlined text-[18px] block">pin_drop</span>
+</span>
+<span class="">Daftar Alamat Pengiriman</span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</a>
+<!-- Riwayat Transaksi & Pesanan -->
+<a class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium text-sm transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-lg bg-slate-100 text-slate-500">
+<span class="material-symbols-outlined text-[18px] block">receipt_long</span>
+</span>
+<span class="">Riwayat Transaksi &amp; Pesanan</span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</a>
+<!-- Perangkat Tambak Terhubung (IoT) -->
+
+<!-- Konsultasi Agronomi & Budidaya -->
+<a class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium text-sm transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-lg bg-slate-100 text-slate-500">
+<span class="material-symbols-outlined text-[18px] block">support_agent</span>
+</span>
+<span class="">Konsultasi Agronomi &amp; Budidaya</span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</a>
+<!-- Pengaturan Keamanan -->
+<a class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium text-sm transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-lg bg-slate-100 text-slate-500">
+<span class="material-symbols-outlined text-[18px] block">lock_reset</span>
+</span>
+<span class="">Pengaturan Keamanan</span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</a>
+<div class="pt-2 border-t border-slate-100">
+<!-- Keluar Sesi -->
+<a class="flex items-center justify-between p-3 rounded-xl hover:bg-rose-50 text-rose-600 font-medium text-sm transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-lg bg-rose-50 text-rose-600">
+<span class="material-symbols-outlined text-[18px] block">logout</span>
+</span>
+<span class="">Keluar Sesi</span>
+</div>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+</div>
+</nav>
+<!-- Kartu Bantuan Teknis Sidebar -->
+<div class="bg-gradient-to-br from-emerald-950 to-primary text-white rounded-2xl p-5 shadow-sm relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center gap-2 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-2">
+<span class="material-symbols-outlined text-[18px]">engineering</span>
+            Pendampingan Tambak
+          </div>
+<h4 class="font-bold text-base text-white">Butuh Pendampingan?</h4>
+<p class="text-xs text-emerald-100/80 mt-1 leading-relaxed">
+            Tim teknisi akuakultur siap membantu optimasi aerasi, parameter air, dan instalasi IoT di tambak Anda.
+          </p>
+<a class="mt-4 inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors shadow-sm" href="#">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+            Hubungi Tim Teknis
+          </a>
+</div>
+</aside>
+<!-- RIGHT MAIN CONTENT -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Header Card: Judul & Tab Switch -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 custom-shadow">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Profil &amp; Informasi Akun</h1>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-primary border border-emerald-200">
+                  Aktif
+                </span>
+</div>
+<p class="text-xs text-slate-500 mt-1">Kelola data identitas pembudidaya, preferensi logistik, dan verifikasi sertifikasi budidaya Anda.</p>
+</div>
+<!-- Tab Switch: Profil / Keamanan -->
+<div class="flex items-center p-1 bg-slate-100 rounded-xl text-xs font-semibold self-start sm:self-auto">
+<button class="py-1.5 px-4 rounded-lg bg-primary text-white shadow-xs" type="button">Profil</button>
+<button class="py-1.5 px-4 rounded-lg text-slate-600 hover:text-slate-900 transition-colors" type="button">Keamanan</button>
+</div>
+</div>
+</div>
+<!-- SECTION 1: Formulir Pengaturan Profil -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 custom-shadow" data-purpose="account-settings-card">
+<div class="flex items-center justify-between pb-5 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<div class="p-2.5 rounded-xl bg-emerald-50 text-primary">
+<span class="material-symbols-outlined text-[20px] block">badge</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-slate-900">Biodata &amp; Usaha Budidaya</h3>
+<p class="text-xs text-slate-500">Informasi ini digunakan untuk pencatatan kontrak suplai dan penerbitan faktur.</p>
+</div>
+</div>
+</div>
+<!-- Form Content -->
+<form class="mt-6 space-y-5">
+<!-- Email Field (Read Only) -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="email">Email Akun</label>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+                  Terverifikasi
+                </span>
+</div>
+<div class="relative rounded-xl shadow-xs">
+<input class="block w-full rounded-xl bg-slate-50 border-slate-200 text-slate-600 text-sm focus:ring-0 focus:border-slate-300 cursor-not-allowed py-3 px-4 font-medium pl-10" id="email" readonly="" type="email" value="test@jagofarm.id">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+</div>
+<p class="mt-1.5 text-xs text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                Email terikat pada akun login dan tidak dapat diubah demi keamanan validasi transaksi.
+              </p>
+</div>
+<!-- Grid 2 Kolom: Nama Lengkap & Nomor Telepon/WA -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Nama Lengkap Field -->
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5" for="fullName">Nama Lengkap</label>
+<div class="relative">
+<input class="block w-full rounded-xl border-slate-200 text-slate-900 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-4 pl-10 font-medium transition-all" id="fullName" placeholder="Masukkan nama lengkap Anda" type="text" value="Test Admin">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</div>
+<!-- Nomor Telepon Field -->
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5" for="phoneNumber">Nomor Telepon / WhatsApp Bisnis</label>
+<div class="relative">
+<input class="block w-full rounded-xl border-slate-200 text-slate-900 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-4 pl-10 font-medium transition-all" id="phoneNumber" placeholder="Contoh: +62 812-3456-7890" type="tel" value="+62 812-3456-7890">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-emerald-600">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</div>
+</div>
+<p class="mt-1 text-[11px] text-slate-400">Terhubung untuk koordinasi kurir kargo pakan dan bibit.</p>
+</div>
+</div>
+<!-- Grid 2 Kolom: Nama Usaha Tambak & Komoditas Budidaya -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5" for="farmName">Nama Usaha / Tambak</label>
+<div class="relative">
+<input class="block w-full rounded-xl border-slate-200 text-slate-900 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-4 pl-10 font-medium transition-all" id="farmName" placeholder="Contoh: Tambak Vaname Sleman Makmur" type="text" value="Tambak Vaname Sleman Makmur">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[18px]">warehouse</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5" for="commodity">Jenis Komoditas Budidaya</label>
+<div class="relative">
+<input class="block w-full rounded-xl border-slate-200 text-slate-900 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-4 pl-10 font-medium transition-all" id="commodity" placeholder="Contoh: Udang Vaname &amp; Ikan Mas Koki" type="text" value="Udang Vaname &amp; Ikan Mas Koki">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[18px]">phishing</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+<button class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-brand-forestDark text-white text-sm font-semibold shadow-md shadow-primary/20 transition-all transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                Simpan Perubahan
+              </button>
+<button class="inline-flex items-center justify-center px-5 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-semibold transition-colors" type="reset">
+                Batal
+              </button>
+</div>
+</form>
+</div>
+<!-- SECTION 2: Statistik Ringkas Akun (3 Metrik) -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 custom-shadow" data-purpose="account-statistics">
+<div class="flex items-center justify-between mb-5">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">analytics</span>
+              Statistik &amp; Aktivitas Akun
+            </h3>
+<span class="text-xs font-medium text-slate-400">Data sinkronisasi realtime</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Metric 1: Pesanan Sukses -->
+<div class="bg-slate-50 hover:bg-emerald-50/50 transition-colors border border-slate-200/70 rounded-2xl p-5 text-center group">
+<div class="w-11 h-11 mx-auto rounded-xl bg-white shadow-xs flex items-center justify-center text-primary mb-2.5 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+</div>
+<span class="block text-3xl font-extrabold text-slate-900 group-hover:text-primary transition-colors">7</span>
+<span class="text-xs font-semibold text-slate-500 mt-1 block">Pesanan Sukses</span>
+</div>
+<!-- Metric 2: Alamat Terdaftar -->
+<div class="bg-slate-50 hover:bg-emerald-50/50 transition-colors border border-slate-200/70 rounded-2xl p-5 text-center group">
+<div class="w-11 h-11 mx-auto rounded-xl bg-white shadow-xs flex items-center justify-center text-primary mb-2.5 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[22px]">location_on</span>
+</div>
+<span class="block text-3xl font-extrabold text-slate-900 group-hover:text-primary transition-colors">3</span>
+<span class="text-xs font-semibold text-slate-500 mt-1 block">Lokasi Tambak / Gudang</span>
+</div>
+<!-- Metric 3: Saldo Koin Tani -->
+<div class="bg-slate-50 hover:bg-amber-50/50 transition-colors border border-slate-200/70 rounded-2xl p-5 text-center group">
+<div class="w-11 h-11 mx-auto rounded-xl bg-white shadow-xs flex items-center justify-center text-amber-600 mb-2.5 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[22px]">monetization_on</span>
+</div>
+<span class="block text-3xl font-extrabold text-amber-600 transition-colors">500</span>
+<span class="text-xs font-semibold text-slate-500 mt-1 block">Saldo Koin Tani</span>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Aksi Cepat (Quick Actions) -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 custom-shadow" data-purpose="quick-actions">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">bolt</span>
+              Pintasan Aksi Cepat
+            </h3>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<a class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 hover:border-primary hover:bg-emerald-50/50 text-slate-700 hover:text-primary text-xs font-semibold transition-all shadow-xs" href="#">
+<span class="material-symbols-outlined text-[17px] text-slate-500">pin_drop</span>
+              Kelola Alamat
+            </a>
+<a class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 hover:border-primary hover:bg-emerald-50/50 text-slate-700 hover:text-primary text-xs font-semibold transition-all shadow-xs" href="#">
+<span class="material-symbols-outlined text-[17px] text-slate-500">receipt_long</span>
+              Lihat Pesanan
+            </a>
+<a class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 hover:border-primary hover:bg-emerald-50/50 text-slate-700 hover:text-primary text-xs font-semibold transition-all shadow-xs" href="#">
+<span class="material-symbols-outlined text-[17px] text-slate-500">favorite</span>
+              Wishlist Saya
+            </a>
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-brand-forestDark text-white text-xs font-semibold shadow-md shadow-primary/20 transition-all hover:scale-102 active:scale-98" href="#">
+<span class="material-symbols-outlined text-[17px]">shopping_cart</span>
+              Belanja Lagi
+            </a>
+</div>
+</div>
+<!-- SECTION 4: Banner Proteksi Data Akun -->
+<div class="rounded-2xl bg-gradient-to-r from-primary via-emerald-900 to-primary p-6 text-white custom-shadow flex flex-col md:flex-row items-center justify-between gap-5">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl text-emerald-300">security</span>
+</div>
+<div>
+<h4 class="font-bold text-base text-white">Jaminan Privasi &amp; Keamanan Data JagoFarm</h4>
+<p class="text-xs text-emerald-100/80 mt-1 leading-relaxed">
+                Data titik koordinat tambak, volume panen, dan transaksi dilindungi enkripsi standar agritech nasional untuk menjaga kerahasiaan bisnis budidaya Anda.
+              </p>
+</div>
+</div>
+<a class="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-colors whitespace-nowrap" href="#">
+            Pelajari Kebijakan
+            <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter (4 Kolom - Konsisten JagoFarm) -->
+<footer class="bg-primary text-slate-300 mt-20 pt-16 pb-10 border-t border-emerald-950">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-emerald-900/60">
+<!-- Col 1: Brand Info -->
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-primary font-bold shadow-md">
+<span class="material-symbols-outlined text-2xl">eco</span>
+</div>
+<span class="text-2xl font-extrabold text-white tracking-tight">JagoFarm</span>
+</div>
+<p class="text-xs leading-relaxed text-slate-300/80">
+            Ekosistem teknologi agritech dan akuakultur modern terdepan di Indonesia. Menyediakan bibit unggul, paket instalasi tambak, sensor IoT, serta konsultasi panen.
+          </p>
+<div class="flex items-center gap-2 pt-1">
+<a class="w-8 h-8 rounded-full bg-emerald-900/60 hover:bg-emerald-800 text-slate-300 flex items-center justify-center transition-colors" href="#" title="Bagikan">
+<span class="material-symbols-outlined text-[16px]">share</span>
+</a>
+<a class="w-8 h-8 rounded-full bg-emerald-900/60 hover:bg-emerald-800 text-slate-300 flex items-center justify-center transition-colors" href="#" title="Website">
+<span class="material-symbols-outlined text-[16px]">public</span>
+</a>
+</div>
+</div>
+<!-- Col 2: Layanan & Solusi -->
+<div class="space-y-3">
+<h4 class="text-xs font-bold text-white tracking-widest uppercase">LAYANAN &amp; SOLUSI</h4>
+<ul class="space-y-2 text-xs text-slate-300/80">
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Set Tambak &amp; Aerasi Modern</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Set Hidroponik &amp; Akuaponik</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">IoT &amp; Smart Water Sensor</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Pakan &amp; Bibit Bersertifikasi</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Kemitraan Petani &amp; Petambak</a></li>
+</ul>
+</div>
+<!-- Col 3: Kebijakan & Legalitas -->
+<div class="space-y-3">
+<h4 class="text-xs font-bold text-white tracking-widest uppercase">KEBIJAKAN &amp; LEGALITAS</h4>
+<ul class="space-y-2 text-xs text-slate-300/80">
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Tentang JagoFarm</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Kebijakan Pengiriman Kargo</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Garansi Benih Hidup</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Kebijakan Privasi &amp; Enkripsi</a></li>
+<li class=""><a class="hover:text-emerald-400 transition-colors" href="#">Syarat dan Ketentuan Layanan</a></li>
+</ul>
+</div>
+<!-- Col 4: Dukungan Lapangan & Kontak -->
+<div class="space-y-3">
+<h4 class="text-xs font-bold text-white tracking-widest uppercase">DUKUNGAN LAPANGAN</h4>
+<ul class="space-y-2.5 text-xs text-slate-300/80">
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-emerald-400 text-[18px] flex-shrink-0 mt-0.5">pin_drop</span>
+<span class="">Jl. Pertanian Modern No. 123, Wonokromo, Kota Surabaya, Jawa Timur</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-emerald-400 text-[18px] flex-shrink-0">call</span>
+<a class="hover:text-emerald-400 transition-colors" href="tel:+6281234567890">+62 812-3456-7890</a>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-emerald-400 text-[18px] flex-shrink-0">mail</span>
+<a class="hover:text-emerald-400 transition-colors" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+</li>
+<li class="flex items-center gap-2.5 pt-1 text-emerald-300 font-medium">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="">Senin - Sabtu: 08.00 - 17.00 WIB</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Copyright Bottom -->
+<div class="mt-8 text-center text-xs text-slate-400">
+<p class="">© 2026 JagoFarm. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+
+
+</body></html>

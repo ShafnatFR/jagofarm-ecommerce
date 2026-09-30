@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>JagoFarm - Live Chat Konsultasi Agronomis</title>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#263143",
+            "surface-container-low": "#f0f3ff",
+            "primary-fixed": "#baeed9",
+            "on-secondary-fixed": "#281900",
+            "tertiary": "#003623",
+            "on-primary-container": "#8abda9",
+            "on-error-container": "#93000a",
+            "on-surface": "#111c2d",
+            "on-primary-fixed": "#002117",
+            "on-primary-fixed-variant": "#1d4f40",
+            "background": "#f9f9ff",
+            "on-surface-variant": "#404945",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-secondary-fixed-variant": "#604100",
+            "outline": "#707974",
+            "on-tertiary": "#ffffff",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#d8e3fb",
+            "on-tertiary-container": "#32c98f",
+            "surface-container-lowest": "#ffffff",
+            "surface-container": "#e7eeff",
+            "surface-bright": "#f9f9ff",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-secondary-container": "#6f4b00",
+            "on-background": "#111c2d",
+            "surface-tint": "#376757",
+            "tertiary-fixed": "#6ffbbe",
+            "outline-variant": "#c0c9c3",
+            "secondary-container": "#fdba45",
+            "surface-dim": "#cfdaf2",
+            "on-tertiary-fixed": "#002113",
+            "tertiary-container": "#004f35",
+            "on-primary": "#ffffff",
+            "primary": "#003629",
+            "secondary-fixed-dim": "#fdba45",
+            "secondary": "#7f5700",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface": "#f9f9ff",
+            "surface-variant": "#d8e3fb",
+            "secondary-fixed": "#ffdeae",
+            "surface-container-high": "#dee8ff",
+            "on-secondary": "#ffffff",
+            "inverse-primary": "#9ed1bd",
+            "primary-container": "#1b4d3e",
+            "inverse-on-surface": "#ecf1ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "price-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom Scrollbar for sleek mobile view */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(27, 77, 62, 0.2);
+      border-radius: 9999px;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .filled-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24 !important;
+    }
+    /* Safe Area Spacing */
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex justify-center min-h-screen">
+<!-- Mobile Frame Container (Strictly 390px centered mobile experience) -->
+<main class="w-full max-w-[420px] bg-surface flex flex-col h-[100dvh] relative shadow-2xl overflow-hidden border-x border-outline-variant/30">
+<!-- 1. TOP APP BAR / HEADER -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md shadow-sm">
+<!-- Main Nav Header Row -->
+<div class="px-space-md py-space-sm flex items-center justify-between gap-space-sm">
+<!-- Left: Back Button & Expert Avatar + Info -->
+<div class="flex items-center gap-2 min-w-0">
+<button aria-label="Kembali" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-transform flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</button>
+<div class="relative flex-shrink-0 cursor-pointer">
+<img class="w-10 h-10 rounded-full object-cover border-2 border-primary-fixed shadow-sm" data-alt="Close up professional portrait of Dr. Ir. Hendra Wardana, an Indonesian agronomist with warm friendly expression, wearing a laboratory white coat over an emerald botanical collared shirt in a modern aquaculture research lab setting, illuminated by natural soft daylight, photorealistic modern executive clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD54oKmwKnwnBys6L1QcMIqpPQai_p2hXo_OmROTWRn_08OY2YQs-4_DGAkMjwk6DDzHLIsShExRvFIxAetllQTTb7Zqjvtp3wtl339U4FEgTq4ENCc7kDGlROjKm0hShUb_sAUYab3j3KVuEu3XsaBUfRRXVb1draeMljmJUeukgmw39YNTgDOEpTn4K5J7x5sTduif3IhAlDZ1YrX-rL9VgsOvoxOCatf87Uw91BR2iqsc8OVxDLOew"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-on-tertiary-container rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="min-w-0 flex flex-col justify-center">
+<div class="flex items-center gap-1">
+<h1 class="text-label-lg font-label-lg text-primary truncate max-w-[155px]">
+                Dr. Ir. Hendra Wardana, M.Si
+              </h1>
+<span class="material-symbols-outlined text-secondary-container filled-icon text-[16px] flex-shrink-0" title="Terverifikasi">verified</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1 truncate">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-on-tertiary-container animate-pulse"></span>
+<span>Spesialis Bioflok IPB • Online</span>
+</p>
+</div>
+</div>
+<!-- Right: Actions (Video Call & More) -->
+<div class="flex items-center gap-1 flex-shrink-0">
+<button aria-label="Mulai Video" class="px-2.5 py-1.5 rounded-full bg-primary-container/10 text-primary-container hover:bg-primary-container hover:text-on-primary transition-colors flex items-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+<span class="text-label-sm font-label-sm hidden xs:inline">Video</span>
+</button>
+<button aria-label="Menu Opsi" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Sub-Bar: Session Metadata & Security Badge -->
+<div class="px-space-md py-1 bg-surface-container-low/70 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[13px] text-primary">lock</span>
+<span class="tracking-tight text-primary font-semibold">Sesi ID: #KF-29402</span>
+<span class="text-outline-variant">•</span>
+<span class="text-outline">Enkripsi End-to-End</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-tertiary-container font-semibold">
+<span class="material-symbols-outlined text-[13px]">timer</span>
+<span>48:20 tersisa</span>
+</div>
+</div>
+<!-- 2. COMPACT IOT TELEMETRY TICKER BAR -->
+<div class="bg-primary text-on-primary px-space-md py-1.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar whitespace-nowrap text-label-sm font-label-sm pr-2">
+<div class="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] text-secondary-container">sensors</span>
+<span class="font-bold text-white">DOC 45</span>
+</div>
+<div class="flex items-center gap-1 bg-error/30 text-error-container px-2 py-0.5 rounded border border-error/50 animate-pulse">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+<span>DO: 3.4 ppm (Rendah)</span>
+</div>
+<span class="text-white/40">|</span>
+<span class="text-white/90">pH: <strong class="text-white">7.8</strong></span>
+<span class="text-white/40">|</span>
+<span class="text-white/90">Suhu: <strong class="text-white">29.5°C</strong></span>
+<span class="text-white/40">|</span>
+<span class="text-white/90">Salinitas: 18 ppt</span>
+</div>
+<a class="text-label-sm font-label-sm text-secondary-fixed hover:underline flex-shrink-0 flex items-center gap-0.5 pl-1" href="#telemetri">
+<span>Detail</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+</a>
+</div>
+</header>
+<!-- 3. CHAT CONVERSATION STREAM -->
+<div class="flex-1 overflow-y-auto px-space-md py- space-sm space-y-4 bg-background">
+<!-- Date & Session Stamp -->
+<div class="flex justify-center my-3">
+<span class="px-3 py-1 rounded-full bg-surface-container-high/60 text-outline text-label-sm font-label-sm text-center">
+          Hari ini, 15 Oktober 2026 • Sesi Konsultasi #KF-29402
+        </span>
+</div>
+<!-- System Auto Note Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-3 shadow-sm flex items-start gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary-container flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+</div>
+<div class="flex-1">
+<p class="text-label-md font-label-md text-primary font-bold">Sinkronisasi Sensor Kolam Otomatis</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5 leading-relaxed">
+            Sistem JagoFarm: Parameter telemetri tambak otomatis diteruskan ke Dr. Hendra: <span class="font-semibold text-primary">Vaname DOC 45, DO: 3.4 ppm, pH: 7.8, Suhu: 29.5°C, Salinitas: 18 ppt</span>.
+          </p>
+</div>
+</div>
+<!-- Left Bubble: Expert Dr. Hendra -->
+<div class="flex items-start gap-2 max-w-[92%]">
+<img class="w-7 h-7 rounded-full object-cover flex-shrink-0 border border-outline-variant" data-alt="Dr. Hendra Wardana circular avatar icon in chat thread showing an Indonesian aquaculture expert in clear botanical environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwCNpmNTp6um-UwdewohoTAo8_gcAhjTynM9k-mmvMo39LB_6HhfCV1G6jrvuicSU6Zd3J82-aVT2z7wuld-hy1jjz1PJuPszPgPZNSXg24UTCZYxOjVmHFz6nIYEBEH6NXp8smFN0soGBOxfhp08N8v81syta2umlTURKF_wACIat1rcxg59wJjoIdAOVJrI89QvEQsn3IFAkcpOKHa0kCW5s1z7-rZ9IPZKgy8hH5b7dgnryL2UsdQ"/>
+<div>
+<span class="text-label-sm font-label-sm text-primary font-semibold ml-1 mb-1 block">Dr. Ir. Hendra Wardana</span>
+<div class="bg-surface-container-lowest text-on-surface border border-outline-variant/50 rounded-2xl rounded-tl-sm p-3.5 shadow-sm space-y-2">
+<p class="text-body-md font-body-md text-on-surface leading-relaxed">
+              Halo Pak Budi! Selamat pagi. Saya Dr. Hendra dari tim Akuakultur IPB &amp; JagoFarm. Saya melihat data telemetri tambak vaname Anda (<span class="font-semibold text-primary">Kolam Bulat D3, DOC 45</span>) mengalami drop oksigen terlarut (<span class="text-error font-semibold">DO 3.4 ppm</span>) dan pH 7.8.
+            </p>
+<p class="text-body-md font-body-md text-on-surface leading-relaxed">
+              Bagaimana perilaku nafsu makan udang di anco pagi ini, dan apakah ada perubahan warna air yang signifikan setelah hujan lebat kemarin?
+            </p>
+<div class="flex justify-end pt-1">
+<span class="text-label-sm font-label-sm text-outline">11:02 WIB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Bubble: User Reply (Pak Budi) -->
+<div class="flex flex-col items-end max-w-[92%] ml-auto">
+<div class="bg-primary-container text-on-primary rounded-2xl rounded-tr-sm p-3.5 shadow-md space-y-2.5">
+<p class="text-body-md font-body-md leading-relaxed text-white">
+            Selamat pagi Dok Hendra. Betul dok, nafsu makan di anco turun hampir 40% pagi ini. Ini dok kondisi air kolam B3 agak keruh kecokelatan sejak hujan kemarin sore, udang agak pasif di pinggir dan insangnya tampak agak kotor.
+          </p>
+<!-- Attached Pond Photo -->
+<div class="rounded-xl overflow-hidden border border-white/20 relative group bg-tertiary">
+<img class="w-full h-40 object-cover" data-alt="High angle shot of a circular aquaculture shrimp pond with intensive biofloc aerators running, water surface showing slightly turbid brownish-green foam after rainfall, detailed water sample showing healthy juvenile whiteleg shrimp in a monitoring tray under natural tropical sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD21KV0gcSxT0Q_v31rH1XCxSkiEb3-t8tsfYgpXBKqzA596UpmLQGrQ_-Ok34FLg6Y30KbIa2oJKAvbegL6MqhHs1_zRaYuG3ilw0dmbxoLOhs4R-FzHD8i7UPHStK2_Ij7f7LdOHUKEguBKH0VYbe0lMTJKX6MBiWA9eIAJU88nQI4cWWpQRZJ3_i8nfxnCe-WeGe1yLHEzRW_AJQQX1MUsAixRlP_LczuZardbrjWHjKM0Udgesx3A"/>
+<div class="p-2 bg-primary text-on-primary text-body-sm font-body-sm flex items-center justify-between">
+<span class="truncate flex items-center gap-1 text-white">
+<span class="material-symbols-outlined text-[15px] text-secondary-container">image</span>
+                Kondisi_Kolam_B3_Pagi.jpg
+              </span>
+<span class="text-label-sm font-label-sm text-white/80">1.8 MB</span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-1 pt-0.5 text-on-primary-container">
+<span class="text-label-sm font-label-sm text-white/80">11:04 WIB</span>
+<span class="material-symbols-outlined text-[14px] text-tertiary-fixed filled-icon">done_all</span>
+<span class="text-label-sm font-label-sm text-tertiary-fixed">Dibaca</span>
+</div>
+</div>
+</div>
+<!-- Left Bubble: Expert Diagnosis & Immediate Prescription -->
+<div class="flex items-start gap-2 max-w-[92%]">
+<img class="w-7 h-7 rounded-full object-cover flex-shrink-0 border border-outline-variant" data-alt="Dr. Hendra Wardana portrait avatar icon for chat conversation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKkopL_Ajm5YGd4adf7wlFO4p61CoMcM9Y6ZjVqn6oVtWKv04NZwLXMztiwzYKz0_gvmU_T6XbhGfg1UyAljgoA-ob7DeKFy4FQNGhgpMEUfgspWDLY_HxfvHqKXn6WiMSEnAf3il8KM8s6CLJT6fUuzB7_G32Fv80KGXYq5hUGwKPKmJ3QZpysvKtgE7H5owNC5Sq2-uN_i_0o2To1g22jQ7Rw33Kjd3U1gKc3jL21FkQkgQhK6FMLw"/>
+<div class="space-y-2">
+<span class="text-label-sm font-label-sm text-primary font-semibold ml-1 mb-1 block">Dr. Ir. Hendra Wardana</span>
+<div class="bg-surface-container-lowest text-on-surface border border-outline-variant/50 rounded-2xl rounded-tl-sm p-3.5 shadow-sm space-y-2.5">
+<p class="text-body-md font-body-md leading-relaxed text-on-surface">
+              Baik Pak Budi, ini indikasi kuat <span class="font-semibold text-error">blooming algae mati (die-off)</span> pasca guyuran air hujan asam plus deplesi oksigen di dasar kolam.
+            </p>
+<div class="bg-surface-container-low p-2.5 rounded-lg border-l-4 border-secondary text-body-sm font-body-sm space-y-1 text-on-surface">
+<p class="font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">flash_on</span>
+                Langkah Cepat 1 Jam ke Depan:
+              </p>
+<ol class="list-decimal pl-4 space-y-1">
+<li><span class="font-semibold text-primary">Nyalakan segera 2 aerator cadangan</span> (target DO &gt; 5.0 ppm).</li>
+<li><span class="font-semibold text-error">Hentikan pemberian pakan</span> siang ini 100% untuk cegah amonia naik.</li>
+<li>Taburkan <span class="font-semibold text-primary">kapur dolomit 10 kg/kolam</span> perlahan mengelilingi kolam untuk stabilkan buffer alkalinitas &amp; pH.</li>
+</ol>
+</div>
+<p class="text-body-md font-body-md leading-relaxed text-on-surface">
+              Saya sudah siapkan dokumen protokol tanggap darurat resmi untuk tim tambak Anda:
+            </p>
+<!-- Embedded PDF Document Card -->
+<div class="bg-surface-container-high/40 border border-outline-variant rounded-xl p-3 flex items-center justify-between gap-2.5 hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-error/10 text-error flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+</div>
+<div class="min-w-0">
+<h2 class="text-label-md font-label-md text-on-surface font-bold truncate">Resep SOP Darurat DO Kolam B3.pdf</h2>
+<p class="text-body-sm font-body-sm text-outline">Dokumen Resmi IPB • 420 KB</p>
+</div>
+</div>
+<button class="px-3 py-1.5 bg-primary text-on-primary rounded-lg text-label-sm font-label-sm flex items-center gap-1 flex-shrink-0 active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Unduh</span>
+</button>
+</div>
+<div class="flex justify-end pt-1">
+<span class="text-label-sm font-label-sm text-outline">11:06 WIB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Typing Indicator -->
+<div class="flex items-center gap-2 pl-9 pt-1 pb-2">
+<div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.2s]"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.4s]"></span>
+<span class="text-label-sm font-label-sm text-outline ml-1.5">Dr. Hendra sedang mengetik saran probiotik...</span>
+</div>
+</div>
+</div>
+<!-- 4. QUICK ACTION CHIPS (HORIZONTAL SCROLL) -->
+<div class="px-space-md py-1.5 bg-surface-container-lowest border-t border-outline-variant/30 overflow-x-auto no-scrollbar flex items-center gap-2 flex-shrink-0">
+<button class="px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/60 text-primary hover:border-primary text-label-sm font-label-sm whitespace-nowrap flex items-center gap-1 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[14px] text-primary">sync</span>
+        Update DO/pH
+      </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/60 text-primary hover:border-primary text-label-sm font-label-sm whitespace-nowrap flex items-center gap-1 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[14px] text-secondary">photo_camera</span>
+        Kirim Foto Kolam
+      </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/60 text-primary hover:border-primary text-label-sm font-label-sm whitespace-nowrap flex items-center gap-1 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[14px] text-error">description</span>
+        Minta SOP PDF
+      </button>
+<button class="px-3 py-1 rounded-full bg-secondary-container/20 border border-secondary text-on-secondary-container text-label-sm font-label-sm whitespace-nowrap flex items-center gap-1 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[14px]">call</span>
+        Minta Call
+      </button>
+</div>
+<!-- 5. CHAT COMPOSER / INPUT BAR -->
+<div class="p-space-sm bg-surface-container-lowest border-t border-outline-variant/40 flex-shrink-0 pb-safe">
+<div class="flex items-center gap-1.5">
+<!-- Attachment Menu Button (+) -->
+<button aria-label="Lampiran" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-90 transition-transform flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+</button>
+<!-- Quick IoT Telemetry Sync Button -->
+<button aria-label="Sinkronkan Sensor" class="w-10 h-10 rounded-full flex items-center justify-center text-primary-container bg-primary-container/10 hover:bg-primary-container hover:text-on-primary active:scale-90 transition-transform flex-shrink-0" title="Kirim data sensor terbaru">
+<span class="material-symbols-outlined text-[20px]">sensors</span>
+</button>
+<!-- Rounded Text Input Box -->
+<div class="flex-1 bg-surface-container-low border border-outline-variant rounded-full px-3.5 py-1.5 flex items-center gap-2 focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container transition-all">
+<input class="w-full bg-transparent border-none p-0 text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none" id="chat-input" placeholder="Tulis pesan ke Dr. Hendra..." type="text"/>
+<button aria-label="Buka Emoji" class="text-on-surface-variant hover:text-primary transition-colors flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">sentiment_satisfied</span>
+</button>
+</div>
+<!-- Send Button -->
+<button aria-label="Kirim Pesan" class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md active:scale-95 hover:brightness-110 transition-all flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+</div>
+</main>
+<script>
+    // Simple micro-interaction for chips inserting prompt into chat box
+    document.querySelectorAll('.no-scrollbar button').forEach(button => {
+      button.addEventListener('click', () => {
+        const text = button.innerText.trim();
+        const input = document.getElementById('chat-input');
+        if (input) {
+          input.value = `Tolong bantu: ${text}`;
+          input.focus();
+        }
+      });
+    });
+  </script>
+</body></html>

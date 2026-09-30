@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JagoFarm - Katalog Semua Produk Mobile</title>
+<!-- Plus Jakarta Sans Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-container": "#004f35",
+            "tertiary": "#003623",
+            "primary-container": "#1b4d3e",
+            "on-secondary-fixed": "#281900",
+            "secondary": "#7f5700",
+            "on-surface": "#111c2d",
+            "surface-dim": "#cfdaf2",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-tertiary-container": "#32c98f",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#baeed9",
+            "error": "#ba1a1a",
+            "secondary-container": "#fdba45",
+            "tertiary-fixed": "#6ffbbe",
+            "primary-fixed-dim": "#9ed1bd",
+            "background": "#f9f9ff",
+            "outline": "#707974",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed": "#002117",
+            "surface": "#f9f9ff",
+            "on-error": "#ffffff",
+            "surface-container": "#e7eeff",
+            "surface-container-low": "#f0f3ff",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#263143",
+            "on-surface-variant": "#404945",
+            "on-primary-container": "#8abda9",
+            "on-secondary-fixed-variant": "#604100",
+            "on-tertiary-fixed": "#002113",
+            "outline-variant": "#c0c9c3",
+            "on-background": "#111c2d",
+            "inverse-primary": "#9ed1bd",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary": "#ffffff",
+            "primary": "#003629",
+            "surface-tint": "#376757",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-bright": "#f9f9ff",
+            "error-container": "#ffdad6",
+            "on-primary": "#ffffff",
+            "surface-variant": "#d8e3fb",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed-dim": "#fdba45",
+            "surface-container-highest": "#d8e3fb",
+            "surface-container-high": "#dee8ff",
+            "secondary-fixed": "#ffdeae",
+            "on-secondary-container": "#6f4b00"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter-mobile": "0.75rem",
+            "space-xs": "0.25rem",
+            "margin-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "gutter": "1.25rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "label-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "price-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-md": ["14px", {"lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "display-hero": ["52px", {"lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+            "price-md": ["16px", {"lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-lg-mobile": ["26px", {"lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "headline-sm": ["18px", {"lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "display-hero-mobile": ["34px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "body-lg": ["16px", {"lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Clean custom horizontal scrollbar suppression for tactile mobile experience */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Viewport Shell (Max ~430px standard mobile container) -->
+<div class="w-full max-w-[440px] bg-surface-container-lowest min-h-screen flex flex-col shadow-2xl relative pb-24">
+<!-- 1. Top App Bar & Header (Sticky) -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md shadow-sm">
+<div class="px-margin-mobile pt-3 pb-2 flex items-center justify-between">
+<!-- Brand Identifier -->
+<a class="flex items-center gap-1.5 focus:outline-none" href="#">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="eco">eco</span>
+</div>
+<span class="text-headline-md font-headline-md font-extrabold text-primary tracking-tight">JagoFarm</span>
+</a>
+<!-- Header Actions -->
+<div class="flex items-center gap-2">
+<!-- WhatsApp / Expert Consultation Quick Button -->
+<button class="w-9 h-9 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-surface-variant transition-colors" title="Bantuan &amp; Konsultasi">
+<span class="material-symbols-outlined text-[20px]" data-icon="support_agent">support_agent</span>
+</button>
+<!-- Shopping Cart with Badge -->
+<button class="w-9 h-9 rounded-full bg-surface-container-low text-primary flex items-center justify-center relative hover:bg-surface-variant transition-colors" title="Keranjang Belanja">
+<span class="material-symbols-outlined text-[20px]" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary-container text-on-secondary-container text-label-sm font-label-sm px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-sm">4</span>
+</button>
+</div>
+</div>
+<!-- Integrated Search Bar -->
+<div class="px-margin-mobile pb-3 pt-1">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px] pointer-events-none" data-icon="search">search</span>
+<input class="w-full pl-10 pr-10 py-2.5 bg-background rounded-full border border-outline-variant text-body-md font-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Cari benih, tambak, IoT..." type="search"/>
+<button class="absolute right-3 text-primary flex items-center justify-center" title="Filter Cepat">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- 2. Horizontal Scrollable Category Pills -->
+<div class="py-2.5 bg-surface border-y border-outline-variant/40">
+<div class="flex items-center gap-2 overflow-x-auto px-margin-mobile no-scrollbar text-nowrap">
+<!-- Active Pill -->
+<button class="px-3.5 py-1.5 rounded-full bg-primary-container text-surface-container-lowest text-label-md font-label-md shadow-sm flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="apps">apps</span>
+          Semua Produk
+        </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/60 text-label-md font-label-md hover:border-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="phishing">phishing</span>
+          Anakan Ikan
+        </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/60 text-label-md font-label-md hover:border-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="potted_plant">potted_plant</span>
+          Benih Berkualitas
+        </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/60 text-label-md font-label-md hover:border-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="water_drop">water_drop</span>
+          Set Aquaponik
+        </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/60 text-label-md font-label-md hover:border-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="yard">yard</span>
+          Set Hidroponik
+        </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/60 text-label-md font-label-md hover:border-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="sensors">sensors</span>
+          IoT &amp; Smart Farming
+        </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/60 text-label-md font-label-md hover:border-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="pool">pool</span>
+          Set Tambak
+        </button>
+</div>
+</div>
+<!-- 3. Sub-header & Kontrol Filter / Sorting -->
+<div class="px-margin-mobile pt-3 pb-2 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div>
+<h1 class="text-headline-sm font-headline-sm text-on-surface tracking-tight">Katalog Produk</h1>
+<p class="text-body-sm font-body-sm text-outline">Menampilkan 35 produk pilihan</p>
+</div>
+<!-- Filter & Urutkan Modal Trigger Button -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface text-label-md font-label-md hover:border-primary shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="filter_list">filter_list</span>
+          Filter &amp; Urutkan
+        </button>
+</div>
+<!-- Active Filter Dismissible Chips -->
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-variant text-on-surface-variant text-label-sm font-label-sm border border-outline-variant/40">
+          Kategori: Anakan Ikan
+          <button class="hover:text-error flex items-center"><span class="material-symbols-outlined text-[14px]" data-icon="close">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-variant text-on-surface-variant text-label-sm font-label-sm border border-outline-variant/40">
+          Kategori: Benih
+          <button class="hover:text-error flex items-center"><span class="material-symbols-outlined text-[14px]" data-icon="close">close</span></button>
+</span>
+<button class="text-label-sm font-label-sm text-primary underline underline-offset-2 ml-1">Reset</button>
+</div>
+</div>
+<!-- 4. Grid Produk 2-Kolom Mobile Optimized -->
+<main class="px-margin-mobile py-2">
+<div class="grid grid-cols-2 gap-gutter-mobile">
+<!-- Product 1: Benih Ikan Mas Koki -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Vibrant healthy Japanese Goldfish fingerlings swimming gracefully in crystal clear oxygenated hatchery water. High-key natural aquatic illumination emphasizing vibrant red-orange scales with botanical reflections. Contemporary clean agriculture aesthetic with cool deep water tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIeBydmKZVIzriTJ9ZFbhkrMW4KWtyr8NOF-gd4GZQ1O9up6uqwnzbnuIPWnGw0_1vlhiXYlxRRgwhQosWBM-TN0lLEkisOZnW1jl8j1HROhCwvfctF3tz5QwkXRSOmCMhMdkXqVuL50URr8MsnpR3j3t5fwBOY4dJQ-LlLl1-hvSuncuK5yKCFaS0M-_J1TL6Ozib1f6QpdDnMzB4yLc5SQhPcAtagn_7F2w7iNY8pCPmWC6C-b1naQ"/>
+<!-- Status Badge: Unggulan Frosted -->
+<div class="absolute top-2 left-2 backdrop-blur-md bg-secondary-container/90 text-on-secondary-container text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-secondary/30">
+              Unggulan
+            </div>
+<!-- Wishlist Button -->
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Anakan Ikan</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Benih Ikan Mas Koki (5 ekor)</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span>(1.2k terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 75.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ paket</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 2: Benih Ikan Koi -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Flock of premium Cyprinus carpio Koi juvenile fingerlings with distinct white, black and orange patterns swimming in an aquaculture biofloc tank. Bright daytime diffused illumination, showing vitality and high health condition with tranquil water surface ripples in deep emerald tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaNOuT8dEJfE34Zs-ypLbQp-VExQNbtk9ZzXXIrmTiKwAQlcGARuTC7ofQ7Hxzl0fGTYoVSxXCSUmwfiRsOkgRltPx20jmSh_8AhLTvQETnZ_loCg51GWCInyhtRrzN1k42qFPyF-5MVzFz-SP845_eVfG7N2eHIGAJbOVBUC1XFm_DZRnQLajT_O0N3ELV3e1TPFP1ATg8yYjKCDENyQckX9ROJ7L45leOxj7OT9Cy7oHG1LFZJ48xA"/>
+<!-- Status Badge: Grade A -->
+<div class="absolute top-2 left-2 backdrop-blur-md bg-tertiary-container/80 text-on-tertiary-container text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-tertiary-fixed/30">
+              Grade A
+            </div>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Anakan Ikan</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Benih Ikan Koi (20 ekor)</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.8</span>
+<span>(840 terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 100.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ paket</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 3: Benih Patin -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Healthy catfish fingerlings Pangasius patin swimming vigorously in aerated freshwater aquaculture pool. High-key light-mode photograph capturing shimmering silver bellies and organic water clarity. Commercial fish farming aesthetic with subtle natural slate and emerald hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJLGU9ns3hXF33ZXL6QfD2UtP1a_k95Y7Tdad_GAWQt7WH1eo2htYqGcQbm7lufoeOVyv0udboqVuIcPbOFAApcpCCrZ4f-RsU96I2F7wKi6a8ijcxoHXwZTIsUYLx--wy3B4Tu2loceB-lqeX-uFDd6QajGf1_uvULP-ZMK-7uVqxJOLe9dFseLcAfkMn2It_RfgbOpdnmbmwzJ1PYOscctzu4_MWIw-A9dvmFg7x4NwApj20nlFxBg"/>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Anakan Ikan</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Benih Patin (100 ekor)</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.7</span>
+<span>(2.1k terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 40.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ bungkus</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 4: Benih Gurami -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Uniform sized freshwater gourami juvenile fingerlings in clean hatchery basin. Crisp overhead daylight highlighting active fin movements and healthy scales against neutral clean background. Premium aquaponics cultivation mood with subtle deep forest reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1ZEc38MJa3sc4nLMf6LS_thW0nlAGnBCFQEFTwuCD30C1BuBgqmO_KSkKe5EGuBxgPkYslRamlrYTVezTPsqLVz8fH9U9qq92C1Tq8he2T5lV7Djf8Uf38axywwlDqXKv0UshoxwHizH-2k10BxvUU_dyB46BEXBNoTyqSa_EFwMNFVEk-wgSxjpnCQt9VW9Ud4jA8nr4zYS_xsr2VBi-NGruK1Gjs-quxsK8eO8uTiFGU8q_0J2Zng"/>
+<!-- Status Badge: Super Laris -->
+<div class="absolute top-2 left-2 backdrop-blur-md bg-secondary-container/90 text-on-secondary-container text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-secondary/30">
+              Super Laris
+            </div>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Anakan Ikan</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Benih Gurami (20 ekor)</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span>(3.4k terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 75.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ paket</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 5: Benih Nila Merah -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Red tilapia fingerlings swimming dynamically inside a modern recirculating aquaculture tank. Natural bright sunlight penetrating sparkling transparent water, displaying vivid reddish-pink hues and robust fin vitality. Clean contemporary agri-tech aquaculture branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_y5Js2UvgdtFOI0NRDFZEFIoNsgvTMUpNU56IJ6jN7JMCPDqTQjRCjFXnN5OhZNh_jqyz-2FFbAK1hC20cJKdcTg4DcWoTslOt-Ml_O-1k6jIsrs2_j8dlfj0-2ITbIOGIAD29rI-4HrZpMIxMLXIGiZ6KahpoDihEQIBxmvKB5cgCebBVSgA-7qAH589Wd5gMmbjO89dduyOL1iVX_Mia7z91dwu6fJcJ0L3PP9_CyD78fFG6yeQkg"/>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Anakan Ikan</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Benih Nila Merah (100 ekor)</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">5.0</span>
+<span>(5.8k terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 35.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ kantong</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 6: Benih Lele Sangkuriang -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Uniformly sized Clarias catfish Lele Sangkuriang fingerlings swimming actively in biofloc nursery container. Crisp daylight studio shot demonstrating high-density vigorous aquaculture stock. Clean modern light background with deep forest green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi-5UfIrJDUsYgzQ8gnSqZ2J92vUD64MB2BFCQN0wxn0oY5sMdeDy_JpFZ_V0SyPTwVUSDLVCcGkxNwLNgqw3y9-qSbKCb1QaWsv3A0l8P0UFZlzDEIwA16iDU_K8OWvP7i3OLHUFD5WasbuxqUKKotx_hAAUvVsFi31IKLYpVpEw3zG-vYIFCHIm_5oLsKVUan_wRwO6zipTn-XWzXYkbq9YcKjLI8idXZ1cBgob_uOlvnv54oicc_A"/>
+<!-- Promo Badge -->
+<div class="absolute top-2 left-2 backdrop-blur-md bg-error-container text-on-error-container text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-error/20">
+              -11%
+            </div>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Anakan Ikan</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Benih Lele Sangkuriang (100 ekor)</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.8</span>
+<span>(4.2k terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 50.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ paket</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 7: AB Mix Nutrisi Hidroponik -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Professional AB Mix liquid hydroponic fertilizer twin bottles set sitting next to vibrant green pak choi vegetables in a modern vertical hydroponics farm. Clean soft daylighting, high purity laboratory quality agriculture visual, white and lush green tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApiAdSPD5Hg4gTXaCYZTKSm0nG69PN6tPSAeTv-VfAkMK4B8cLwYCfgGtk-tz8HR7tjUmHs0HaXfxXkJe8OMi5TP_F8-bXJFApLzghFPz4Bc7_vetn3boIeQ8NDQfrMJlStoeB6LC2n9kvVt5PR-RjNrwzyzZO4mImb3niRuMMDywLzWWqzUSpRBUnDakxs2NgqmDSwwwx-5rTL7UISC4h_UXe_FCrCxMMfoYtIQ40T2ZteUN9kszlTg"/>
+<div class="absolute top-2 left-2 backdrop-blur-md bg-tertiary-container/80 text-on-tertiary-container text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-tertiary-fixed/30">
+              Nutrisi Murni
+            </div>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Benih &amp; Nutrisi</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">AB Mix Nutrisi Hidroponik A+B 1L</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span>(3.1k terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 35.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ set</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product 8: Rockwool Slab -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Hydroponic pre-cut cultilene rockwool growing media slab with 75 seed holes arranged neatly with tiny green sprouts emerging. Soft studio natural lighting highlighting dense mineral wool texture. Professional clean horticultural setup with serene aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApTubpAAfu2PL1oKgFrcEks_1FaloIOrhbOUsGErQUg5zRU7zv9n7sdFG0nOSzRo1X6whwra3uDdN6Q5XRe2EVo_UJhy5hPYo24aj0p2O2pBxcOm1BgSvZH79RwskOGByHi42mdsqxL71DWBb4uR5l27S_8BeHWU7F1IXkq5cxToBwbcly1l0Io57H_WttZXe-1QQHyi6RpJJym0Wlw810Ggkon9gXEj3o8Bcb-o-aV9CWby6P65MXhQ"/>
+<button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Media Tanam</span>
+<h2 class="text-label-md font-label-md text-on-surface line-clamp-2 mt-0.5 font-bold leading-tight">Rockwool Slab 75 Hole Siap Pakai</h2>
+<div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span>(980 terjual)</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="text-price-md font-price-md text-primary block leading-none">Rp 25.000</span>
+<span class="text-label-sm font-label-sm text-outline">/ slab</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm hover:bg-primary-container active:scale-90 transition-all" title="Beli Sekarang">
+<span class="material-symbols-outlined text-[17px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- 5. Banner Konsultasi Tani Mobile -->
+<div class="px-margin-mobile my-3">
+<div class="p-4 rounded-xl bg-gradient-to-br from-primary-container to-primary text-on-primary flex items-center justify-between shadow-md relative overflow-hidden">
+<div class="relative z-10 max-w-[70%]">
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-tertiary-fixed-dim bg-white/10 px-2 py-0.5 rounded-full mb-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span> Pendampingan Ahli
+          </span>
+<h2 class="text-label-lg font-label-lg font-bold text-on-primary leading-snug">Bingung Pilih Benih atau Tambak?</h2>
+<p class="text-body-sm font-body-sm text-on-primary-container mt-0.5">Tanya Tim Agronomis via WhatsApp 24/7 Gratis!</p>
+</div>
+<a class="relative z-10 w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-md active:scale-95 transition-transform" href="#" title="Konsultasi WhatsApp">
+<span class="material-symbols-outlined text-[24px]" data-icon="chat">chat</span>
+</a>
+<!-- Subtle leaf ambient glow -->
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-[96px] pointer-events-none" data-icon="eco">eco</span>
+</div>
+</div>
+<!-- 6. Compact Mobile Pagination / Load More -->
+<div class="px-margin-mobile py-4 flex flex-col items-center gap-3">
+<button class="w-full py-2.5 px-4 rounded-lg bg-surface border border-outline-variant text-primary text-label-lg font-label-lg font-bold flex items-center justify-center gap-2 hover:bg-surface-variant transition-colors shadow-xs active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" data-icon="expand_more">expand_more</span>
+        Muat Lebih Banyak Produk
+      </button>
+<!-- Page Indicator Indicator -->
+<div class="flex items-center gap-2 text-label-md font-label-md text-outline">
+<button class="p-1 rounded-full text-outline-variant hover:text-on-surface" disabled="" title="Halaman Sebelumnya">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<span class="px-3 py-1 rounded bg-primary-container text-on-primary font-bold">1</span>
+<span class="px-2 py-1 text-on-surface-variant">2</span>
+<span class="px-2 py-1 text-on-surface-variant">3</span>
+<button class="p-1 rounded-full text-on-surface hover:text-primary" title="Halaman Selanjutnya">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Trust Highlights Mini Strip -->
+<div class="px-margin-mobile py-3 bg-surface-container-low border-t border-outline-variant/30 grid grid-cols-2 gap-2 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]" data-icon="local_shipping">local_shipping</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm font-bold text-on-surface">Kirim Seluruh RI</p>
+<p class="text-[10px] leading-tight text-outline">Packing oksigen 48 jam</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm font-bold text-on-surface">Garansi Hidup</p>
+<p class="text-[10px] leading-tight text-outline">100% uang kembali</p>
+</div>
+</div>
+</div>
+<!-- 7. Mobile Sticky Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-lg border-t border-outline-variant/30 flex justify-center shadow-lg">
+<div class="w-full max-w-[440px] px-2 py-1.5 flex items-center justify-around">
+<!-- Tab 1: Beranda -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-outline hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Beranda</span>
+</a>
+<!-- Tab 2: Katalog/Produk (AKTIF) -->
+<a class="flex flex-col items-center justify-center py-1 px-3 bg-primary-container/10 text-primary rounded-xl font-bold transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="storefront" data-weight="fill" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Produk</span>
+</a>
+<!-- Tab 3: Konsultasi Agronomis -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-outline hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform" data-icon="psychology_alt">psychology_alt</span>
+<span class="text-label-sm font-label-sm mt-0.5">Konsultasi</span>
+</a>
+<!-- Tab 4: Transaksi / Pesanan -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-outline hover:text-primary transition-colors group relative" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-sm font-label-sm mt-0.5">Pesanan</span>
+<span class="absolute top-1 right-2 w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<!-- Tab 5: Akun Saya -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-outline hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Akun</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

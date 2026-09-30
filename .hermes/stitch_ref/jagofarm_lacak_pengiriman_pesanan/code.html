@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lacak Pengiriman - JagoFarm</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#d8e3fb",
+            "surface-dim": "#cfdaf2",
+            "on-surface-variant": "#404945",
+            "surface-bright": "#f9f9ff",
+            "outline": "#707974",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#002117",
+            "on-secondary": "#ffffff",
+            "surface-container": "#e7eeff",
+            "on-secondary-fixed": "#281900",
+            "on-primary-fixed-variant": "#1d4f40",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary-container": "#6f4b00",
+            "on-tertiary": "#ffffff",
+            "inverse-primary": "#9ed1bd",
+            "tertiary-fixed": "#6ffbbe",
+            "error-container": "#ffdad6",
+            "on-surface": "#111c2d",
+            "on-background": "#111c2d",
+            "on-secondary-fixed-variant": "#604100",
+            "secondary-container": "#fdba45",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#dee8ff",
+            "outline-variant": "#c0c9c3",
+            "tertiary": "#003623",
+            "primary-fixed": "#baeed9",
+            "background": "#f9f9ff",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#004f35",
+            "primary": "#003629",
+            "on-tertiary-fixed": "#002113",
+            "surface-variant": "#d8e3fb",
+            "secondary-fixed": "#ffdeae",
+            "surface-tint": "#376757",
+            "on-primary-container": "#8abda9",
+            "secondary": "#7f5700",
+            "tertiary-fixed-dim": "#4edea3",
+            "inverse-surface": "#263143",
+            "primary-fixed-dim": "#9ed1bd",
+            "secondary-fixed-dim": "#fdba45",
+            "surface": "#f9f9ff",
+            "primary-container": "#1b4d3e",
+            "surface-container-low": "#f0f3ff",
+            "on-tertiary-container": "#32c98f",
+            "error": "#ba1a1a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "gutter": "1.25rem",
+            "gutter-mobile": "0.75rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f9f9ff;
+      color: #111c2d;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<!-- Shared TopNavBar Component -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full gap-6">
+<!-- Brand Logo & Global Search -->
+<div class="flex items-center gap-8 flex-1">
+<a class="flex items-center gap-2 text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight" href="#">
+<span class="material-symbols-outlined text-primary fill text-2xl" data-icon="eco">eco</span>
+<span>JagoFarm</span>
+</a>
+<!-- Global Search Bar -->
+<div class="relative w-full max-w-md hidden md:block">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-xl" data-icon="search">search</span>
+</div>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-body-md font-body-md text-on-surface placeholder:text-outline border border-outline-variant rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Cari benih ikan, pakan, set tambak, sensor IoT..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links from Shared Components JSON -->
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Kategori</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Set Tambak</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Konsultasi</a>
+</nav>
+<!-- Trailing Icon Actions & User Avatar -->
+<div class="flex items-center gap-4">
+<!-- Shopping Cart Icon -->
+<button aria-label="Keranjang Belanja" class="relative p-2 rounded-full hover:bg-surface-container transition-all duration-200 active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-secondary-container rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<div class="h-6 w-px bg-outline-variant"></div>
+<!-- User Profile Avatar (Pak Hendra) -->
+<div class="flex items-center gap-3 pl-1">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-md overflow-hidden ring-2 ring-primary/20">
+<span class="material-symbols-outlined fill text-xl" data-icon="account_circle">account_circle</span>
+</div>
+<div class="hidden sm:flex flex-col text-left">
+<span class="text-label-md font-label-md text-on-surface font-semibold leading-tight">Pak Hendra</span>
+<span class="text-body-sm font-body-sm text-outline leading-tight">Petambak Sleman</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Container -->
+<main class="w-full max-w-7xl mx-auto px-margin py-8 flex-1">
+<!-- Breadcrumbs Navigation -->
+<nav class="flex items-center gap-2 text-body-sm font-body-sm text-outline mb-6 overflow-x-auto whitespace-nowrap py-1">
+<a class="hover:text-primary transition-colors" href="#">Beranda</a>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Akun Saya</a>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Pesanan Saya</a>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-semibold">Lacak Pengiriman</span>
+<span class="text-outline-variant font-normal">/</span>
+<span class="font-mono text-label-sm bg-surface-container px-2 py-0.5 rounded text-primary">INV/20261024/JF/89214</span>
+</nav>
+<!-- Header Section with Real-Time Delivery Banner -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 lg:p-8 mb-8 shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+<div>
+<div class="flex flex-wrap items-center gap-3 mb-2">
+<h1 class="text-headline-lg font-headline-lg text-primary tracking-tight">Lacak Pengiriman</h1>
+<!-- Active Status Badge -->
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-md font-label-md bg-tertiary-fixed/30 text-tertiary border border-tertiary-fixed-dim/50">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container animate-pulse"></span>
+              Dalam Perjalanan / Sedang Diantar Kurir
+            </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-outline" data-icon="schedule">schedule</span>
+            Estimasi tiba di lokasi: <span class="font-bold text-on-surface">Besok, 26 Okt 2026 (14:00 - 18:00 WIB)</span>
+</p>
+</div>
+<!-- Quick Back & Full Order Detail Buttons -->
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-primary text-primary hover:bg-primary/5 text-label-lg font-label-lg transition-all duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="arrow_back">arrow_back</span>
+<span>Kembali ke Pesanan Saya</span>
+</a>
+<a class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-label-lg font-label-lg shadow-sm transition-all duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="receipt_long">receipt_long</span>
+<span>Rincian Pesanan Lengkap</span>
+</a>
+</div>
+</div>
+</div>
+<!-- 2-Column High Precision Logistics Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN (7 Cols): Logistics Carrier Meta & Detailed Timeline -->
+<div class="lg:col-span-7 space-y-6">
+<!-- Ekspedisi & Courier Spec Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-surface-container">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="local_shipping">local_shipping</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-headline-sm font-headline-sm text-on-surface">SiCepat Cargo</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-secondary-fixed text-on-secondary-fixed border border-secondary-container">Kargo Agrikultur</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-body-sm font-body-sm text-outline">No. Resi:</span>
+<span class="font-mono text-label-md font-label-md text-primary font-bold" id="resiCode">SC982341290</span>
+<button class="inline-flex items-center gap-1 text-[11px] text-primary hover:text-primary-container bg-surface-container-low hover:bg-surface-container px-2 py-0.5 rounded border border-outline-variant transition-colors" id="copyBtn" onclick="copyResi()" title="Salin Nomor Resi">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+<span id="copyText">Salin</span>
+</button>
+</div>
+</div>
+</div>
+<div class="text-left sm:text-right">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline block">Spesifikasi Layanan</span>
+<span class="text-label-md font-label-md text-on-surface font-semibold mt-0.5 block">Cargo Kilat Berpendingin &amp; Extra Care</span>
+</div>
+</div>
+<!-- Extra Safety Highlight Strip -->
+<div class="mt-4 pt-1 flex flex-wrap items-center gap-4 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-base fill" data-icon="verified_user">verified_user</span>
+<span>Proteksi Asuransi Kargo Penuh</span>
+</div>
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="material-symbols-outlined text-base" data-icon="thermostat">thermostat</span>
+<span>Suhu Bioflok Terjaga (24°C - 27°C)</span>
+</div>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-base" data-icon="inventory_2">inventory_2</span>
+<span>Peti Kayu Palletized</span>
+</div>
+</div>
+</div>
+<!-- Tracking Stepper Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 lg:p-8 shadow-sm">
+<div class="flex items-center justify-between mb-6 pb-3 border-b border-surface-container">
+<h2 class="text-headline-sm font-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-xl" data-icon="timeline">timeline</span>
+              Riwayat Perjalanan Paket
+            </h2>
+<span class="text-label-sm font-label-sm text-outline">Terakhir diperbarui: 5 mnt yang lalu</span>
+</div>
+<!-- Stepper Tree -->
+<div class="relative pl-6 space-y-8 before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-outline-variant/60">
+<!-- Step 1: Sedang Diantar (ACTIVE CURRENT) -->
+<div class="relative group">
+<!-- Active Indicator Pulse -->
+<div class="absolute -left-[30px] top-0 flex items-center justify-center">
+<span class="relative flex h-5 w-5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary-fixed-dim opacity-75"></span>
+<span class="relative inline-flex rounded-full h-5 w-5 bg-primary border-2 border-surface-container-lowest text-on-primary items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span>
+</span>
+</span>
+</div>
+<div class="bg-surface-container-low/70 border border-primary-container/20 rounded-lg p-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between text-body-sm font-body-sm mb-1.5">
+<span class="font-bold text-primary text-label-md font-label-md">Sedang Diantar Kurir Terakhir Menuju Lokasi</span>
+<span class="text-primary font-mono font-medium">25 Okt 2026, 08:30 WIB</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface">
+                  Paket telah dibawa kurir SiCepat Cargo (<span class="font-semibold text-primary">Bpk. M. Rizky</span> - Armada Truk Colt Diesel Box Pendingin) menuju alamat tujuan di Sleman, D.I. Yogyakarta.
+                </p>
+<div class="mt-3 flex items-center gap-3">
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded border border-tertiary-fixed-dim/40">
+<span class="material-symbols-outlined text-xs" data-icon="pin_drop">pin_drop</span>
+                    Radius 8.2 km dari tujuan
+                  </span>
+<a class="text-label-sm font-label-sm text-primary hover:underline flex items-center gap-1" href="tel:+6281234567890">
+<span class="material-symbols-outlined text-xs" data-icon="call">call</span> Hubungi Bpk. Rizky
+                  </a>
+</div>
+</div>
+</div>
+<!-- Step 2: Sorting Hub Yogyakarta -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface-container-lowest"></div>
+<div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface text-label-md font-label-md">Tiba di Sorting Hub Yogyakarta (Krapyak)</span>
+<span class="text-outline font-mono">24 Okt 2026, 21:15 WIB</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                  Paket kargo tiba di Pusat Distribusi Wilayah DIY &amp; Jateng Selatan. Proses verifikasi kelayakan aerator, segel tangki, dan pembagian rute kurir spesialis.
+                </p>
+</div>
+</div>
+<!-- Step 3: Diberangkatkan dari Surabaya -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1 w-3.5 h-3.5 rounded-full bg-outline border-2 border-surface-container-lowest"></div>
+<div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface text-label-md font-label-md">Diberangkatkan dari Hub Logistik Surabaya</span>
+<span class="text-outline font-mono">24 Okt 2026, 14:00 WIB</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                  Paket diberangkatkan melalui jalur Tol Trans-Jawa via Kargo Darat Khusus Suhu Terkontrol (Refrigerated Logistics Truck Armada #SUB-04).
+                </p>
+</div>
+</div>
+<!-- Step 4: Serah terima SiCepat Cargo -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1 w-3.5 h-3.5 rounded-full bg-outline border-2 border-surface-container-lowest"></div>
+<div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface text-label-md font-label-md">Diserahkan ke Kurir SiCepat Cargo</span>
+<span class="text-outline font-mono">24 Okt 2026, 10:20 WIB</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                  Tim pergudangan JagoFarm Distribution Center Surabaya telah menyerahkan muatan lengkap dengan checklist quality control biologis dan struktural.
+                </p>
+</div>
+</div>
+<!-- Step 5: Selesai Dikemas -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1 w-3.5 h-3.5 rounded-full bg-outline border-2 border-surface-container-lowest"></div>
+<div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface text-label-md font-label-md">Pesanan Telah Selesai Dikemas</span>
+<span class="text-outline font-mono">24 Okt 2026, 08:00 WIB</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                  Barang diproteksi dengan peti kayu kustom, bantalan styrofoam peredam getaran aerator, dan segel tamper-evident JagoFarm Official.
+                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (5 Cols): Live Route Visualization, Items, Address & Support -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Live Route & Courier Map Visualizer Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="map">map</span>
+<span class="text-label-lg font-label-lg text-on-surface">Peta Real-Time Pengiriman</span>
+</div>
+<span class="text-[11px] font-bold text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded">GPS Aktif</span>
+</div>
+<!-- Map Canvas Container -->
+<div class="relative h-60 bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover object-center" data-alt="A clean, top-down isometric styled GPS digital navigation map showing a commercial logistics delivery route from Surabaya through Central Java to Sleman Yogyakarta. Modern UI graphics with clean pale roads, lush green agri fields, a highlighted glowing forest-green delivery transit path, and a prominent green courier truck marker pin with soft drop shadow." data-location="Indonesia" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-aKpnzYtFU0aiBMmwZcG1i09WCgs9C-jz4xJKEDWywGY7EO8DUZk6MT2IAAj_oeC4fkVj7rfHJXdlXurlk7xmiG62DYB3NdXMakJ9zZEAkxdZPg623RfdJApl5IFafeFivEu_PwZsNPGlTPRE9T80HXChtgoTQ6nWMHuXpebmsVRKmACi-5WlnREskSTlniEBYz3SSSWXzDnZfMRTS9TMKNuq4jnllCWpxMU0zHNXh_Op-ZzNfFErhQ"/>
+<!-- Map Overlay UI -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex flex-col justify-between p-4 pointer-events-none">
+<div class="flex justify-between items-start">
+<span class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-semibold text-on-surface shadow-sm border border-outline-variant/40">
+                  Surabaya ➔ Sleman, DIY
+                </span>
+<span class="bg-primary-container text-on-primary text-[11px] font-mono px-2 py-0.5 rounded shadow">
+                  Kecepatan: 42 km/jam
+                </span>
+</div>
+<!-- Courier Interactive Ribbon -->
+<div class="bg-surface-container-lowest/95 backdrop-blur-md p-3 rounded-lg border border-outline-variant shadow-md pointer-events-auto flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg" data-icon="sports_motorsports">sports_motorsports</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface font-semibold leading-none">Bpk. M. Rizky</p>
+<p class="text-body-sm font-body-sm text-outline mt-0.5">Kurir Kargo Area Sleman</p>
+</div>
+</div>
+<a class="inline-flex items-center gap-1 bg-primary text-on-primary text-label-sm font-label-sm px-3 py-1.5 rounded hover:bg-primary-container transition-colors" href="tel:+6281234567890">
+<span class="material-symbols-outlined text-sm" data-icon="call">call</span>
+<span>Hubungi</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Product in Transit Summary Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between pb-3 border-b border-surface-container">
+<h3 class="text-label-lg font-label-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-base" data-icon="inventory_2">inventory_2</span>
+              Produk Dalam Paket Ini
+            </h3>
+<span class="text-body-sm font-body-sm text-outline">1 Jenis Barang</span>
+</div>
+<div class="mt-4 flex gap-4 items-center">
+<div class="w-20 h-20 rounded-lg bg-surface-container-low border border-outline-variant/60 flex-shrink-0 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="High quality professional studio photograph of a modern high-density bioflok shrimp farming kit for Vaname shrimp with round geomembrane pool structure, stainless aeration blower system, and clean digital water quality monitors on a white backdrop with subtle forest green botanical reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADr5TGeBPzPFmb3qNUBnChwaBW89-DtXsG2rgXPqgrhkDj3d91OBlT8oxtsvVCVOSTGc-0Ya0R1NlvzXKXInvSAfsFLvILW84d53ySWljzOz_T8oQotMxT7iqaJ7MseDi-fVGzDDI8WOnshrJBkPpSC88kr5nllmJh9wepYiyvghqqXyIoIKCVoNtYzL4Cw0fvgUFfG8Gyi1xcEim4lN3rFIbCYNjHS-YyzU51mOAZpi4KfpAogRmnYw"/>
+</div>
+<div class="flex-1 min-w-0">
+<span class="text-[11px] font-bold text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded">Set Tambak Intensif</span>
+<h4 class="text-body-md font-body-md font-bold text-on-surface truncate mt-1">Set Tambak Udang Vaname Komplit 50m²</h4>
+<p class="text-body-sm font-body-sm text-outline">1 unit x <span class="font-bold text-on-surface">Rp 4.500.000</span></p>
+<p class="text-[11px] text-on-surface-variant font-medium mt-1">Kemasan: 1 Peti Kayu + 2 Boks Aerasi Filter</p>
+</div>
+</div>
+</div>
+<!-- Shipping Destination Address Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+<h3 class="text-label-lg font-label-lg text-primary flex items-center gap-2 pb-3 border-b border-surface-container">
+<span class="material-symbols-outlined text-base" data-icon="location_on">location_on</span>
+            Alamat Tujuan Pengiriman
+          </h3>
+<div class="mt-3.5 space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md font-bold text-on-surface">Pak Hendra Wardana</span>
+<span class="text-body-sm font-body-sm font-mono text-outline">+62 812-9876-5432</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+              Jl. Kaliurang Km 9.5, RT 03 / RW 12, Dusun Tambakan, Sinduharjo, Kec. Ngaglik, Kab. Sleman, D.I. Yogyakarta 55581
+            </p>
+<!-- Courier Special Delivery Instruction -->
+<div class="mt-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/60 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="notes">notes</span>
+<div>
+<span class="text-label-sm font-label-sm uppercase tracking-wide text-secondary font-bold block">Catatan untuk Kurir:</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant italic">"Titipkan di pos gerbang tambak bioflok jika penerima sedang memantau kualitas air di kolam belakang."</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Logistics Help & Assistance Bento -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+<h3 class="text-label-lg font-label-lg text-on-surface font-bold mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="support_agent">support_agent</span>
+            Bantuan &amp; Layanan Pengiriman
+          </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<a class="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-tertiary-fixed/30 hover:bg-tertiary-fixed/50 text-tertiary border border-tertiary-fixed-dim/40 text-label-md font-label-md transition-all" href="https://wa.me/6281234567890" target="_blank">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+<span>WhatsApp Dispatcher</span>
+</a>
+<button class="flex items-center justify-center gap-2 p-2.5 rounded-lg border border-outline hover:border-error hover:text-error text-on-surface-variant text-label-md font-label-md transition-all" onclick="reportIssueModal()">
+<span class="material-symbols-outlined text-lg" data-icon="report_problem">report_problem</span>
+<span>Laporkan Kendala</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Shared Footer Component -->
+<footer class="bg-primary dark:bg-surface-container-lowest border-t border-primary-container dark:border-outline-variant w-full mt-16 text-on-primary">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+<!-- Top Grid Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-primary-container">
+<!-- Brand Bio Col -->
+<div class="lg:col-span-2 space-y-4 pr-6">
+<div class="flex items-center gap-2 text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">
+<span class="material-symbols-outlined fill text-3xl text-secondary-fixed-dim" data-icon="eco">eco</span>
+<span>JagoFarm</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-primary-container max-w-sm leading-relaxed">
+            Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak bioflok, dan IoT smart farming berkualitas tinggi demi kemandirian pangan nasional.
+          </p>
+<div class="flex items-center gap-3 pt-2">
+<button aria-label="Share" class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-on-primary hover:bg-secondary-fixed-dim hover:text-on-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="share">share</span>
+</button>
+<button aria-label="Website" class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-on-primary hover:bg-secondary-fixed-dim hover:text-on-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="language">language</span>
+</button>
+</div>
+</div>
+<!-- Links Column 1: Produk -->
+<div>
+<h4 class="text-headline-sm font-headline-sm text-on-primary mb-4 text-sm font-bold uppercase tracking-wider">Produk</h4>
+<ul class="space-y-2.5 text-body-sm font-body-sm text-on-primary-container">
+<li><a class="hover:text-on-primary transition-colors" href="#">Set Tambak</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Set Hidroponik</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Set Aquaponik</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Benih</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Anakan Ikan</a></li>
+</ul>
+</div>
+<!-- Links Column 2: Informasi -->
+<div>
+<h4 class="text-headline-sm font-headline-sm text-on-primary mb-4 text-sm font-bold uppercase tracking-wider">Informasi</h4>
+<ul class="space-y-2.5 text-body-sm font-body-sm text-on-primary-container">
+<li><a class="hover:text-on-primary transition-colors" href="#">Tentang Kami</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Cara Pemesanan</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Hubungi Kami</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="hover:text-on-primary transition-colors" href="#">Kebijakan Pengembalian</a></li>
+</ul>
+</div>
+<!-- Links Column 3: Kontak & Legalitas -->
+<div>
+<h4 class="text-headline-sm font-headline-sm text-on-primary mb-4 text-sm font-bold uppercase tracking-wider">Kontak</h4>
+<ul class="space-y-3 text-body-sm font-body-sm text-on-primary-container">
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-base mt-0.5 text-secondary-fixed-dim" data-icon="location_on">location_on</span>
+<span>Jl. Pertanian No. 123, Surabaya, Jawa Timur</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-base text-secondary-fixed-dim" data-icon="call">call</span>
+<span>+62 812-3456-7890</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-base text-secondary-fixed-dim" data-icon="mail">mail</span>
+<span>hello@jagofarm.id</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Copyright & Policies -->
+<div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-on-primary-container gap-4">
+<p>© 2026 JagoFarm. All rights reserved.</p>
+<div class="flex flex-wrap items-center gap-6">
+<a class="hover:text-on-primary transition-colors" href="#">Kebijakan Privasi</a>
+<span class="text-outline/40">•</span>
+<a class="hover:text-on-primary transition-colors" href="#">Syarat dan Ketentuan</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Interactivity Script for Copying Tracking Number & Notifications -->
+<script>
+    function copyResi() {
+      const resiText = document.getElementById("resiCode").innerText;
+      navigator.clipboard.writeText(resiText).then(() => {
+        const copyTextSpan = document.getElementById("copyText");
+        copyTextSpan.innerText = "Tersalin!";
+        setTimeout(() => {
+          copyTextSpan.innerText = "Salin";
+        }, 2000);
+      }).catch(err => {
+        console.error("Gagal menyalin: ", err);
+      });
+    }
+
+    function reportIssueModal() {
+      alert("Formulir pengaduan kendala pengiriman kargo telah dibuka. Tim Customer Care logistik JagoFarm siap merespons tiket Anda dalam 15 menit.");
+    }
+  </script>
+</body></html>

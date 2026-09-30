@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tambah Pelanggan Baru - Admin Console JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#002117",
+            "background": "#f9f9ff",
+            "secondary-fixed-dim": "#fdba45",
+            "primary-container": "#1b4d3e",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#fdba45",
+            "primary-fixed": "#baeed9",
+            "surface-tint": "#376757",
+            "on-tertiary-fixed": "#002113",
+            "surface-bright": "#f9f9ff",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#dee8ff",
+            "tertiary": "#003623",
+            "secondary-fixed": "#ffdeae",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#6ffbbe",
+            "inverse-on-surface": "#ecf1ff",
+            "on-primary-container": "#8abda9",
+            "tertiary-container": "#004f35",
+            "outline-variant": "#c0c9c3",
+            "on-secondary-fixed": "#281900",
+            "primary-fixed-dim": "#9ed1bd",
+            "inverse-primary": "#9ed1bd",
+            "secondary": "#7f5700",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-container": "#e7eeff",
+            "on-background": "#111c2d",
+            "on-surface-variant": "#404945",
+            "on-tertiary-container": "#32c98f",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "surface": "#f9f9ff",
+            "surface-dim": "#cfdaf2",
+            "on-secondary-container": "#6f4b00",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#263143",
+            "primary": "#003629",
+            "surface-container-highest": "#d8e3fb",
+            "surface-variant": "#d8e3fb",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-secondary-fixed-variant": "#604100",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#f0f3ff",
+            "on-surface": "#111c2d",
+            "outline": "#707974"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.5rem",
+            "margin": "2rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter-mobile": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    /* Subtle custom card shadow */
+    .jago-card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(27, 77, 62, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex min-h-screen">
+<!-- ADMIN SIDEBAR (Forest Green Aesthetic) -->
+<aside class="w-64 bg-primary text-on-primary flex-shrink-0 flex flex-col justify-between hidden md:flex min-h-screen sticky top-0 border-r border-tertiary-container shadow-xl">
+<div>
+<!-- Brand Logo Box -->
+<div class="h-20 px-space-lg flex items-center gap-3 border-b border-tertiary-container bg-primary">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-primary shadow-sm font-headline-md text-headline-md">
+<span class="material-symbols-outlined text-primary text-2xl font-bold">psychiatry</span>
+</div>
+<div>
+<span class="font-headline-md text-headline-md font-extrabold tracking-tight text-white block">JagoFarm</span>
+<span class="font-label-sm text-label-sm text-on-primary-container tracking-wider block uppercase">Admin Console</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="p-4 space-y-1.5 font-label-lg text-label-lg">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Produk</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span>Pesanan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">category</span>
+<span>Kategori</span>
+</a>
+<!-- ACTIVE: Pelanggan -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary-container text-white font-bold shadow-sm transition-all duration-150" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim">groups</span>
+<span>Pelanggan</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span>Kupon &amp; Promo</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">reviews</span>
+<span>Ulasan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:bg-tertiary-container hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Laporan</span>
+</a>
+</nav>
+</div>
+<!-- Admin User Info / Bottom Section -->
+<div class="p-4 border-t border-tertiary-container bg-tertiary">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white font-bold border border-outline-variant">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="font-label-md text-label-md text-white truncate">Bambang S., S.Pt.</p>
+<p class="font-body-sm text-body-sm text-on-primary-container truncate">Lead Agronomist &amp; Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN VIEWPORT CANVAS -->
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- Top System Bar -->
+<header class="h-16 bg-surface-container-lowest border-b border-outline-variant px-margin flex items-center justify-between sticky top-0 z-20 shadow-sm">
+<div class="flex items-center gap-3">
+<button class="md:hidden text-on-surface hover:text-primary p-1">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline">search</span>
+<input class="w-full bg-surface-container-low pl-9 pr-4 py-1.5 text-body-sm font-body-sm rounded-full border border-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="Cari data, NIK, atau transaksi..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-low text-on-surface-variant relative transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="w-2 h-2 bg-error rounded-full absolute top-1.5 right-1.5"></span>
+</button>
+<div class="h-6 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim inline-block animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Database Aktif: D.I. Yogyakarta</span>
+</div>
+</div>
+</header>
+<!-- CONTENT BODY -->
+<div class="p-margin max-w-7xl w-full mx-auto space-y-6">
+<!-- Breadcrumbs & Action Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-outline-variant">
+<div>
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mb-1">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">home</span> Beranda
+            </a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-primary transition-colors" href="#">Pelanggan</a>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">Tambah Pelanggan Baru</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Tambah Pelanggan Baru</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+            Daftarkan profil pembudidaya, petani mitra, atau akun pembeli ke dalam database JagoFarm.
+          </p>
+</div>
+<!-- Action CTAs -->
+<div class="flex items-center gap-3 shrink-0">
+<button class="px-5 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low font-label-lg text-label-lg transition-all duration-150 flex items-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined">close</span>
+            Batal / Kembali
+          </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-white font-label-lg text-label-lg transition-all duration-200 shadow-md flex items-center gap-2 active:scale-95" type="button">
+<span class="material-symbols-outlined text-secondary-fixed-dim">check_circle</span>
+            Simpan &amp; Daftarkan Pelanggan
+          </button>
+</div>
+</div>
+<!-- FORM GRID (2 Columns Layout) -->
+<form class="grid grid-cols-1 lg:grid-cols-12 gap-gutter" onsubmit="event.preventDefault();">
+<!-- LEFT COLUMN: Data Pokok, Profil Usaha, Logistik (8 Columns) -->
+<div class="lg:col-span-8 space-y-6">
+<!-- CARD 1: INFORMASI PERSONAL & AKUN -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 jago-card-shadow">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Informasi Personal &amp; Akun</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Identitas utama kontak penanggung jawab transaksi pertanian</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant font-bold uppercase tracking-wider">Wajib Diisi</span>
+</div>
+<div class="space-y-4">
+<!-- Nama Lengkap -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                  Nama Lengkap <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-outline">badge</span>
+<input class="w-full pl-11 pr-4 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="Contoh: Haji Sudirman, S.Pi." required="" type="text"/>
+</div>
+</div>
+<!-- Email & No Whatsapp Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                    Alamat Email <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-outline">mail</span>
+<input class="w-full pl-11 pr-4 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="sudirman.bioflok@gmail.com" required="" type="email"/>
+</div>
+</div>
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                    Nomor WhatsApp / Telepon Aktif <span class="text-error">*</span>
+</label>
+<div class="flex">
+<span class="inline-flex items-center px-3.5 rounded-l-lg border border-r-0 border-outline-variant bg-surface-container text-on-surface font-label-md text-label-md">
+                      +62
+                    </span>
+<input class="w-full rounded-r-lg border border-outline-variant bg-surface-bright text-body-md font-body-md px-3.5 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="812-3456-7890" required="" type="tel"/>
+</div>
+</div>
+</div>
+<!-- Password Sementara & Auto Generator -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="font-label-lg text-label-lg text-on-surface">Password Sementara</label>
+<button class="text-primary hover:text-primary-container font-label-sm text-label-sm flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">autorenew</span> Auto-generate Acak
+                  </button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-outline">lock_open</span>
+<input class="w-full pl-11 pr-24 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md text-on-surface" type="text" value="JagoFarm#2026Maju"/>
+<span class="absolute right-3 top-2.5 px-2 py-0.5 rounded text-label-sm font-label-sm bg-primary-fixed text-primary font-bold">Kuat</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Pelanggan akan diminta mereset password saat pertama kali login aplikasi mobile/web.</p>
+</div>
+<!-- Klasifikasi Pelanggan (Badges Radio) -->
+<div class="pt-2">
+<label class="block font-label-lg text-label-lg text-on-surface mb-2.5">
+                  Klasifikasi / Tipe Pelanggan <span class="text-error">*</span>
+</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<label class="relative flex items-start p-3.5 border-2 border-primary bg-primary-fixed/20 rounded-xl cursor-pointer transition-all">
+<input checked="" class="mt-1 text-primary focus:ring-primary border-outline" name="customer_type" type="radio"/>
+<div class="ml-3">
+<span class="block font-label-lg text-label-lg text-primary font-bold">Pembudidaya Komersial</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Tambak intensif, kolam bioflok, skala bisnis panen rutin.</span>
+</div>
+</label>
+<label class="relative flex items-start p-3.5 border border-outline-variant hover:border-primary rounded-xl cursor-pointer transition-all">
+<input class="mt-1 text-primary focus:ring-primary border-outline" name="customer_type" type="radio"/>
+<div class="ml-3">
+<span class="block font-label-lg text-label-lg text-on-surface font-bold">Petani Urban / Hobi</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Sistem hidroponik rumahan, akuaponik pekarangan.</span>
+</div>
+</label>
+<label class="relative flex items-start p-3.5 border border-outline-variant hover:border-primary rounded-xl cursor-pointer transition-all">
+<input class="mt-1 text-primary focus:ring-primary border-outline" name="customer_type" type="radio"/>
+<div class="ml-3">
+<span class="block font-label-lg text-label-lg text-on-surface font-bold">Toko Mitra / Distributor</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Penjual pakan, sarana produksi ternak &amp; obat perikanan.</span>
+</div>
+</label>
+<label class="relative flex items-start p-3.5 border border-outline-variant hover:border-primary rounded-xl cursor-pointer transition-all">
+<input class="mt-1 text-primary focus:ring-primary border-outline" name="customer_type" type="radio"/>
+<div class="ml-3">
+<span class="block font-label-lg text-label-lg text-on-surface font-bold">Institusi / Dinas Kelautan</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Kelompok pembudidaya ikan (Pokdakan), BPP, riset kampus.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 2: PROFIL USAHA & TAMBAK/KEBUN -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 jago-card-shadow">
+<div class="flex items-center gap-3 pb-4 border-b border-outline-variant mb-5">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">water</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Profil Usaha &amp; Tambak/Kebun</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Spesifikasi teknis agronomi dan fasilitas budidaya</p>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Nama Usaha / Tambak -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                  Nama Usaha / Tambak <span class="font-body-sm text-body-sm text-outline">(Opsional)</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-outline">storefront</span>
+<input class="w-full pl-11 pr-4 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="Misal: Tambak Bioflok Nila Sleman Mandiri" type="text"/>
+</div>
+</div>
+<!-- Komoditas Utama (Multi-select pill) -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-2">
+                  Komoditas Utama Dibudidayakan
+                </label>
+<div class="flex flex-wrap gap-2.5">
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-primary text-white border border-primary shadow-sm" type="button">
+<span class="material-symbols-outlined text-sm">check</span>
+                    Ikan Nila
+                  </button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container text-on-surface hover:border-primary border border-outline-variant transition-colors" type="button">
+                    Ikan Mas Koki
+                  </button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-primary text-white border border-primary shadow-sm" type="button">
+<span class="material-symbols-outlined text-sm">check</span>
+                    Lele Sangkuriang
+                  </button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container text-on-surface hover:border-primary border border-outline-variant transition-colors" type="button">
+                    Hidroponik Sayur
+                  </button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-primary text-white border border-primary shadow-sm" type="button">
+<span class="material-symbols-outlined text-sm">check</span>
+                    Udang Vaname
+                  </button>
+<button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-label-sm font-label-sm text-primary border border-dashed border-primary hover:bg-primary-fixed/20 transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">add</span> Tambah Komoditas Lain
+                  </button>
+</div>
+</div>
+<!-- Luas Lahan & Jumlah Kolam -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">Estimasi Luas Lahan</label>
+<div class="relative">
+<input class="w-full pr-16 pl-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="1500" type="number"/>
+<span class="absolute right-3.5 top-2.5 text-body-sm font-body-sm text-outline-variant font-bold">m²</span>
+</div>
+</div>
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">Jumlah Kolam Aktif</label>
+<div class="relative">
+<input class="w-full pr-20 pl-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="12" type="number"/>
+<span class="absolute right-3.5 top-2.5 text-body-sm font-body-sm text-outline-variant font-bold">Unit Kolam</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 3: ALAMAT PENGIRIMAN & TITIK LOGISTIK -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 jago-card-shadow">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Alamat Pengiriman &amp; Titik Logistik</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kordinat pengantaran bibit hidup, probiotik, &amp; pakan tonase besar</p>
+</div>
+</div>
+<!-- Peta Koordinat Action -->
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-primary text-primary hover:bg-primary-fixed/30 font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">pin_drop</span>
+                Tandai di Peta GPS
+              </button>
+</div>
+<div class="space-y-4">
+<!-- Label Alamat -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                  Label Alamat
+                </label>
+<div class="flex gap-2">
+<label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-primary bg-primary-fixed/20 text-primary font-label-md text-label-md cursor-pointer">
+<input checked="" class="text-primary focus:ring-primary" name="addr_label" type="radio"/>
+                    Tambak Utama
+                  </label>
+<label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md cursor-pointer">
+<input class="text-primary focus:ring-primary" name="addr_label" type="radio"/>
+                    Gudang Pakan
+                  </label>
+<label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md cursor-pointer">
+<input class="text-primary focus:ring-primary" name="addr_label" type="radio"/>
+                    Rumah Tinggal
+                  </label>
+</div>
+</div>
+<!-- Alamat Lengkap & Patokan -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                  Alamat Lengkap &amp; Patokan Jalan <span class="text-error">*</span>
+</label>
+<textarea class="w-full p-3.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="Jl. Raya Kaliurang KM 14, Gang Gurami No. 8 (Masuk 200m barat pertigaan gapura hijau, gerbang seng biru)" rows="3"></textarea>
+</div>
+<!-- Wilayah & Kodepos -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">Provinsi</label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface">
+<option selected="">D.I. Yogyakarta</option>
+<option>Jawa Tengah</option>
+<option>Jawa Timur</option>
+<option>Jawa Barat</option>
+<option>Lampung</option>
+</select>
+</div>
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">Kota / Kabupaten</label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface">
+<option selected="">Kab. Sleman</option>
+<option>Kab. Bantul</option>
+<option>Kota Yogyakarta</option>
+<option>Kab. Kulon Progo</option>
+<option>Kab. Gunungkidul</option>
+</select>
+</div>
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">Kode Pos</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="55581" type="text"/>
+</div>
+</div>
+<!-- Catatan Akses Logistik Armada -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                  Catatan Akses Logistik (Instruksi Truk / Armada)
+                </label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-outline">forklift</span>
+<input class="w-full pl-11 pr-4 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="Akses muat truk engkel / CDD roda 4 bisa masuk, sediakan aerator portabel untuk bongkar benih" type="text"/>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-sm text-secondary-fixed-dim">info</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pemberitahuan ini otomatis tercetak pada surat jalan pengiriman tim ekspedisi JagoFarm.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Pengaturan Status, Loyalitas, Berkas (4 Columns) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- CARD: STATUS AKUN & NOTIFIKASI -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 jago-card-shadow">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+              Status &amp; Aktivasi
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Pengaturan otentikasi awal pelanggan</p>
+<div class="space-y-4">
+<!-- Status Verifikasi Switch -->
+<div class="p-3.5 bg-surface-container-low rounded-lg border border-outline-variant flex items-center justify-between">
+<div>
+<span class="block font-label-md text-label-md text-on-surface font-bold">Status Verifikasi</span>
+<span class="block font-body-sm text-body-sm text-primary font-semibold">Aktif &amp; Terverifikasi</span>
+</div>
+<!-- Custom Checkbox Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Notifikasi Undangan Checkboxes -->
+<div class="space-y-3 pt-1">
+<label class="flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-0.5 rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" type="checkbox"/>
+<div class="text-left">
+<span class="font-label-md text-label-md text-on-surface block">Kirim Undangan WhatsApp</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Format template pesan resmi berisi username dan kode aktivasi.</span>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-0.5 rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" type="checkbox"/>
+<div class="text-left">
+<span class="font-label-md text-label-md text-on-surface block">Kirim Instruksi via Email</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Kirim katalog produk terkini dan surat sambutan kemitraan.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- CARD: FASILITAS & TIER KEANGGOTAAN -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 jago-card-shadow">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim">workspace_premium</span>
+              Fasilitas &amp; Tier Akun
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Skema harga grosir dan termin pembiayaan</p>
+<div class="space-y-4">
+<!-- Tier Selector -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2">Pilih Tingkat Keanggotaan</label>
+<div class="space-y-2">
+<label class="flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-all">
+<div class="flex items-center gap-2.5">
+<input class="text-primary focus:ring-primary" name="tier_level" type="radio"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Petani Pemula</span>
+<span class="font-body-sm text-body-sm text-outline block">Silver • Tier Standar</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-outline px-2 py-0.5 rounded bg-surface-container">0% Potongan</span>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg border-2 border-primary bg-primary-fixed/20 cursor-pointer transition-all">
+<div class="flex items-center gap-2.5">
+<input checked="" class="text-primary focus:ring-primary" name="tier_level" type="radio"/>
+<div>
+<span class="font-label-md text-label-md text-primary font-bold block">Mitra Andalan</span>
+<span class="font-body-sm text-body-sm text-primary block">Gold • Prioritas Pasokan</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold px-2 py-0.5 rounded bg-primary-fixed">5% Diskon</span>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-all">
+<div class="flex items-center gap-2.5">
+<input class="text-primary focus:ring-primary" name="tier_level" type="radio"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Sentra Komersial</span>
+<span class="font-body-sm text-body-sm text-outline block">Platinum • Skala Industri</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-outline px-2 py-0.5 rounded bg-surface-container">10% Diskon</span>
+</label>
+</div>
+</div>
+<!-- Limit Termin Pembayaran / Tempo -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1.5">Termin Pembayaran (Tempo)</label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md focus:border-primary focus:ring-1 focus:ring-primary text-on-surface">
+<option>Tunai / Transfer Langsung (CBD)</option>
+<option selected="">Tempo 14 Hari (Verifikasi Dokumen)</option>
+<option>Tempo 30 Hari (Khusus Sentra Platinum)</option>
+<option>Panen Bersama / Yarnen (Kemitraan JagoFarm)</option>
+</select>
+</div>
+<!-- Diskon Khusus Mitra Agribisnis -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1.5">Diskon Tambahan Khusus (%)</label>
+<div class="relative">
+<input class="w-full pl-3.5 pr-10 py-2 rounded-lg border border-outline-variant bg-surface-bright text-body-md font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary" type="number" value="5"/>
+<span class="absolute right-3.5 top-2 font-bold text-outline-variant">%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Berlaku otomatis untuk pembelian pakan dan benih bibit unggul.</p>
+</div>
+</div>
+</div>
+<!-- CARD: CHECKLIST KELENGKAPAN DOKUMEN -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 jago-card-shadow">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">folder_open</span>
+                Dokumen Pendukung
+              </h3>
+<span class="text-body-sm font-body-sm text-outline">Opsional</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Dibutuhkan untuk pengajuan batas kredit tempo</p>
+<div class="space-y-3">
+<!-- Upload KTP -->
+<div class="p-3 border border-dashed border-outline-variant rounded-lg bg-surface-bright hover:bg-surface-container-low transition-colors flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-outline">id_card</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">KTP Penanggung Jawab</span>
+<span class="font-body-sm text-body-sm text-outline block">Format JPG/PNG/PDF (Maks 5MB)</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm border border-outline-variant" type="button">
+                  Unggah
+                </button>
+</div>
+<!-- Upload Izin Usaha / NIB -->
+<div class="p-3 border border-dashed border-outline-variant rounded-lg bg-surface-bright hover:bg-surface-container-low transition-colors flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-outline">article</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Surat Izin Usaha / Pokdakan</span>
+<span class="font-body-sm text-body-sm text-outline block">NIB / Rekomendasi Kelompok</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm border border-outline-variant" type="button">
+                  Unggah
+                </button>
+</div>
+</div>
+<!-- Quick Note -->
+<div class="mt-4 p-3 rounded-lg bg-surface-container-low border border-outline-variant flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary-container text-base mt-0.5">security</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Data sertifikasi dan NIK dilindungi oleh enkripsi standar perbankan JagoFarm Ecosystem.
+              </p>
+</div>
+</div>
+<!-- BOTTOM ACTION SUMMARY -->
+<div class="p-4 rounded-xl bg-primary text-white shadow-lg space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-primary-container">Total Kelengkapan Data</span>
+<span class="font-label-lg text-label-lg font-bold text-secondary-fixed-dim">85% Lengkap</span>
+</div>
+<div class="w-full bg-tertiary-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary-fixed-dim h-full w-[85%] rounded-full"></div>
+</div>
+<button class="w-full py-3 bg-secondary-fixed text-on-secondary-fixed font-bold font-label-lg text-label-lg rounded-lg hover:bg-secondary-fixed-dim transition-colors shadow-sm flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined">save</span>
+              Simpan &amp; Daftarkan Pelanggan
+            </button>
+</div>
+</div>
+</form>
+</div>
+<!-- ADMIN FOOTER (docked full-width) -->
+<footer class="mt-auto bg-primary dark:bg-surface-container-lowest border-t border-primary-container dark:border-outline-variant w-full">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-on-primary-container">
+<div class="flex items-center gap-3">
+<span class="font-headline-sm text-headline-sm font-bold text-on-primary">JagoFarm Console</span>
+<span class="text-sm">•</span>
+<p class="font-body-sm text-body-sm text-on-primary-container">
+            © 2026 JagoFarm. All rights reserved.
+          </p>
+</div>
+<div class="flex flex-wrap items-center gap-x-6 gap-y-2 font-label-md text-label-md">
+<a class="text-on-primary-container hover:text-on-primary transition-colors duration-150" href="#">Tentang Kami</a>
+<a class="text-on-primary-container hover:text-on-primary transition-colors duration-150" href="#">Bantuan Admin</a>
+<a class="text-on-primary-container hover:text-on-primary transition-colors duration-150" href="#">Kebijakan Privasi</a>
+<a class="text-on-primary-container hover:text-on-primary transition-colors duration-150" href="#">Syarat dan Ketentuan</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

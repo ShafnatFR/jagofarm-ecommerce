@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin JagoFarm - Tambah Produk Baru</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#baeed9",
+            "secondary-container": "#fdba45",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-bright": "#f9f9ff",
+            "on-tertiary-container": "#32c98f",
+            "tertiary": "#003623",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#263143",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-secondary": "#ffffff",
+            "surface-tint": "#376757",
+            "outline": "#707974",
+            "secondary-fixed": "#ffdeae",
+            "surface-dim": "#cfdaf2",
+            "outline-variant": "#c0c9c3",
+            "surface-variant": "#d8e3fb",
+            "inverse-on-surface": "#ecf1ff",
+            "secondary": "#7f5700",
+            "background": "#f9f9ff",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#8abda9",
+            "on-primary-fixed-variant": "#1d4f40",
+            "secondary-fixed-dim": "#fdba45",
+            "primary": "#003629",
+            "on-secondary-fixed": "#281900",
+            "on-error-container": "#93000a",
+            "inverse-primary": "#9ed1bd",
+            "surface-container-low": "#f0f3ff",
+            "on-surface-variant": "#404945",
+            "surface-container-high": "#dee8ff",
+            "surface-container": "#e7eeff",
+            "on-surface": "#111c2d",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed": "#002117",
+            "primary-container": "#1b4d3e",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-container": "#6f4b00",
+            "on-error": "#ffffff",
+            "on-primary": "#ffffff",
+            "surface": "#f9f9ff",
+            "on-secondary-fixed-variant": "#604100",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary-container": "#004f35"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.25rem",
+            "gutter-mobile": "0.75rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "price-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex min-h-screen selection:bg-primary-fixed selection:text-primary">
+<!-- ADMIN SIDEBAR -->
+<aside class="w-64 bg-primary text-on-primary flex-shrink-0 flex flex-col justify-between hidden lg:flex border-r border-primary-container z-40 select-none">
+<div>
+<!-- Brand & Version -->
+<div class="h-16 px-6 flex items-center justify-between border-b border-primary-container">
+<div class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="text-headline-sm font-headline-sm font-extrabold tracking-tight text-surface-container-lowest">JagoFarm</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-primary-container">Admin Console v2.4</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-tertiary-container text-tertiary-fixed-dim">PRO</span>
+</div>
+<!-- Navigation Menu -->
+<div class="px-4 py-5 space-y-1">
+<p class="px-3 text-label-sm font-label-sm uppercase tracking-wider text-on-primary-container mb-2">Main Navigation</p>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-lg font-label-lg">Dashboard</span>
+</a>
+<!-- Active Link: Produk -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary-container text-surface-container-lowest font-semibold shadow-sm" href="#">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-label-lg font-label-lg">Produk</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-label-lg font-label-lg">Pesanan</span>
+</div>
+<span class="px-1.5 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-container font-bold">12</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-label-lg font-label-lg">Kategori</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-label-lg font-label-lg">Pelanggan</span>
+</a>
+<p class="px-3 text-label-sm font-label-sm uppercase tracking-wider text-on-primary-container mt-6 mb-2">Promosi &amp; Analitik</p>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">loyalty</span>
+<span class="text-label-lg font-label-lg">Kupon &amp; Promo</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">reviews</span>
+<span class="text-label-lg font-label-lg">Ulasan</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-primary-container hover:text-surface-container-lowest hover:bg-primary-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-label-lg font-label-lg">Laporan</span>
+</a>
+</div>
+</div>
+<!-- Admin Profile Footer Pill in Sidebar -->
+<div class="p-4 border-t border-primary-container">
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-primary-container/70 border border-on-primary-fixed-variant/40">
+<div class="flex items-center space-x-3 overflow-hidden">
+<img class="w-9 h-9 rounded-full object-cover border border-secondary-fixed-dim/60" data-alt="Corporate headshot portrait of an Indonesian agricultural operations director dressed in smart casual attire with neutral soft background studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPvb71O8F8mughrX2RqB-2JfdJek6dgBqrNlE0081ZILdtB1RdYfS0sXgk4ok8WHw5hQD0qo0Zhp_Mc2n3xM3gXuT9a9IxeIJv_Lt8pHjEwIO3RNpZb7asVPPL4fU4PO4h-wXeD6N-G4oEJn0v01Zlqq-3kJOk_-_Z5-kfoQKfFV2UE-3wJyHdGEvUcFOVr0D38j38PM8A6lKi_z8WW_Ccv8fWCaegpukIuO-TCWewHwIWNwEDS2sjXQ"/>
+<div class="truncate">
+<p class="text-label-md font-label-md font-bold text-surface-container-lowest truncate">Test Admin</p>
+<p class="text-label-sm font-label-sm text-secondary-fixed-dim">Super Admin</p>
+</div>
+</div>
+<button class="p-1 rounded-lg text-on-primary-container hover:text-surface-container-lowest transition-colors" title="Pengaturan">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN VIEWPORT CANVAS -->
+<div class="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto custom-scroll">
+<!-- Top Header Admin Bar -->
+<header class="h-16 px-6 lg:px-8 bg-surface-container-lowest border-b border-outline-variant/60 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+<!-- Search Input with Shortcut -->
+<div class="flex items-center flex-1 max-w-lg">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-12 py-2 text-body-md font-body-md rounded-full border border-outline-variant/70 bg-surface-bright focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Cari SKU, batch panen, alat akuakultur..." type="text"/>
+<span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-label-sm font-label-sm px-1.5 py-0.5 bg-surface-container-high rounded text-on-surface-variant font-mono border border-outline-variant/50">/</span>
+</div>
+</div>
+<!-- Quick Actions, Calendar & User Profile -->
+<div class="flex items-center space-x-4 ml-4">
+<!-- Date Marker -->
+<div class="hidden sm:flex items-center space-x-1.5 text-on-surface-variant text-body-sm font-body-sm px-3 py-1.5 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span>25 September 2026</span>
+</div>
+<!-- Quick Store Front View -->
+<a class="hidden md:flex items-center space-x-1 text-label-md font-label-md text-primary font-semibold hover:underline" href="#">
+<span>Lihat Etalase</span>
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/60 hidden md:block"></div>
+<!-- Notification Bell with Ping Indicator -->
+<button class="relative p-2 rounded-full text-on-surface-variant hover:bg-surface-bright transition-colors" title="Notifikasi">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<!-- Mobile Avatar -->
+<div class="flex items-center space-x-2 pl-1">
+<img class="w-8 h-8 rounded-full object-cover border border-primary-container" data-alt="Professional avatar icon of an aquaculture enterprise administrator smiling warmly with clean studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoNnkXATkPE_64c4s7-sYyw7i0ZUw4-nmkhkDT3oIHKRofkh6xmJvFobfCPVBcY1oCFEuCFiGI4VRBRd4pFRnMWoDWeT4mXuZShx4Q_FFnI0jAO4Gk-dLgCSxjClr1FACQVzceVdzoXClEqD_ueGMNiLrjVPEPnli9ntRmoSTzzS-MWBiGp1v81Lpa91CzxVHWMIJ9bbtrKU1xSQ1RDyB6knFyfHJrXM-ktaRS9Ft9-jOxfoorAIAmEQ"/>
+<span class="text-label-md font-label-md font-semibold text-on-surface hidden xl:inline">Test Admin</span>
+</div>
+</div>
+</header>
+<!-- CONTENT WRAPPER -->
+<main class="p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+<!-- Breadcrumb Bar -->
+<nav class="flex items-center space-x-2 text-label-md font-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center space-x-1" href="#">
+<span class="material-symbols-outlined text-base">home</span>
+<span>Beranda</span>
+</a>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Produk</a>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<span class="text-primary font-semibold">Tambah Produk Baru</span>
+</nav>
+<!-- Page Header: Actions & Title -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-outline-variant/40">
+<div>
+<a class="inline-flex items-center space-x-1.5 text-label-sm font-label-sm font-semibold text-primary mb-1 hover:underline group" href="#">
+<span class="material-symbols-outlined text-sm group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+<span>Kembali ke Daftar Produk</span>
+</a>
+<h1 class="text-headline-md font-headline-md font-extrabold text-on-surface tracking-tight">Tambah Produk Baru</h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Kelola formulir spesifikasi komoditas, stok benih, IoT controller, dan penanganan logistik rantai dingin.</p>
+</div>
+<!-- Sticky action cluster -->
+<div class="flex items-center space-x-3">
+<button class="px-4 py-2.5 rounded-lg border border-outline-variant text-label-lg font-label-lg font-semibold text-on-surface hover:bg-surface-bright active:scale-95 transition-all" type="button">
+            Simpan Draf
+          </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary-container text-surface-container-lowest text-label-lg font-label-lg font-bold shadow-sm hover:brightness-110 active:scale-95 transition-all flex items-center space-x-2" type="button">
+<span class="material-symbols-outlined text-sm">publish</span>
+<span>Terbitkan Produk</span>
+</button>
+</div>
+</div>
+<!-- FORM GRID 2 COLUMN (2/3 and 1/3) -->
+<form class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start" onsubmit="event.preventDefault();">
+<!-- ==================== LEFT COLUMN (8 of 12 cols) ==================== -->
+<div class="lg:col-span-8 space-y-6">
+<!-- CARD 1: INFORMASI DASAR -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-6 shadow-sm">
+<div class="flex items-center space-x-2.5 pb-4 mb-5 border-b border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">info</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Informasi Dasar</h2>
+</div>
+<div class="space-y-4">
+<!-- Nama Produk -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">
+                  Nama Produk <span class="text-error">*</span>
+</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="product-name" placeholder="Contoh: Paket Smart Aerator Tambak Otomatis IoT" type="text" value="Benih Ikan Nila Hitam Super (Gift/Nirwana F4)"/>
+<span class="text-body-sm font-body-sm text-outline mt-1 block">Gunakan nama yang jelas dilengkapi varietas, strain, atau ukuran bibit.</span>
+</div>
+<!-- 2 Col: Kategori & SKU -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">
+                    Kategori Katalog <span class="text-error">*</span>
+</label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container bg-surface-container-lowest" id="product-category">
+<option selected="" value="Anakan Ikan">Anakan Ikan (Akuakultur)</option>
+<option value="Set Tambak">Set Tambak</option>
+<option value="Benih &amp; Nutrisi">Benih &amp; Nutrisi</option>
+<option value="IoT &amp; Smart Farming">IoT &amp; Smart Farming</option>
+<option value="Set Hidroponik">Set Hidroponik</option>
+</select>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">
+                    Kode SKU / Barcode Produk <span class="text-error">*</span>
+</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md uppercase font-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" placeholder="SKU-XXX-000" type="text" value="JGF-NLH-0926-SUPER"/>
+</div>
+</div>
+<!-- Slug URL Otomatis -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Slug URL Otomatis</label>
+<div class="flex items-center rounded-lg border border-outline-variant bg-surface-bright overflow-hidden">
+<span class="px-3 text-body-sm font-body-sm text-outline bg-surface-container-low border-r border-outline-variant py-2.5 select-none">jagofarm.com/produk/</span>
+<input class="w-full px-3 py-2 text-body-sm font-body-sm bg-transparent border-0 focus:ring-0 text-on-surface" id="product-slug" type="text" value="benih-ikan-nila-hitam-super"/>
+<button class="p-2 text-outline hover:text-primary" title="Salin Link" type="button">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Deskripsi Lengkap Produk & Rich Text Toolbar -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Deskripsi Lengkap &amp; Panduan Budidaya</label>
+<!-- Formatting Toolbar -->
+<div class="border border-outline-variant rounded-t-lg bg-surface-container-low px-3 py-1.5 flex flex-wrap items-center gap-1 border-b-0">
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant font-bold" title="Bold" type="button">
+<span class="material-symbols-outlined text-sm">format_bold</span>
+</button>
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant italic" title="Italic" type="button">
+<span class="material-symbols-outlined text-sm">format_italic</span>
+</button>
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant" title="Bullet List" type="button">
+<span class="material-symbols-outlined text-sm">format_list_bulleted</span>
+</button>
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant" title="Numbered List" type="button">
+<span class="material-symbols-outlined text-sm">format_list_numbered</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant" title="Insert Link" type="button">
+<span class="material-symbols-outlined text-sm">link</span>
+</button>
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant" title="Table" type="button">
+<span class="material-symbols-outlined text-sm">table_chart</span>
+</button>
+<button class="p-1.5 hover:bg-surface-container-highest rounded text-on-surface-variant text-label-sm font-label-sm" title="Heading" type="button">
+                    H2
+                  </button>
+</div>
+<textarea class="w-full p-3.5 rounded-b-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" rows="5">Benih Ikan Nila Hitam Super hasil seleksi genetik Nirwana F4 dengan tingkat ketahanan penyakit hingga 94%. Memiliki laju pertumbuhan harian cepat (FCR 1.1-1.2), sangat adaptif pada sistem bioflok, kolam air tenang, dan tambak intensif payau.
+- Ukuran standar sortiran: 5 - 7 cm (rata).
+- Garansi hidup 100% dengan logistik tabung oksigen khusus rute intra-pulau.
+- Cocok untuk pembudidaya komersial skala 1.000 hingga 50.000 ekor.</textarea>
+</div>
+</div>
+</div>
+<!-- CARD 2: MEDIA & FOTO PRODUK -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-6 shadow-sm">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-outline-variant/30">
+<div class="flex items-center space-x-2.5">
+<span class="material-symbols-outlined text-primary text-xl">photo_library</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Galeri &amp; Media Produk</h2>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-medium">3 dari 5 slot terisi</span>
+</div>
+<!-- Upload Dropzone -->
+<div class="border-2 border-dashed border-outline-variant hover:border-primary-container rounded-xl p-6 text-center cursor-pointer transition-colors bg-surface-bright/50">
+<div class="w-12 h-12 mx-auto rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-2xl">cloud_upload</span>
+</div>
+<p class="text-label-lg font-label-lg text-on-surface font-semibold">Tarik &amp; lepaskan foto benih/alat atau <span class="text-primary underline">Pilih File Komputer</span></p>
+<p class="text-body-sm font-body-sm text-outline mt-1">Format didukung: JPG, PNG, WebP (Rekomendasi rasio 1:1, min. 800 x 800px, maks 5MB per file).</p>
+</div>
+<!-- Uploaded Thumbnails Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-4">
+<!-- Item 1: Foto Utama (Cover) -->
+<div class="relative rounded-lg overflow-hidden border-2 border-primary group aspect-square bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close up photography of vibrant healthy freshwater black tilapia fingerlings swimming in clean transparent pond water with sunlight reflection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv1nNaRQczshjoHWrusqmsLvlatZJrV16VMNg5sr1ofqsLA7FHnZjRK8ArA87MttjVbmIY5ozJzWbWB6pn8GRV9yvoICZqheKumA0mhr5FwlFq5gmp2Btg9gItq8BFo7mxpsEQY8BMLo0YO8la1D_7xzBnMki21GaiA3RkXPSbkM9cri1Qc1yWkf5CwTIL9qkiNvXOn4tpy6lSfGPG8kcNcG0fTyesjuGA9M2kRHPcUSm1VbAVyhXcsg"/>
+<div class="absolute top-1.5 left-1.5 bg-primary text-surface-container-lowest text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide">
+                  UTAMA
+                </div>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center space-x-2 transition-opacity">
+<button class="w-7 h-7 bg-surface-container-lowest text-error rounded-full flex items-center justify-center hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+<button class="w-7 h-7 bg-surface-container-lowest text-on-surface rounded-full flex items-center justify-center hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-sm">crop</span>
+</button>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="relative rounded-lg overflow-hidden border border-outline-variant group aspect-square bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Modern indoor aquaculture bioflok nursery with circular high-density polyethylene blue tanks and precision aerator tubes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg69utMSd99MP7g_W3AT4009ZLjZgkEZTYGZ0ywKIgHJdivUIFeQNHeN6ppQwu8JbBvjFYyJtvvxQOiQJ-PYQveOBJsWsUzIJGfb9BVtPNdMlTsGT7_T0QOcYR3fAF2zKCssOSQZj-4bKesFMjQynQuo__zVxBflMhUKYg4gPTeNsWRlV-BYNm_GiSMzP3UZ46h9IiL43WWulc0LZwfokGXcZ-ICmM42QU7wXUA0prGhXG3C86ukJ7Xg"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center space-x-2 transition-opacity">
+<button class="w-7 h-7 bg-surface-container-lowest text-error rounded-full flex items-center justify-center hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="relative rounded-lg overflow-hidden border border-outline-variant group aspect-square bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Standard plastic oxygen transport packing bag filled with freshwater fish fingerlings ready for cold chain logistics distribution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDflWfDVdI1Umkt-SYpA2eQXOmR1EUsEI02xQRYcgWA2dv48rM7vQxfB5JIjnkA4sQCurLrkNNbspx_dniVlr-jQEVig5p60pY_lYxN4y_t9ugxQhms8x_x1ENdi3vX5bXGjHpx5UdQQ7-VTphMfxK2shlss7-O8YoLwkG04PGsASkZ4wPmx1uV8dv7rKJDgMCiG0vuwOCpHVbvVW28gb6T9XvY_s1oBhXocCQELS4gy0gfclml_bYxWw"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center space-x-2 transition-opacity">
+<button class="w-7 h-7 bg-surface-container-lowest text-error rounded-full flex items-center justify-center hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<!-- Item 4: Empty Slot -->
+<div class="border border-dashed border-outline-variant rounded-lg flex flex-col items-center justify-center text-outline hover:text-primary hover:border-primary cursor-pointer aspect-square bg-surface-bright/30 transition-colors">
+<span class="material-symbols-outlined text-2xl">add_photo_alternate</span>
+<span class="text-label-sm font-label-sm mt-1">Tambah Foto</span>
+</div>
+</div>
+<!-- Agricultural Photo Guidance Warning -->
+<div class="mt-4 p-3 rounded-lg bg-surface-container-low border border-outline-variant/50 flex items-start space-x-2.5">
+<span class="material-symbols-outlined text-primary text-base mt-0.5">verified_user</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+<strong>Panduan Foto Akuakultur:</strong> Foto benih wajib diambil di kolam pencahayaan alami atau aerasi jernih tanpa filter berlebihan untuk menjaga akurasi warna sisik pembeli.
+              </p>
+</div>
+</div>
+<!-- CARD 3: HARGA & INVENTARIS STOK -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-6 shadow-sm">
+<div class="flex items-center space-x-2.5 pb-4 mb-5 border-b border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">payments</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Harga &amp; Inventaris Stok</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Regular Price -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Harga Reguler (Rp) <span class="text-error">*</span></label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-label-md font-label-md text-outline">Rp</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-outline-variant text-price-md font-price-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="regular-price" type="number" value="850"/>
+</div>
+</div>
+<!-- Promo Price -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Harga Promo / Diskon (Rp)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-label-md font-label-md text-outline">Rp</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-outline-variant text-price-md font-price-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="promo-price" placeholder="Kosongkan jika normal" type="number" value="750"/>
+</div>
+</div>
+<!-- Modal Cost (HPP) -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Biaya Modal (HPP)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-label-md font-label-md text-outline">Rp</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-outline-variant text-price-md font-price-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="number" value="450"/>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+<!-- Stok Saat Ini -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Stok Tersedia <span class="text-error">*</span></label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md font-bold text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="number" value="25000"/>
+</div>
+<!-- Satuan Unit -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Satuan Penjualan <span class="text-error">*</span></label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container bg-surface-container-lowest">
+<option selected="" value="ekor">ekor (Benih Ikan / Udang)</option>
+<option value="kg">kg (Kilogram)</option>
+<option value="pack">pack (Benih Sayuran / Bibit)</option>
+<option value="unit">unit (Alat / IoT Device)</option>
+<option value="botol">botol (Nutrisi / Pupuk Cair)</option>
+</select>
+</div>
+<!-- Batas Minimum Alert -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Batas Minimum Peringatan</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="number" value="2000"/>
+</div>
+</div>
+</div>
+<!-- CARD 4: SPESIFIKASI AGRIKULTUR & PENGIRIMAN -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-6 shadow-sm">
+<div class="flex items-center space-x-2.5 pb-4 mb-5 border-b border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">local_shipping</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Spesifikasi Agrikultur &amp; Pengiriman Rantai Dingin</h2>
+</div>
+<!-- Dimensi & Berat -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Berat Kemasan (Kg)</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" step="0.1" type="number" value="0.05"/>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Panjang (cm)</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="number" value="40"/>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Lebar (cm)</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="number" value="30"/>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Tinggi (cm)</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="number" value="30"/>
+</div>
+</div>
+<!-- Tipe Penanganan Logistik -->
+<div class="mt-5">
+<label class="block text-label-md font-label-md text-on-surface mb-2 font-semibold">Tipe Penanganan Logistik Khusus</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<label class="flex items-start p-3 rounded-lg border-2 border-primary bg-primary-fixed/20 cursor-pointer">
+<input checked="" class="mt-1 text-primary-container focus:ring-primary-container" name="logistic_type" type="radio"/>
+<div class="ml-3">
+<p class="text-label-md font-label-md font-bold text-primary">Kargo Oksigen Rantai Dingin (Bibit Hidup)</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Kemasan ganda bertekanan oksigen murni dengan styrofoam berinsulasi es batu.</p>
+</div>
+</label>
+<label class="flex items-start p-3 rounded-lg border border-outline-variant hover:border-primary cursor-pointer bg-surface-container-lowest">
+<input class="mt-1 text-primary-container focus:ring-primary-container" name="logistic_type" type="radio"/>
+<div class="ml-3">
+<p class="text-label-md font-label-md font-bold text-on-surface">Standar Kargo Agrikultur</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Cocok untuk pakan pelet, benih biji kering, terpal kolam, dan pipa pvc.</p>
+</div>
+</label>
+<label class="flex items-start p-3 rounded-lg border border-outline-variant hover:border-primary cursor-pointer bg-surface-container-lowest">
+<input class="mt-1 text-primary-container focus:ring-primary-container" name="logistic_type" type="radio"/>
+<div class="ml-3">
+<p class="text-label-md font-label-md font-bold text-on-surface">Cairan / Nutrisi Berbahaya (Chemicals)</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Pupuk AB Mix konsentrat, probiotik cair, disinfektan kolam.</p>
+</div>
+</label>
+<label class="flex items-start p-3 rounded-lg border border-outline-variant hover:border-primary cursor-pointer bg-surface-container-lowest">
+<input class="mt-1 text-primary-container focus:ring-primary-container" name="logistic_type" type="radio"/>
+<div class="ml-3">
+<p class="text-label-md font-label-md font-bold text-on-surface">Fragile Sensor &amp; Perangkat IoT</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Sensor pH/DO, automatic feeder motorik, panel surya mini, mikrokontroler.</p>
+</div>
+</label>
+</div>
+</div>
+<!-- DOA Warranty Toggle -->
+<div class="mt-5 p-3.5 rounded-lg border border-outline-variant/60 bg-surface-bright flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-secondary font-bold">shield</span>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Garansi Hidup Saat Tiba (Dead on Arrival - D.O.A)</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Aktifkan jaminan penggantian benih jika terjadi mortalitas selama perjalanan logistik.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- ==================== RIGHT COLUMN (4 of 12 cols) ==================== -->
+<div class="lg:col-span-4 space-y-6">
+<!-- CARD 1: STATUS PUBLIKASI & VISIBILITAS -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+<h2 class="text-label-lg font-label-lg font-bold text-on-surface">Status Publikasi</h2>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-primary-fixed text-on-primary-fixed-variant">
+                Siap Diterbitkan
+              </span>
+</div>
+<!-- Radio Options -->
+<div class="space-y-2.5">
+<label class="flex items-center p-2.5 rounded-lg border border-primary bg-primary-fixed/20 cursor-pointer">
+<input checked="" class="text-primary-container focus:ring-primary-container" name="publish_status" type="radio"/>
+<div class="ml-2.5">
+<span class="text-label-md font-label-md font-bold text-primary block">Aktif (Langsung Dijual)</span>
+<span class="text-body-sm font-body-sm text-outline">Langsung tayang di marketplace JagoFarm.</span>
+</div>
+</label>
+<label class="flex items-center p-2.5 rounded-lg border border-outline-variant hover:border-outline cursor-pointer">
+<input class="text-primary-container focus:ring-primary-container" name="publish_status" type="radio"/>
+<div class="ml-2.5">
+<span class="text-label-md font-label-md font-bold text-on-surface block">Draf (Tersimpan Lokal)</span>
+<span class="text-body-sm font-body-sm text-outline">Hanya dapat diakses melalui admin console.</span>
+</div>
+</label>
+<label class="flex items-center p-2.5 rounded-lg border border-outline-variant hover:border-outline cursor-pointer">
+<input class="text-primary-container focus:ring-primary-container" name="publish_status" type="radio"/>
+<div class="ml-2.5">
+<span class="text-label-md font-label-md font-bold text-on-surface block">Dijadwalkan Rilis</span>
+<span class="text-body-sm font-body-sm text-outline">Otomatis rilis sesuai tanggal panen.</span>
+</div>
+</label>
+</div>
+<!-- Rekomendasi Switch -->
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-label-md font-label-md font-semibold text-on-surface">Tampilkan di Rekomendasi</p>
+<p class="text-body-sm font-body-sm text-outline">Prioritas banner etalase beranda</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+<!-- CARD 2: LIVE CARD PREVIEW (ETALASE PEMBELI) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-outline-variant/30">
+<div class="flex items-center space-x-1.5 text-primary">
+<span class="material-symbols-outlined text-base">visibility</span>
+<span class="text-label-lg font-label-lg font-bold">Pratinjau Etalase Pembeli</span>
+</div>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant uppercase tracking-wider">Live View</span>
+</div>
+<p class="text-body-sm font-body-sm text-outline mb-4">Tampilan kartu ini yang akan dilihat oleh petani/pembudidaya di aplikasi mobile &amp; website JagoFarm.</p>
+<!-- CUSTOMER PRODUCT CARD PREVIEW (MATCHING DESIGN SYSTEM) -->
+<div class="w-full max-w-[270px] mx-auto bg-surface-container-lowest rounded-xl border border-outline-variant/70 overflow-hidden shadow-sm hover:shadow-md transition-all">
+<!-- Thumbnail Box 1:1 -->
+<div class="relative aspect-square w-full bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="High resolution e-commerce product photograph of premium healthy baby tilapia fish in clear aerated blue pool water, professional studio light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeUSuiu6faWchNitvCtg39w_okRMYTayAjqtjY2oVT8VZVWUqyOgNjdVGOwLu5X3_pwC4CZmSBkSEvdREUf6txSVAp3klWRk5HZyJOBUeGLDtzIW_8HpfcLE4fk3dvvKRBPp8SiuJTBVUG5IouK5whW6ke-plCkgOaA_k7yMd6ArbitflYC3I_Zf1RzC_TtcJdUkRnrMVdLJDFUHg_OHLvRmPlgkjYfZ3egjOByYfI246VLFZe2IT2wQ"/>
+<!-- Floating Glassmorphic Badges -->
+<div class="absolute top-2 left-2 flex flex-col gap-1">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/80 backdrop-blur-md text-secondary border border-white/40 shadow-xs">
+                    Unggulan
+                  </span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-error border border-white/40 shadow-xs">
+                    Diskon 12%
+                  </span>
+</div>
+<!-- Live Tag / DOA Tag -->
+<div class="absolute bottom-2 left-2">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary text-surface-container-lowest flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-pulse"></span>
+<span>Garansi D.O.A</span>
+</span>
+</div>
+</div>
+<!-- Card Content Body -->
+<div class="p-3.5 space-y-1.5">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span id="preview-category">Anakan Ikan</span>
+<div class="flex items-center space-x-0.5 text-secondary">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-[11px]">4.9</span>
+<span class="text-outline text-[10px]">(82)</span>
+</div>
+</div>
+<h3 class="text-label-lg font-label-lg font-bold text-on-surface line-clamp-2 leading-tight" id="preview-title">
+                  Benih Ikan Nila Hitam Super (Gift/Nirwana F4)
+                </h3>
+<!-- Pricing Section with Cart CTA -->
+<div class="pt-2 flex items-baseline justify-between border-t border-outline-variant/30">
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="text-price-md font-price-md text-primary" id="preview-price">Rp 750</span>
+<span class="text-[11px] text-outline line-through" id="preview-regular-price">Rp 850</span>
+</div>
+<span class="text-[10px] text-outline">per ekor (min. 500)</span>
+</div>
+<!-- Quick Cart Button -->
+<div class="w-8 h-8 rounded-full bg-primary-container text-surface-container-lowest flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 3: CHECKLIST KESIAPAN PRODUK -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-label-lg font-label-lg font-bold text-on-surface">Kelengkapan Data</h2>
+<span class="text-label-md font-label-md font-extrabold text-primary">100% Siap</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full transition-all duration-300" style="width: 100%;"></div>
+</div>
+<!-- Check Items -->
+<div class="space-y-2 text-body-sm font-body-sm">
+<div class="flex items-center space-x-2 text-primary font-medium">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Nama &amp; Kategori Terisi</span>
+</div>
+<div class="flex items-center space-x-2 text-primary font-medium">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Foto Utama &amp; Galeri Siap (3 Foto)</span>
+</div>
+<div class="flex items-center space-x-2 text-primary font-medium">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Harga Jual, HPP &amp; Stok Terkonfigurasi</span>
+</div>
+<div class="flex items-center space-x-2 text-primary font-medium">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Protokol Logistik &amp; Garansi Terpasang</span>
+</div>
+</div>
+<!-- Help Box -->
+<div class="p-3 bg-secondary-fixed/20 border border-secondary/20 rounded-lg">
+<p class="text-label-sm font-label-sm text-secondary font-bold">Butuh Bantuan QC Bibit?</p>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Hubungi Agronomis JagoFarm melalui hotline internal ekstensi 402 untuk sertifikasi benih bersertifikat.</p>
+</div>
+</div>
+<!-- Bottom Actions for Mobile Form Factor -->
+<div class="block lg:hidden pt-2 space-y-2">
+<button class="w-full py-3 rounded-lg bg-primary-container text-surface-container-lowest font-bold shadow-sm" type="button">
+              Terbitkan Produk Sekarang
+            </button>
+<button class="w-full py-2.5 rounded-lg border border-outline-variant font-semibold text-on-surface" type="button">
+              Simpan Draf
+            </button>
+</div>
+</div>
+</form>
+</main>
+<!-- ADMIN FOOTER BAR -->
+<footer class="mt-auto border-t border-outline-variant/50 bg-surface-container-lowest px-6 py-4 text-center text-body-sm font-body-sm text-on-surface-variant">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+<p>© 2026 JagoFarm Admin Console. Agronomic Intelligence System.</p>
+<div class="flex items-center space-x-4 text-label-sm font-label-sm text-outline">
+<a class="hover:text-primary" href="#">Status Server: Prima (99.98%)</a>
+<span>•</span>
+<a class="hover:text-primary" href="#">API Tambak Terhubung</a>
+</div>
+</div>
+</footer>
+</div>
+<!-- INTERACTIVE PREVIEW SCRIPT -->
+<script>
+    const nameInput = document.getElementById('product-name');
+    const slugInput = document.getElementById('product-slug');
+    const categorySelect = document.getElementById('product-category');
+    const regularPriceInput = document.getElementById('regular-price');
+    const promoPriceInput = document.getElementById('promo-price');
+
+    const previewTitle = document.getElementById('preview-title');
+    const previewCategory = document.getElementById('preview-category');
+    const previewPrice = document.getElementById('preview-price');
+    const previewRegularPrice = document.getElementById('preview-regular-price');
+
+    // Live Title & Slug generator
+    nameInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      previewTitle.textContent = val || 'Nama Produk Belum Diisi';
+      
+      // Basic slug generator
+      slugInput.value = val.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    });
+
+    // Live Category change
+    categorySelect.addEventListener('change', (e) => {
+      previewCategory.textContent = e.target.value;
+    });
+
+    // Live Price change
+    function updatePrices() {
+      const regular = regularPriceInput.value ? Number(regularPriceInput.value).toLocaleString('id-ID') : '0';
+      const promo = promoPriceInput.value ? Number(promoPriceInput.value).toLocaleString('id-ID') : null;
+
+      if (promo && promo !== '0') {
+        previewPrice.textContent = 'Rp ' + promo;
+        previewRegularPrice.textContent = 'Rp ' + regular;
+        previewRegularPrice.style.display = 'inline';
+      } else {
+        previewPrice.textContent = 'Rp ' + regular;
+        previewRegularPrice.style.display = 'none';
+      }
+    }
+
+    regularPriceInput.addEventListener('input', updatePrices);
+    promoPriceInput.addEventListener('input', updatePrices);
+  </script>
+</body></html>

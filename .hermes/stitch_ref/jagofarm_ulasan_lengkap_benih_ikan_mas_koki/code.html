@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ulasan Pembeli - Benih Ikan Mas Koki | JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#ffffff",
+            "surface-tint": "#376757",
+            "surface-variant": "#d8e3fb",
+            "tertiary": "#003623",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-bright": "#f9f9ff",
+            "on-surface-variant": "#404945",
+            "on-secondary-fixed": "#281900",
+            "inverse-primary": "#9ed1bd",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f0f3ff",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary": "#7f5700",
+            "on-tertiary-fixed": "#002113",
+            "background": "#f9f9ff",
+            "on-background": "#111c2d",
+            "primary-container": "#1b4d3e",
+            "secondary-container": "#fdba45",
+            "on-error": "#ffffff",
+            "on-secondary-container": "#6f4b00",
+            "error-container": "#ffdad6",
+            "on-surface": "#111c2d",
+            "outline-variant": "#c0c9c3",
+            "surface": "#f9f9ff",
+            "surface-container-highest": "#d8e3fb",
+            "surface-dim": "#cfdaf2",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdeae",
+            "primary-fixed": "#baeed9",
+            "on-tertiary-container": "#32c98f",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-primary-container": "#8abda9",
+            "surface-container": "#e7eeff",
+            "outline": "#707974",
+            "primary": "#003629",
+            "on-secondary-fixed-variant": "#604100",
+            "inverse-surface": "#263143",
+            "tertiary-container": "#004f35",
+            "surface-container-high": "#dee8ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed": "#002117",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#fdba45",
+            "tertiary-fixed-dim": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<header class="docked full-width top-0 sticky z-50 bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full gap-4">
+<!-- Brand & Search Bar (search_bar: on_left per JSON specification) -->
+<div class="flex items-center gap-6 flex-1">
+<a class="flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-primary text-3xl transition-transform duration-200 group-hover:scale-105" data-icon="potted_plant">potted_plant</span>
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight">JagoFarm</span>
+</a>
+<!-- Global Search Bar -->
+<div class="relative max-w-md w-full hidden sm:block">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-xl pointer-events-none" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-bright rounded-full border border-outline-variant text-body-md font-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Cari produk pertanian, akuakultur, atau bibit..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-primary dark:text-inverse-primary font-bold text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Kategori</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Set Tambak</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Konsultasi</a>
+</nav>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-3">
+<button class="relative p-2 rounded-full hover:bg-surface-container transition-colors text-primary dark:text-inverse-primary" title="Keranjang Belanja">
+<span class="material-symbols-outlined text-2xl" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold flex items-center justify-center">3</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors text-primary dark:text-inverse-primary" title="Akun Pengguna">
+<span class="material-symbols-outlined text-2xl" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-7xl mx-auto w-full px-margin py-6">
+<!-- Breadcrumb Navigation -->
+<nav aria-label="Breadcrumb" class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mb-6 flex-wrap">
+<a class="hover:text-primary transition-colors" href="#">Beranda</a>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Produk</a>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Anakan Ikan</a>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Benih Ikan Mas Koki (5 ekor)</a>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-semibold">Ulasan Pembeli</span>
+</nav>
+<!-- Product Summary Quick Banner -->
+<section class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-5 mb-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+<div class="flex items-center gap-4">
+<div class="relative w-20 h-20 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant/40">
+<img class="w-full h-full object-cover" data-alt="A close-up photograph of vibrant ornamental goldfish in an aquatic setting, showcasing brilliant orange and white scales, swimming energetically in crystalline oxygenated fresh water with gentle aquatic plant highlights, soft commercial studio lighting, natural vibrant aquafarming aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-j2hVTaGozMWcJvl5is3uV-VVgjCn9El0aAOX23mvX4NIoHRTrC5fNwEAbnTPS5evBRxF_h9k3WZ8QAlKoMRGr6KnCUfRW5Kx9cidrMjjpikHVByJ_R7wAyTkBwcibFNZ0QGtrB62VVIZWsS4iPabIlfMSX56k0KAg6as-zoGSSHVT-A3d2_FrfSnAag5EBIIRp8W10f-FZfkcmm2v0DM3RUPYOUxIWCCqXtFkppjcD0wy9-LQkA5eg"/>
+<span class="absolute top-1 left-1 bg-primary text-on-primary text-[9px] font-bold px-1.5 py-0.5 rounded">Oranda</span>
+</div>
+<div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Anakan Ikan • SKU: JF-ANK-MASKOKI-001</span>
+<h1 class="text-headline-sm font-headline-sm text-on-surface mt-0.5">Benih Ikan Mas Koki Oranda &amp; Ranchu (5 ekor)</h1>
+<div class="flex items-center gap-3 mt-1.5">
+<span class="text-price-lg font-price-lg text-primary">Rp 75.000</span>
+<span class="text-outline-variant text-sm">|</span>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined fill-icon text-lg text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-md font-label-md font-bold text-on-surface">5.0</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">(24 ulasan)</span>
+</div>
+<span class="text-outline-variant text-sm hidden sm:inline">•</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant hidden sm:inline">Terjual 140+</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto justify-end">
+<a class="px-4 py-2.5 rounded-lg border border-primary-container text-primary font-label-lg text-label-lg hover:bg-surface-container transition-all flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-base" data-icon="arrow_back">arrow_back</span>
+<span>Kembali ke Detail Produk</span>
+</a>
+<button class="px-5 py-2.5 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+<span>Beli Sekarang</span>
+</button>
+</div>
+</section>
+<!-- Main Bento Grid: Ratings Overview & Buyer Highlights -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+<!-- Left: Comprehensive Rating Card (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-6 flex flex-col justify-between shadow-sm">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface mb-1">Kepuasan Pembeli</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Berdasarkan ulasan terverifikasi pelanggan JagoFarm</p>
+<div class="flex items-center gap-6 my-6 pb-6 border-b border-outline-variant/40">
+<div class="text-center">
+<span class="text-display-hero font-display-hero text-primary leading-none">5.0</span>
+<div class="flex items-center justify-center gap-0.5 my-1 text-secondary-container">
+<span class="material-symbols-outlined fill-icon text-xl" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-xl" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-xl" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-xl" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-xl" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-label-md font-label-md text-on-surface-variant">24 Ulasan</span>
+</div>
+<!-- Star Distribution Bars -->
+<div class="flex-1 space-y-1.5">
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="w-7 text-right text-on-surface">5 <span class="material-symbols-outlined text-xs align-baseline" data-icon="star">star</span></span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full w-full"></div>
+</div>
+<span class="w-8 text-on-surface-variant text-right font-medium">24</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm opacity-60">
+<span class="w-7 text-right text-on-surface">4 <span class="material-symbols-outlined text-xs align-baseline" data-icon="star">star</span></span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full w-0"></div>
+</div>
+<span class="w-8 text-on-surface-variant text-right font-medium">0</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm opacity-60">
+<span class="w-7 text-right text-on-surface">3 <span class="material-symbols-outlined text-xs align-baseline" data-icon="star">star</span></span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full w-0"></div>
+</div>
+<span class="w-8 text-on-surface-variant text-right font-medium">0</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm opacity-60">
+<span class="w-7 text-right text-on-surface">2 <span class="material-symbols-outlined text-xs align-baseline" data-icon="star">star</span></span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full w-0"></div>
+</div>
+<span class="w-8 text-on-surface-variant text-right font-medium">0</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm opacity-60">
+<span class="w-7 text-right text-on-surface">1 <span class="material-symbols-outlined text-xs align-baseline" data-icon="star">star</span></span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full w-0"></div>
+</div>
+<span class="w-8 text-on-surface-variant text-right font-medium">0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Aquaculture Quality Index Pillars -->
+<div>
+<h3 class="text-label-lg font-label-lg text-on-surface mb-3">Indeks Kualitas Benih JagoFarm</h3>
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-surface-container-low rounded-lg p-3 text-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="ecg_heart">ecg_heart</span>
+<p class="text-headline-sm font-headline-sm text-primary mt-1">100%</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">Kebugaran Benih</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 text-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="air">air</span>
+<p class="text-headline-sm font-headline-sm text-primary mt-1">100%</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">Packing Oksigen</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 text-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="local_shipping">local_shipping</span>
+<p class="text-headline-sm font-headline-sm text-primary mt-1">98%</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">Kecepatan Kirim</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Buyer Unboxing Gallery Preview (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-6 flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Foto &amp; Video Unboxing Pembeli</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">18 dokumentasi kondisi benih saat diterima</p>
+</div>
+<button class="text-primary hover:underline text-label-md font-label-md font-bold flex items-center gap-1">
+<span>Lihat Semua (18)</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Photo Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<div class="relative group rounded-lg overflow-hidden bg-surface-container aspect-square border border-outline-variant/40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" data-alt="A clean top-down macro shot of five small healthy goldfishes actively swimming in an acclimation transparent tank container, clear bubbles of oxygen visible, warm interior indoor lighting with natural green reflections, pristine Indonesian modern aquaculture documentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO-SsdRCw2f5esWjTNCsxol2FebMXV_Vs-PI-UZNPgscdQT7fQTSl42Yj41n_w8-OsQx0Edh8n-ChyD9bI6sFiq6lSJifLUANhHLd8-6xYGwk91NY0Iwawh3M9YyVVIRQ_Mo90UNQqQ2a3P69hP-DRGbtLFIpx9qocG8JFj90b91QxhHSXKqxnGp-lrKIvgFVhz8C-pSfiBK93ox5yfg_xtQ1CiMhkvIsN2pDZQb9dNpiQxNcPGoSiZg"/>
+<span class="absolute bottom-2 left-2 bg-on-background/70 text-on-primary text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">Budi P.</span>
+</div>
+<div class="relative group rounded-lg overflow-hidden bg-surface-container aspect-square border border-outline-variant/40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" data-alt="A clean unboxing sequence of high density white styrofoam container box labeled with aquaculture live fish shipping guarantee, specialized pressurized double plastic bag with oxygen, indoor natural daylight, sharp and crisp product photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq9P4jwBt8IB8uYLLRVMMkaq1Np_iRHJnoqrJ_-tSPXKNAlfjJFTbC1wLzEqQ_zCu9sS2cxmqbfyElyltvuqlbtbDEdJVDiGuXLk8EB8fuS_Pm4HUomOnXd7kUeWu6gG798SJXHXP1wT3P2SuTTd08rJnsjHA3adh0a1hJ_6OlqI3wXBEG7xgx1HSHIZAUj5NkI9CpwHnB0vgdTmcSQ9PnhyavNTMVedSvHB4ZKcLX1SE0g2G5oi4azQ"/>
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-primary text-2xl" data-icon="play_circle">play_circle</span>
+</div>
+<span class="absolute bottom-2 left-2 bg-on-background/70 text-on-primary text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="videocam">videocam</span> Ahmad H.
+              </span>
+</div>
+<div class="relative group rounded-lg overflow-hidden bg-surface-container aspect-square border border-outline-variant/40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" data-alt="A clear side view photo of juvenile Oranda goldfish with developed head crown swimming near aquatic plants in an aquarium tank, crystal clean water, soft natural aquarium lighting emphasizing bright golden and orange scales." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcSC2TsX9g4Bl4WA2vrQQhLaoRlpNsUJ4L-XFSM09IOtd_PEPJQ4jK369cB_3NSW0TKMPg5ZA60bUoViY0G7fo9x_UsIk87-uuxzYwsDp0fwFH2u3rK8slgS2KbqR518FDgcWJp3GMzWl9FuYWCoSeBShcSG98X5R6G6cz8RXUvxsR6M0xWIoF94ZU_Y_PZfxvjfQOWJJ6xA2z4gcoWgLQOK3ycIC1gl_YAzBVnAAypwMj3nSlX4_FYw"/>
+<span class="absolute bottom-2 left-2 bg-on-background/70 text-on-primary text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">Hendra K.</span>
+</div>
+<div class="relative group rounded-lg overflow-hidden bg-surface-container aspect-square border border-outline-variant/40 flex items-center justify-center bg-gradient-to-br from-primary-container to-primary text-on-primary">
+<div class="text-center p-2">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="photo_library">photo_library</span>
+<p class="text-label-md font-label-md font-bold">+14 Foto</p>
+<p class="text-label-sm font-label-sm text-on-primary-container">dari pembeli</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Trust Highlight Ribbon -->
+<div class="mt-6 pt-4 border-t border-outline-variant/40 flex items-center gap-4 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="verified_user">verified_user</span>
+<span>Semua foto dan video dikurasi dari pembeli yang telah menyelesaikan transaksi resmi di JagoFarm.</span>
+</div>
+</div>
+</div>
+<!-- Filter & Toolbar Strip -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-4 mb-6 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+<!-- Filter Chips -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary font-label-lg text-label-lg font-bold flex-shrink-0 shadow-sm">
+          Semua Ulasan (24)
+        </button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-primary font-label-lg text-label-lg font-medium border border-outline-variant/60 flex-shrink-0 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="image">image</span>
+<span>Dengan Foto &amp; Video (18)</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-primary font-label-lg text-label-lg font-medium border border-outline-variant/60 flex-shrink-0 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined fill-icon text-sm text-secondary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>Bintang 5 (24)</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-primary font-label-lg text-label-lg font-medium border border-outline-variant/60 flex-shrink-0 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-primary" data-icon="verified">verified</span>
+<span>Pembeli Terverifikasi</span>
+</button>
+</div>
+<!-- Sorting Selector -->
+<div class="flex items-center gap-2 justify-end flex-shrink-0">
+<label class="text-label-md font-label-md text-on-surface-variant whitespace-nowrap" for="sort-review">Urutkan:</label>
+<div class="relative">
+<select class="text-label-md font-label-md bg-surface-bright border border-outline-variant rounded-lg pl-3 pr-8 py-1.5 focus:outline-none focus:border-primary-container text-on-surface font-semibold appearance-none" id="sort-review">
+<option>Paling Membantu</option>
+<option selected="">Terbaru</option>
+<option>Rating Tertinggi</option>
+<option>Dengan Media Unboxing</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Review Section Layout: Review List + Write Review Sticky Card -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Review Cards Column (8 cols) -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Review Card 1: Budi Petani -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-6 shadow-sm hover:border-outline-variant transition-all">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-headline-sm">
+                BP
+              </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Budi Petani</h4>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-tertiary-container/10 text-tertiary font-bold border border-tertiary/20">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span> Pembelian Terverifikasi
+                  </span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+<span>Sidoarjo, Jawa Timur</span>
+<span>•</span>
+<time datetime="2026-09-25">25 September 2026</time>
+</div>
+</div>
+</div>
+<!-- Stars -->
+<div class="flex items-center text-secondary-container">
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Specific tags -->
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2.5 py-1 bg-surface-container rounded-md text-label-sm font-label-sm text-primary font-semibold">Varian: Mix Oranda &amp; Ranchu (5 ekor)</span>
+<span class="px-2.5 py-1 bg-surface-container rounded-md text-label-sm font-label-sm text-on-surface-variant">Kondisi: 100% Sehat Aktif</span>
+</div>
+<p class="text-body-lg font-body-lg text-on-surface mb-4">
+            Paket lengkap, pengiriman cepat dengan kargo oksigen. Semua 5 ekor ikan sampai dalam kondisi sangat sehat dan lincah berenang. Air di dalam kantong masih dingin dan tidak keruh sama sekali. Recommended banget buat penghobi koki yang mau besarin anakan berkualitas!
+          </p>
+<!-- Buyer Images -->
+<div class="flex gap-3 mb-5 overflow-x-auto pb-2">
+<div class="w-24 h-24 rounded-lg overflow-hidden border border-outline-variant flex-shrink-0 cursor-pointer hover:opacity-90">
+<img class="w-full h-full object-cover" data-alt="A macro detail photograph of healthy baby goldfish swimming actively inside an acrylic tank aquarium with oxygen bubbler, crystalline clear water, healthy dorsal fins and vibrant patterns, natural aqua-farming documentation style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgyx_OlxdAGWnOJhAcmGiJ0LW0FIDnL24gH_irQabsjs04auXo86P1Q5AXS71kUhFjlkc_xXdQgfQFKZ1eETfSDEsszjc7loakimho6C8dQeLGKuYyt2UpfGxeBsSSIdHt1cO5ND3rVPs9HcHcDuz1e91-zFF3ofaQgD9FsVWIQrzuot9ZgMqIHhUnSRTM_V7p2tYANOi5Nl4wUvBeFgBoKBwUMIevWm_IWEPoUSZSUHgzcCSZhYMHQQ"/>
+</div>
+<div class="w-24 h-24 rounded-lg overflow-hidden border border-outline-variant flex-shrink-0 cursor-pointer hover:opacity-90">
+<img class="w-full h-full object-cover" data-alt="An authentic customer unboxing shot of styrofoam box showing double sealed oxygenated fish bag with healthy baby goldfish inside, clean cardboard edge, daylight indoor ambient." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr03a5EVu8TEm5rdrq0WMX1lICdLql_tDbzcMsEsnzV-Xr76i7eOiwdw6-XUsPtS4SlyQMRofVRQ5frbAyvxTpc3cCZfgpDNSutWOKYpKozlF5khRXriF2CuI2tkONy7A5dfQre26Tol2yjVxWa6gl3382Bcjyw6hbFZM7R2Hf1E29VzEcHlKlHygie0FG-CKBhYmQj4ba2_UStpf3WYdz21n7VUGG_7Nh4WyQU6UwZnUgg_8DOL2xmQ"/>
+</div>
+</div>
+<!-- Official Seller Response -->
+<div class="bg-surface-container-low rounded-xl p-4 border-l-4 border-primary-container text-body-sm font-body-sm space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md font-label-md text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="support_agent">support_agent</span> Respon Resmi JagoFarm Admin
+              </span>
+<span class="text-outline text-xs">26 September 2026</span>
+</div>
+<p class="text-on-surface-variant">
+              Halo Kak Budi, terima kasih banyak atas ulasan dan kepercayaannya berbelanja di JagoFarm! Senang mendengar seluruh benih sampai dengan bugar. Jangan lupa beri pakan pelet mikro bertahap dan pantau parameter air ya Kak. Salam sukses budidaya!
+            </p>
+</div>
+<!-- Review Footer -->
+<div class="flex items-center justify-between pt-4 mt-4 border-t border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="thumb_up">thumb_up</span>
+<span class="text-label-md font-label-md">Membantu (12)</span>
+</button>
+<button class="hover:text-primary transition-colors text-label-md font-label-md">Laporkan</button>
+</div>
+<span class="text-outline text-xs">Ulasan Terverifikasi Sistem Transaksi</span>
+</div>
+</article>
+<!-- Review Card 2: Ahmad H. -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-6 shadow-sm hover:border-outline-variant transition-all">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-headline-sm">
+                AH
+              </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Ahmad H.</h4>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-tertiary-container/10 text-tertiary font-bold border border-tertiary/20">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span> Pembelian Terverifikasi
+                  </span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+<span>Malang, Jawa Timur</span>
+<span>•</span>
+<time datetime="2026-09-18">18 September 2026</time>
+</div>
+</div>
+</div>
+<!-- Stars -->
+<div class="flex items-center text-secondary-container">
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-lg font-body-lg text-on-surface mb-4">
+            Packing rapi sekali pakai box styrofoam ganda dan airnya jernih dingin. Warnanya cerah, jambul kepalanya mulai terlihat. Pengiriman ke Malang cuma 1 hari sampai via kurir kilat. Makasih JagoFarm atas komitmen kualitasnya.
+          </p>
+<div class="flex items-center gap-3 mb-5">
+<div class="w-24 h-24 rounded-lg overflow-hidden border border-outline-variant flex-shrink-0 cursor-pointer hover:opacity-90">
+<img class="w-full h-full object-cover" data-alt="A photo of baby Oranda goldfish swimming gracefully in an aquarium, distinctive head growth wen development visible on juvenile fish, sharp macro clarity, clear clean water environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA850mhJF7z2vWtd5-rijSSXVuGwKaAjj4hA0WknLxnEoAQ1A48gwDBy4VbGQVRNjNBmyA3u4fyOsQ68N6VMa1eHrjQNw8x-sFEiqucxGSOxtPXLBaIpnLRg3ElatrbsxxPkQRuZWtJqWFhd6xMlPf8JyBkxTokB50dJyQW9vufsQfK1ir-tBLpomz8kRcibLDORypvmz3u18aaX4UDgid8kB0o-ObNzBfx1_Tnj2KjdZEhy9ogSpLtfQ"/>
+</div>
+</div>
+<!-- Review Footer -->
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="thumb_up">thumb_up</span>
+<span class="text-label-md font-label-md">Membantu (8)</span>
+</button>
+<button class="hover:text-primary transition-colors text-label-md font-label-md">Laporkan</button>
+</div>
+<span class="text-outline text-xs">Ulasan Terverifikasi Sistem Transaksi</span>
+</div>
+</article>
+<!-- Review Card 3: Hendra K. -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-6 shadow-sm hover:border-outline-variant transition-all">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-headline-sm">
+                HK
+              </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Hendra K.</h4>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-tertiary-container/10 text-tertiary font-bold border border-tertiary/20">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span> Pembelian Terverifikasi
+                  </span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+<span>Surabaya, Jawa Timur</span>
+<span>•</span>
+<time datetime="2026-09-12">12 September 2026</time>
+</div>
+</div>
+</div>
+<!-- Stars -->
+<div class="flex items-center text-secondary-container">
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-lg font-body-lg text-on-surface mb-4">
+            Repeat order ke-3 untuk restocking kolam pembesaran. Garansi hidupnya beneran amanah dan oksigen masih penuh saat dibuka. Benih aktif respon pakan cepat. Jangan ragu beli di sini.
+          </p>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="thumb_up">thumb_up</span>
+<span class="text-label-md font-label-md">Membantu (5)</span>
+</button>
+<button class="hover:text-primary transition-colors text-label-md font-label-md">Laporkan</button>
+</div>
+<span class="text-outline text-xs">Ulasan Terverifikasi Sistem Transaksi</span>
+</div>
+</article>
+<!-- Review Card 4: Rina M. -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-6 shadow-sm hover:border-outline-variant transition-all">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center font-bold text-headline-sm">
+                RM
+              </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Rina M.</h4>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-tertiary-container/10 text-tertiary font-bold border border-tertiary/20">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span> Pembelian Terverifikasi
+                  </span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+<span>Semarang, Jawa Tengah</span>
+<span>•</span>
+<time datetime="2026-09-05">5 September 2026</time>
+</div>
+</div>
+</div>
+<!-- Stars -->
+<div class="flex items-center text-secondary-container">
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-lg font-body-lg text-on-surface mb-4">
+            Ikan lincah gak ada yang lemas atau jamuran. Sangat memuaskan belanja benih hidup di JagoFarm karena ada panduan aklimatisasi airnya di kertas petunjuk. Mantap!
+          </p>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="thumb_up">thumb_up</span>
+<span class="text-label-md font-label-md">Membantu (3)</span>
+</button>
+<button class="hover:text-primary transition-colors text-label-md font-label-md">Laporkan</button>
+</div>
+<span class="text-outline text-xs">Ulasan Terverifikasi Sistem Transaksi</span>
+</div>
+</article>
+<!-- Pagination Bar -->
+<div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-4">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Menampilkan 1 - 4 dari 24 ulasan</span>
+<div class="flex items-center gap-1.5">
+<button class="p-2 rounded-lg border border-outline-variant text-outline hover:text-on-surface disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-base" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-9 h-9 rounded-lg bg-primary-container text-on-primary font-bold text-label-md">1</button>
+<button class="w-9 h-9 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container font-medium text-label-md">2</button>
+<button class="w-9 h-9 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container font-medium text-label-md">3</button>
+<button class="p-2 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container">
+<span class="material-symbols-outlined text-base" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Interactive Write Review Form (4 cols, Sticky) -->
+<aside class="lg:col-span-4 sticky top-24 space-y-6">
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-6 shadow-sm">
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Tulis Ulasan Anda</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1 mb-5">
+            Bantu pembudidaya dan penghobi lain dengan membagikan pengalaman kualitas benih dan pengiriman Anda.
+          </p>
+<form class="space-y-4" onsubmit="event.preventDefault(); alert('Terima kasih! Ulasan Anda sedang diverifikasi.');">
+<!-- Star Rating Input -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Rating Kualitas Benih</label>
+<div class="flex items-center gap-1.5 text-secondary-container" id="star-picker">
+<button class="material-symbols-outlined fill-icon text-2xl hover:scale-110 transition-transform focus:outline-none" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;" type="button">star</button>
+<button class="material-symbols-outlined fill-icon text-2xl hover:scale-110 transition-transform focus:outline-none" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;" type="button">star</button>
+<button class="material-symbols-outlined fill-icon text-2xl hover:scale-110 transition-transform focus:outline-none" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;" type="button">star</button>
+<button class="material-symbols-outlined fill-icon text-2xl hover:scale-110 transition-transform focus:outline-none" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;" type="button">star</button>
+<button class="material-symbols-outlined fill-icon text-2xl hover:scale-110 transition-transform focus:outline-none" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;" type="button">star</button>
+<span class="text-label-sm font-label-sm text-on-surface-variant ml-2">Sangat Puas (5.0)</span>
+</div>
+</div>
+<!-- Review Text Input -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="text-label-md font-label-md text-on-surface" for="review-content">Ulasan Pengalaman</label>
+<span class="text-label-sm font-label-sm text-outline">Minimal 10 karakter</span>
+</div>
+<textarea class="w-full rounded-lg border border-outline-variant p-3 text-body-md font-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="review-content" placeholder="Ceritakan kondisi benih saat tiba (keaktifan renang, kejernihan air, kondisi oksigen dan packing)..." required="" rows="4"></textarea>
+</div>
+<!-- Upload Photo / Media Area -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">Foto atau Video Unboxing</label>
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-4 text-center hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-primary transition-colors" data-icon="add_photo_alternate">add_photo_alternate</span>
+<p class="text-label-md font-label-md text-on-surface mt-1">Unggah foto atau seret ke sini</p>
+<p class="text-label-sm font-label-sm text-outline">JPG, PNG, atau MP4 (Maks 15MB)</p>
+</div>
+</div>
+<!-- URL Alternative Option -->
+<div>
+<label class="block text-label-sm font-label-sm text-on-surface-variant mb-1" for="media-url">Atau masukkan tautan video/foto (opsional)</label>
+<input class="w-full rounded-lg border border-outline-variant px-3 py-2 text-body-sm font-body-sm placeholder:text-outline focus:outline-none focus:border-primary-container" id="media-url" placeholder="https://instagram.com/p/... atau https://youtube.com/..." type="url"/>
+</div>
+<!-- Submission Button -->
+<button class="w-full py-3 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg font-bold hover:brightness-110 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-lg" data-icon="send">send</span>
+<span>Kirim Ulasan</span>
+</button>
+<p class="text-label-sm font-label-sm text-outline text-center">
+              Hanya pembeli yang sudah melakukan transaksi terverifikasi yang ulasannya akan ditandai dengan lencana 'Verified Purchase'.
+            </p>
+</form>
+</div>
+<!-- Trust Box Support -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="verified">verified</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Jaminan Hidup 100%</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">
+                Jika ada benih yang lemas atau mati dalam perjalanan, sertakan video unboxing utuh tanpa cut saat paket dibuka untuk klaim penggantian instan.
+              </p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full bg-primary dark:bg-surface-container-lowest border-t border-primary-container dark:border-outline-variant text-on-primary-container dark:text-on-surface-variant mt-16">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+<!-- Footer Top Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+<!-- Brand Info -->
+<div class="lg:col-span-2">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-3xl" data-icon="potted_plant">potted_plant</span>
+<span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">JagoFarm</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-primary-container max-w-sm mb-6">
+            Solusi pertanian dan akuakultur modern Indonesia. Menyediakan bibit terkurasi, instalasi kolam tambak pintar, dan teknologi IoT smart farming berkualitas tinggi dengan jaminan biosafety teruji.
+          </p>
+<div class="flex items-center gap-3">
+<a class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-secondary-fixed-dim hover:text-on-secondary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="share">share</span>
+</a>
+<a class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-secondary-fixed-dim hover:text-on-secondary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="public">public</span>
+</a>
+</div>
+</div>
+<!-- Links Column: Produk -->
+<div>
+<h4 class="text-headline-sm font-headline-sm font-semibold text-secondary-fixed-dim dark:text-secondary mb-4">Produk</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Tambak</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Hidroponik</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Aquaponik</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Benih</a></li>
+<li><a class="text-secondary-fixed-dim font-semibold transition-colors duration-150" href="#">Anakan Ikan</a></li>
+</ul>
+</div>
+<!-- Links Column: Informasi (from JSON links) -->
+<div>
+<h4 class="text-headline-sm font-headline-sm font-semibold text-secondary-fixed-dim dark:text-secondary mb-4">Informasi</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Tentang Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Cara Pemesanan</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">FAQ</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Hubungi Kami</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengembalian</a></li>
+</ul>
+</div>
+<!-- Links Column: Kontak & Kebijakan -->
+<div>
+<h4 class="text-headline-sm font-headline-sm font-semibold text-secondary-fixed-dim dark:text-secondary mb-4">Hubungi Kami</h4>
+<div class="space-y-3 text-body-sm font-body-sm text-on-primary-container">
+<p class="flex items-start gap-2">
+<span class="material-symbols-outlined text-base mt-0.5 text-secondary-fixed-dim" data-icon="location_on">location_on</span>
+<span>Jl. Pertanian No. 123, Surabaya, Jawa Timur</span>
+</p>
+<p class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-secondary-fixed-dim" data-icon="call">call</span>
+<span>+62 812-3456-7890</span>
+</p>
+<p class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-secondary-fixed-dim" data-icon="mail">mail</span>
+<span>hello@jagofarm.id</span>
+</p>
+</div>
+<div class="mt-4 pt-4 border-t border-primary-container/60 space-y-1">
+<a class="block text-label-md font-label-md text-on-primary-container hover:text-on-primary" href="#">Kebijakan Privasi</a>
+<a class="block text-label-md font-label-md text-on-primary-container hover:text-on-primary" href="#">Syarat dan Ketentuan</a>
+</div>
+</div>
+</div>
+<!-- Footer Bottom Copyright (from JSON copyright_text) -->
+<div class="pt-8 border-t border-primary-container flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-on-primary-container/80 gap-4">
+<p>© 2026 JagoFarm. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base text-secondary-fixed-dim" data-icon="shield">shield</span> Transaksi Terenkripsi</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base text-secondary-fixed-dim" data-icon="local_shipping">local_shipping</span> Garansi Oksigen 100%</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

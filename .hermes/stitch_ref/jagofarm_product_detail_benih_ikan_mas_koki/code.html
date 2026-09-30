@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Benih Ikan Mas Koki (5 ekor) — JagoFarm Modern Agri-Aquaculture</title>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            background: "#f9f9ff",
+            surface: "#f9f9ff",
+            "surface-dim": "#cfdaf2",
+            "surface-bright": "#f9f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f0f3ff",
+            "surface-container": "#e7eeff",
+            "surface-container-high": "#dee8ff",
+            "surface-container-highest": "#d8e3fb",
+            "surface-variant": "#d8e3fb",
+            "on-surface": "#111c2d",
+            "on-surface-variant": "#404945",
+            outline: "#707974",
+            "outline-variant": "#c0c9c3",
+            primary: "#003629",
+            "primary-container": "#1b4d3e",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#baeed9",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-primary-fixed": "#002117",
+            secondary: "#7f5700",
+            "secondary-container": "#fdba45",
+            "secondary-fixed": "#ffdeae",
+            "secondary-fixed-dim": "#fdba45",
+            tertiary: "#003623",
+            "tertiary-container": "#004f35",
+            "tertiary-fixed": "#6ffbbe",
+            "tertiary-fixed-dim": "#4edea3",
+            error: "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: {
+            '2xl': '1rem',
+            '3xl': '1.5rem'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .material-symbols-filled {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-sans selection:bg-secondary-fixed-dim selection:text-primary min-h-screen flex flex-col">
+
+  <!-- TOP PROMO ANNOUNCEMENT STRIP -->
+  <div class="bg-primary text-on-primary border-b border-primary-container px-4 sm:px-8 py-2 text-xs font-semibold">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="hidden md:flex items-center gap-2">
+        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-secondary-fixed-dim text-primary text-[10px] font-bold">LIVE</span>
+        <span class="text-primary-fixed">Pengiriman Benih Hidup Bergaransi Se-Indonesia via Cargo Oksigen</span>
+      </div>
+      <div class="flex items-center justify-center gap-1.5 mx-auto md:mx-0">
+        <span class="material-symbols-outlined text-[16px] text-secondary-fixed-dim">verified</span>
+        <span>Jaminan Ikan Sehat & Bebas Kutu / Parasit (Karantina 7 Hari)</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-4 text-primary-fixed-dim">
+        <a class="hover:text-on-primary transition-colors" href="#">Pusat Bantuan</a>
+        <span class="opacity-40">•</span>
+        <a class="hover:text-on-primary transition-colors flex items-center gap-1" href="#">
+          <span class="material-symbols-outlined text-[14px]">support_agent</span>
+          Konsultasi CS 24/7
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="bg-surface-container-lowest border-b border-outline-variant/60 shadow-sm sticky top-0 z-50">
+    <div class="flex items-center justify-between px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full gap-4">
+      <!-- Brand Logo -->
+      <a class="flex items-center gap-2.5 shrink-0 group" href="#">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm group-hover:scale-105 transition-transform duration-200">
+          <span class="material-symbols-outlined text-[24px] text-secondary-fixed-dim material-symbols-filled">water_drop</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-extrabold text-primary tracking-tight leading-none">JagoFarm</span>
+          <span class="text-[10px] uppercase font-bold tracking-wider text-outline">Agri & Aqua Tech</span>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-xl hidden md:block">
+        <form class="relative flex items-center" onsubmit="event.preventDefault();">
+          <span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px] pointer-events-none">search</span>
+          <input class="w-full bg-surface-container-low hover:bg-surface-container border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-full pl-11 pr-24 py-2 text-sm text-on-surface placeholder:text-outline transition-colors outline-none" placeholder="Cari benih ikan, pakan, set tambak, kit akuaponik..." type="text" value="Benih Ikan Mas Koki"/>
+          <div class="absolute right-2 flex items-center gap-1">
+            <span class="text-[11px] bg-surface-container-lowest border border-outline-variant rounded px-1.5 py-0.5 text-outline font-medium">⌘K</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-6">
+        <a class="text-primary font-bold text-sm hover:text-primary transition-colors flex items-center gap-1" href="#">
+          Kategori
+          <span class="material-symbols-outlined text-[16px]">expand_more</span>
+        </a>
+        <a class="text-on-surface-variant font-medium text-sm hover:text-primary transition-colors" href="#">Set Tambak</a>
+        <a class="text-on-surface-variant font-medium text-sm hover:text-primary transition-colors flex items-center gap-1" href="#">
+          IoT & Smart Farming
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim"></span>
+        </a>
+        <a class="text-on-surface-variant font-medium text-sm hover:text-primary transition-colors" href="#">Konsultasi</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button aria-label="Search" class="md:hidden p-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors">
+          <span class="material-symbols-outlined text-[24px]">search</span>
+        </button>
+        <button aria-label="Favorit" class="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors relative">
+          <span class="material-symbols-outlined text-[22px]">favorite</span>
+        </button>
+        <button aria-label="Keranjang" class="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors relative">
+          <span class="material-symbols-outlined text-[24px]">shopping_cart</span>
+          <span class="absolute -top-0.5 -right-0.5 bg-error text-on-error text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+        </button>
+        <div class="h-6 w-px bg-outline-variant mx-1 hidden sm:block"></div>
+        <a class="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" href="#">
+          <span class="material-symbols-outlined text-[28px] text-primary">account_circle</span>
+          <span class="hidden sm:inline-block text-sm font-semibold text-primary">Akun Saya</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMBS -->
+  <div class="bg-surface-container-low border-b border-outline-variant/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3">
+      <nav aria-label="Breadcrumb" class="flex items-center space-x-2 text-xs sm:text-sm text-outline">
+        <a href="#" class="hover:text-primary transition-colors flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">home</span>
+          Beranda
+        </a>
+        <span class="text-outline-variant">/</span>
+        <a href="#" class="hover:text-primary transition-colors">Produk</a>
+        <span class="text-outline-variant">/</span>
+        <a href="#" class="hover:text-primary transition-colors">Anakan Ikan</a>
+        <span class="text-outline-variant">/</span>
+        <span class="text-primary font-semibold truncate max-w-[200px] sm:max-w-none">Benih Ikan Mas Koki (5 ekor)</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- MAIN PRODUCT DETAIL CONTAINER -->
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-8 py-8 w-full">
+    <!-- Top Showcase Grid: Left Gallery, Right Specifications & Purchase Action -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-14">
+
+      <!-- LEFT COLUMN: PRODUCT GALLERY (5 cols) -->
+      <div class="lg:col-span-5 space-y-4">
+        <!-- Main Large Image Container -->
+        <div class="relative bg-surface-container-lowest border border-outline-variant/70 rounded-3xl p-3 shadow-sm overflow-hidden group">
+          <div class="relative aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center">
+            <!-- Simulated High Quality Goldfish Illustration/Visual using SVG & Aesthetic Backdrop -->
+            <svg class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e0f2fe"/>
+                  <stop offset="40%" stop-color="#bae6fd"/>
+                  <stop offset="100%" stop-color="#99f6e4"/>
+                </linearGradient>
+                <linearGradient id="fish-orange" x1="0%" y1="0%" x2="100%" y2="80%">
+                  <stop offset="0%" stop-color="#ff7849"/>
+                  <stop offset="50%" stop-color="#ea580c"/>
+                  <stop offset="100%" stop-color="#c2410c"/>
+                </linearGradient>
+                <linearGradient id="fish-white" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="60%" stop-color="#fed7aa"/>
+                  <stop offset="100%" stop-color="#fb923c"/>
+                </linearGradient>
+                <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="8" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+              </defs>
+
+              <!-- Water ambience and light rays -->
+              <rect width="500" height="500" fill="url(#bg-grad)"/>
+              <circle cx="420" cy="90" r="140" fill="#ffffff" opacity="0.3" filter="url(#soft-glow)"/>
+              <circle cx="80" cy="400" r="90" fill="#2dd4bf" opacity="0.25"/>
+
+              <!-- Aquatic oxygen bubbles -->
+              <circle cx="160" cy="380" r="7" fill="#ffffff" opacity="0.6"/>
+              <circle cx="170" cy="340" r="11" fill="#ffffff" opacity="0.5"/>
+              <circle cx="155" cy="300" r="5" fill="#ffffff" opacity="0.7"/>
+              <circle cx="360" cy="240" r="8" fill="#ffffff" opacity="0.6"/>
+              <circle cx="380" cy="180" r="12" fill="#ffffff" opacity="0.5"/>
+              <circle cx="390" cy="120" r="6" fill="#ffffff" opacity="0.7"/>
+
+              <!-- Fancy Goldfish (Calico/Oranda Style) -->
+              <!-- Flowing Tail Fins -->
+              <path d="M140 280 C90 320, 60 410, 110 430 C150 440, 190 370, 200 320 Z" fill="url(#fish-orange)" opacity="0.85"/>
+              <path d="M130 260 C70 290, 40 360, 80 400 C120 420, 160 350, 180 300 Z" fill="#fdba74" opacity="0.75"/>
+              <path d="M120 220 C60 210, 40 160, 70 140 C110 120, 150 180, 180 230 Z" fill="url(#fish-orange)" opacity="0.8"/>
+              
+              <!-- Dorsal Fin -->
+              <path d="M220 180 C240 120, 310 130, 340 185 Z" fill="#f97316" opacity="0.9"/>
+
+              <!-- Chubby Body -->
+              <ellipse cx="260" cy="260" rx="95" ry="75" fill="url(#fish-orange)"/>
+              <!-- White/Calico belly accents -->
+              <path d="M200 280 C220 330, 310 330, 330 280 C300 310, 240 310, 200 280 Z" fill="url(#fish-white)"/>
+
+              <!-- Oranda Wen / Head Crown Texture -->
+              <circle cx="330" cy="235" r="22" fill="#ea580c"/>
+              <circle cx="345" cy="225" r="18" fill="#c2410c"/>
+              <circle cx="320" cy="220" r="16" fill="#f97316"/>
+              <circle cx="340" cy="250" r="15" fill="#c2410c"/>
+
+              <!-- Eye -->
+              <circle cx="325" cy="250" r="8" fill="#ffffff"/>
+              <circle cx="327" cy="250" r="5" fill="#0f172a"/>
+              <circle cx="329" cy="248" r="2" fill="#ffffff"/>
+
+              <!-- Pectoral Fin -->
+              <path d="M250 280 C240 330, 210 350, 200 340 C190 330, 220 300, 240 275 Z" fill="#fed7aa" opacity="0.9"/>
+              <path d="M270 290 C270 335, 250 350, 240 345 C235 335, 250 310, 265 285 Z" fill="#ffedd5" opacity="0.8"/>
+
+              <!-- Secondary smaller baby goldfish swimming in background -->
+              <g opacity="0.75" transform="translate(60, 30) scale(0.45)">
+                <path d="M140 280 C90 320, 60 410, 110 430 C150 440, 190 370, 200 320 Z" fill="#ea580c"/>
+                <path d="M220 180 C240 120, 310 130, 340 185 Z" fill="#f97316"/>
+                <ellipse cx="260" cy="260" rx="90" ry="70" fill="#f97316"/>
+                <circle cx="330" cy="235" r="20" fill="#c2410c"/>
+                <circle cx="325" cy="250" r="7" fill="#ffffff"/>
+                <circle cx="327" cy="250" r="4" fill="#0f172a"/>
+              </g>
+            </svg>
+
+            <!-- Floating Badges on Image -->
+            <div class="absolute top-4 left-4 flex flex-col gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-secondary-fixed-dim text-xs font-bold shadow-md">
+                <span class="material-symbols-outlined text-[15px] material-symbols-filled">star</span>
+                Grade A Unggulan
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary text-xs font-bold border border-outline-variant/60 shadow-sm">
+                <span class="material-symbols-outlined text-[15px] text-emerald-600 material-symbols-filled">verified</span>
+                Karantina 7 Hari
+              </span>
+            </div>
+
+            <!-- Zoom trigger button -->
+            <button class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary hover:bg-primary hover:text-on-primary flex items-center justify-center transition-colors shadow-md" aria-label="Perbesar Foto">
+              <span class="material-symbols-outlined text-[18px]">zoom_in</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Thumbnail Selector Row -->
+        <div class="grid grid-cols-4 gap-3">
+          <!-- Thumb 1: Active -->
+          <button class="relative rounded-2xl overflow-hidden aspect-square border-2 border-primary bg-sky-100 p-1 ring-2 ring-primary/20 shadow-sm transition-transform active:scale-95">
+            <div class="w-full h-full rounded-xl bg-gradient-to-br from-sky-100 to-teal-100 flex items-center justify-center">
+              <span class="material-symbols-outlined text-[28px] text-primary material-symbols-filled">set_meal</span>
+            </div>
+            <span class="absolute bottom-1 inset-x-1 text-[9px] bg-primary text-on-primary py-0.5 rounded text-center font-bold">Utama</span>
+          </button>
+          <!-- Thumb 2: Kemasan Oksigen -->
+          <button class="relative rounded-2xl overflow-hidden aspect-square border border-outline-variant hover:border-primary bg-surface-container-low p-1 transition-all active:scale-95 group">
+            <div class="w-full h-full rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center text-outline group-hover:text-primary">
+              <span class="material-symbols-outlined text-[24px]">inventory_2</span>
+              <span class="text-[9px] font-semibold mt-0.5">Packing O₂</span>
+            </div>
+          </button>
+          <!-- Thumb 3: Ukuran Perbandingan -->
+          <button class="relative rounded-2xl overflow-hidden aspect-square border border-outline-variant hover:border-primary bg-surface-container-low p-1 transition-all active:scale-95 group">
+            <div class="w-full h-full rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center text-outline group-hover:text-primary">
+              <span class="material-symbols-outlined text-[24px]">straighten</span>
+              <span class="text-[9px] font-semibold mt-0.5">Ukuran 3-5cm</span>
+            </div>
+          </button>
+          <!-- Thumb 4: Sertifikat Bebas Hama -->
+          <button class="relative rounded-2xl overflow-hidden aspect-square border border-outline-variant hover:border-primary bg-surface-container-low p-1 transition-all active:scale-95 group">
+            <div class="w-full h-full rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center text-outline group-hover:text-primary">
+              <span class="material-symbols-outlined text-[24px]">approval</span>
+              <span class="text-[9px] font-semibold mt-0.5">Sertifikasi</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Live Guarantee Safety Card -->
+        <div class="p-4 rounded-2xl bg-primary-fixed/30 border border-primary-fixed-dim/60 flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-primary text-secondary-fixed-dim flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px] material-symbols-filled">security</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-primary uppercase tracking-wider">Garansi 100% Hidup Sampai Tujuan</h4>
+            <p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">
+              Jika ada benih yang mati saat unboxing, sertakan video tanpa jeda. Kami kirim benih pengganti atau refund instan 100%.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: PRODUCT INFO & PURCHASE CONTROLS (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col space-y-6">
+
+        <!-- Title & Category Header -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="px-2.5 py-1 rounded-md bg-surface-container text-primary text-xs font-bold uppercase tracking-wide">
+              Anakan Ikan Hias Air Tawar
+            </span>
+            <span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
+              Kondisi Aktif & Sehat
+            </span>
+            <span class="text-xs text-outline font-medium">SKU: JF-ANK-MASKOKI-001</span>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-on-surface tracking-tight leading-snug">
+            Benih Ikan Mas Koki Oranda & Ranchu (Paket 5 Ekor)
+          </h1>
+
+          <!-- Rating & Social Proof Row -->
+          <div class="flex items-center gap-4 flex-wrap text-sm pt-1">
+            <div class="flex items-center gap-1.5 text-amber-500 font-bold bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+              <span class="text-on-surface font-extrabold">5.0</span>
+              <div class="flex items-center text-amber-400">
+                <span class="material-symbols-outlined text-[16px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[16px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[16px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[16px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[16px] material-symbols-filled">star</span>
+              </div>
+              <span class="text-outline text-xs font-normal ml-0.5">(24 ulasan)</span>
+            </div>
+
+            <span class="text-outline-variant">•</span>
+            <span class="text-on-surface-variant font-medium text-xs sm:text-sm">Terjual <strong class="text-on-surface">140+ paket</strong></span>
+            <span class="text-outline-variant">•</span>
+            <span class="text-on-surface-variant font-medium text-xs sm:text-sm">Diskusi <strong class="text-on-surface">12 tanya jawab</strong></span>
+          </div>
+        </div>
+
+        <!-- Pricing Card -->
+        <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-semibold text-outline uppercase tracking-wider">Harga Paket Spesial</span>
+            <div class="flex items-baseline gap-2.5 mt-0.5">
+              <span class="text-3xl sm:text-4xl font-extrabold text-primary tracking-tight">Rp 75.000</span>
+              <span class="text-xs font-semibold text-outline bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant">
+                Rp 15.000 / ekor
+              </span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-1">Harga sudah termasuk biaya karantina vitamin & oksigen tahan 48 jam</p>
+          </div>
+
+          <div class="flex items-center gap-2 self-start sm:self-center">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+              Stok: 41 paket tersedia
+            </span>
+          </div>
+        </div>
+
+        <!-- Size / Variant Selector -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-on-surface uppercase tracking-wider">Pilih Ukuran Benih</label>
+            <a href="#perawatan" class="text-xs text-primary hover:underline font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">help</span>
+              Panduan Ukuran & Akuarium
+            </a>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <!-- Variant 1: Selected -->
+            <button class="flex flex-col items-start p-3 rounded-xl border-2 border-primary bg-primary/5 text-left transition-all">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-sm font-bold text-primary">3 - 5 cm (Starter)</span>
+                <span class="material-symbols-outlined text-[18px] text-primary material-symbols-filled">check_circle</span>
+              </div>
+              <span class="text-xs text-on-surface-variant mt-0.5">Usia 2 Bulan • Sangat Adaptif</span>
+              <span class="text-xs font-bold text-primary mt-1">Rp 75.000 / 5 ekor</span>
+            </button>
+            <!-- Variant 2 -->
+            <button class="flex flex-col items-start p-3 rounded-xl border border-outline-variant hover:border-primary/50 bg-surface-container-lowest text-left transition-all opacity-80 hover:opacity-100">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-sm font-semibold text-on-surface">5 - 7 cm (Remaja)</span>
+                <span class="text-[10px] font-bold bg-secondary-fixed-dim/40 text-secondary px-1.5 py-0.2 rounded">+Rp 35rb</span>
+              </div>
+              <span class="text-xs text-outline mt-0.5">Warna Jambul Tampak</span>
+              <span class="text-xs font-bold text-on-surface mt-1">Rp 110.000 / 5 ekor</span>
+            </button>
+            <!-- Variant 3 -->
+            <button class="flex flex-col items-start p-3 rounded-xl border border-outline-variant bg-surface-container-low text-left opacity-60 cursor-not-allowed">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-sm font-medium text-outline">8 - 10 cm (Dewasa)</span>
+                <span class="text-[10px] font-bold bg-outline-variant/60 text-outline px-1.5 py-0.2 rounded">Habis</span>
+              </div>
+              <span class="text-xs text-outline mt-0.5">Siap Budi Daya</span>
+              <span class="text-xs font-semibold text-outline mt-1">Rp 195.000 / 5 ekor</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quantity & Direct Action Buttons -->
+        <div class="space-y-4 pt-2 border-t border-outline-variant/60">
+          <div class="flex items-center gap-6">
+            <span class="text-xs font-bold text-on-surface uppercase tracking-wider">Jumlah Paket:</span>
+            <!-- Quantity Stepper -->
+            <div class="inline-flex items-center border border-outline-variant rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden">
+              <button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-bold active:scale-95" aria-label="Kurangi jumlah">
+                <span class="material-symbols-outlined text-[18px]">remove</span>
+              </button>
+              <input type="number" value="1" min="1" max="41" class="w-14 text-center font-bold text-sm border-0 focus:ring-0 text-on-surface p-0 bg-transparent" aria-label="Jumlah"/>
+              <button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-bold active:scale-95" aria-label="Tambah jumlah">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+              </button>
+            </div>
+            <span class="text-xs text-outline">Total berat: <strong>1.0 kg</strong> (dengan packing air)</span>
+          </div>
+
+          <!-- Action Buttons Group -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <!-- Tambah ke Keranjang -->
+            <button class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-primary text-primary hover:bg-primary/5 font-bold text-sm transition-all duration-200 active:scale-95 shadow-sm">
+              <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+              <span>Tambah ke Keranjang</span>
+            </button>
+            <!-- Beli Sekarang -->
+            <button class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-sm transition-all duration-200 active:scale-95 shadow-md shadow-primary/20">
+              <span class="material-symbols-outlined text-[20px] text-secondary-fixed-dim material-symbols-filled">bolt</span>
+              <span>Beli Sekarang</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Trust & Shipping Perks Bento -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <!-- Perk 1 -->
+          <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/70">
+            <div class="w-9 h-9 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-on-surface">Gratis Ongkir Khusus Oksigen</p>
+              <p class="text-[11px] text-outline mt-0.5 leading-snug">Untuk pembelian minimum Rp 500.000 se-Jawa Timur & sekitarnya</p>
+            </div>
+          </div>
+          <!-- Perk 2 -->
+          <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/70">
+            <div class="w-9 h-9 rounded-xl bg-primary-fixed/50 text-primary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">package_2</span>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-on-surface">Garansi 7 Hari Pengiriman</p>
+              <p class="text-[11px] text-outline mt-0.5 leading-snug">Perlindungan terhadap keterlambatan kargo atau kerusakan kemasan</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TABS SECTION: DESKRIPSI, PERAWATAN, ULASAN & TANYA JAWAB -->
+    <div class="bg-surface-container-lowest border border-outline-variant/70 rounded-3xl p-6 sm:p-10 shadow-sm mb-16">
+      
+      <!-- Tab Header Strip -->
+      <div class="flex items-center gap-8 border-b border-outline-variant/60 overflow-x-auto pb-px mb-8">
+        <button class="pb-3 text-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">description</span>
+          Deskripsi Produk
+        </button>
+        <button class="pb-3 text-sm font-medium text-outline hover:text-primary transition-colors whitespace-nowrap flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">water_voc</span>
+          Panduan Aklimatisasi & Kolam
+        </button>
+        <button class="pb-3 text-sm font-medium text-outline hover:text-primary transition-colors whitespace-nowrap flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">reviews</span>
+          Ulasan Pembeli (24)
+        </button>
+        <button class="pb-3 text-sm font-medium text-outline hover:text-primary transition-colors whitespace-nowrap flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">forum</span>
+          Tanya Jawab (12)
+        </button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Left Tab Content: Detail Copywriting & Specs (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-on-surface mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[20px]">info</span>
+              Tentang Benih Ikan Mas Koki JagoFarm
+            </h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              Benih ikan mas koki ukuran 3–5cm pilihan untuk akuarium hias maupun kolam taman modern. Memiliki bentuk tubuh membulat (buntal) khas dengan sirip ekor ganda yang lebar dan proporsional. Karakter gerak aktif, lincah, serta memiliki nafsu makan tinggi.
+            </p>
+            <p class="text-sm text-on-surface-variant leading-relaxed mt-2.5">
+              Setiap batch benih telah melewati proses <strong>karantina ketat selama 7 hari</strong> di fasilitas bio-security JagoFarm, memastikan bebas dari kutu jarum, jamur insang, dan parasit air tawar lainnya sebelum dikemas.
+            </p>
+          </div>
+
+          <!-- Feature Bullets Bento -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+            <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50">
+              <span class="text-xs font-bold text-primary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                Kemasan Beroksigen Murni
+              </span>
+              <p class="text-xs text-on-surface-variant mt-1">Kantung plastik tebal ganda beroksigen murni 99.5% tahan perjalanan 48-72 jam.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50">
+              <span class="text-xs font-bold text-primary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                Isi Paket 5 Ekor Sehat
+              </span>
+              <p class="text-xs text-on-surface-variant mt-1">Kombinasi warna oranye, calico (belang), dan merah putih berkualitas kontes.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50">
+              <span class="text-xs font-bold text-primary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                Suhu Air Ideal: 22 - 27 °C
+              </span>
+              <p class="text-xs text-on-surface-variant mt-1">Derajat keasaman pH optimal 7.0 – 7.8 dengan aerasi air yang stabil.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50">
+              <span class="text-xs font-bold text-primary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                Koleksi Pakan Fleksibel
+              </span>
+              <p class="text-xs text-on-surface-variant mt-1">Dapat mengonsumsi pelet koki butiran halus (0.8–1mm), cacing beku, dan spirulina.</p>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Acclimatization Guide -->
+          <div class="p-5 rounded-2xl bg-primary/5 border border-primary/20 space-y-3" id="perawatan">
+            <h4 class="text-sm font-bold text-primary flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">lightbulb</span>
+              Tips Aklimatisasi Saat Paket Tiba:
+            </h4>
+            <ol class="text-xs text-on-surface-variant space-y-2 list-decimal list-inside leading-relaxed">
+              <li><strong>Jangan langsung melepas ikan!</strong> Apungkan kantung kemasan tertutup di atas air akuarium/kolam selama 15–20 menit agar suhu seimbang.</li>
+              <li>Buka kantung secara perlahan, masukkan air akuarium secara bertahap sedikit demi sedikit ke dalam kantung selama 10 menit.</li>
+              <li>Serok benih ikan dengan lembut ke dalam akuarium, buang air bekas kantung pengiriman.</li>
+              <li>Jangan berikan pakan selama 12 jam pertama agar ikan tidak stres.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Right Tab Content: Rating & Reviews Section (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Rating Summary Box -->
+          <div class="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/60">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-base font-bold text-on-surface">Ulasan Pembeli</h3>
+                <p class="text-xs text-outline">Berdasarkan 24 transaksi terverifikasi</p>
+              </div>
+              <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
+                100% Puas
+              </span>
+            </div>
+
+            <!-- Big Rating Score & Stars -->
+            <div class="flex items-center gap-4 pb-4 border-b border-outline-variant/50">
+              <div class="text-center">
+                <span class="text-4xl font-extrabold text-on-surface tracking-tight">5.0</span>
+                <p class="text-[11px] text-outline mt-0.5">dari 5 bintang</p>
+              </div>
+              <div class="flex-1 space-y-1">
+                <!-- Star progress bars -->
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="text-outline w-3">5</span>
+                  <div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+                    <div class="h-full bg-amber-400 rounded-full w-full"></div>
+                  </div>
+                  <span class="text-outline font-semibold w-5 text-right">24</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="text-outline w-3">4</span>
+                  <div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+                    <div class="h-full bg-amber-400 rounded-full w-0"></div>
+                  </div>
+                  <span class="text-outline text-outline-variant w-5 text-right">0</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="text-outline w-3">3</span>
+                  <div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+                    <div class="h-full bg-amber-400 rounded-full w-0"></div>
+                  </div>
+                  <span class="text-outline text-outline-variant w-5 text-right">0</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="text-outline w-3">2</span>
+                  <div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+                    <div class="h-full bg-amber-400 rounded-full w-0"></div>
+                  </div>
+                  <span class="text-outline text-outline-variant w-5 text-right">0</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="text-outline w-3">1</span>
+                  <div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+                    <div class="h-full bg-amber-400 rounded-full w-0"></div>
+                  </div>
+                  <span class="text-outline text-outline-variant w-5 text-right">0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Individual Review Item -->
+            <div class="py-4 space-y-2 border-b border-outline-variant/40">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full bg-primary text-secondary-fixed-dim font-bold text-xs flex items-center justify-center">
+                    B
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-on-surface">Budi Petani (Sidoarjo)</span>
+                    <span class="inline-block ml-1 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 rounded">Terverifikasi</span>
+                  </div>
+                </div>
+                <span class="text-[11px] text-outline">25 September 2026</span>
+              </div>
+              <div class="flex items-center text-amber-400">
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+              </div>
+              <p class="text-xs text-on-surface-variant leading-relaxed">
+                "Paket lengkap, pengiriman sangat cepat dengan kargo oksigen. Semua 5 ekor ikan sampai dalam kondisi sangat sehat dan lincah berenang. Recommended untuk penghobi koki!"
+              </p>
+            </div>
+
+            <!-- Second Review Item -->
+            <div class="py-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full bg-secondary-container text-primary font-bold text-xs flex items-center justify-center">
+                    A
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-on-surface">Ahmad H. (Malang)</span>
+                    <span class="inline-block ml-1 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 rounded">Terverifikasi</span>
+                  </div>
+                </div>
+                <span class="text-[11px] text-outline">18 September 2026</span>
+              </div>
+              <div class="flex items-center text-amber-400">
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+                <span class="material-symbols-outlined text-[14px] material-symbols-filled">star</span>
+              </div>
+              <p class="text-xs text-on-surface-variant leading-relaxed">
+                "Packing rapi sekali pakai box styrofoam ganda dan airnya jernih dingin. Warnanya cerah, jambul kepalanya mulai terlihat. Makasih JagoFarm."
+              </p>
+            </div>
+          </div>
+
+          <!-- Tulis Ulasan Form Card -->
+          <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm space-y-3.5">
+            <div>
+              <h4 class="text-sm font-bold text-on-surface">Tulis Ulasan Anda</h4>
+              <p class="text-[11px] text-outline">Ulasan dapat ditulis oleh pembeli yang telah menerima produk ini.</p>
+            </div>
+
+            <!-- Interactive Star Selector -->
+            <div>
+              <label class="text-xs font-semibold text-on-surface">Beri Nilai Produk:</label>
+              <div class="flex items-center gap-1 text-amber-400 mt-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[22px] material-symbols-filled hover:scale-110 transition-transform">star</span>
+                <span class="material-symbols-outlined text-[22px] material-symbols-filled hover:scale-110 transition-transform">star</span>
+                <span class="material-symbols-outlined text-[22px] material-symbols-filled hover:scale-110 transition-transform">star</span>
+                <span class="material-symbols-outlined text-[22px] material-symbols-filled hover:scale-110 transition-transform">star</span>
+                <span class="material-symbols-outlined text-[22px] material-symbols-filled hover:scale-110 transition-transform">star</span>
+                <span class="text-xs font-semibold text-on-surface ml-2">Sangat Puas (5.0)</span>
+              </div>
+            </div>
+
+            <!-- Review Text Area -->
+            <div>
+              <textarea rows="3" class="w-full text-xs rounded-xl border border-outline-variant bg-surface-container-low p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="Ceritakan pengalaman Anda mengenai kondisi ikan, kemasan oksigen, dan kecepatan pengiriman..."></textarea>
+            </div>
+
+            <!-- Optional Image Upload & Submit -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <button class="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-outline-variant hover:bg-surface-container text-xs font-medium text-outline hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-[16px]">add_photo_alternate</span>
+                <span>Unggah Foto Ikan (Opsional)</span>
+              </button>
+              <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all active:scale-95 shadow-sm">
+                <span>Kirim Ulasan</span>
+                <span class="material-symbols-outlined text-[16px]">send</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CROSS-SELL / RELATED PRODUCTS -->
+    <div class="space-y-6 mb-12">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-secondary uppercase tracking-wider">Perawatan Optimal</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-on-surface mt-0.5">Produk Pelengkap Ikan Mas Koki</h2>
+        </div>
+        <a href="#" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-primary hover:text-secondary transition-colors">
+          <span>Lihat Semua</span>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Rel 1: Pelet Koki -->
+        <div class="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-md group">
+          <div class="w-full aspect-square rounded-xl bg-surface-container-low flex items-center justify-center text-primary mb-3">
+            <span class="material-symbols-outlined text-[44px] text-secondary">dinner_dining</span>
+          </div>
+          <span class="text-[10px] uppercase font-bold text-outline">Nutrisi & Pakan</span>
+          <h3 class="text-sm font-bold text-on-surface line-clamp-2 mt-1 group-hover:text-primary">
+            Pelet Spirulina Premium Ikan Mas Koki (250g)
+          </h3>
+          <div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+            <span class="text-sm font-bold text-primary">Rp 42.000</span>
+            <button class="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Rel 2: Aerator Portable -->
+        <div class="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-md group">
+          <div class="w-full aspect-square rounded-xl bg-surface-container-low flex items-center justify-center text-primary mb-3">
+            <span class="material-symbols-outlined text-[44px] text-primary">air</span>
+          </div>
+          <span class="text-[10px] uppercase font-bold text-outline">Peralatan Oksigen</span>
+          <h3 class="text-sm font-bold text-on-surface line-clamp-2 mt-1 group-hover:text-primary">
+            Aerator Mini USB Super Silent 2 Output
+          </h3>
+          <div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+            <span class="text-sm font-bold text-primary">Rp 65.000</span>
+            <button class="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Rel 3: Garam Ikan Anti Jamur -->
+        <div class="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-md group">
+          <div class="w-full aspect-square rounded-xl bg-surface-container-low flex items-center justify-center text-primary mb-3">
+            <span class="material-symbols-outlined text-[44px] text-tertiary">science</span>
+          </div>
+          <span class="text-[10px] uppercase font-bold text-outline">Kesehatan Air</span>
+          <h3 class="text-sm font-bold text-on-surface line-clamp-2 mt-1 group-hover:text-primary">
+            Garam Ikan Murni Kristal Grade A (1 kg)
+          </h3>
+          <div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+            <span class="text-sm font-bold text-primary">Rp 12.000</span>
+            <button class="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Rel 4: Termometer Digital -->
+        <div class="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-md group">
+          <div class="w-full aspect-square rounded-xl bg-surface-container-low flex items-center justify-center text-primary mb-3">
+            <span class="material-symbols-outlined text-[44px] text-secondary">thermostat</span>
+          </div>
+          <span class="text-[10px] uppercase font-bold text-outline">Sensor & IoT</span>
+          <h3 class="text-sm font-bold text-on-surface line-clamp-2 mt-1 group-hover:text-primary">
+            Termometer Digital Celup LCD Akurasi 0.1°C
+          </h3>
+          <div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+            <span class="text-sm font-bold text-primary">Rp 28.000</span>
+            <button class="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-primary text-on-primary-container border-t border-primary-container w-full mt-auto">
+    <div class="w-full px-4 sm:px-8 py-12 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 pb-12 border-b border-primary-container/80">
+        <!-- Bio -->
+        <div class="lg:col-span-2 space-y-4">
+          <a class="flex items-center gap-2.5" href="#">
+            <div class="w-9 h-9 rounded-xl bg-secondary-fixed-dim text-primary flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-[22px] material-symbols-filled">water_drop</span>
+            </div>
+            <span class="text-xl font-bold text-on-primary">JagoFarm</span>
+          </a>
+          <p class="text-xs text-primary-fixed-dim max-w-sm leading-relaxed">
+            Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak bioflok, benih unggul, dan IoT smart farming berkualitas tinggi demi ketahanan pangan nasional.
+          </p>
+          <div class="flex items-center gap-3 pt-1">
+            <a aria-label="Share" class="w-8 h-8 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href="#">
+              <span class="material-symbols-outlined text-[16px]">share</span>
+            </a>
+            <a aria-label="Website" class="w-8 h-8 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href="#">
+              <span class="material-symbols-outlined text-[16px]">language</span>
+            </a>
+            <a aria-label="Email" class="w-8 h-8 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href="#">
+              <span class="material-symbols-outlined text-[16px]">mail</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 1 -->
+        <div>
+          <h4 class="text-sm font-bold text-on-primary mb-3">PRODUK</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Set Tambak Bioflok</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Set Hidroponik NFT</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Set Aquaponik</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">IoT & Smart Farming</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Benih Sayur Unggul</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Anakan & Benih Ikan</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 2 -->
+        <div>
+          <h4 class="text-sm font-bold text-on-primary mb-3">INFORMASI</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Tentang Kami</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Cara Pemesanan</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">FAQ Pengiriman Ikan</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Kebijakan Pengembalian (DoA)</a></li>
+            <li><a class="text-primary-fixed hover:text-on-primary transition-colors" href="#">Syarat & Ketentuan</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3 -->
+        <div>
+          <h4 class="text-sm font-bold text-on-primary mb-3">KONTAK</h4>
+          <ul class="space-y-2.5 text-xs text-primary-fixed-dim">
+            <li class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary-fixed-dim shrink-0 mt-0.5">location_on</span>
+              <span>Jl. Pertanian No. 123, Surabaya, Jawa Timur</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary-fixed-dim shrink-0">call</span>
+              <a class="hover:text-on-primary transition-colors" href="tel:+6281234567890">+62 812-3456-7890</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary-fixed-dim shrink-0">mail</span>
+              <a class="hover:text-on-primary transition-colors" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+            </li>
+            <li class="pt-1.5">
+              <div class="p-2.5 bg-white/5 border border-white/10 rounded-xl">
+                <p class="text-[10px] text-primary-fixed-dim">Layanan CS Kargo Hidup:</p>
+                <p class="text-xs font-semibold text-on-primary">Senin - Minggu: 24 Jam Siap</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-fixed-dim gap-3">
+        <p>© 2026 JagoFarm. All rights reserved.</p>
+        <div class="flex items-center gap-2 text-[11px] opacity-75">
+          <span>Metode Pembayaran:</span>
+          <span class="font-bold text-white">QRIS</span>
+          <span>•</span>
+          <span class="font-bold text-white">BCA VA</span>
+          <span>•</span>
+          <span class="font-bold text-white">MANDIRI</span>
+          <span>•</span>
+          <span class="font-bold text-white">BRI</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

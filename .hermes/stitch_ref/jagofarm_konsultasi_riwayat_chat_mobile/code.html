@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JagoFarm - Konsultasi Pakar</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed-dim": "#fdba45",
+            "tertiary": "#003623",
+            "inverse-on-surface": "#ecf1ff",
+            "surface-container": "#e7eeff",
+            "surface-dim": "#cfdaf2",
+            "outline-variant": "#c0c9c3",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#fdba45",
+            "on-surface-variant": "#404945",
+            "surface-container-low": "#f0f3ff",
+            "surface-container-high": "#dee8ff",
+            "on-tertiary-container": "#32c98f",
+            "on-primary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "inverse-primary": "#9ed1bd",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-secondary": "#ffffff",
+            "primary": "#003629",
+            "error-container": "#ffdad6",
+            "surface-tint": "#376757",
+            "tertiary-fixed": "#6ffbbe",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary-container": "#004f35",
+            "secondary": "#7f5700",
+            "on-primary-container": "#8abda9",
+            "surface-container-highest": "#d8e3fb",
+            "on-primary-fixed": "#002117",
+            "on-background": "#111c2d",
+            "outline": "#707974",
+            "on-secondary-container": "#6f4b00",
+            "on-secondary-fixed": "#281900",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#ffdeae",
+            "inverse-surface": "#263143",
+            "on-surface": "#111c2d",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#baeed9",
+            "on-tertiary-fixed": "#002113",
+            "error": "#ba1a1a",
+            "on-secondary-fixed-variant": "#604100",
+            "background": "#f9f9ff",
+            "surface": "#f9f9ff",
+            "surface-variant": "#d8e3fb",
+            "primary-container": "#1b4d3e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "margin": "2rem",
+            "gutter": "1.25rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", {"lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-sm": ["18px", {"lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+            "headline-lg-mobile": ["26px", {"lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "price-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "display-hero-mobile": ["34px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "body-md": ["14px", {"lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+            "price-md": ["16px", {"lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "display-hero": ["52px", {"lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+    .tap-highlight-transparent {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary min-h-screen flex flex-col justify-between">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-mobile py-space-sm bg-surface/95 dark:bg-inverse-surface/95 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-2.5">
+<button aria-label="Kembali" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</button>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h1 class="font-headline-sm text-headline-sm text-primary tracking-tight">Konsultasi Pakar</h1>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Agronom &amp; Akuakultur Terverifikasi</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Cari Pakar atau Topik" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<div class="relative">
+<button aria-label="Notifikasi" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT CANVAS -->
+<main class="w-full max-w-md mx-auto pt-[72px] pb-[96px] px-margin-mobile space-y-4">
+<!-- RETURN CONTEXT NOTIFICATION PILL -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim animate-ping"></span>
+<span class="font-label-md text-label-md text-primary font-semibold">Sesi chat aktif Anda sedang berjalan</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary underline font-bold cursor-pointer">Buka</span>
+</div>
+<!-- SEGMENTED CONTROLS / TABS -->
+<section class="bg-surface-container-lowest p-1 rounded-xl border border-outline-variant/50 shadow-sm flex items-center">
+<button class="flex-1 py-2 px-3 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md text-center font-bold shadow-sm transition-all flex items-center justify-center gap-1.5" type="button">
+<span>Sesi Aktif &amp; Terjadwal</span>
+<span class="bg-secondary-fixed-dim text-on-secondary-fixed font-label-sm text-label-sm px-1.5 py-0.2 rounded-full">1</span>
+</button>
+<button class="flex-1 py-2 px-3 rounded-lg text-on-surface-variant font-label-md text-label-md text-center hover:text-primary transition-all flex items-center justify-center gap-1.5" type="button">
+<span>Riwayat Selesai</span>
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-1.5 py-0.2 rounded-full">3</span>
+</button>
+</section>
+<!-- SECTION 1: ACTIVE LIVE CONSULTATION BANNER (HERO FOCUS) -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-extrabold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">sensors</span>
+          Sesi Konsultasi Berjalan
+        </span>
+<span class="font-label-sm text-label-sm text-outline">Sesi ID #KF-29402</span>
+</div>
+<!-- Active Consultation Card -->
+<article class="relative bg-surface-container-lowest border-2 border-primary-container rounded-2xl p-4 shadow-sm overflow-hidden">
+<!-- Accent Top Bar -->
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-primary-container to-secondary-fixed-dim"></div>
+<!-- Header Info -->
+<div class="flex items-start justify-between gap-3 pt-1">
+<div class="flex items-start gap-3">
+<div class="relative">
+<img class="w-14 h-14 rounded-xl object-cover border border-outline-variant" data-alt="Close up professional portrait photo of Dr. Ir. Hendra Wardana, an experienced male aquaculture specialist in his late 40s wearing a clean dark green collared field shirt with modern glasses, set against a soft bokeh background of a high-tech biofloc shrimp farm greenhouse. Bright, confident, clean agricultural aesthetic with deep green and gold tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMQSXRNo2Wn1hnhsQ-HlAjPJlOuL0-ACi6afsz8I3e25Pj08bXW8gvPm_IcziCs0krJk60c_v08cGHuF8jIpGmPGs_MJhM1sDQAIHr10AlTUo5weplWNE3Jma7QvFY4mxOqrCVfO6zqyL3SZVBN3uPfzv6meBlps00fvWhj71Wf5A3ohrcwsAciv9rdu7wEvlgh32Z-yTe2q9b6NCZWt5xWyclZa3JgaZo2nYC05uuDbbsoOeVg04D3A"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-tertiary-fixed-dim border-2 border-surface-container-lowest rounded-full"></span>
+</div>
+<div>
+<div class="flex items-center gap-1.5 flex-wrap">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Dr. Ir. Hendra Wardana, M.Si</h2>
+</div>
+<p class="font-label-md text-label-md text-primary font-medium">Spesialis Bioflok &amp; Vaname • IPB</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-fixed/30 text-tertiary font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                  Online Sekarang
+                </span>
+<span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">schedule</span>
+                  Sisa 48 mnt
+                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Badges (Tambak Context) -->
+<div class="mt-3.5 bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/40">
+<div class="flex items-center justify-between text-on-surface-variant mb-1.5">
+<span class="font-label-sm text-label-sm font-semibold flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">water_ec</span>
+              Data Tambak Terlampir:
+            </span>
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Kolam Bioflok B-03</span>
+</div>
+<div class="grid grid-cols-3 gap-1.5 text-center">
+<div class="bg-surface-container-lowest rounded-lg py-1 px-1.5 border border-outline-variant/30">
+<div class="font-label-sm text-label-sm text-on-surface-variant">DOC</div>
+<div class="font-label-md text-label-md font-bold text-primary">Hari ke-45</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg py-1 px-1.5 border border-outline-variant/30">
+<div class="font-label-sm text-label-sm text-on-surface-variant">DO Air</div>
+<div class="font-label-md text-label-md font-bold text-error">3.4 ppm <span class="text-[10px]">▼</span></div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg py-1 px-1.5 border border-outline-variant/30">
+<div class="font-label-sm text-label-sm text-on-surface-variant">pH Air</div>
+<div class="font-label-md text-label-md font-bold text-primary">7.8 Netral</div>
+</div>
+</div>
+</div>
+<!-- Snippet Pesan Terakhir -->
+<div class="mt-3 p-2.5 rounded-xl bg-surface-container/70 border-l-4 border-primary flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">chat</span>
+<div class="overflow-hidden">
+<p class="font-label-sm text-label-sm text-primary font-bold">Pesan Terakhir:</p>
+<p class="font-body-sm text-body-sm text-on-surface truncate">"Dr. Hendra: Segera naikkan aerasi kincir ke 120 RPM, saya sedang siapkan dosis probiotik Bacillus..."</p>
+</div>
+</div>
+<!-- Action CTA Buttons -->
+<div class="mt-4 flex items-center gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow hover:bg-primary-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span>Lanjut Chat Sesi</span>
+</button>
+<button aria-label="Telepon Cepat Pakar" class="w-11 h-11 rounded-xl bg-surface-container text-primary flex items-center justify-center border border-outline-variant/60 active:scale-95 transition-all hover:bg-surface-container-high" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">phone_in_talk</span>
+</button>
+<button aria-label="Video Call Pakar" class="w-11 h-11 rounded-xl bg-surface-container text-primary flex items-center justify-center border border-outline-variant/60 active:scale-95 transition-all hover:bg-surface-container-high" type="button">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+</button>
+</div>
+</article>
+</section>
+<!-- SECTION 2: SCHEDULED / UPCOMING BOOKING -->
+<section class="space-y-2 pt-1">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">event_available</span>
+          Jadwal Konsultasi Mendatang
+        </h3>
+<span class="font-label-sm text-label-sm text-secondary font-bold">1 Booking</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3.5 shadow-sm space-y-3">
+<div class="flex items-start gap-3">
+<img class="w-12 h-12 rounded-xl object-cover border border-outline-variant" data-alt="Professional headshot of a friendly Indonesian male aquatic veterinarian drh Farhan Maulana, wearing a clinical lab coat with an embroidered stethoscope emblem, smiling genuinely. Crisp light background with soft teal accents, professional corporate agricultural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCApPSv3J5At9dxEyNIwDtW3hpePUGHyGnw25XmcSpWZ0QPBAuObhnaIvcLbUl0-kJkXC8VLFajPDCPI1REl0R5nb0oCA_XqfbKGL-T366PNlRx70_3Kc713eUMkvWCpnb0qNKDqRnwKkIJLB7bDqLXXUTpB9CURu3NT3Ei57G1bdhA-ntSPgveQO2gN7dbsM7CX688envpQcOYLMriL_FWq41pC_roVSgxqqeAh7o8K533vd6_JyDOLw"/>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<span class="font-label-sm text-label-sm text-primary font-bold px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed inline-block">
+                Video Call Terjadwal
+              </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Besok</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate mt-1">drh. Farhan Maulana</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Spesialis Patologi Ikan Air Tawar &amp; Koi</p>
+</div>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low rounded-xl px-3 py-2 text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Kamis, 24 Okt 2026</span>
+</div>
+<div class="flex items-center gap-1 font-label-md text-label-md text-primary font-bold">
+<span class="material-symbols-outlined text-[16px]">alarm</span>
+<span>10:00 WIB</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-0.5">
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Pembayaran Terverifikasi</span>
+</div>
+<button class="py-1.5 px-3 rounded-lg border border-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container transition-all active:scale-95" type="button">
+            Lihat Detail
+          </button>
+</div>
+</div>
+</section>
+<!-- SECTION 3: NEW CONSULTATION PROMO & QUICK ACTIONS (BENTO STYLE) -->
+<section class="grid grid-cols-2 gap-2.5 pt-1">
+<!-- Card 1: Start New Consultation -->
+<div class="bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-2xl p-3.5 flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="absolute -right-3 -bottom-3 opacity-10 text-on-primary">
+<span class="material-symbols-outlined text-[80px]">support_agent</span>
+</div>
+<div>
+<span class="inline-block px-2 py-0.5 bg-secondary-fixed-dim text-on-secondary-fixed rounded-full font-label-sm text-label-sm font-extrabold mb-2">
+            Pakar Tersedia (18)
+          </span>
+<h4 class="font-headline-sm text-headline-sm font-bold leading-snug">Butuh Diskusi Topik Lain?</h4>
+<p class="font-body-sm text-body-sm text-on-primary-container mt-1">Konsultasikan hama, hidroponik &amp; nutrisi.</p>
+</div>
+<button class="mt-3 w-full bg-secondary text-on-secondary py-2 px-2.5 rounded-xl font-label-md text-label-md font-bold flex items-center justify-center gap-1 shadow hover:brightness-105 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Cari Pakar Baru</span>
+</button>
+</div>
+<!-- Card 2: 24/7 Emergency Hotline Tambak -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3.5 flex flex-col justify-between shadow-sm">
+<div>
+<div class="w-8 h-8 rounded-lg bg-error-container text-error flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-snug">Hotline Darurat Tambak</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Respons siaga &lt; 5 menit untuk anomali massal.</p>
+</div>
+<button class="mt-3 w-full bg-surface-container text-error border border-error-container py-2 px-2.5 rounded-xl font-label-md text-label-md font-bold flex items-center justify-center gap-1 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">call</span>
+<span>Hubungi 24/7</span>
+</button>
+</div>
+</section>
+<!-- SECTION 4: RIWAYAT KONSULTASI SELESAI (PAST ARCHIVES) -->
+<section class="space-y-2.5 pt-2">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">history_edu</span>
+          Riwayat Konsultasi Selesai
+        </h3>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:underline" type="button">
+          Lihat Semua (3)
+        </button>
+</div>
+<!-- History Card 1 -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3.5 shadow-sm space-y-2.5">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2.5">
+<img class="w-11 h-11 rounded-xl object-cover border border-outline-variant" data-alt="Portrait of Ir. Siti Aminah, an Indonesian female senior hydroponics agronomist in her 30s wearing a modern sage green hijab and a smart laboratory coat, with an organic indoor vertical farm backdrop bathed in soft LED grow lights. Clean, highly professional, warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAI7xf3M0D45iIW5cAndzziGaDuhIpqZGloepV9L178fL1nnZuIn5LNwmYn7xwmI7HQDz8ZsXHi7qPd-EAqBKDJLx3-BnhZzOZTLC1ZIp4aaD_oU-xwyoAAZUctQW-vAndznBjc-VFEmbCHTePbqyWVQogGAXmW-qJ3-Xkwe9s10BBakf1o43jAuTtUI-rBsyWobL374s2COb1618BhNxEMGbvH4NVIpTiogysm2_Pul3-9lcMLD7-6Q"/>
+<div>
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-lg text-label-lg text-on-surface font-bold">Ir. Siti Aminah, S.P.</h4>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Selesai</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Formulasi Nutrisi Hidroponik Melon &amp; Selada</p>
+<p class="font-label-sm text-label-sm text-outline mt-0.5">12 Okt 2026 • Durasi: 60 Menit</p>
+</div>
+</div>
+<div class="flex items-center gap-0.5 text-secondary font-label-sm text-label-sm font-bold bg-secondary-fixed/50 px-1.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>5.0</span>
+</div>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-2.5 flex items-center justify-between border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">description</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Resep SOP Nutrisi Tersedia</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Dokumen PDF (1.4 MB) • PPM 1200 Stage Generatif</div>
+</div>
+</div>
+<button aria-label="Unduh Rekomendasi PDF" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-1 text-on-surface-variant border-t border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-outline">Sesi #KF-28901</span>
+<div class="flex items-center gap-2">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary font-semibold py-1 px-2" type="button">
+              Buka Chat Arsip
+            </button>
+<button class="font-label-md text-label-md text-primary font-bold py-1 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high" type="button">
+              Konsul Ulang
+            </button>
+</div>
+</div>
+</article>
+<!-- History Card 2 -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3.5 shadow-sm space-y-2.5">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2.5">
+<img class="w-11 h-11 rounded-xl object-cover border border-outline-variant" data-alt="Indonesian male veterinarian drh Farhan Maulana smiling in a bright natural aquatic clinic laboratory, holding aquaculture water quality test tubes, soft clean lighting, high detail organic agriculture look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB8MR4I8l50ZARuTVgksbDvTuOjASauO60vE4E0q_zExQM-OdwGwkNN3t9sxdlQwBQMBydq6I-3cHHu3YZEX07cBLSBt_syjDXN6VW0jN8FPXDy5L3r18IRi02KJIPGA5Ti8vLqIA8QulLWeTvx3vVv1EAY4liDqzm3zqsfbwJaR3Xbo5fzwPxwCKE_vNnzT7Yx4wjF4fm59xTw_3xDypNT0zVNGHuu-ppFUyzh8N25YYDMxmr7Tvl5w"/>
+<div>
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-lg text-label-lg text-on-surface font-bold">drh. Farhan Maulana</h4>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Selesai</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Penanganan Parasit Dactylogyrus Ikan Mas Koki</p>
+<p class="font-label-sm text-label-sm text-outline mt-0.5">28 Sep 2026 • Durasi: 45 Menit</p>
+</div>
+</div>
+<div class="flex items-center gap-0.5 text-secondary font-label-sm text-label-sm font-bold bg-secondary-fixed/50 px-1.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</div>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-2.5 flex items-center justify-between border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">medical_services</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Catatan Resep &amp; Dosis Obat</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Terapi Acriflavine + Garam Ikan 0.3%</div>
+</div>
+</div>
+<button aria-label="Unduh Rekomendasi Medis" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-1 text-on-surface-variant border-t border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-outline">Sesi #KF-27840</span>
+<div class="flex items-center gap-2">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary font-semibold py-1 px-2" type="button">
+              Buka Chat Arsip
+            </button>
+<button class="font-label-md text-label-md text-primary font-bold py-1 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high" type="button">
+              Beli Obat Resep
+            </button>
+</div>
+</div>
+</article>
+</section>
+<!-- TRUST PILLARS STRIP -->
+<div class="bg-surface-container-low rounded-2xl p-3 border border-outline-variant/40 mt-3 grid grid-cols-2 gap-2 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+</div>
+<div class="leading-tight">
+<span class="font-label-sm text-label-sm font-bold text-on-surface block">Pakar Tersertifikasi</span>
+<span class="font-body-sm text-[11px] text-outline">Akademisi &amp; Praktisi</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[16px]">security</span>
+</div>
+<div class="leading-tight">
+<span class="font-label-sm text-label-sm font-bold text-on-surface block">Garansi Solusi</span>
+<span class="font-body-sm text-[11px] text-outline">Konsul lanjutan bebas biaya</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BOTTOM NAVIGATION BAR (Derived strictly from Shared Components JSON) -->
+<!-- Contextual Lock: Active Tab = 'Konsultasi' -->
+<nav aria-label="Navigasi Utama" class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile py-space-xs bg-surface/95 dark:bg-inverse-surface/95 backdrop-blur-md pb-safe shadow-sm dark:shadow-none">
+<!-- Tab 1: Beranda -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-inverse-on-surface py-1 hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="font-label-sm text-label-sm mt-0.5">Beranda</span>
+</a>
+<!-- Tab 2: Katalog -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-inverse-on-surface py-1 hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">inventory_2</span>
+<span class="font-label-sm text-label-sm mt-0.5">Katalog</span>
+</a>
+<!-- Tab 3: Konsultasi (ACTIVE INTENT TAB) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-tertiary-fixed font-bold py-1 active:scale-95 transition-transform duration-150 relative" href="#">
+<div class="relative">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="absolute -top-1 -right-1.5 w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<span class="font-label-sm text-label-sm mt-0.5">Konsultasi</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-0.5"></span>
+</a>
+<!-- Tab 4: Akun -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-inverse-on-surface py-1 hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Akun</span>
+</a>
+</nav>
+<!-- QUICK ACTION TOAST / MICRO INTERACTION SCRIPT -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Gentle subtle pulse animation on active session card border to indicate live telemetry
+      const activeCard = document.querySelector('article');
+      if (activeCard) {
+        setInterval(() => {
+          activeCard.classList.toggle('border-primary-container');
+          activeCard.classList.toggle('border-tertiary-fixed-dim');
+        }, 2200);
+      }
+    });
+  </script>
+</body></html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout & Pembayaran - JagoFarm</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface-variant": "#404945",
+            "tertiary-fixed": "#6ffbbe",
+            "on-primary": "#ffffff",
+            "outline": "#707974",
+            "error-container": "#ffdad6",
+            "surface-container": "#e7eeff",
+            "surface-container-high": "#dee8ff",
+            "on-tertiary": "#ffffff",
+            "surface": "#f9f9ff",
+            "secondary-fixed": "#ffdeae",
+            "on-primary-fixed": "#002117",
+            "outline-variant": "#c0c9c3",
+            "on-secondary-fixed-variant": "#604100",
+            "error": "#ba1a1a",
+            "tertiary": "#003623",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-tint": "#376757",
+            "on-surface": "#111c2d",
+            "surface-variant": "#d8e3fb",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed-variant": "#005236",
+            "background": "#f9f9ff",
+            "surface-container-low": "#f0f3ff",
+            "on-primary-container": "#8abda9",
+            "on-background": "#111c2d",
+            "surface-container-highest": "#d8e3fb",
+            "on-primary-fixed-variant": "#1d4f40",
+            "surface-dim": "#cfdaf2",
+            "inverse-primary": "#9ed1bd",
+            "inverse-surface": "#263143",
+            "on-tertiary-fixed": "#002113",
+            "primary-fixed": "#baeed9",
+            "tertiary-container": "#004f35",
+            "secondary-container": "#fdba45",
+            "on-secondary": "#ffffff",
+            "secondary-fixed-dim": "#fdba45",
+            "on-tertiary-container": "#32c98f",
+            "secondary": "#7f5700",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary-container": "#6f4b00",
+            "surface-bright": "#f9f9ff",
+            "on-secondary-fixed": "#281900",
+            "primary-container": "#1b4d3e",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#003629",
+            "tertiary-fixed-dim": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "gutter-mobile": "0.75rem",
+            "margin-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem",
+            "margin": "2rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500;
+    }
+    body {
+      -webkit-font-smoothing: antialiased;
+      background-color: #f0f3ff;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-low text-on-surface font-body-md text-body-md antialiased min-h-screen flex justify-center selection:bg-primary selection:text-white">
+<!-- Mobile Viewport Wrapper (390px - 440px) -->
+<main class="w-full max-w-[430px] bg-background min-h-screen flex flex-col shadow-2xl relative pb-36">
+<!-- 1. TOP APP BAR (Customized for focused checkout checkout task) -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md px-margin-mobile pt-space-md pb-space-sm shadow-sm transition-all duration-200">
+<div class="flex items-center justify-between gap-space-sm">
+<button aria-label="Kembali" class="w-9 h-9 rounded-full flex items-center justify-center text-primary hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</button>
+<div class="text-center flex-1">
+<h1 class="font-headline-sm text-headline-sm text-primary tracking-tight">Checkout & Pembayaran</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 Barang Dipilih • Hub Surabaya</p>
+</div>
+<button aria-label="Bantuan CS JagoFarm" class="w-9 h-9 rounded-full flex items-center justify-center text-primary hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+</button>
+</div>
+<!-- Compact Checkout Stepper -->
+<div class="mt-3 pt-2.5 border-t border-outline-variant/40 flex items-center justify-between text-center px-1">
+<!-- Step 1 Done -->
+<div class="flex items-center gap-1.5 opacity-75">
+<div class="w-5 h-5 rounded-full bg-primary-container text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] font-bold">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">1. Keranjang</span>
+</div>
+<div class="h-0.5 w-6 bg-primary-container/40 rounded-full"></div>
+<!-- Step 2 Active -->
+<div class="flex items-center gap-1.5">
+<div class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center font-label-sm text-label-sm shadow-xs">
+            2
+          </div>
+<span class="font-label-sm text-label-sm text-primary font-extrabold tracking-tight">2. Bayar</span>
+</div>
+<div class="h-0.5 w-6 bg-outline-variant/50 rounded-full"></div>
+<!-- Step 3 Inactive -->
+<div class="flex items-center gap-1.5 opacity-50">
+<div class="w-5 h-5 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm">
+            3
+          </div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3. Selesai</span>
+</div>
+</div>
+</header>
+<!-- CONTENT CANVAS -->
+<div class="px-margin-mobile py-space-sm space-y-space-md">
+<!-- 2. ALAMAT PENGIRIMAN (KARTU UTAMA) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between mb-2.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">location_on</span>
+<h2 class="font-label-lg text-label-lg text-primary font-bold">Alamat Pengiriman</h2>
+</div>
+<button class="font-label-md text-label-md text-primary font-bold hover:underline flex items-center gap-0.5" type="button">
+            Ubah
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Tags / Badges -->
+<div class="flex flex-wrap gap-1.5 mb-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed font-bold">
+            Utama
+          </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-primary font-semibold">
+            Kebun & Kolam
+          </span>
+</div>
+<!-- Contact & Address Details -->
+<div class="space-y-1">
+<p class="font-label-md text-label-md text-on-surface font-bold">
+            Budi Santoso <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">(+62 812-3456-7890)</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Jl. Raya Tambak No. 45, RT 03 / RW 05, Kel. Kedung Baruk, Kec. Rungkut, Kota Surabaya, Jawa Timur 60293
+          </p>
+</div>
+<!-- Verified GPS Badge -->
+<div class="mt-3 flex items-center gap-1.5 px-2.5 py-1.5 bg-primary-fixed/30 rounded-lg border border-primary-fixed-dim/40">
+<span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">
+            Lokasi terverifikasi oleh GPS Logistik JagoFarm
+          </span>
+</div>
+<!-- Catatan Opsional Kurir -->
+<div class="mt-3 pt-2.5 border-t border-outline-variant/30">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1" for="catatan-kurir">
+            Catatan Kurir (Opsional):
+          </label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-2.5 text-outline text-[16px]">edit_note</span>
+<input class="w-full pl-8 pr-3 py-1.5 text-body-sm font-body-sm text-on-surface bg-surface-container-low border border-outline-variant/60 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" id="catatan-kurir" type="text" value="Titipkan di pos satpam depan atau langsung ke area greenhouse tambak timur."/>
+</div>
+</div>
+</section>
+<!-- 3. DAFTAR BARANG BELANJA (2 BARANG) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm space-y-space-md">
+<!-- Subheader Gudang -->
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">storefront</span>
+<span class="font-label-md text-label-md text-primary font-bold">Daftar Produk (2 Barang)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">
+            Hub Surabaya Agrotech
+          </span>
+</div>
+<!-- Item 1: Benih Ikan Mas Koki -->
+<div class="flex gap-space-sm items-start">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 border border-outline-variant/40 relative">
+<img class="w-full h-full object-cover" data-alt="Close up photographic shot of high grade premium Japanese goldfish fry swimming in pristine illuminated aquaculture glass tank water, vivid orange and white scales reflecting soft clean modern laboratory lighting with rich emerald aquatic tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8_G1RxbpFTMlIBniO--yqVHTQvl7QE_liX4P8EGiDIwzPt3EGdTz9Cca6TitXhhQZAgAUokGhnwVEJWfAV9pn4ox-4LkGnBdI0M6Vc4FfXT2jGuWg9hmAfFcDs7wUJMPl4reWqf9b7V0brpdXQk6Jni2MJ-F1Yp72wq6lNzLoaMG9RKHb6ILdnYHK-jqIGwDrKtvM-i9LhBT5gxsbOUUv5W-m6Nf3rJAsnelta0IjNzsPeoOC8RWElg"/>
+<span class="absolute bottom-0 inset-x-0 bg-primary/80 text-white font-label-sm text-[9px] text-center py-0.5">
+              Live Safe
+            </span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<h3 class="font-label-md text-label-md text-on-surface font-bold leading-snug line-clamp-1">
+                Benih Ikan Mas Koki Unggul (Grade A)
+              </h3>
+</div>
+<div class="inline-block mt-0.5">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-surface-container text-primary border border-primary/20">
+                Packing Oksigen
+              </span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 line-clamp-1">
+              Ukuran: 5-7 cm • Paket isi 5 ekor • Garansi Hidup
+            </p>
+<div class="mt-1.5 flex items-baseline justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">2 paket × Rp 75.000</span>
+<span class="font-price-md text-price-md text-primary font-bold">Rp 150.000</span>
+</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant/30"></div>
+<!-- Item 2: Paket IoT Monitoring -->
+<div class="flex gap-space-sm items-start">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 border border-outline-variant/40 relative">
+<img class="w-full h-full object-cover" data-alt="Sleek modern industrial agricultural Internet of Things water telemetry monitoring hub device with digital display sensor probes and antennas, resting in high-tech hydroponic farm setting under soft botanical green ambiance and daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-xggDjStPtmRwXAVPnjRwMU_RwYMbDzaw7-egCPKXKDmUeNKXwOKJsrCoZgVqkHOdttlKzSiebxurPqF6BL5U7XWqKMykbb3FtsSqo5bkKBHUrzshXtLtCUIrFkURVpxRe91VZRXtYm_LooSkaTV5ctA0MoySmbvvxxkxrnw9kDJxdU2qUhU2Tvt3LGx-vENI3qMcN9JcEeWceY6BGa4IYKDOCH-cNghmTVV_sdlq3z-OobhSa7UDHQ"/>
+<span class="absolute bottom-0 inset-x-0 bg-primary-container text-white font-label-sm text-[9px] text-center py-0.5">
+              IoT Pro
+            </span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<h3 class="font-label-md text-label-md text-on-surface font-bold leading-snug line-clamp-1">
+                Paket IoT Monitoring Kolam & Tambak V3
+              </h3>
+</div>
+<div class="inline-block mt-0.5">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-secondary-fixed text-on-secondary-fixed border border-secondary/30">
+                WiFi + 4G LTE
+              </span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 line-clamp-1">
+              Sensor DO, pH, Suhu, Cloud 1 Thn, Garansi 1 Thn
+            </p>
+<div class="mt-1.5 flex items-baseline justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">1 unit × Rp 2.200.000</span>
+<span class="font-price-md text-price-md text-primary font-bold">Rp 2.200.000</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. PILIHAN EKSPEDISI / KURIR PENGIRIMAN -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">local_shipping</span>
+<h2 class="font-label-lg text-label-lg text-primary font-bold">Pilih Ekspedisi / Kurir</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-fixed/40 text-primary font-bold">
+<span class="material-symbols-outlined text-[13px]">shield</span>
+            Proteksi Benih Hidup
+          </span>
+</div>
+<!-- Options Container -->
+<div class="space-y-2 pt-1">
+<!-- Option 1: Terpilih (SiCepat BEST) -->
+<label class="flex items-center justify-between p-3 rounded-lg border-2 border-primary bg-primary-fixed/10 cursor-pointer transition-all duration-150">
+<div class="flex items-center gap-3">
+<input checked="" class="w-4 h-4 text-primary focus:ring-primary border-outline-variant" name="shipping" type="radio"/>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface font-bold">SiCepat BEST</span>
+<span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed">Cepat</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Estimasi Tiba: 1 - 2 Hari</p>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-primary font-bold">Rp 35.000</span>
+</label>
+<!-- Option 2: Special AquaCold -->
+<label class="flex items-center justify-between p-3 rounded-lg border border-outline-variant/60 hover:border-primary/50 bg-surface-container-lowest cursor-pointer transition-all duration-150">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 text-primary focus:ring-primary border-outline-variant" name="shipping" type="radio"/>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Special AquaCold</span>
+<span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold">Coldbox</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sameday Dingin Khusus Biota</p>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Rp 50.000</span>
+</label>
+<!-- Option 3: JNE Trucking -->
+<label class="flex items-center justify-between p-3 rounded-lg border border-outline-variant/60 hover:border-primary/50 bg-surface-container-lowest cursor-pointer transition-all duration-150">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 text-primary focus:ring-primary border-outline-variant" name="shipping" type="radio"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">JNE Trucking (JTR)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Estimasi Tiba: 2 - 3 Hari</p>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Rp 28.000</span>
+</label>
+</div>
+<!-- Asuransi Proteksi Checkbox Aktif -->
+<div class="mt-2.5 p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/40 flex items-start gap-2.5">
+<input checked="" class="w-4 h-4 mt-0.5 rounded text-primary focus:ring-primary border-outline-variant" id="asuransi-checkbox" type="checkbox"/>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface font-bold cursor-pointer" for="asuransi-checkbox">
+                Asuransi Kerusakan Tanaman & Kematian Bibit Ikan
+              </label>
+<span class="font-label-sm text-label-sm text-primary font-bold">+Rp 10.000</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">
+              Garansi klaim penggantian 100% jika benih mati saat sampai atau sensor IoT rusak dalam pengiriman.
+            </p>
+</div>
+</div>
+</section>
+<!-- 5. PILIHAN METODE PEMBAYARAN -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
+<h2 class="font-label-lg text-label-lg text-primary font-bold">Metode Pembayaran</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-[12px] text-primary">lock</span>
+            Aman & Terenkripsi
+          </span>
+</div>
+<div class="space-y-2">
+<!-- Opsi 1: QRIS Terpilih -->
+<label class="block p-3 rounded-lg border-2 border-primary bg-primary-fixed/10 cursor-pointer transition-all duration-150">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<input checked="" class="w-4 h-4 mt-0.5 text-primary focus:ring-primary border-outline-variant" name="payment" type="radio"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-bold">QRIS Instant Pay</span>
+<span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-primary-fixed text-on-primary-fixed">Bebas Biaya</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">
+                    GoPay, OVO, ShopeePay, DANA, BCA Mobile & Livin'
+                  </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">qr_code_scanner</span>
+</div>
+</label>
+<!-- Opsi 2: Virtual Account -->
+<label class="block p-3 rounded-lg border border-outline-variant/60 hover:border-primary/50 bg-surface-container-lowest cursor-pointer transition-all duration-150">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<input class="w-4 h-4 mt-0.5 text-primary focus:ring-primary border-outline-variant" name="payment" type="radio"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Transfer Virtual Account (VA)</span>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">
+                    BCA, Mandiri, BRI, BNI, Permata & BSI
+                  </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">account_balance</span>
+</div>
+</label>
+<!-- Opsi 3: Kartu Kredit / Debit -->
+<label class="block p-3 rounded-lg border border-outline-variant/60 hover:border-primary/50 bg-surface-container-lowest cursor-pointer transition-all duration-150">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<input class="w-4 h-4 mt-0.5 text-primary focus:ring-primary border-outline-variant" name="payment" type="radio"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Kartu Kredit / Debit Online</span>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">
+                    Visa, Mastercard, JCB (3D Secure)
+                  </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">credit_card</span>
+</div>
+</label>
+<!-- Opsi 4: Cicilan Petani Modern / PayLater -->
+<label class="block p-3 rounded-lg border border-outline-variant/60 hover:border-primary/50 bg-surface-container-lowest cursor-pointer transition-all duration-150">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<input class="w-4 h-4 mt-0.5 text-primary focus:ring-primary border-outline-variant" name="payment" type="radio"/>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Cicilan Petani Modern</span>
+<span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed">0% Panen</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">
+                    Bayar pasca-panen s.d 3 bulan khusus kelompok tani terdaftar
+                  </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">agriculture</span>
+</div>
+</label>
+</div>
+</section>
+<!-- 6. KUPON & VOUCHER DISKON -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm">
+<div class="flex items-center gap-1.5 mb-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">confirmation_number</span>
+<h2 class="font-label-lg text-label-lg text-primary font-bold">Kupon & Voucher Diskon</h2>
+</div>
+<div class="flex gap-2">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">sell</span>
+<input aria-label="Kode Voucher JagoFarm" class="w-full pl-9 pr-3 py-2 text-label-md font-label-md text-primary font-bold tracking-wider uppercase bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" type="text" value="JAGOSALE"/>
+</div>
+<button class="px-4 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg active:scale-95 transition-all" type="button">
+            Terpasang
+          </button>
+</div>
+<!-- Voucher Notification -->
+<div class="mt-2.5 flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-label-sm text-label-sm font-bold">
+            Kupon aktif: Hemat Rp 50.000 Spesial Panen!
+          </span>
+</div>
+</section>
+<!-- 7. RINCIAN RINGKASAN BIAYA -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm space-y-2.5">
+<h2 class="font-label-lg text-label-lg text-primary font-bold border-b border-outline-variant/30 pb-2 flex items-center justify-between">
+<span>Ringkasan Pembayaran</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-normal">2 Item Belanja</span>
+</h2>
+<div class="space-y-1.5 font-body-sm text-body-sm">
+<div class="flex justify-between text-on-surface-variant">
+<span>Total Harga (2 Produk)</span>
+<span class="font-medium text-on-surface">Rp 2.350.000</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Biaya Pengiriman (SiCepat BEST)</span>
+<span class="font-medium text-on-surface">Rp 35.000</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Asuransi Proteksi Benih & IoT</span>
+<span class="font-medium text-on-surface">Rp 10.000</span>
+</div>
+<div class="flex justify-between text-primary font-semibold">
+<span>Potongan Voucher Promo (JAGOSALE)</span>
+<span>-Rp 50.000</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Biaya Penanganan / Layanan</span>
+<span class="font-bold text-primary">GRATIS</span>
+</div>
+</div>
+<div class="border-t border-dashed border-outline-variant pt-2.5 mt-2 flex justify-between items-baseline">
+<div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Total Tagihan</span>
+<span class="block font-label-sm text-[10px] text-on-surface-variant">Termasuk PPN 11%</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary font-extrabold tracking-tight">
+            Rp 2.345.000
+          </span>
+</div>
+</section>
+<!-- 8. TRUST BADGES & BANTUAN -->
+<section class="bg-surface-container-high/40 rounded-xl p-3 border border-outline-variant/40 space-y-2">
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center gap-1.5 p-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span class="font-label-sm text-[11px] text-on-surface leading-tight font-semibold">Garansi Bibit Tiba Hidup 100%</span>
+</div>
+<div class="flex items-center gap-1.5 p-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[18px]">build_circle</span>
+<span class="font-label-sm text-[11px] text-on-surface leading-tight font-semibold">Sensor IoT Garansi Resmi 1 Thn</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">headset_mic</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Butuh bantuan teknis pesanan?</span>
+</div>
+<a class="font-label-sm text-label-sm text-primary font-bold hover:underline flex items-center gap-0.5" href="#">
+            Chat WhatsApp
+            <span class="material-symbols-outlined text-[14px]">arrow_outward</span>
+</a>
+</div>
+</section>
+</div>
+<!-- 9. STICKY BOTTOM ACTION BAR (FIXED BOTTOM) -->
+<footer class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 bg-surface/95 backdrop-blur-md px-margin-mobile pt-space-sm pb-5 shadow-[0_-4px_20px_rgba(27,77,62,0.12)] border-t border-outline-variant/30">
+<div class="flex items-center justify-between mb-2">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant font-medium">Total Pembayaran:</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-headline-sm text-primary font-extrabold tracking-tight">
+              Rp 2.345.000
+            </span>
+<span class="font-label-sm text-[10px] text-primary bg-primary-fixed/60 px-1 rounded font-bold">Hemat 50rb</span>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:underline flex items-center gap-0.5" id="btn-detail-toggle" onclick="toggleSummaryModal()" type="button">
+          Lihat Rincian
+          <span class="material-symbols-outlined text-[16px] transition-transform duration-200" id="detail-icon">expand_less</span>
+</button>
+</div>
+<!-- Main Pay CTA Button -->
+<button class="w-full py-3 px-4 rounded-xl bg-primary-container hover:bg-primary text-white font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span>Bayar Sekarang (Rp 2.345.000)</span>
+</button>
+<!-- Mini Trust Footnote -->
+<div class="mt-1.5 flex items-center justify-center gap-2 text-center text-on-surface-variant font-label-sm text-[10px]">
+<span>JagoFarm Pay Secure</span>
+<span>•</span>
+<span>Enkripsi Bank 256-Bit</span>
+</div>
+</footer>
+<!-- POPOVER MODAL DETAIL BIAYA -->
+<div class="hidden fixed inset-x-0 bottom-24 mx-auto w-full max-w-[410px] px-3 z-50 transition-all duration-200" id="summary-modal">
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-2xl border border-outline-variant space-y-2">
+<div class="flex justify-between items-center border-b border-outline-variant/40 pb-2">
+<span class="font-label-md text-label-md text-primary font-bold">Detail Tagihan Pesanan</span>
+<button class="text-on-surface-variant hover:text-primary" onclick="toggleSummaryModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="space-y-1 font-body-sm text-body-sm">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Harga Produk (2 Item)</span>
+<span>Rp 2.350.000</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Ongkos Kirim SiCepat BEST</span>
+<span>Rp 35.000</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Asuransi Biota & IoT</span>
+<span>Rp 10.000</span>
+</div>
+<div class="flex justify-between text-primary font-semibold">
+<span>Voucher Diskon (JAGOSALE)</span>
+<span>-Rp 50.000</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Biaya Penanganan</span>
+<span class="font-bold text-primary">Rp 0 (Gratis)</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+    function toggleSummaryModal() {
+      const modal = document.getElementById('summary-modal');
+      const icon = document.getElementById('detail-icon');
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      } else {
+        modal.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+      }
+    }
+  </script>
+</body></html>

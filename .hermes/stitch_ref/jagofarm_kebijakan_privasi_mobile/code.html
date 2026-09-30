@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Kebijakan Privasi - JagoFarm Mobile</title>
+<!-- Material Symbols Font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans Typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim as instructed -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ba1a1a",
+            "surface-container": "#e7eeff",
+            "inverse-primary": "#9ed1bd",
+            "surface-dim": "#cfdaf2",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary": "#7f5700",
+            "surface-container-high": "#dee8ff",
+            "on-background": "#111c2d",
+            "on-surface-variant": "#404945",
+            "surface-container-low": "#f0f3ff",
+            "on-error": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-container": "#32c98f",
+            "outline-variant": "#c0c9c3",
+            "secondary-fixed-dim": "#fdba45",
+            "on-primary-container": "#8abda9",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#ecf1ff",
+            "primary-fixed": "#baeed9",
+            "secondary-container": "#fdba45",
+            "tertiary": "#003623",
+            "secondary-fixed": "#ffdeae",
+            "on-error-container": "#93000a",
+            "primary": "#003629",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#263143",
+            "surface-container-highest": "#d8e3fb",
+            "surface-variant": "#d8e3fb",
+            "on-secondary-container": "#6f4b00",
+            "surface-tint": "#376757",
+            "outline": "#707974",
+            "on-secondary-fixed-variant": "#604100",
+            "background": "#f9f9ff",
+            "surface-bright": "#f9f9ff",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-secondary-fixed": "#281900",
+            "error-container": "#ffdad6",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-surface": "#111c2d",
+            "primary-container": "#1b4d3e",
+            "on-primary-fixed": "#002117",
+            "on-tertiary-fixed": "#002113",
+            "tertiary-container": "#004f35",
+            "on-tertiary-fixed-variant": "#005236",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface": "#f9f9ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "gutter": "1.25rem",
+            "gutter-mobile": "0.75rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Main Mobile Container (Centered Smartphone Frame) -->
+<div class="w-full max-w-[428px] min-h-screen bg-background relative flex flex-col pb-28 shadow-2xl">
+<!-- Top Bar / App Header (Docked full-width top) -->
+<header class="fixed top-0 left-0 right-0 max-w-[428px] mx-auto w-full z-50 flex items-center justify-between px-margin-mobile py-space-sm bg-surface/90 backdrop-blur-md shadow-sm transition-all duration-200">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Kembali" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition-all text-primary" onclick="history.back()" type="button">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">Kebijakan Privasi</h1>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Bagikan Dokumen" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition-all text-on-surface-variant" onclick="if(navigator.share){navigator.share({title:'Kebijakan Privasi JagoFarm',url:window.location.href});}" type="button">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+<button aria-label="Unduh PDF" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition-all text-primary-container" type="button">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas Starts (Offset for Top Bar) -->
+<main class="mt-14 px-margin-mobile pt-space-md flex-1">
+<!-- Hero / Header Section -->
+<section class="space-y-space-sm pb-space-sm">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified_user">verified_user</span>
+<span>Kepatuhan UU PDP No. 27/2022</span>
+</div>
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-primary tracking-tight">
+          Kebijakan Privasi
+        </h2>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+          Bagaimana JagoFarm mengumpulkan, menggunakan, dan melindungi data pribadi petani, tambak, dan pelanggan cerdas kami secara bertanggung jawab.
+        </p>
+<!-- Meta Info Pills -->
+<div class="flex flex-wrap items-center gap-2 pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="update">update</span>
+<span>24 September 2026</span>
+</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+<span>4 mnt baca</span>
+</span>
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary text-on-primary text-label-sm font-label-sm ml-auto active:scale-95 transition-transform shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span>Unduh PDF</span>
+</button>
+</div>
+<!-- Notification Banner Persetujuan -->
+<div class="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start gap-3 mt-space-sm shadow-sm">
+<span class="material-symbols-outlined text-primary-container text-[20px] mt-0.5" data-icon="info">info</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Dengan membuat akun, berbelanja sarana pertanian, atau konsultasi IoT di JagoFarm, Anda menyetujui ketentuan ini secara penuh.
+          </p>
+</div>
+</section>
+<!-- Interactive Sticky Table of Contents Pill Bar -->
+<section class="sticky top-14 z-40 -mx-margin-mobile px-margin-mobile py-2.5 bg-surface/95 backdrop-blur-md">
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-0.5" id="navChips">
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-primary text-on-primary shadow-sm transition-transform active:scale-95" href="#section-1">1. Data Dikumpulkan</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-2">2. Tujuan</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-3">3. Pihak Ketiga</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-4">4. Cookie</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-5">5. Retensi</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-6">6. Keamanan</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-7">7. Hak Pengguna</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-8">8. Anak-anak</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-9">9. Perubahan</a>
+<a class="whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95" href="#section-10">10. Kontak DPO</a>
+</div>
+</section>
+<!-- Policy Cards List -->
+<div class="mt-space-md space-y-space-md">
+<!-- Bagian 1: Data yang Kami Kumpulkan -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-1">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">1</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="inventory">inventory</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Data yang Kami Kumpulkan</h3>
+</div>
+<ul class="space-y-space-sm text-body-sm font-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="check_circle">check_circle</span>
+<div>
+<strong class="text-on-surface">Data Identitas &amp; Kontak:</strong> nama lengkap, alamat email aktif, nomor telepon/WhatsApp terverifikasi.
+              </div>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="check_circle">check_circle</span>
+<div>
+<strong class="text-on-surface">Data Pengiriman:</strong> nama penerima, kontak darurat, dan titik koordinat/alamat detail tambak atau lahan kebun Anda.
+              </div>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="check_circle">check_circle</span>
+<div>
+<strong class="text-on-surface">Data Akun &amp; IoT:</strong> kata sandi terenkripsi (hash), konfigurasi telemetri kit sensor kolam/hidroponik.
+              </div>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="check_circle">check_circle</span>
+<div>
+<strong class="text-on-surface">Riwayat Pesanan:</strong> produk bibit, pakan, pompa, nilai transaksi, status logistik &amp; metode pembayaran.
+              </div>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="check_circle">check_circle</span>
+<div>
+<strong class="text-on-surface">Data Teknis:</strong> alamat IP perangkat, jenis browser, serta interaksi katalog produk.
+              </div>
+</li>
+</ul>
+<div class="mt-space-sm p-space-sm rounded-lg bg-surface-container-low text-body-sm font-body-sm text-on-surface-variant flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="lock">lock</span>
+<span>JagoFarm <strong>tidak pernah menyimpan data kartu kredit/debit</strong>. Pemrosesan dilakukan langsung oleh gerbang pembayaran berlisensi Bank Indonesia (PCI-DSS Compliant).</span>
+</div>
+</article>
+<!-- Bagian 2: Tujuan Penggunaan Data -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-2">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">2</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="track_changes">track_changes</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Tujuan Penggunaan Data</h3>
+</div>
+<div class="space-y-2.5 text-body-sm font-body-sm text-on-surface-variant">
+<div class="p-2.5 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="font-bold text-on-surface block">Pemrosesan &amp; Pemenuhan Pesanan</span>
+              Memverifikasi transaksi, mengemas input biologi/alat, dan mengirim invoice resmi.
+            </div>
+<div class="p-2.5 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="font-bold text-on-surface block">Logistik Sarana Produksi Budidaya</span>
+              Menyerahkan data penjemputan &amp; titik antar ke kurir logistik khusus tambak/tanaman.
+            </div>
+<div class="p-2.5 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="font-bold text-on-surface block">Layanan Konsultasi &amp; Garansi</span>
+              Merespons tiket kendala budidaya, klaim garansi bibit hidup, dan panduan agronomis.
+            </div>
+<div class="p-2.5 rounded-lg bg-surface-bright border border-outline-variant/40">
+<span class="font-bold text-on-surface block">Keamanan &amp; Kepatuhan Hukum</span>
+              Mencegah tindak manipulasi kupon, pencucian uang, dan pengarsipan faktur pajak resmi.
+            </div>
+</div>
+</article>
+<!-- Bagian 3: Pihak Ketiga yang Terlibat -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-3">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">3</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="group">group</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Pihak Ketiga Terkait</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-space-sm">
+            Data hanya diteruskan kepada mitra resmi yang mematuhi standar kerahasiaan ketat:
+          </p>
+<div class="grid grid-cols-2 gap-2 text-body-sm font-body-sm">
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/40">
+<div class="flex items-center gap-1 font-bold text-on-surface mb-1">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="payments">payments</span>
+                Midtrans
+              </div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] leading-tight">Payment gateway bank, VA, QRIS, &amp; e-wallet.</p>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/40">
+<div class="flex items-center gap-1 font-bold text-on-surface mb-1">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="local_shipping">local_shipping</span>
+                Kurir Logistik
+              </div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] leading-tight">JNE, SiCepat, AnterAja, &amp; kargo tambak resmi.</p>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/40">
+<div class="flex items-center gap-1 font-bold text-on-surface mb-1">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="database">database</span>
+                Supabase
+              </div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] leading-tight">Penyimpanan basis data cloud terenkripsi aman.</p>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/40">
+<div class="flex items-center gap-1 font-bold text-on-surface mb-1">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="mail">mail</span>
+                Resend Cloud
+              </div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] leading-tight">Pengiriman faktur &amp; verifikasi OTP keamanan.</p>
+</div>
+</div>
+</article>
+<!-- Bagian 4: Cookie & Teknologi Serupa -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-4">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">4</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="cookie">cookie</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Cookie &amp; Teknologi Serupa</h3>
+</div>
+<ul class="space-y-2 text-body-sm font-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span><strong>Cookie Sesi:</strong> Menjaga status autentikasi login Anda tetap aman saat berpindah halaman.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span><strong>Keranjang Belanja:</strong> Menyimpan barang perlengkapan akuakultur yang dipilih tanpa hilang.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span><strong>Preferensi:</strong> Mengingat filter kategori budidaya dan preferensi kurir.</span>
+</li>
+</ul>
+</article>
+<!-- Bagian 5: Retensi Data -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-5">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">5</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="history_toggle_off">history_toggle_off</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Retensi &amp; Penyimpanan</h3>
+</div>
+<div class="border-l-2 border-primary pl-3 space-y-2 text-body-sm font-body-sm text-on-surface-variant">
+<p><strong>Akun Aktif:</strong> Disimpan selama Anda aktif berinteraksi dengan ekosistem JagoFarm.</p>
+<p><strong>Arsip Finansial:</strong> Dokumen pembayaran disimpan minimum <strong>5 tahun</strong> sesuai perundangan pembukuan &amp; audit perpajakan RI.</p>
+<p><strong>Inaktivitas:</strong> Akun non-aktif selama <strong>24 bulan</strong> akan dianonimkan secara otomatis dari basis data pemasaran.</p>
+</div>
+</article>
+<!-- Bagian 6: Keamanan & Enkripsi Data -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-6">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">6</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="shield">shield</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Keamanan Data</h3>
+</div>
+<div class="space-y-space-sm text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="https">https</span>
+<p>Seluruh transmisi lalu lintas terenkripsi protokol SSL/TLS v1.3 berstandar perbankan.</p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="key">key</span>
+<p>Kata sandi disimpan menggunakan fungsi hashing irreversible satu arah yang aman.</p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="admin_panel_settings">admin_panel_settings</span>
+<p>Hak akses personil dibatasi dengan autentikasi multi-faktor (MFA) dan audit berkala.</p>
+</div>
+</div>
+</article>
+<!-- Bagian 7: Hak Anda atas Data Pribadi -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-7">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">7</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="gavel">gavel</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Hak Anda atas Data Pribadi</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-space-sm">
+            Sesuai UU Perlindungan Data Pribadi (UU PDP), Anda memiliki hak penuh untuk:
+          </p>
+<div class="grid grid-cols-1 gap-2 text-body-sm font-body-sm text-on-surface">
+<div class="p-2.5 bg-surface-bright rounded-lg border border-outline-variant/50">
+<strong class="text-primary block">Hak Akses &amp; Transparansi</strong>
+              Meminta salinan rekam jejak informasi pribadi yang tersimpan.
+            </div>
+<div class="p-2.5 bg-surface-bright rounded-lg border border-outline-variant/50">
+<strong class="text-primary block">Hak Koreksi &amp; Pembaruan</strong>
+              Memperbarui alamat pengiriman tambak, nama pemegang akun, atau kontak.
+            </div>
+<div class="p-2.5 bg-surface-bright rounded-lg border border-outline-variant/50">
+<strong class="text-primary block">Hak Penghapusan (Right to be Forgotten)</strong>
+              Meminta penutupan akun dan penghapusan data identitas permanen.
+            </div>
+</div>
+<a class="mt-space-sm inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl bg-primary-container text-on-primary text-label-md font-label-md shadow-sm active:scale-95 transition-all" href="#section-10">
+<span class="material-symbols-outlined text-[18px] mr-1.5" data-icon="contact_support">contact_support</span>
+            Ajukan Permintaan Hak Data
+          </a>
+</article>
+<!-- Bagian 8: Kebijakan Data Anak-anak -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-8">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">8</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="child_care">child_care</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Data Anak-anak</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+            Layanan JagoFarm ditujukan untuk pelaku usaha tani dan masyarakat berusia di atas 18 tahun. Kami tidak secara sengaja menghimpun data anak tanpa persetujuan orang tua atau wali terdaftar.
+          </p>
+</article>
+<!-- Bagian 9: Pembaruan Kebijakan -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-9">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">9</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="published_with_changes">published_with_changes</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Perubahan Kebijakan</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+            Kami berkala menyelaraskan kebijakan ini dengan pembaruan teknologi dan regulasi agribisnis Indonesia. Notifikasi signifikan akan dikirimkan melalui aplikasi atau email sebelum tanggal efektif.
+          </p>
+</article>
+<!-- Bagian 10: Kontak & Petugas DPO -->
+<article class="scroll-mt-28 p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/70 shadow-sm transition-all" id="section-10">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-label-md">10</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="support_agent">support_agent</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Kontak Saluran DPO</h3>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-2.5 text-body-sm font-body-sm">
+<div class="font-bold text-on-surface">JagoFarm — Perlindungan Data Pribadi</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="alternate_email">alternate_email</span>
+<a class="text-primary font-medium underline" href="mailto:dpo@jagofarm.id">dpo@jagofarm.id</a> / <a class="text-primary font-medium underline" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="call">call</span>
+<span>+62 812-3456-7890 (08.00 - 20.00 WIB)</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="location_on">location_on</span>
+<span>Jl. Pertanian No. 123, Surabaya, Jawa Timur 60111</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Legal Disclaimer Footer Notes -->
+<footer class="mt-space-lg mb-space-md p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/60 text-body-sm font-body-sm text-on-surface-variant space-y-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-outline text-[18px] mt-0.5" data-icon="policy">policy</span>
+<div>
+<p><strong>Catatan Hukum:</strong> Dokumen ini disusun sebagai wujud kepatuhan terhadap UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi di Republik Indonesia.</p>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/40 flex flex-wrap gap-x-3 gap-y-1 text-label-sm font-label-sm text-primary">
+<a class="underline hover:text-primary-container" href="#">Kebijakan Pengiriman</a>
+<span>•</span>
+<a class="underline hover:text-primary-container" href="#">Kebijakan Pengembalian</a>
+<span>•</span>
+<a class="underline hover:text-primary-container" href="#">Syarat &amp; Ketentuan</a>
+</div>
+<p class="text-[11px] text-outline pt-1 text-center">
+          © 2026 JagoFarm. All rights reserved.
+        </p>
+</footer>
+</main>
+<!-- BottomNavBar (Docked full-width bottom with 4 destinations: Beranda, Katalog, Konsultasi, Akun) -->
+<!-- Applying exact JSON styles & Shared Component Semantic Rules -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-[428px] mx-auto w-full z-50 flex justify-around items-center px-margin-mobile py-space-xs bg-surface/95 backdrop-blur-md shadow-sm">
+<!-- Destination 1: Beranda -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm">Beranda</span>
+</a>
+<!-- Destination 2: Katalog -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-label-sm font-label-sm">Katalog</span>
+</a>
+<!-- Destination 3: Konsultasi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-label-sm font-label-sm">Konsultasi</span>
+</a>
+<!-- Destination 4: Akun (Active State for Privacy Policy sub-context) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold py-1 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-label-sm font-label-sm">Akun</span>
+</a>
+</nav>
+</div>
+<!-- Interactive active tab chip scroll script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chips = document.querySelectorAll('#navChips a');
+      chips.forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          chips.forEach(c => {
+            c.className = "whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-transform active:scale-95";
+          });
+          chip.className = "whitespace-nowrap px-3 py-1.5 rounded-full text-label-md font-label-md bg-primary text-on-primary shadow-sm transition-transform active:scale-95";
+        });
+      });
+    });
+  </script>
+</body></html>

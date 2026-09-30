@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin JagoFarm - Kelola Produk &amp; Quick Action Drawer</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#baeed9",
+            "secondary-container": "#fdba45",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-bright": "#f9f9ff",
+            "on-tertiary-container": "#32c98f",
+            "tertiary": "#003623",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#263143",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-secondary": "#ffffff",
+            "surface-tint": "#376757",
+            "outline": "#707974",
+            "secondary-fixed": "#ffdeae",
+            "surface-dim": "#cfdaf2",
+            "outline-variant": "#c0c9c3",
+            "surface-variant": "#d8e3fb",
+            "inverse-on-surface": "#ecf1ff",
+            "secondary": "#7f5700",
+            "background": "#f9f9ff",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#8abda9",
+            "on-primary-fixed-variant": "#1d4f40",
+            "secondary-fixed-dim": "#fdba45",
+            "primary": "#003629",
+            "on-secondary-fixed": "#281900",
+            "on-error-container": "#93000a",
+            "inverse-primary": "#9ed1bd",
+            "surface-container-low": "#f0f3ff",
+            "on-surface-variant": "#404945",
+            "surface-container-high": "#dee8ff",
+            "surface-container": "#e7eeff",
+            "on-background": "#111c2d",
+            "surface-container-highest": "#d8e3fb",
+            "on-surface": "#111c2d",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed": "#002117",
+            "primary-container": "#1b4d3e",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-container": "#6f4b00",
+            "on-error": "#ffffff",
+            "on-primary": "#ffffff",
+            "surface": "#f9f9ff",
+            "on-secondary-fixed-variant": "#604100",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary-container": "#004f35"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.25rem",
+            "gutter-mobile": "0.75rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "price-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- Top App Bar Navigation Anchor (Shared Component Execution) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 sticky z-30">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-6">
+<a class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight flex items-center gap-2" href="#">
+<span class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="potted_plant">potted_plant</span>
+</span>
+<span>JagoFarm</span>
+<span class="text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed-variant px-2 py-0.5 rounded-full ml-1 font-semibold">Admin</span>
+</a>
+<!-- Global Search Bar as per style guide -->
+<div class="hidden lg:flex items-center relative w-80">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px]" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-bright border border-outline-variant rounded-full text-body-sm focus:outline-none focus:border-primary-container text-on-surface placeholder:text-outline transition-all" placeholder="Cari SKU, produk, filter stok..." type="text" value="Benih Ikan Mas"/>
+<button class="absolute right-3 text-outline hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="cancel">cancel</span>
+</button>
+</div>
+</div>
+<!-- Nav Links & Trailing Actions -->
+<div class="flex items-center gap-5">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-label-lg font-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Kategori</a>
+<a class="text-label-lg font-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Set Tambak</a>
+<a class="text-label-lg font-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">IoT &amp; Smart Farming</a>
+<a class="text-label-lg font-label-lg text-primary font-bold transition-colors border-b-2 border-primary-container pb-1" href="#">Konsultasi</a>
+</nav>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+<button class="relative p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Keranjang &amp; Aktivitas">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-secondary-container rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<div class="flex items-center gap-2 pl-1 cursor-pointer group">
+<span class="material-symbols-outlined text-[32px] text-primary" data-icon="account_circle">account_circle</span>
+<div class="hidden sm:flex flex-col text-left">
+<span class="text-label-md font-label-md text-on-surface group-hover:text-primary leading-tight font-bold">Admin Agribisnis</span>
+<span class="text-label-sm font-label-sm text-outline">Tambak &amp; Horti A1</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-outline group-hover:text-primary" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Admin Main Console Container -->
+<div class="flex-1 flex max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 relative">
+<!-- Left Navigation Bar (Dark Forest Green Theme #0f3d2e) -->
+<aside class="hidden lg:flex flex-col w-64 rounded-xl bg-primary text-on-primary p-4 shrink-0 shadow-lg justify-between h-[calc(100vh-140px)] sticky top-24">
+<div class="space-y-6">
+<!-- Store status -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-tertiary-container/80 border border-tertiary-fixed-dim/20">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest/10 flex items-center justify-center text-tertiary-fixed">
+<span class="material-symbols-outlined text-[24px]" data-icon="water_drop">water_drop</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-surface-container-lowest font-bold">AgriAquae Sentra</h4>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-primary-fixed">Toko Aktif (Siap Jual)</span>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="space-y-1.5">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-primary-fixed hover:bg-tertiary-container transition-colors text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span>Ringkasan Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-primary-container text-on-primary font-bold shadow-sm text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>
+<span>Katalog &amp; Stok Produk</span>
+<span class="ml-auto bg-secondary-container text-on-secondary-fixed text-label-sm font-label-sm px-2 py-0.5 rounded-full font-bold">48</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-primary-fixed hover:bg-tertiary-container transition-colors text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="local_shipping">local_shipping</span>
+<span>Pesanan &amp; Pengiriman</span>
+<span class="ml-auto bg-error text-on-error text-label-sm font-label-sm px-1.5 py-0.5 rounded-full">3</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-primary-fixed hover:bg-tertiary-container transition-colors text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="sensors">sensors</span>
+<span>Sensor &amp; Smart IoT</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-primary-fixed hover:bg-tertiary-container transition-colors text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="analytics">analytics</span>
+<span>Laporan Hasil Panen</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-primary-fixed hover:bg-tertiary-container transition-colors text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="support_agent">support_agent</span>
+<span>Konsultasi Pakar</span>
+</a>
+</nav>
+</div>
+<!-- Quick Tips Card -->
+<div class="p-3.5 rounded-xl bg-tertiary-container/60 border border-primary-fixed/20 space-y-2">
+<div class="flex items-center gap-2 text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-[18px]" data-icon="lightbulb">lightbulb</span>
+<span class="text-label-md font-label-md font-bold">Tips Restock Cepat</span>
+</div>
+<p class="text-body-sm font-body-sm text-primary-fixed text-xs leading-relaxed">
+          Gunakan tombol <span class="font-bold underline">Titik Tiga (•••)</span> di tabel untuk menyesuaikan kuota stok benih segar dalam hitungan detik.
+        </p>
+</div>
+</aside>
+<!-- Main Workspace Area -->
+<main class="flex-1 min-w-0 flex flex-col space-y-5">
+<!-- Breadcrumb & Top Bar -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-outline mb-1">
+<span>Katalog Agri</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-medium">Semua Produk Tambak &amp; Benih</span>
+</div>
+<h1 class="text-headline-md font-headline-md text-primary font-bold">Kelola Inventaris &amp; Produk</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant bg-surface-container-lowest rounded-md text-label-lg font-label-lg text-on-surface hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_download">file_download</span>
+<span>Ekspor CSV</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary rounded-md text-label-lg font-label-lg hover:bg-primary transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+<span>Tambah Produk Baru</span>
+</button>
+</div>
+</div>
+<!-- Quick Metrics Summary strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Total Produk</span>
+<p class="text-headline-sm font-headline-sm font-bold text-on-surface mt-0.5">48 SKU</p>
+<span class="text-label-sm font-label-sm text-on-tertiary-container font-medium">32 Siap Jual</span>
+</div>
+<span class="w-10 h-10 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Stok Kritis / Menipis</span>
+<p class="text-headline-sm font-headline-sm font-bold text-error mt-0.5">4 Produk</p>
+<span class="text-label-sm font-label-sm text-error font-medium">Perlu restock segera</span>
+</div>
+<span class="w-10 h-10 rounded-full bg-error-container/60 flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Performa Konversi</span>
+<p class="text-headline-sm font-headline-sm font-bold text-primary mt-0.5">3.8%</p>
+<span class="text-label-sm font-label-sm text-on-tertiary-container font-medium">+0.6% minggu ini</span>
+</div>
+<span class="w-10 h-10 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Nilai Inventaris</span>
+<p class="text-headline-sm font-headline-sm font-bold text-on-surface mt-0.5">Rp 84.5M</p>
+<span class="text-label-sm font-label-sm text-outline font-medium">Dalam 5 gudang tambak</span>
+</div>
+<span class="w-10 h-10 rounded-full bg-secondary-fixed/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</span>
+</div>
+</div>
+<!-- Product Table Container with Floating Context Menu Highlight -->
+<div class="bg-surface-container-lowest rounded-xl border border-slate-200 shadow-sm overflow-visible flex flex-col relative">
+<!-- Table Filter & Search Controls Header -->
+<div class="p-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-surface-container-low/40 rounded-t-xl">
+<div class="flex items-center gap-2 flex-wrap">
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-primary-container text-on-primary font-bold shadow-sm">
+              Semua (48)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+              Benih &amp; Bibit (14)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+              Peralatan Tambak (18)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+              Smart IoT (9)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+              Pakan &amp; Nutrisi (7)
+            </button>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg px-2.5 py-1.5 text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] mr-1.5 text-outline" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm">Status: Aktif &amp; Draf</span>
+</div>
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg px-2.5 py-1.5 text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] mr-1.5 text-outline" data-icon="swap_vert">swap_vert</span>
+<span class="text-label-sm font-label-sm">Urutkan: Terbaru</span>
+</div>
+</div>
+</div>
+<!-- Table View with ACTIVE 3-DOTS ACTION POPUP on Row 1 -->
+<div class="overflow-x-auto min-h-[460px]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-200 text-label-sm font-label-sm text-outline bg-surface-container-low/20 uppercase tracking-wider">
+<th class="py-3 px-4 w-12 text-center">
+<input class="rounded text-primary-container focus:ring-primary-container border-outline-variant" type="checkbox"/>
+</th>
+<th class="py-3 px-4 font-semibold">Produk &amp; SKU</th>
+<th class="py-3 px-4 font-semibold">Kategori</th>
+<th class="py-3 px-4 font-semibold">Harga Jual</th>
+<th class="py-3 px-4 font-semibold">Sisa Stok</th>
+<th class="py-3 px-4 font-semibold">Status</th>
+<th class="py-3 px-4 font-semibold text-center w-24">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-body-md font-body-md">
+<!-- ROW 1: BENIH IKAN MAS KOKI - ACTIVE ROW WITH DROPDOWN MENU ACTIVE -->
+<tr class="bg-primary-fixed/15 hover:bg-primary-fixed/25 transition-colors relative z-20">
+<td class="py-4 px-4 text-center">
+<input checked="" class="rounded text-primary-container focus:ring-primary-container border-outline-variant" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant shrink-0 bg-surface-container-low" data-alt="High quality close up photography of vibrant ornamental Goldfish swimming in pristine aerated pond water, crisp studio agricultural lighting, natural organic tones with rich emerald water highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJccP8lJOps1dMC7QaNs8xK9utUO3PFHNMK5IzCk2sJ7Un1AuRuVDSWQmnmXFAnQpftqZwGGna6vY_ZvzzJrafFUFz5LpyFG8QNpJrNpIItZXbFWj3BajKv74at7MKLnQO5W8yHFHjUOPJ3JUtf7MUpreY-yL_QIViDmJ7y2aa7C-si4C9BNfvzI44TF_L0_j1DQwDs-HBbDUw8ZspmGvO0zqsw0wnGSziNI9gdYNB7sTLcCgzyBgOCg"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-lg font-label-lg text-primary font-bold hover:underline cursor-pointer">Benih Ikan Mas Koki (5 ekor)</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-amber-100 text-amber-900 border border-amber-300 font-bold">Unggulan</span>
+</div>
+<span class="text-body-sm font-body-sm text-outline font-mono">SKU: JGF-BKO-0091</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="waves">waves</span>
+                    Anakan Ikan
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-price-md font-price-md text-on-surface font-bold">Rp 75.000</span>
+<span class="block text-body-sm font-body-sm text-outline">Grosir: Rp 68.000</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span class="font-bold text-on-surface">41</span>
+<span class="text-outline text-xs">ekor</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-tertiary-container font-medium">Stok Aman</span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Aktif
+                  </span>
+</td>
+<td class="py-4 px-4 text-center relative">
+<!-- ACTIVE 3-DOT BUTTON WITH ACTIVE STATE HIGHLIGHT -->
+<div class="relative inline-block text-left">
+<button class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md ring-4 ring-primary-fixed/50 hover:bg-primary transition-all" id="btn-active-more">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+<!-- DROPDOWN POPUP AKSI TITIK TIGA (CONTEXT MENU) EXACTLY AS REQUESTED -->
+<div class="absolute right-0 mt-2 w-64 bg-surface-container-lowest rounded-xl shadow-2xl border border-slate-200 z-50 py-1.5 animate-in fade-in zoom-in-95 duration-150" id="context-dropdown-menu">
+<div class="px-3.5 py-2 border-b border-slate-100 flex items-center justify-between">
+<span class="text-label-sm font-label-sm uppercase font-bold text-outline">Aksi Cepat Produk</span>
+<span class="text-label-sm font-label-sm text-primary font-mono">#0091</span>
+</div>
+<div class="py-1">
+<!-- 1. Lihat Detail Cepat -->
+<button class="w-full text-left px-3.5 py-2.5 text-label-md font-label-md text-on-surface hover:bg-surface-container-high/60 flex items-center gap-2.5 transition-colors group" onclick="openDrawer()">
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform" data-icon="visibility">visibility</span>
+<span class="font-semibold text-primary">Lihat Detail Cepat (Drawer)</span>
+<span class="ml-auto text-label-sm font-label-sm bg-primary-fixed text-primary px-1.5 py-0.5 rounded text-[10px]">Aktif</span>
+</button>
+<!-- 2. Edit Data Produk -->
+<a class="w-full text-left px-3.5 py-2 text-label-md font-label-md text-on-surface hover:bg-surface-container-high/60 flex items-center gap-2.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="edit">edit</span>
+<span>Edit Data Produk</span>
+</a>
+<!-- 3. Kelola Stok & Harga Cepat -->
+<button class="w-full text-left px-3.5 py-2 text-label-md font-label-md text-on-surface hover:bg-surface-container-high/60 flex items-center gap-2.5 transition-colors" onclick="openDrawer()">
+<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="tune">tune</span>
+<span>Kelola Stok &amp; Harga Cepat</span>
+</button>
+<!-- 4. Duplikasi Produk -->
+<button class="w-full text-left px-3.5 py-2 text-label-md font-label-md text-on-surface hover:bg-surface-container-high/60 flex items-center gap-2.5 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="content_copy">content_copy</span>
+<span>Duplikasi Produk</span>
+</button>
+<!-- 5. Nonaktifkan / Sembunyikan -->
+<button class="w-full text-left px-3.5 py-2 text-label-md font-label-md text-on-surface hover:bg-surface-container-high/60 flex items-center gap-2.5 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="visibility_off">visibility_off</span>
+<span>Nonaktifkan / Sembunyikan</span>
+</button>
+</div>
+<div class="border-t border-slate-100 pt-1 mt-1">
+<!-- 6. Hapus / Arsipkan Produk (Merah Error) -->
+<button class="w-full text-left px-3.5 py-2 text-label-md font-label-md text-error hover:bg-error-container/40 flex items-center gap-2.5 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-error" data-icon="delete">delete</span>
+<span class="font-semibold">Hapus / Arsipkan Produk</span>
+</button>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- ROW 2: SENSOR IOT KUALITAS AIR -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="rounded text-primary-container focus:ring-primary-container border-outline-variant" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant shrink-0 bg-surface-container-low" data-alt="Modern high precision IoT digital water probe sensor designed for aquaculture water quality testing, sleek industrial casing in dark green and white with waterproof digital connector on clean studio tabletop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9nyip85elezPu4Ou1uuV5XzZ_qBuSXErw9e02ll_bMpFzMJrA8YraI6PiJuFWLYSgnDNSp-vdZgkXUTcOalUVcTkJmoIPqKKoUJ3wMgZTG6akN1dF5wJbppSh2aliSZ3OoD6el7A6nzF-ih7zAHs9tsZP9VqJvoqZibexpf6aQKFIiprC5enhnsGgi_PMgYRA_CHmhG8p8LpQXMRAV2eEtoYOiPV4abRPKPSZSvvS__0DHS8eA04YsQ"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-lg font-label-lg text-on-surface font-semibold hover:text-primary cursor-pointer">Sensor IoT pH &amp; DO Tambak V3</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold">Smart IoT</span>
+</div>
+<span class="text-body-sm font-body-sm text-outline font-mono">SKU: JGF-IOT-0442</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="sensors">sensors</span>
+                    IoT &amp; Sensor
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-price-md font-price-md text-on-surface font-bold">Rp 1.450.000</span>
+<span class="block text-body-sm font-body-sm text-outline">Garansi 1 Tahun</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span class="font-bold text-on-surface">18</span>
+<span class="text-outline text-xs">unit</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-tertiary-container font-medium">Stok Aman</span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Aktif
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- ROW 3: AERATOR O2 2HP -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="rounded text-primary-container focus:ring-primary-container border-outline-variant" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant shrink-0 bg-surface-container-low" data-alt="Heavy duty electric paddlewheel aerator designed for shrimp and fish pond farming, durable floating pontoons in bright orange and stainless steel motor shaft against clean white studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2yBSMuU946TGn_sanBfqxxw11mjGTyS5ExzLCnKXjKwbmGgjx200XgUJvPP5EivQ1sFrbJrDasGU2HCisRf-QwOMLCI1gqG-cOy0Vu1OQLE1JW8Qr_5_oRFBgphoLYIFQKrOVK28oMpqbpxFfdhcVetPvowByn9gCb-63zX89-ShqAAaAHXXFyjmcuNuxTsSiHKEx1HpSNWcxKSrPoUC7xa-NN8SJTjeP_wXYX6k9kwg__bc6rA-DYg"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-lg font-label-lg text-on-surface font-semibold hover:text-primary cursor-pointer">Kincir Air Aerator Tambak 2 HP</span>
+</div>
+<span class="text-body-sm font-body-sm text-outline font-mono">SKU: JGF-KNC-0105</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="settings_input_component">settings_input_component</span>
+                    Set Tambak
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-price-md font-price-md text-on-surface font-bold">Rp 3.850.000</span>
+<span class="block text-body-sm font-body-sm text-outline">Kapasitas 4 Kipas</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+<span class="font-bold text-amber-700">3</span>
+<span class="text-outline text-xs">set</span>
+</div>
+<span class="text-label-sm font-label-sm text-secondary font-medium">Sisa Sedikit</span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Aktif
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- ROW 4: PROBIOTIK BIOFLOK CAIR -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="rounded text-primary-container focus:ring-primary-container border-outline-variant" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant shrink-0 bg-surface-container-low" data-alt="Commercial organic biofloc liquid probiotic bottle 1 Liter container for pond microbial balance, crisp white bottle with green typography label on minimalist agricultural presentation stage" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcTVWjt5VxUinXAiizldFH5j41yQf0r64cKNY73d01JM1WL4Rl1HJp8zcQfTqiw9WauMmn7vfGP8gSoK7UacTwnWpP0ddpAVNwBZfymIhjBfRFtuq9a9j6yniVpG8nl4MclDaBEENhqeezAvztzCFi0TBLc36zLPTeMMpAHx6mLcM9NjMC5vq-KLct_qJIwIqAaKlZ9eahxAx5kCmxGfWRqh7yHFHTd5JZ-pEHh_ORIiiopQJjQGIzsw"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-lg font-label-lg text-on-surface font-semibold hover:text-primary cursor-pointer">Probiotik Bioflok Ekstra 1 Liter</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-rose-100 text-rose-900 border border-rose-200 font-bold">Diskon 15%</span>
+</div>
+<span class="text-body-sm font-body-sm text-outline font-mono">SKU: JGF-BIO-0887</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="science">science</span>
+                    Pakan &amp; Bio-Input
+                  </span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-baseline gap-1.5">
+<span class="text-price-md font-price-md text-on-surface font-bold">Rp 85.000</span>
+<span class="text-body-sm font-body-sm line-through text-outline">Rp 100.000</span>
+</div>
+<span class="block text-body-sm font-body-sm text-outline">Per botol 1000ml</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span class="font-bold text-on-surface">112</span>
+<span class="text-outline text-xs">botol</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-tertiary-container font-medium">Stok Melimpah</span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Aktif
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Footer -->
+<div class="p-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-body-sm font-body-sm text-outline">
+<div class="flex items-center gap-2">
+<span>Menampilkan 1 - 4 dari 48 produk</span>
+<span class="text-outline-variant">|</span>
+<span class="text-on-surface font-medium">1 baris dipilih</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="px-2.5 py-1.5 border border-outline-variant rounded-md hover:bg-surface-container disabled:opacity-50 text-label-md font-label-md text-on-surface" disabled="">
+              Sebelumnya
+            </button>
+<button class="w-8 h-8 rounded-md bg-primary-container text-on-primary font-bold text-label-md font-label-md flex items-center justify-center shadow-sm">1</button>
+<button class="w-8 h-8 rounded-md hover:bg-surface-container text-label-md font-label-md text-on-surface flex items-center justify-center">2</button>
+<button class="w-8 h-8 rounded-md hover:bg-surface-container text-label-md font-label-md text-on-surface flex items-center justify-center">3</button>
+<span class="px-1">...</span>
+<button class="w-8 h-8 rounded-md hover:bg-surface-container text-label-md font-label-md text-on-surface flex items-center justify-center">12</button>
+<button class="px-2.5 py-1.5 border border-outline-variant rounded-md hover:bg-surface-container text-label-md font-label-md text-on-surface">
+              Selanjutnya
+            </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BACKDROP OVERLAY & QUICK ACTION SLIDE-OVER DRAWER -->
+<div class="fixed inset-0 z-40 bg-on-background/40 backdrop-blur-sm transition-opacity duration-300" id="drawer-backdrop"></div>
+<!-- SLIDE-OVER SIDE DRAWER / MODAL CEPAT 'Detail & Aksi Produk — Benih Ikan Mas Koki (5 ekor)' -->
+<aside class="fixed top-0 right-0 z-50 h-full w-full max-w-lg bg-surface-container-lowest shadow-2xl flex flex-col transform transition-transform duration-300 ease-out border-l border-slate-200" id="side-drawer">
+<!-- Drawer Header -->
+<div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-surface-bright sticky top-0 z-10">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-label-sm font-label-sm font-bold uppercase tracking-wider text-outline">Drawer Aksi Cepat</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+            Aktif di Marketplace
+          </span>
+</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary leading-tight">Benih Ikan Mas Koki (5 ekor)</h3>
+<p class="text-body-sm font-body-sm text-outline font-mono">SKU: JGF-BKO-0091</p>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center transition-colors" onclick="closeDrawer()">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+</div>
+<!-- Drawer Scrollable Content Body -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- 1. Ringkasan Cepat Card -->
+<div class="p-4 rounded-xl border border-slate-200 bg-surface-bright flex gap-4 items-center">
+<img class="w-20 h-20 rounded-xl object-cover border border-outline-variant bg-surface-container-lowest shrink-0" data-alt="Vivid close-up shot of five high quality Japanese style Goldfish in a clear quarantine tank, clean agricultural nursery lighting, pure translucent aqua water, high resolution product shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0L7HeVBvLf9kgg7IKJnvNVLd0GfQuV4zUgidZmB0NF4gPvb0g1eyC5kvmIjrGZq7WDKpymimTN-PpuoQuCfwFh3xq0Op2aUOeeOOvw5SnAyqLo7UVSYQVYXM6kzk8zQsrcbzsouz4TFHlVx4BDZzjl2kDAwS-Rrfe1eCEEeyap8-FcyGEm1jUOP4Xp-rQiGgk1aPTMrtK7YPl9s9ojoBSTHCAmq9ElvsSfEZb4QUGMBNF6JXMBxK-2w"/>
+<div class="flex-1 min-w-0">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Kategori: Anakan Ikan</span>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="text-price-lg font-price-lg text-primary font-bold">Rp 75.000</span>
+<span class="text-body-sm font-body-sm text-outline">/ paket</span>
+</div>
+<div class="flex items-center gap-3 mt-2 text-body-sm font-body-sm">
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-[16px] text-emerald-600" data-icon="inventory_2">inventory_2</span>
+              41 ekor siap kirim
+            </span>
+<span class="text-outline">•</span>
+<span class="text-outline">Ukuran 3-5 cm</span>
+</div>
+</div>
+</div>
+<!-- 2. Kontrol Cepat Stok Langsung (Quick Restock Counter) -->
+<div class="p-4 rounded-xl border border-primary-fixed/60 bg-primary-fixed/10 space-y-3">
+<div class="flex items-center justify-between">
+<label class="text-label-lg font-label-lg font-bold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="production_quantity_limits">production_quantity_limits</span>
+            Penyesuaian Stok Cepat
+          </label>
+<span class="text-label-sm font-label-sm text-primary font-mono bg-surface-container-lowest px-2 py-0.5 rounded border border-primary-fixed">Sisa: 41</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden shadow-sm">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" onclick="adjustStock(-5)">
+<span class="material-symbols-outlined text-[20px]" data-icon="remove">remove</span>
+</button>
+<input class="w-16 h-10 text-center font-bold text-on-surface border-x border-outline-variant focus:outline-none text-price-md font-price-md" id="stock-input" type="text" value="41"/>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" onclick="adjustStock(5)">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+</button>
+</div>
+<div class="flex-1">
+<select class="w-full text-body-sm font-body-sm py-2 px-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary-container text-on-surface">
+<option>Catatan: Restock Panen Baru</option>
+<option>Catatan: Koreksi Fisik Kolam</option>
+<option>Catatan: Rusak / Kematian Benih</option>
+<option>Catatan: Penjualan Offline Tambak</option>
+</select>
+</div>
+</div>
+<button class="w-full py-2 bg-primary-container text-on-primary rounded-lg text-label-md font-label-md font-bold hover:bg-primary transition-colors shadow-sm">
+          Simpan Perubahan Stok
+        </button>
+</div>
+<!-- 3. Quick Status Toggle -->
+<div class="space-y-2">
+<label class="text-label-lg font-label-lg font-bold text-on-surface flex items-center justify-between">
+<span>Status Visibilitas Produk</span>
+<span class="text-label-sm font-label-sm text-outline font-normal">Berlaku real-time di web</span>
+</label>
+<div class="grid grid-cols-3 gap-2">
+<!-- Aktif -->
+<label class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 cursor-pointer text-center">
+<input checked="" class="hidden" name="prod-status" type="radio"/>
+<span class="material-symbols-outlined text-[20px] text-emerald-700" data-icon="check_circle">check_circle</span>
+<span class="text-label-md font-label-md font-bold text-emerald-900 mt-1">Aktif</span>
+<span class="text-label-sm font-label-sm text-emerald-700 text-[10px]">Tampil &amp; Dijual</span>
+</label>
+<!-- Draf -->
+<label class="flex flex-col items-center justify-center p-3 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer text-center">
+<input class="hidden" name="prod-status" type="radio"/>
+<span class="material-symbols-outlined text-[20px] text-outline" data-icon="edit_note">edit_note</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface mt-1">Draf</span>
+<span class="text-label-sm font-label-sm text-outline text-[10px]">Sembunyikan</span>
+</label>
+<!-- Habis -->
+<label class="flex flex-col items-center justify-center p-3 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer text-center">
+<input class="hidden" name="prod-status" type="radio"/>
+<span class="material-symbols-outlined text-[20px] text-outline" data-icon="do_not_disturb_on">do_not_disturb_on</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface mt-1">Habis</span>
+<span class="text-label-sm font-label-sm text-outline text-[10px]">Tandai Kosong</span>
+</label>
+</div>
+</div>
+<!-- 4. Metrik Kinerja Produk (Stats Bento) -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-lg font-label-lg font-bold text-on-surface">Metrik Kinerja (30 Hari Terakhir)</span>
+<span class="text-label-sm font-label-sm text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="refresh">refresh</span>
+            Live
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="p-3.5 rounded-xl bg-surface-container-low/60 border border-slate-200">
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+<span class="text-label-sm font-label-sm font-medium">Total Dilihat</span>
+</div>
+<p class="text-headline-sm font-headline-sm font-bold text-on-surface mt-1">1.240<span class="text-body-sm font-body-sm font-normal text-outline">x</span></p>
+<span class="text-label-sm font-label-sm text-emerald-700 font-medium">+14% vs bulan lalu</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low/60 border border-slate-200">
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+<span class="text-label-sm font-label-sm font-medium">Masuk Keranjang</span>
+</div>
+<p class="text-headline-sm font-headline-sm font-bold text-on-surface mt-1">185<span class="text-body-sm font-body-sm font-normal text-outline">x</span></p>
+<span class="text-label-sm font-label-sm text-emerald-700 font-medium">+8% rasio simpan</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low/60 border border-slate-200">
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[18px]" data-icon="shopping_bag">shopping_bag</span>
+<span class="text-label-sm font-label-sm font-medium">Berhasil Terjual</span>
+</div>
+<p class="text-headline-sm font-headline-sm font-bold text-primary mt-1">32 <span class="text-body-sm font-body-sm font-normal text-outline">unit</span></p>
+<span class="text-label-sm font-label-sm text-outline font-medium">Pendapatan Rp 2.4jt</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low/60 border border-slate-200">
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[18px]" data-icon="percent">percent</span>
+<span class="text-label-sm font-label-sm font-medium">Konversi Pembelian</span>
+</div>
+<p class="text-headline-sm font-headline-sm font-bold text-amber-700 mt-1">2.5%</p>
+<span class="text-label-sm font-label-sm text-amber-800 font-medium">Di atas rata-rata ikan</span>
+</div>
+</div>
+</div>
+<!-- Quick Delivery & Handling Note -->
+<div class="p-3.5 rounded-xl bg-surface-bright border border-slate-200 flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[22px] mt-0.5" data-icon="local_shipping">local_shipping</span>
+<div class="text-body-sm font-body-sm">
+<span class="font-bold text-on-surface">Prosedur Kirim Benih Hidup</span>
+<p class="text-outline text-xs mt-0.5">Dikemas dengan tabung oksigen murni (tahan 36 jam perjalanan). Pengiriman instan &amp; Sameday diprioritaskan.</p>
+</div>
+</div>
+</div>
+<!-- Drawer Footer Actions Sticky -->
+<div class="p-4 border-t border-slate-200 bg-surface-container-lowest space-y-2.5">
+<div class="flex items-center gap-2">
+<button class="flex-1 py-2.5 px-4 bg-primary-container text-on-primary rounded-lg text-label-lg font-label-lg font-bold hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit_square">edit_square</span>
+<span>Buka Halaman Edit Lengkap</span>
+</button>
+<a class="p-2.5 border border-outline-variant rounded-lg text-on-surface hover:bg-surface-container flex items-center justify-center transition-colors" href="#" title="Lihat di Web Pembeli">
+<span class="material-symbols-outlined text-[20px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+<button class="w-full py-2 text-error hover:bg-error-container/40 rounded-lg text-label-md font-label-md font-semibold flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+<span>Hapus Produk Ini Secara Permanen</span>
+</button>
+</div>
+</aside>
+<!-- Global Footer Component (Shared Anchor) -->
+<footer class="bg-primary dark:bg-surface-container-lowest text-secondary-fixed-dim dark:text-secondary border-t border-primary-container dark:border-outline-variant w-full mt-auto">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex flex-col items-center md:items-start">
+<span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">JagoFarm</span>
+<p class="text-body-sm font-body-sm text-on-primary-container dark:text-on-surface-variant mt-1">© 2026 JagoFarm. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Tentang Kami</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Cara Pemesanan</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">FAQ</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Hubungi Kami</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengiriman</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengembalian</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Privasi</a>
+<a class="text-label-md font-label-md text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Syarat dan Ketentuan</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions JS for Slide-over Drawer & Quantity Counter -->
+<script>
+    function openDrawer() {
+      const drawer = document.getElementById('side-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+      backdrop.classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('side-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      drawer.classList.add('translate-x-full');
+      drawer.classList.remove('translate-x-0');
+      backdrop.classList.add('hidden');
+    }
+
+    function adjustStock(delta) {
+      const input = document.getElementById('stock-input');
+      let val = parseInt(input.value) || 0;
+      val = Math.max(0, val + delta);
+      input.value = val;
+    }
+
+    // Backdrop click listener to dismiss drawer
+    document.getElementById('drawer-backdrop').addEventListener('click', closeDrawer);
+  </script>
+</body></html>

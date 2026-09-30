@@ -1,0 +1,804 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Konsultasi Agronomis &amp; Akuakultur | JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error-container": "#ffdad6",
+            "error": "#ba1a1a",
+            "outline": "#707974",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary": "#ffffff",
+            "secondary-fixed-dim": "#fdba45",
+            "surface-container-highest": "#d8e3fb",
+            "on-primary-container": "#8abda9",
+            "surface-tint": "#376757",
+            "on-primary-fixed": "#002117",
+            "inverse-on-surface": "#ecf1ff",
+            "on-tertiary-fixed": "#002113",
+            "on-surface-variant": "#404945",
+            "outline-variant": "#c0c9c3",
+            "secondary-container": "#fdba45",
+            "on-surface": "#111c2d",
+            "surface-variant": "#d8e3fb",
+            "on-error": "#ffffff",
+            "surface-container-high": "#dee8ff",
+            "tertiary-fixed": "#6ffbbe",
+            "on-tertiary-container": "#32c98f",
+            "primary-fixed": "#baeed9",
+            "secondary": "#7f5700",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container": "#e7eeff",
+            "primary-container": "#1b4d3e",
+            "on-error-container": "#93000a",
+            "on-background": "#111c2d",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed-variant": "#604100",
+            "surface-dim": "#cfdaf2",
+            "inverse-surface": "#263143",
+            "on-tertiary": "#ffffff",
+            "tertiary": "#003623",
+            "on-secondary-fixed": "#281900",
+            "surface-container-low": "#f0f3ff",
+            "on-primary-fixed-variant": "#1d4f40",
+            "tertiary-container": "#004f35",
+            "primary": "#003629",
+            "inverse-primary": "#9ed1bd",
+            "on-secondary-container": "#6f4b00",
+            "surface": "#f9f9ff",
+            "secondary-fixed": "#ffdeae",
+            "primary-fixed-dim": "#9ed1bd",
+            "background": "#f9f9ff",
+            "surface-bright": "#f9f9ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "0.75rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.25rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "body-sm": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md flex flex-col min-h-screen selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+<!-- ================= TOP APP BAR (Shared Components Exact Blueprint) ================= -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
+<div class="flex items-center justify-between px-margin py-3 max-w-7xl mx-auto w-full gap-4">
+<!-- Brand & Search cluster on left -->
+<div class="flex items-center gap-6 flex-1">
+<a class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary tracking-tight flex items-center gap-2 flex-shrink-0" href="#">
+<span class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold text-headline-sm">J</span>
+<span class="">JagoFarm</span>
+</a>
+<!-- Global Search Bar (on_left configuration) -->
+<div class="hidden lg:flex items-center relative max-w-md w-full">
+<span class="material-symbols-outlined absolute left-3 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-full border border-outline-variant bg-surface-container-low text-body-sm font-body-sm text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Cari bibit unggul, kit tambak, sensor IoT..." type="text">
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">
+          Kategori
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">
+          Set Tambak
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">
+          IoT &amp; Smart Farming
+        </a>
+<!-- ACTIVE TAB: Konsultasi -->
+<a class="text-primary dark:text-inverse-primary font-bold text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 border-b-2 border-primary pb-1" href="#">
+          Konsultasi
+        </a>
+</nav>
+<!-- Trailing Action Icons -->
+<div class="flex items-center gap-3">
+<button aria-label="Keranjang Belanja" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors duration-150 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-4 h-4 bg-secondary text-on-secondary rounded-full text-label-sm font-label-sm flex items-center justify-center">2</span>
+</button>
+<button aria-label="Profil Pengguna" class="flex items-center gap-2 p-1 rounded-full hover:bg-surface-container-low transition-colors duration-150">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+<span class="hidden xl:inline text-label-md font-label-md text-on-surface">Pak Budi (Mitra Tani)</span>
+</button>
+</div>
+</div>
+</header>
+<!-- ================= MAIN CONTENT ================= -->
+<main class="flex-grow">
+<!-- Breadcrumb Nav -->
+<div class="max-w-7xl mx-auto px-margin pt-4 pb-2">
+<nav class="flex items-center gap-2 text-label-md font-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Beranda</a>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Layanan</a>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-semibold">Konsultasi Agronomis</span>
+</nav>
+</div>
+<!-- ================= HERO SECTION ================= -->
+<section class="max-w-7xl mx-auto px-margin py-8">
+<div class="rounded-xl overflow-hidden relative bg-gradient-to-br from-[#13382D] to-primary-container p-8 md:p-12 text-on-primary shadow-lg">
+<!-- Background subtle biological motif styling overlay -->
+<div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<div class="lg:col-span-8 space-y-5">
+<!-- Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-md font-label-md backdrop-blur-md">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified" data-weight="fill">verified</span>
+<span class="">Konsultasi Gratis untuk Mitra Tani JagoFarm</span>
+</div>
+<!-- Title -->
+<h1 class="text-display-hero-mobile md:text-headline-lg font-display-hero-mobile md:font-headline-lg text-on-primary tracking-tight leading-tight">
+              Konsultasi Langsung dengan Tim Agronomis &amp; Spesialis Akuakultur
+            </h1>
+<!-- Subtitle -->
+<p class="text-body-lg font-body-lg text-on-primary-container max-w-2xl leading-relaxed">
+              Dukungan teknis holistik dan agronomi presisi: mulai dari rekayasa biosekuriti tambak, optimasi formulasi nutrisi hidroponik NFT/DWC, audit kualitas air &amp; pH berkala, hingga kalibrasi sensor IoT smart farm langsung ke lahan Anda.
+            </p>
+<!-- Metrics / Highlights -->
+<div class="pt-4 grid grid-cols-3 gap-4 border-t border-primary/40 max-w-xl">
+<div class="space-y-1">
+<p class="text-headline-md font-headline-md text-secondary-fixed-dim">15+</p>
+<p class="text-body-sm font-body-sm text-on-primary-container">Agronomis Berpengalaman</p>
+</div>
+<div class="space-y-1">
+<p class="text-headline-md font-headline-md text-secondary-fixed-dim">500+</p>
+<p class="text-body-sm font-body-sm text-on-primary-container">Tambak &amp; Greenhouses</p>
+</div>
+<div class="space-y-1">
+<p class="text-headline-md font-headline-md text-secondary-fixed-dim">&lt; 15 Mnt</p>
+<p class="text-body-sm font-body-sm text-on-primary-container">Respon WhatsApp Cepat</p>
+</div>
+</div>
+<!-- Action buttons -->
+
+</div>
+<!-- Hero Graphic/Card representation -->
+<div class="lg:col-span-4 flex justify-center">
+<div class="w-full max-w-sm rounded-xl bg-surface-container-lowest/10 backdrop-blur-md border border-white/20 p-6 space-y-4">
+<div class="flex items-center justify-between border-b border-white/10 pb-3">
+<span class="text-label-md font-label-md text-tertiary-fixed-dim flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed animate-ping"></span>
+                  Layanan Aktif Hari Ini
+                </span>
+<span class="text-label-sm font-label-sm text-on-primary/70">Senin - Minggu</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[20px]" data-icon="check_circle" data-weight="fill">check_circle</span>
+<p class="text-body-sm font-body-sm text-on-primary">Analisis parameter DO, pH, ORP, Salinitas real-time.</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[20px]" data-icon="check_circle" data-weight="fill">check_circle</span>
+<p class="text-body-sm font-body-sm text-on-primary">Rekomendasi takaran probiotik &amp; sterilisasi bioflok.</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[20px]" data-icon="check_circle" data-weight="fill">check_circle</span>
+<p class="text-body-sm font-body-sm text-on-primary">Formulasi EC, PPM, dan pH pupuk AB Mix komersial.</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[20px]" data-icon="check_circle" data-weight="fill">check_circle</span>
+<p class="text-body-sm font-body-sm text-on-primary">Pencegahan dini serangan hama thrips, fungi, dan EMS udang.</p>
+</div>
+</div>
+<div class="pt-2 bg-white/5 rounded-lg p-3 text-center">
+<p class="text-label-sm font-label-sm text-on-primary/80">Kunjungan lapangan tersedia untuk area Jawa Timur, Jawa Barat, dan Bali.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= 4 PILLARS STRIP ================= -->
+<section class="max-w-7xl mx-auto px-margin py-4">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+</div>
+<div>
+<h2 class="text-label-lg font-label-lg text-on-surface">Agronomis Berlisensi</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Lulusan IPB, UGM, &amp; praktisi lapangan senior.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="water_drop">water_drop</span>
+</div>
+<div>
+<h2 class="text-label-lg font-label-lg text-on-surface">Uji Lab Terstandar</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Audit air kolam &amp; nutrisi daun akurat.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+</div>
+<div>
+<h2 class="text-label-lg font-label-lg text-on-surface">Dukungan IoT Presisi</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Monitoring sensor terhubung ponsel Anda.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</div>
+<div>
+<h2 class="text-label-lg font-label-lg text-on-surface">Pendampingan Panen</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Kawal FCR optimal hingga hari panen tiba.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= PROFIL TIM AGRONOMIS UNGGULAN ================= -->
+<section class="max-w-7xl mx-auto px-margin py-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+<div>
+<span class="text-label-md font-label-md text-primary font-bold uppercase tracking-wider">Tim Pakar Lapangan</span>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mt-1">Konsultasikan Kendala Anda Bersama Spesialis Kami</h2>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-md">
+          Pilih agronomis sesuai spesialisasi budidaya Anda untuk mendapatkan penanganan teknis yang spesifik, solutif, dan efisien.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Specialist 1: Akuakultur Tambak Bioflok -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+<div>
+<div class="relative h-64 bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional Indonesian male aquaculture agronomist smiling wearing a clean dark green field vest and holding water quality sampling tubes beside an indoor modern biofloc fish pond. Natural soft sunlight illuminates the crisp technological environment in an organic emerald and slate green color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3H3ZTXW_PHamImF1HObAfhXrKXKtFojFvK-TSQmEoXDdAesbz2nxmy0Ukf5cB3j-BFdSWPFdSC98XMFK60F7GugHZF2cEyfMRfCuhVallnTdsi-ZydPtruFOjIxPbY_VEPZ3vgvYqZc_MWd7euRZbZf6celEn_idqXIZDspb8530QIo9PUrMudgK2kck0cHEVeW6OsJPM3ph1WyO5TB-HXUfNLAqiG1dLbh18olJbRHFsnGOkSVQyzA">
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/80 backdrop-blur-md text-primary border border-white/40">
+                Pakar Akuakultur
+              </span>
+</div>
+<div class="p-5 space-y-3">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Dr. Ir. Hendra Wardana</h3>
+<p class="text-label-md font-label-md text-primary font-semibold">Spesialis Bioflok &amp; Tambak Vaname</p>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                12 tahun mendampingi 140+ kluster tambak udang intensif, tata kelola limbah nitrit/amonia, dan pencegahan mortalitas dini bibit.
+              </p>
+<div class="pt-2 flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Vaname</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Bioflok Nila</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Biosekuriti</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary hover:bg-primary hover:text-on-primary text-label-md font-label-md transition-colors flex items-center justify-center gap-2" onclick="pilihSpesialis('Dr. Ir. Hendra Wardana (Pakar Akuakultur)')">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+              Konsultasi Sekarang
+            </button>
+</div>
+</div>
+<!-- Specialist 2: Hidroponik NFT/DWC -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+<div>
+<div class="relative h-64 bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a confident young Indonesian woman agronomist standing in a vibrant commercial hydroponic greenhouse with lush vertical lettuce channels. She wears neat safety glasses and a khaki agricultural specialist polo shirt. Bright diffused sunlight with clean corporate green tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcV_0XjT4WReyAnw6SbjN1mXAwf-RTDghwpV7OUpBPHDiNo8IUGySooG4SiqWzD1A-8o8idyU0___9qrkj3nqC668U-fvj_TSB3s1iw-jsajo9cJJq6jjWvIXxeWpJO11u5s4pNh4d2G0cFGxSa28QElE_JPcy1qo1KVrHkavIx-1Zr711EVk0bSwTooPhBTmyIuLgXW0c-AXeztveQ48wbPVa5HwB1TcVwA01cLfRj7aAZo5OXYCKdQ">
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/80 backdrop-blur-md text-primary border border-white/40">
+                Spesialis Hidroponik
+              </span>
+</div>
+<div class="p-5 space-y-3">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Ratih Anggraini, S.P.</h3>
+<p class="text-label-md font-label-md text-primary font-semibold">Spesialis Hidroponik NFT &amp; Dutch Bucket</p>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Ahli kalkulasi racikan hara AB Mix khusus selada, melon hidroponik, dan optimalisasi sirkulasi talang NFT bebas busuk akar.
+              </p>
+<div class="pt-2 flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">AB Mix Presisi</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Melon Premium</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">NFT &amp; DWC</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary hover:bg-primary hover:text-on-primary text-label-md font-label-md transition-colors flex items-center justify-center gap-2" onclick="pilihSpesialis('Ratih Anggraini, S.P. (Spesialis Hidroponik)')">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+              Konsultasi Sekarang
+            </button>
+</div>
+</div>
+<!-- Specialist 3: Ahli Nutrisi Tanaman & Akuaponik -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+<div>
+<div class="relative h-64 bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An experienced Indonesian plant scientist and nutritionist examining plant tissue samples under modern greenhouse lights holding a digital tablet. Clean, well-lit botanical workspace filled with healthy leafy green produce and crystal clean aquaculture water tanks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUm6rOpXKmUHkU5CsRLwClTEH1MpRfrJSjXmm8sb1_48296qM3lpIYvoJH1B1rTQCf4nbG0UfIZ4uiWEDfSq0GZGUTymYs8SHjdG3MvZiMQi3sghXF1dtawE-yemoG3_4KQl6qY4-7j8P8PvzTwJ_aFEHOfhYryu2Ewfw7iwDUmLfuXPqSxyt25E4_OsGYUuVUkkDHu8knyatrH7hFIp68FZOyUmxzCmK2VJF0LcIHfpMxFALpZlNXMQ">
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/80 backdrop-blur-md text-primary border border-white/40">
+                Nutrisi Tanaman
+              </span>
+</div>
+<div class="p-5 space-y-3">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Bambang Wicaksono, M.Sc.</h3>
+<p class="text-label-md font-label-md text-primary font-semibold">Konsultan Akuaponik &amp; Defisiensi Hara</p>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Menjembatani ekosistem simbiotik pakan ikan dan nutrisi sayuran tanpa pestisida kimia. Spesialis pencegahan defisiensi mikro &amp; makro.
+              </p>
+<div class="pt-2 flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Akuaponik</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Klorosis Daun</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Organik</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary hover:bg-primary hover:text-on-primary text-label-md font-label-md transition-colors flex items-center justify-center gap-2" onclick="pilihSpesialis('Bambang Wicaksono, M.Sc. (Konsultan Akuaponik)')">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+              Konsultasi Sekarang
+            </button>
+</div>
+</div>
+<!-- Specialist 4: Konsultan IoT Smart Farming -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+<div>
+<div class="relative h-64 bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An Indonesian male agricultural IoT automation engineer configuring a smart telemetry sensor node next to commercial aquaculture aeration pond. Dressed in professional engineering outdoor gear. Modern farm environment with crisp technical aesthetics in forest green tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRFUD5ZKlQ4XL7Rp34TnZQhbOvj2zC5goi1F3zgj1jPOFA4-4r3ZRyzXbDL5ALNkJuTnCtQEItBxPOuWRKdvT6JdF8x_Hmk9airdhbAL75W8Hrsv37e9C9THGBAieXW8NCivdflfYZEohlPwmn1ti2ucRwUyL1MBIB4gFpqngMzxbtHxcPLs9CbYhtm9qcrRtUNuXNIFpRGEoxGRoluxtTosHMN3KO9BXmyxMaC7ybdKs0XIdnWUIQ8A">
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/80 backdrop-blur-md text-primary border border-white/40">
+                Smart Farming IoT
+              </span>
+</div>
+<div class="p-5 space-y-3">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Arya Pratama, S.T.</h3>
+<p class="text-label-md font-label-md text-primary font-semibold">Integrator Otomasi &amp; Telemetri Tambak</p>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Perancangan sistem auto-feeder berbasis sensor selera makan udang, pengatur aerator otomatis, dan sistem alert SMS/WhatsApp 24 jam.
+              </p>
+<div class="pt-2 flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Auto Feeder</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">DO Sensor</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">Solar Farm</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary hover:bg-primary hover:text-on-primary text-label-md font-label-md transition-colors flex items-center justify-center gap-2" onclick="pilihSpesialis('Arya Pratama, S.T. (Integrator IoT)')">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+              Konsultasi Sekarang
+            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= 3 LANGKAH ALUR KONSULTASI ================= -->
+<section class="bg-surface-container-low py-12 border-y border-outline-variant/60">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="text-center max-w-xl mx-auto mb-10">
+<span class="text-label-md font-label-md text-primary font-bold uppercase tracking-wider">Prosedur Praktis</span>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mt-1">3 Langkah Mudah Menuju Solusi Budidaya</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-2">Alur terstandarisasi untuk menjamin diagnosa akurat dan hasil yang dapat diimplementasikan langsung.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant relative z-10 space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center text-headline-sm font-headline-sm font-bold">
+              1
+            </div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Kirim Data Lahan &amp; Kolam</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Isi formulir atau kirimkan foto/video kondisi air, daun tanaman, sistem aerasi, atau gejala penyakit via formulir booking maupun WhatsApp langsung.
+            </p>
+<div class="pt-2 flex items-center gap-2 text-label-sm font-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+<span class="">Dokumen data privasi terjamin</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant relative z-10 space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center text-headline-sm font-headline-sm font-bold">
+              2
+            </div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Analisis &amp; Sesi Diskusi Ahli</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Tim Agronomis membedah data parameter air/lahan Anda. Diskusi interaktif via Video Call atau pesan intensif untuk menemukan akar permasalahan.
+            </p>
+<div class="pt-2 flex items-center gap-2 text-label-sm font-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+<span class="">Waktu diskusi fleksibel 30-45 menit</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant relative z-10 space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center text-headline-sm font-headline-sm font-bold">
+              3
+            </div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Rekomendasi &amp; Kunjungan Lapangan</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Dapatkan lembar SOP penanganan tertulis, resep nutrisi/probiotik, serta opsi penjadwalan inspeksi langsung teknisi ke lokasi budidaya Anda.
+            </p>
+<div class="pt-2 flex items-center gap-2 text-label-sm font-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+<span class="">SOP teruji laboratorium</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FORM BOOKING & DIRECT WHATSAPP ================= -->
+<section class="max-w-7xl mx-auto px-margin py-12 scroll-mt-24" id="form-konsultasi">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Side: Interactive Booking Form -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant shadow-sm space-y-6">
+<div class="border-b border-outline-variant pb-4">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-primary-fixed/40 text-primary text-label-sm font-label-sm mb-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="edit_calendar">edit_calendar</span>
+              Formulir Reservasi Jadwal
+            </div>
+<h2 class="text-headline-md font-headline-md text-on-surface">Sampaikan Rincian Kebutuhan Budidaya Anda</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Tim kami akan mengkaji data teknis sebelum menghubungi Anda via WhatsApp atau panggilan terjadwal.</p>
+</div>
+<form class="space-y-5" id="agronomyForm" onsubmit="handleFormSubmit(event)">
+<!-- Nama Petani & WhatsApp -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="farmerName">
+                  Nama Petani / Pemilik Usaha <span class="text-error">*</span>
+</label>
+<input class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="farmerName" placeholder="Contoh: Ir. Herman Susanto" required="" type="text">
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="farmerPhone">
+                  Nomor WhatsApp Aktif <span class="text-error">*</span>
+</label>
+<input class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="farmerPhone" placeholder="Contoh: 081234567890" required="" type="tel">
+</div>
+</div>
+<!-- Bidang Pertanian & Luas Lahan -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="farmSector">
+                  Bidang Pertanian / Budidaya <span class="text-error">*</span>
+</label>
+<select class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="farmSector" required="">
+<option disabled="" selected="" value="">Pilih Kategori Budidaya</option>
+<option value="Tambak Ikan Air Tawar">Tambak Ikan Air Tawar (Nila/Lele/Gurame)</option>
+<option value="Tambak Udang Vaname">Tambak Udang Vaname (Intensif/Super-Intensif)</option>
+<option value="Hidroponik Komersial">Hidroponik Komersial (NFT/Dutch Bucket Sayur &amp; Buah)</option>
+<option value="Akuaponik Rumahan">Akuaponik Rumahan / Semi-Komersial</option>
+<option value="Smart Farming IoT">Instalasi Smart Farming &amp; Telemetri IoT</option>
+</select>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="farmScale">
+                  Luas Lahan / Jumlah Kolam <span class="text-error">*</span>
+</label>
+<input class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="farmScale" placeholder="Contoh: 6 Kolam Terpal D-3 atau 500 m² Greenhouse" required="" type="text">
+</div>
+</div>
+<!-- Preferensi Spesialis (Auto-filled by card click or manual) -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="specialistSelection">
+                Preferensi Pakar Agronomis (Opsional)
+              </label>
+<input class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="specialistSelection" placeholder="Pilihan otomatis dari tim pakar atau biarkan kosong untuk rekomendasi tim" type="text">
+</div>
+<!-- Kendala / Masalah -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="farmProblem">
+                Kendala atau Kebutuhan Spesifik <span class="text-error">*</span>
+</label>
+<textarea class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="farmProblem" placeholder="Deskripsikan kondisi terkini: misal pH air fluktuatif, nafsu makan benih menurun, ujung daun tanaman menguning terbakar, atau kebutuhan integrasi sensor pH/DO..." required="" rows="4"></textarea>
+</div>
+<!-- Pilihan Jadwal & Waktu -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="consultationDate">
+                  Rencana Tanggal Konsultasi
+                </label>
+<input class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="consultationDate" type="date">
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5" for="consultationTime">
+                  Pilihan Slot Jam
+                </label>
+<select class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="consultationTime">
+<option value="Pagi (09.00 - 11.30 WIB)">Pagi (09.00 - 11.30 WIB)</option>
+<option value="Siang (13.30 - 15.30 WIB)">Siang (13.30 - 15.30 WIB)</option>
+<option value="Sore (15.30 - 17.00 WIB)">Sore (15.30 - 17.00 WIB)</option>
+</select>
+</div>
+</div>
+<!-- Submit CTA & Direct WhatsApp Options -->
+<div class="pt-4 flex flex-col sm:flex-row items-center gap-4">
+<button class="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-primary-container text-on-primary hover:bg-primary font-bold text-label-lg font-label-lg transition-transform active:scale-95 flex items-center justify-center gap-2 shadow-sm" type="submit">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+                Kirim Permintaan Konsultasi
+              </button>
+<span class="text-body-sm font-body-sm text-outline">atau</span>
+<a class="w-full sm:w-auto px-6 py-3.5 rounded-lg border-2 border-primary text-primary hover:bg-primary/5 font-bold text-label-lg font-label-lg transition-colors flex items-center justify-center gap-2 text-center" href="https://wa.me/6281234567890?text=Halo%20JagoFarm,%20saya%20petani%20ingin%20konsultasi%20cepat%20terkait%20budidaya." target="_blank">
+<span class="material-symbols-outlined text-primary" data-icon="chat">chat</span>
+                Chat WhatsApp Tim Agronomis
+              </a>
+</div>
+<div class="hidden p-4 rounded-lg bg-primary-fixed text-on-primary-fixed border border-primary-container/20" id="submitSuccessMessage">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="task_alt" data-weight="fill">task_alt</span>
+<div>
+<h4 class="font-bold">Permintaan Konsultasi Berhasil Terkirim!</h4>
+<p class="text-body-sm font-body-sm">Agronomis JagoFarm akan menghubungi nomor WhatsApp Anda dalam kurun waktu maksimal 15 menit.</p>
+</div>
+</div>
+</div>
+</form>
+</div>
+<!-- Right Side: Fast Response Widget & Guidelines -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Quick WhatsApp card -->
+<div class="bg-gradient-to-br from-primary-container to-primary rounded-xl p-6 text-on-primary shadow-sm space-y-4">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-primary">Butuh Solusi Darurat Tambak?</h3>
+<p class="text-body-sm font-body-sm text-on-primary-container mt-1">
+                Kematian bibit massal, anomali pH mendadak, atau kegagalan sistem aerasi kolam membutuhkan penanganan cepat di bawah 1 jam.
+              </p>
+</div>
+<a class="w-full py-3 rounded-lg bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim text-label-lg font-label-lg font-bold transition-all flex items-center justify-center gap-2" href="https://wa.me/6281234567890?text=DARURAT%20KOLAM:%20Halo%20JagoFarm,%20saya%20butuh%20respon%20cepat%20agronomis%20sekarang." target="_blank">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+              Hotline Darurat Petani
+            </a>
+</div>
+<!-- Consultation benefits card -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant space-y-4">
+<h3 class="text-label-lg font-label-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+              Jaminan Pelayanan JagoFarm
+            </h3>
+<ul class="space-y-3 text-body-sm font-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle">check_circle</span>
+<span class="">Konsultasi awal via online tanpa biaya komitmen (Gratis 100%).</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle">check_circle</span>
+<span class="">Rekomendasi obat &amp; probiotik netral berbasis uji ilmiah, bukan sekadar jualan produk.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle">check_circle</span>
+<span class="">Diskon khusus 15% untuk pembelian paket nutrisi &amp; sensor IoT bagi peserta konsultasi.</span>
+</li>
+</ul>
+</div>
+<!-- Customer Service Operational Hours -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant space-y-2">
+<p class="text-label-md font-label-md text-on-surface font-semibold">Jam Operasional Layanan Agronomi:</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              Senin – Sabtu: 07.30 – 20.00 WIB<br>
+              Minggu &amp; Tanggal Merah: 08.00 – 17.00 WIB (Sistem Piket Darurat)
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FAQ SECTION ================= -->
+<section class="max-w-7xl mx-auto px-margin py-8">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-8 shadow-sm">
+<div class="max-w-2xl mb-8">
+<span class="text-label-md font-label-md text-primary font-bold uppercase tracking-wider">Tanya Jawab</span>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mt-1">Pertanyaan yang Sering Diajukan</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2 border-b md:border-b-0 md:border-r border-outline-variant/60 pb-4 md:pb-0 md:pr-6">
+<h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="help">help</span>
+              Apakah konsultasi ini benar-benar gratis?
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Ya, sesi konsultasi diagnosa online via WhatsApp dan Google Meet bersifat 100% gratis untuk seluruh pembudidaya dan mitra terdaftar JagoFarm. Biaya hanya dikenakan jika membutuhkan pengujian sampel lab air/daun lengkap atau kunjungan fisik teknisi jarak jauh.
+            </p>
+</div>
+<div class="space-y-2 pb-4 md:pb-0">
+<h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="help">help</span>
+              Bagaimana jika lahan saya berada di luar pulau?
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Kami mendampingi pembudidaya dari Sumatra, Kalimantan, hingga Sulawesi secara daring dengan integrasi telemetry sensor IoT atau pengiriman rutin sampel parameter air menggunakan kit tester express JagoFarm.
+            </p>
+</div>
+<div class="space-y-2 border-t border-outline-variant/60 pt-4 md:border-r md:pr-6">
+<h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="help">help</span>
+              Berapa lama waktu respon tim agronomis?
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Pada jam operasional kerja, permintaan konsultasi via formulir maupun WhatsApp langsung ditanggapi dalam rentang 5 hingga 15 menit oleh admin triase sebelum diteruskan ke spesialis terkait.
+            </p>
+</div>
+<div class="space-y-2 border-t border-outline-variant/60 pt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="help">help</span>
+              Apakah bisa request formulasi nutrisi khusus?
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Tentu saja. Ahli nutrisi kami dapat menghitung formulasi custom AB Mix dan pemupukan presisi disesuaikan dengan TDS air baku, iklim micro greenhouse, dan varietas benih yang Anda tanam.
+            </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- ================= FOOTER (Shared Components Exact Blueprint) ================= -->
+<footer class="bg-primary dark:bg-surface-container-lowest w-full border-t border-primary-container dark:border-outline-variant flat no shadows text-on-primary-container dark:text-on-surface-variant mt-16">
+<div class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+<!-- Top Grid of Footer -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-10 border-b border-primary-container dark:border-outline-variant">
+<!-- Brand Info -->
+<div class="lg:col-span-2 space-y-4">
+<a class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary tracking-tight flex items-center gap-2" href="#">
+<span class="w-8 h-8 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-headline-sm">J</span>
+<span class="">JagoFarm</span>
+</a>
+<p class="text-body-sm font-body-sm max-w-sm text-on-primary/80 dark:text-on-surface-variant">
+            Platform ekosistem agri-akuakultur modern nomor satu di Indonesia. Menyediakan sarana budidaya berstandar tinggi, bibit unggul, probiotik tambak, instalasi IoT smart farming, dan pendampingan agronomis berkesinambungan.
+          </p>
+<div class="space-y-1.5 text-body-sm font-body-sm text-on-primary/80 dark:text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[18px]" data-icon="location_on">location_on</span>
+<span class="">Jl. Ahmad Yani No. 182, Wonokromo, Surabaya, Jawa Timur</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[18px]" data-icon="call">call</span>
+<span class="">+62 (031) 847-2938 / WhatsApp: +62 812-3456-7890</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[18px]" data-icon="mail">mail</span>
+<span class="">agronomi@jagofarm.co.id</span>
+</div>
+</div>
+</div>
+<!-- Link Column 1: Layanan & Produk -->
+<div class="space-y-3">
+<h4 class="text-headline-sm font-headline-sm text-on-primary dark:text-on-surface">Layanan Kami</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Set Tambak Bioflok</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kit Hidroponik Komersial</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Sensor IoT Telemetri</a></li>
+<li class=""><a class="text-secondary-fixed-dim font-semibold hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Konsultasi Agronomis</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Uji Laboratorium Air</a></li>
+</ul>
+</div>
+<!-- Link Column 2: Pelanggan (JSON mandatory strings) -->
+<div class="space-y-3">
+<h4 class="text-headline-sm font-headline-sm text-on-primary dark:text-on-surface">Bantuan</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Tentang Kami</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Cara Pemesanan</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">FAQ</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Hubungi Kami</a></li>
+</ul>
+</div>
+<!-- Link Column 3: Kebijakan (JSON mandatory strings) -->
+<div class="space-y-3">
+<h4 class="text-headline-sm font-headline-sm text-on-primary dark:text-on-surface">Kebijakan</h4>
+<ul class="space-y-2 text-label-md font-label-md">
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengiriman</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Pengembalian</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Kebijakan Privasi</a></li>
+<li class=""><a class="hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="#">Syarat dan Ketentuan</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar: Copyright & Compliance -->
+<div class="pt-6 flex flex-col md:flex-row items-center justify-between text-body-sm font-body-sm text-on-primary/60 dark:text-on-surface-variant gap-4">
+<p class="">© 2026 JagoFarm. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<span class="">Kementerian Pertanian RI No. Reg: 442/Agr/JGF/2024</span>
+<span class="">Sertifikasi Akuakultur Ramah Lingkungan</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- ================= INLINE INTERACTIVE SCRIPT ================= -->
+<script>
+    function pilihSpesialis(nama) {
+      const input = document.getElementById('specialistSelection');
+      const formEl = document.getElementById('form-konsultasi');
+      if (input && formEl) {
+        input.value = nama;
+        formEl.scrollIntoView({ behavior: 'smooth' });
+        input.classList.add('ring-2', 'ring-secondary-fixed');
+        setTimeout(() => {
+          input.classList.remove('ring-2', 'ring-secondary-fixed');
+        }, 1500);
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const successBox = document.getElementById('submitSuccessMessage');
+      if (successBox) {
+        successBox.classList.remove('hidden');
+        document.getElementById('farmerName').value = '';
+        document.getElementById('farmerPhone').value = '';
+        document.getElementById('farmScale').value = '';
+        document.getElementById('farmProblem').value = '';
+        document.getElementById('specialistSelection').value = '';
+        successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  </script>
+
+
+</body></html>

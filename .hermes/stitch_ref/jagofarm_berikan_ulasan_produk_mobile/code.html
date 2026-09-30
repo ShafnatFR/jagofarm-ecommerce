@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JagoFarm - Berikan Ulasan Produk</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-container": "#8abda9",
+            "on-background": "#111c2d",
+            "on-primary-fixed-variant": "#1d4f40",
+            "background": "#f9f9ff",
+            "inverse-surface": "#263143",
+            "primary-container": "#1b4d3e",
+            "inverse-primary": "#9ed1bd",
+            "surface-variant": "#d8e3fb",
+            "surface-container-low": "#f0f3ff",
+            "surface-container-highest": "#d8e3fb",
+            "on-secondary-fixed-variant": "#604100",
+            "on-surface": "#111c2d",
+            "on-tertiary-container": "#32c98f",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary-fixed": "#ffdeae",
+            "on-secondary-fixed": "#281900",
+            "outline-variant": "#c0c9c3",
+            "primary-fixed-dim": "#9ed1bd",
+            "inverse-on-surface": "#ecf1ff",
+            "secondary-fixed-dim": "#fdba45",
+            "on-surface-variant": "#404945",
+            "surface-tint": "#376757",
+            "tertiary-container": "#004f35",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#baeed9",
+            "surface-container-high": "#dee8ff",
+            "on-secondary": "#ffffff",
+            "on-error": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "outline": "#707974",
+            "on-primary-fixed": "#002117",
+            "on-tertiary": "#ffffff",
+            "tertiary": "#003623",
+            "on-tertiary-fixed": "#002113",
+            "surface-dim": "#cfdaf2",
+            "secondary-container": "#fdba45",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#6ffbbe",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#6f4b00",
+            "surface-container": "#e7eeff",
+            "surface": "#f9f9ff",
+            "error": "#ba1a1a",
+            "secondary": "#7f5700",
+            "primary": "#003629"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.fill-active {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary selection:text-on-primary">
+<!-- Mobile Container ~390px Viewport Simulation Wrapper -->
+<div class="w-full max-w-[420px] bg-background min-h-screen flex flex-col relative shadow-2xl pb-36">
+<!-- 1. TopAppBar Mobile Header -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md px-margin-mobile py-space-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Kembali" class="w-9 h-9 rounded-full flex items-center justify-center text-primary hover:bg-surface-container active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Berikan Ulasan</h1>
+</div>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary px-space-xs py-1 rounded-full text-label-md font-label-md active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">help_outline</span>
+<span>Bantuan</span>
+</button>
+</header>
+<main class="px-margin-mobile pt-space-md space-y-space-md flex-1">
+<!-- 2. Banner & Ringkasan Produk Diterima -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs border-b border-slate-100 mb-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-label-sm font-label-sm font-semibold border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+            Pesanan Selesai
+          </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Diterima 15 Okt 2026</span>
+</div>
+<div class="flex gap-space-sm items-start">
+<div class="w-20 h-20 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200 relative">
+<img class="w-full h-full object-cover" data-alt="A close-up high detail view of vibrant juvenile Goldfish Oranda Grade A swimming gracefully in crystal clear oxygenated hatchery water. The fish displays rich red-orange and pristine pearlescent white coloration under professional studio aquatic lighting. Clean modern aquaculture setup with deep teal tones, botanical reflections, and premium commercial bio-quality aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAedvp18TziCadCN4Yb-2drTlcjUXE7tRzZDuoopwMVJcgZofmiOao4Ite0LHf6YN8CKnhXCFLDm2MO8c01n-N9VXzLBD4j4FYdW9KOL7eJIYDyuJByROxdFbRr2QOmWsYpwWEwOJc88x1AFtGyqtG5ccmlRgkfUZxSW8cRSkvl1CvKJgeLEs3zJST_vU2PCIjYrAJ3MvSVfnKItZUlvDtz1VIY2iNfsi2W3qRDQZeE2v_rC2Muv5_N9Q"/>
+<span class="absolute bottom-1 right-1 text-[9px] font-bold bg-black/60 text-white px-1 py-0.5 rounded backdrop-blur-xs">5 Ekor</span>
+</div>
+<div class="flex-1 min-w-0">
+<h2 class="text-label-lg font-label-lg text-on-surface line-clamp-2 leading-snug">
+              Benih Ikan Mas Koki Unggul Grade A (5 ekor)
+            </h2>
+<div class="mt-1 flex flex-wrap items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="inline-block bg-slate-100 text-on-surface-variant px-1.5 py-0.5 rounded text-[11px] font-medium">Ukuran: 3-5 cm</span>
+<span class="text-slate-300">•</span>
+<span class="text-[11px]">SKU: JF-ANK-001</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Penilaian Bintang Kualitas Produk Keseluruhan -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm text-center">
+<p class="text-body-md font-body-md text-on-surface font-medium max-w-[280px] mx-auto">
+          Bagaimana kepuasan Anda secara keseluruhan terhadap benih ikan ini?
+        </p>
+<!-- 5 Interactive Star Cluster -->
+<div class="flex items-center justify-center gap-2 mt-3 mb-2" id="star-rating-container">
+<button aria-label="1 Bintang" class="text-amber-500 hover:scale-110 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[38px] fill-active" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="2 Bintang" class="text-amber-500 hover:scale-110 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[38px] fill-active" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="3 Bintang" class="text-amber-500 hover:scale-110 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[38px] fill-active" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="4 Bintang" class="text-amber-500 hover:scale-110 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[38px] fill-active" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="5 Bintang" class="text-amber-500 hover:scale-110 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[38px] fill-active" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<!-- Rating Pill -->
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-label-md font-label-md font-bold shadow-xs">
+<span>★ 5.0 — Sangat Memuaskan!</span>
+</div>
+</section>
+<!-- 4. Nilai Aspek Spesifik Pengiriman Benih -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm space-y-3">
+<div class="flex items-center gap-1.5 pb-2 border-b border-slate-100">
+<span class="material-symbols-outlined text-primary text-[20px]">fact_check</span>
+<h3 class="text-label-lg font-label-lg text-primary font-bold">Penilaian Aspek Spesifik</h3>
+</div>
+<!-- Aspect Item 1 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-slate-100 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-700 text-[16px]">water_ec</span>
+              Kebugaran &amp; Kelincahan
+            </span>
+<div class="flex text-amber-500 text-[18px]">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant italic">"Semua ikan aktif berenang tanpa lemas"</p>
+</div>
+<!-- Aspect Item 2 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-slate-100 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-700 text-[16px]">inventory_2</span>
+              Kemasan Oksigen &amp; Packing
+            </span>
+<div class="flex text-amber-500 text-[18px]">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant italic">"Styrofoam tebal dan kantong oksigen kencang"</p>
+</div>
+<!-- Aspect Item 3 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-slate-100 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-700 text-[16px]">local_shipping</span>
+              Kecepatan Kurir Ekspedisi
+            </span>
+<div class="flex text-amber-500 text-[18px]">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant italic">"Layanan kargo cepat &amp; tepat waktu"</p>
+</div>
+</section>
+<!-- 5. Tag Kepuasan Cepat (Selectable Chips) -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm">
+<label class="text-label-lg font-label-lg text-primary font-bold block mb-1">
+          Tag Kepuasan Singkat
+        </label>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-3">Pilih label yang paling menggambarkan pengalaman budidaya Anda:</p>
+<div class="flex flex-wrap gap-2">
+<!-- Active Chip 1 -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-label-md bg-emerald-50 text-primary-container border border-primary-container/30 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span>Ikan Sehat &amp; Lincah</span>
+</button>
+<!-- Active Chip 2 -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-label-md bg-emerald-50 text-primary-container border border-primary-container/30 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span>Oksigen Padat &amp; Segar</span>
+</button>
+<!-- Active Chip 3 -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-label-md bg-emerald-50 text-primary-container border border-primary-container/30 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span>Sesuai Deskripsi</span>
+</button>
+<!-- Unselected Chip 1 -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-label-md bg-slate-50 text-on-surface-variant border border-slate-200 hover:bg-slate-100 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">add</span>
+<span>Garansi Terpercaya</span>
+</button>
+<!-- Unselected Chip 2 -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-label-md bg-slate-50 text-on-surface-variant border border-slate-200 hover:bg-slate-100 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">add</span>
+<span>Respon CS Cepat</span>
+</button>
+<!-- Active Chip 4 -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-label-md bg-emerald-50 text-primary-container border border-primary-container/30 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span>Packaging Rapi</span>
+</button>
+</div>
+</section>
+<!-- 6. Formulir Ulasan Tertulis -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-label-lg font-label-lg text-primary font-bold" for="review-content">
+            Ulasan Tertulis
+          </label>
+<span class="text-label-sm font-label-sm text-slate-400 font-medium">Min. 20 Karakter</span>
+</div>
+<div class="relative">
+<textarea class="w-full text-body-md font-body-md rounded-lg border border-slate-300 p-3 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-colors resize-none leading-relaxed bg-surface-bright" id="review-content" placeholder="Bagikan pengalaman budidaya, kondisi aklimatisasi, dan pelayanan toko..." rows="5">Kondisi benih ikan mas koki datang sangat bugar dan lincah, kantong oksigen terisi penuh dan airnya bersih dingin. Setelah proses aklimatisasi 30 menit di kolam karantina, kelima ekor langsung mau makan pelet halus. Penjual sangat amanah dan responsif saat saya konsultasi via chat!</textarea>
+</div>
+<div class="mt-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-emerald-700 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Reward +500 Koin Tani aktif</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-semibold">
+            278 / 1000
+          </span>
+</div>
+</section>
+<!-- 7. Unggah Media Unboxing (Foto & Video Bukti) -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<label class="text-label-lg font-label-lg text-primary font-bold">
+            Bukti Unboxing &amp; Bibit (Maks. 5)
+          </label>
+<span class="text-label-sm font-label-sm text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+            Foto/Video Jelas
+          </span>
+</div>
+<!-- Media Grid -->
+<div class="grid grid-cols-4 gap-2 pt-1">
+<!-- Button Tambah Media -->
+<button class="aspect-square rounded-lg border-2 border-dashed border-primary/40 bg-surface-container-low hover:bg-surface-container flex flex-col items-center justify-center text-primary active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[24px]">add_a_photo</span>
+<span class="text-[10px] font-bold mt-1">Tambah</span>
+</button>
+<!-- Uploaded Video Item -->
+<div class="aspect-square rounded-lg overflow-hidden relative border border-slate-200 group">
+<img class="w-full h-full object-cover" data-alt="A smartphone video recording capture showing the careful unboxing process of aquaculture packaging. Double layer oxygenated plastic bags filled with juvenile goldfish resting inside an insulated white styrofoam container, captured in daylight farm workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBugRUogJC3wjZdLMcG1kDM2uzt8bCTGiKURTQE570EBCM-_sgfA78wAkN0KMshvRl7rmb9gGXMaBuRDHVlwNL-O5s1KrgKCF8d07-0wQVoKa6WMtDQgJiIzRSsM_lymfmMGavaNeuJ0tkHR5kzHNdwool0OPsGM2NfOY-YX_mdKNrZinWTuZ2augeTcBom3O23fLd7HQ0ps5ToUIoWz6sRk7dpLA8HFoOpvzT4TR6zTZgYKHyT9Owoug"/>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]">play_circle</span>
+</div>
+<span class="absolute bottom-1 left-1 bg-black/70 text-white text-[9px] px-1 rounded font-mono font-medium">0:42</span>
+<button aria-label="Hapus video" class="absolute top-1 right-1 w-4 h-4 bg-black/60 text-white rounded-full flex items-center justify-center text-[10px]" type="button">✕</button>
+</div>
+<!-- Uploaded Photo 1 -->
+<div class="aspect-square rounded-lg overflow-hidden relative border border-slate-200">
+<img class="w-full h-full object-cover" data-alt="High resolution top-angle photograph of five young colorful goldfish acclimating inside an emerald indoor quarantine pond tank, vibrant aquatic plants in background and clean water currents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuIXSOseSMCi_GQA5eUoKB6MqCBCKtQhFnCE4v4DXc-ZB-34qYsGgsMzWq9fMMtlKxkdOs7HuNKAm5fm8RSo5qT1oLEJOAph5wWB9QR2dJ3sKGkhSCDZ7u--_2UPWh-0a6CJpRVzTChNAgaXUur1UX0gAORFqgpDc8gro3yhzETbk0Eon3lMUzz2l_X-YrKg6m7KsxV8_vXJOLPk-TcCGOVe6Zjx9lkGxcstAtZxHeKtkT0nxlS3OXaw"/>
+<button aria-label="Hapus foto 1" class="absolute top-1 right-1 w-4 h-4 bg-black/60 text-white rounded-full flex items-center justify-center text-[10px]" type="button">✕</button>
+</div>
+<!-- Uploaded Photo 2 -->
+<div class="aspect-square rounded-lg overflow-hidden relative border border-slate-200">
+<img class="w-full h-full object-cover" data-alt="Macro close-up shot showing healthy fins and scale luster of a small goldfish resting in hand netting during biological water parameter testing, natural bright lighting in modern fishery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf-oFcvJmMI_ur0PbjJ2xDJKCAHNVC1fD1bJ9J8G-hAXUZuZpS_r3K-zfrPtuQ1cCx8xAm0LEI66HwQnDy0IIe1qTYhGj5XI9QgBM9aksI4eDQYlOeM_vXRaKmL2xiEZtRVl_9vpb6gS55xoiCauopv1eNvc7XDawNScW_PylWiFeebML9MQqp_zWaWIz8Q1Jdj7n-6xpOLpJmNQuC7aPj2-MIIprNamx4QE2pOHDeV4lMK7eDUdHmTw"/>
+<button aria-label="Hapus foto 2" class="absolute top-1 right-1 w-4 h-4 bg-black/60 text-white rounded-full flex items-center justify-center text-[10px]" type="button">✕</button>
+</div>
+</div>
+</section>
+<!-- 8. Opsi Privasi: Toggle Anonim -->
+<section class="bg-surface-container-lowest rounded-xl border border-slate-200 p-space-md shadow-sm flex items-center justify-between">
+<div class="pr-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">visibility_off</span>
+<span class="text-label-md font-label-md text-on-surface font-bold">Ulas Sebagai Anonim</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Nama Anda ditampilkan sebagai <span class="font-semibold text-on-surface">P***a</span> di etalase publik</p>
+</div>
+<!-- Custom Switch Active -->
+<label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</section>
+<!-- 9. Reward Komunitas Banner -->
+<section class="rounded-xl bg-gradient-to-r from-emerald-900 to-primary-container p-space-md text-white shadow-sm flex items-center gap-3 border border-emerald-800">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center flex-shrink-0 border border-secondary-container/40">
+<span class="material-symbols-outlined text-secondary-container text-[24px]">monetization_on</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-label-sm font-label-sm font-bold text-secondary-container uppercase tracking-wide">Reward Verifikasi</span>
+<span class="text-[10px] bg-white/10 px-1.5 py-0.2 rounded text-white/90">Instan</span>
+</div>
+<p class="text-body-sm font-body-sm text-emerald-100 leading-snug mt-0.5">
+            Dapatkan <span class="font-bold text-white">+500 Koin Tani</span> dan Voucher Diskon 10% untuk pesanan pakan berikutnya!
+          </p>
+</div>
+</section>
+</main>
+<!-- 10. Fixed Bottom CTA Docked -->
+<div class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
+<div class="w-full max-w-[420px] bg-surface-container-lowest/95 backdrop-blur-md px-margin-mobile py-space-sm border-t border-slate-200 pointer-events-auto space-y-2 shadow-lg">
+<button class="w-full bg-primary-container hover:bg-primary text-white py-3 rounded-lg text-label-lg font-label-lg font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>Kirim Ulasan Sekarang</span>
+</button>
+<button class="w-full bg-transparent hover:bg-slate-100 text-on-surface-variant py-2 rounded-lg text-label-md font-label-md font-medium text-center transition-colors" type="button">
+          Batal / Kembali
+        </button>
+</div>
+</div>
+</div>
+</body></html>

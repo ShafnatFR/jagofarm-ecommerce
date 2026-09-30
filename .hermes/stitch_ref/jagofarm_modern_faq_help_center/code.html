@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pusat Bantuan &amp; FAQ | JagoFarm - Pertanian &amp; Akuakultur Modern</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#1b4d3e', // Primary deep forest green
+              900: '#133a2e',
+              950: '#0b241c'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="base-styling">
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #f8faf8;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="accordion-transitions">
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+    details[open] summary .faq-icon {
+      transform: rotate(180deg);
+      background-color: #ecfdf5;
+      color: #059669;
+    }
+    details summary {
+      cursor: pointer;
+      list-style: none;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="min-h-screen flex flex-col bg-[#f8faf8]">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all duration-200" data-purpose="site-header">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20 gap-8">
+<!-- Logo Brand -->
+<div class="flex items-center gap-8">
+<a aria-label="JagoFarm Beranda" class="flex items-center gap-2.5 group" href="#">
+<div class="w-10 h-10 rounded-xl bg-brand-800 text-emerald-400 flex items-center justify-center shadow-md shadow-brand-800/10 group-hover:scale-105 transition-transform duration-200">
+<!-- Leaf / Sprout Icon -->
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl font-extrabold tracking-tight text-brand-800">Jago<span class="text-emerald-600">Farm</span></span>
+<span class="text-[10px] tracking-wider font-semibold text-slate-500 uppercase -mt-1">Agri-Aquaculture</span>
+</div>
+</a>
+<!-- Primary Navigation Links -->
+<nav aria-label="Navigasi Utama" class="hidden xl:flex items-center gap-6 text-sm font-medium text-slate-600">
+<a class="hover:text-emerald-700 transition-colors py-1" href="#">Set Tambak</a>
+<a class="hover:text-emerald-700 transition-colors py-1" href="#">Set Hidroponik</a>
+<a class="hover:text-emerald-700 transition-colors py-1" href="#">IoT &amp; Smart Farming</a>
+<a class="hover:text-emerald-700 transition-colors py-1" href="#">Benih &amp; Bibit</a>
+<a class="text-emerald-700 font-semibold py-1" href="#">FAQ &amp; Bantuan</a>
+</nav>
+</div>
+<!-- Global Quick Search Bar -->
+<div class="hidden md:flex flex-1 max-w-md mx-4">
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-800/20 focus:border-brand-800 placeholder:text-slate-400 transition-all duration-150" placeholder="Cari produk, benih, alat, atau solusi..." type="text"/>
+</div>
+</div>
+<!-- User Actions (Cart, Account) -->
+<div class="flex items-center gap-3 sm:gap-4">
+<!-- Category Dropdown Trigger -->
+<button class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors" type="button">
+<span>Kategori</span>
+<svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+<div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+<!-- Shopping Cart with Badge -->
+<a aria-label="Keranjang Belanja" class="relative p-2.5 rounded-full text-slate-700 hover:text-brand-800 hover:bg-slate-100 transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="absolute top-1 right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-emerald-600 rounded-full">
+              2
+            </span>
+</a>
+<!-- User Profile / Account Trigger -->
+<a class="inline-flex items-center gap-2 p-1.5 sm:px-3 sm:py-2 text-sm font-semibold rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors" href="#">
+<div class="w-7 h-7 rounded-full bg-brand-800 text-white flex items-center justify-center text-xs font-bold">
+              JF
+            </div>
+<span class="hidden sm:inline text-slate-800 text-xs">Akun Saya</span>
+</a>
+</div>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: HeroSection -->
+<section class="relative pt-12 pb-14 bg-gradient-to-b from-[#f0f7f3] via-[#f7faf8] to-[#f8faf8] overflow-hidden" data-purpose="hero-faq">
+<!-- Subtle background decorations -->
+<div class="absolute inset-0 pointer-events-none opacity-40">
+<div class="absolute -top-24 right-1/4 w-96 h-96 rounded-full bg-emerald-200/50 blur-3xl"></div>
+<div class="absolute top-1/2 left-10 w-72 h-72 rounded-full bg-brand-200/40 blur-2xl"></div>
+</div>
+<div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<!-- Badge Pill -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 border border-emerald-200/70 text-brand-800 text-xs font-semibold mb-6 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+<span>Pusat Bantuan &amp; Layanan Informasi</span>
+</div>
+<!-- Main Headline -->
+<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-tight mb-4">
+        Pertanyaan yang Sering Diajukan
+      </h1>
+<!-- Subtitle Description -->
+<p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
+        Temukan jawaban cepat seputar pemesanan, produk budidaya akuakultur, paket hidroponik, pengiriman bibit bergaransi, hingga integrasi sensor IoT JagoFarm.
+      </p>
+<!-- Prominent FAQ Search Input -->
+<div class="max-w-2xl mx-auto relative mb-5 shadow-lg shadow-emerald-950/5 rounded-2xl">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+<svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="w-full pl-12 pr-28 py-3.5 sm:py-4 bg-white border border-slate-200 rounded-2xl text-slate-800 placeholder:text-slate-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition" id="faq-search-input" placeholder="Ketik kata kunci (contoh: garansi bibit, pengiriman cargo, IoT)..." type="search"/>
+<button class="absolute right-2.5 top-1/2 -translate-y-1/2 px-4 py-2 bg-brand-800 hover:bg-brand-900 text-white rounded-xl text-xs sm:text-sm font-semibold transition-colors shadow-sm" type="button">
+          Cari
+        </button>
+</div>
+<!-- Quick keyword suggestion pills -->
+<div class="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
+<span class="font-medium text-slate-400">Paling sering dicari:</span>
+<a class="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-brand-800 rounded-full border border-slate-200/80 transition-colors" href="#faq-list">Garansi Tambak</a>
+<a class="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-brand-800 rounded-full border border-slate-200/80 transition-colors" href="#faq-list">Bibit Ikan Bergaransi</a>
+<a class="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-brand-800 rounded-full border border-slate-200/80 transition-colors" href="#faq-list">Pengiriman Cargo</a>
+<a class="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-brand-800 rounded-full border border-slate-200/80 transition-colors" href="#faq-list">Setup Sensor IoT</a>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full" id="faq-list">
+<!-- Category Filter Tabs (Pills) -->
+<div class="mb-10 overflow-x-auto pb-2 scrollbar-none" data-purpose="faq-categories">
+<div class="flex items-center gap-2.5 min-w-max mx-auto justify-start md:justify-center">
+<!-- Active Tab: Semua -->
+<button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-brand-800 text-white shadow-sm ring-1 ring-brand-800" type="button">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 6h16M4 10h16M4 14h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          Semua Pertanyaan
+        </button>
+<!-- Tab: Umum & Akun -->
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 hover:text-brand-800 transition-colors" type="button">
+          Umum &amp; Akun
+        </button>
+<!-- Tab: Pengiriman & Logistik -->
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 hover:text-brand-800 transition-colors" type="button">
+          Pengiriman &amp; Logistik
+        </button>
+<!-- Tab: Pembayaran -->
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 hover:text-brand-800 transition-colors" type="button">
+          Metode Pembayaran
+        </button>
+<!-- Tab: Produk & Bibit -->
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 hover:text-brand-800 transition-colors" type="button">
+          Produk &amp; Bibit Ikan
+        </button>
+<!-- Tab: Garansi & Retur -->
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 hover:text-brand-800 transition-colors" type="button">
+          Garansi &amp; Klaim DOA
+        </button>
+<!-- Tab: IoT Smart Farming -->
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 hover:text-brand-800 transition-colors" type="button">
+          IoT &amp; Layanan Teknis
+        </button>
+</div>
+</div>
+<!-- Accordion Group -->
+<div class="space-y-4" data-purpose="faq-accordion-list">
+<!-- Accordion Item 1 (Default Open) -->
+<details class="group bg-white border border-slate-200/90 hover:border-emerald-600/40 rounded-2xl shadow-sm transition-all duration-200" open="">
+<summary class="flex items-center justify-between p-5 sm:p-6 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl">
+<div class="flex items-center gap-3 sm:gap-4 pr-4">
+<span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-100">
+              01
+            </span>
+<span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-800 transition-colors">
+              Apa itu JagoFarm?
+            </span>
+</div>
+<div class="faq-icon w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+</summary>
+<div class="px-5 sm:px-6 pb-6 pt-1 text-slate-600 border-t border-slate-100 mt-1 leading-relaxed text-sm sm:text-base">
+<p class="mb-3">
+<strong>JagoFarm</strong> adalah ekosistem e-commerce dan platform terintegrasi solusi teknologi pertanian serta akuakultur modern di Indonesia. Kami menyediakan:
+          </p>
+<ul class="space-y-2 list-none pl-1 mb-4 text-sm text-slate-600">
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span><strong>Paket Tambak &amp; Akuaponik:</strong> Kolam terpal bundar HDPE, aerator vortex, biofilter, dan sistem sirkulasi air.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span><strong>Paket Hidroponik Komersial &amp; Rumahan:</strong> Sistem NFT, DFT, Dutch Bucket, hingga nutrisi AB Mix murni.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span><strong>IoT Smart Farming:</strong> Sensor pH otomatis, DO meter, auto-feeder berbasis internet, dan dashboard pantau 24 jam.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span><strong>Benih Unggul &amp; Bibit Ikan:</strong> Bibit nila monosex, lele sangkuriang, gurame, dan benih sayur bersertifikasi.</span>
+</li>
+</ul>
+<p class="text-xs text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">
+            💡 Semua pengiriman benih &amp; bibit disertai standard packing oksigen murni dengan jaminan garansi hidup sampai lokasi tujuan (DOA - Death On Arrival warranty).
+          </p>
+</div>
+</details>
+<!-- Accordion Item 2 -->
+<details class="group bg-white border border-slate-200/90 hover:border-emerald-600/40 rounded-2xl shadow-sm transition-all duration-200">
+<summary class="flex items-center justify-between p-5 sm:p-6 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl">
+<div class="flex items-center gap-3 sm:gap-4 pr-4">
+<span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-100">
+              02
+            </span>
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-800 transition-colors">
+                Apakah JagoFarm melayani pengiriman ke seluruh Indonesia?
+              </span>
+<span class="inline-flex self-start sm:self-auto text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                Logistik &amp; Ekspedisi
+              </span>
+</div>
+</div>
+<div class="faq-icon w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+</summary>
+<div class="px-5 sm:px-6 pb-6 pt-1 text-slate-600 border-t border-slate-100 mt-1 leading-relaxed text-sm sm:text-base">
+<p class="mb-3">
+            Ya, kami mengirim ke seluruh pelosok Indonesia dengan metode pengiriman yang disesuaikan jenis barang:
+          </p>
+<div class="grid sm:grid-cols-2 gap-3 mb-3 text-sm">
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/70">
+<h4 class="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Peralatan &amp; Hardware Berat
+              </h4>
+<p class="text-xs text-slate-500">Menggunakan ekspedisi cargo terpercaya (JNE Trucking, Dakota Cargo, Kargo Kereta) dengan opsi peti kayu aman.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/70">
+<h4 class="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Bibit Ikan Hidup &amp; Tanaman
+              </h4>
+<p class="text-xs text-slate-500">Menggunakan kargo udara (port-to-port atau port-to-door) dengan kotak Styrofoam khusus beroksigen 3 lapis demi menjaga kelangsungan hidup bibit.</p>
+</div>
+</div>
+</div>
+</details>
+<!-- Accordion Item 3 -->
+<details class="group bg-white border border-slate-200/90 hover:border-emerald-600/40 rounded-2xl shadow-sm transition-all duration-200">
+<summary class="flex items-center justify-between p-5 sm:p-6 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl">
+<div class="flex items-center gap-3 sm:gap-4 pr-4">
+<span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-100">
+              03
+            </span>
+<span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-800 transition-colors">
+              Bagaimana cara menghubungi customer service &amp; tim ahli budidaya?
+            </span>
+</div>
+<div class="faq-icon w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+</summary>
+<div class="px-5 sm:px-6 pb-6 pt-1 text-slate-600 border-t border-slate-100 mt-1 leading-relaxed text-sm sm:text-base">
+<p class="mb-3">
+            Anda dapat berkonsultasi langsung secara gratis bersama agronomis dan teknisi budidaya kami melalui beberapa saluran berikut:
+          </p>
+<div class="space-y-2 text-sm">
+<div class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+<span class="font-bold text-brand-800 min-w-[120px]">WhatsApp Care:</span>
+<span>+62 812-3456-7890 (Tersedia setiap hari pukul 08.00 - 21.00 WIB)</span>
+</div>
+<div class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+<span class="font-bold text-brand-800 min-w-[120px]">Email Support:</span>
+<span>hello@jagofarm.id / support@jagofarm.id (Respon maksimal 1x24 jam kerja)</span>
+</div>
+<div class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+<span class="font-bold text-brand-800 min-w-[120px]">Live Chat:</span>
+<span>Klik ikon widget chat di pojok kanan bawah website untuk bantuan cepat operasional.</span>
+</div>
+</div>
+</div>
+</details>
+<!-- Accordion Item 4 -->
+<details class="group bg-white border border-slate-200/90 hover:border-emerald-600/40 rounded-2xl shadow-sm transition-all duration-200">
+<summary class="flex items-center justify-between p-5 sm:p-6 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl">
+<div class="flex items-center gap-3 sm:gap-4 pr-4">
+<span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-100">
+              04
+            </span>
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-800 transition-colors">
+                Apakah ada garansi kematian (DOA) untuk anakan bibit ikan dan tanaman?
+              </span>
+<span class="inline-flex self-start sm:self-auto text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                Garansi 100%
+              </span>
+</div>
+</div>
+<div class="faq-icon w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+</summary>
+<div class="px-5 sm:px-6 pb-6 pt-1 text-slate-600 border-t border-slate-100 mt-1 leading-relaxed text-sm sm:text-base">
+<p class="mb-3">
+<strong>Tentu saja ada!</strong> JagoFarm berkomitmen memberikan <strong>Garansi Dead On Arrival (DOA) 100%</strong> untuk semua kiriman bibit ikan maupun bibit tanaman hidup.
+          </p>
+<div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4 text-xs sm:text-sm text-amber-950 space-y-2">
+<p class="font-bold">Ketentuan Klaim Garansi Penggantian Bibit:</p>
+<ol class="list-decimal pl-4 space-y-1">
+<li>Sertakan rekaman <em>video unboxing</em> tanpa jeda saat paket pertama kali dibuka dari kardus/styrofoam luar hingga kantong oksigen.</li>
+<li>Laporkan kepada customer service maksimal <strong>1 x 24 jam</strong> sejak status paket diterima.</li>
+<li>Bibit yang mati dalam perjalanan akan diganti pada pengiriman berikutnya atau dana direfund secara pro-rata.</li>
+</ol>
+</div>
+</div>
+</details>
+<!-- Accordion Item 5 -->
+<details class="group bg-white border border-slate-200/90 hover:border-emerald-600/40 rounded-2xl shadow-sm transition-all duration-200">
+<summary class="flex items-center justify-between p-5 sm:p-6 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl">
+<div class="flex items-center gap-3 sm:gap-4 pr-4">
+<span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-100">
+              05
+            </span>
+<span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-800 transition-colors">
+              Bagaimana sistem pemasangan dan integrasi alat IoT Smart Farming?
+            </span>
+</div>
+<div class="faq-icon w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+</summary>
+<div class="px-5 sm:px-6 pb-6 pt-1 text-slate-600 border-t border-slate-100 mt-1 leading-relaxed text-sm sm:text-base">
+<p class="mb-3">
+            Semua modul perangkat <em>Smart Farming</em> dari JagoFarm mengusung konsep <strong>Plug &amp; Play</strong>:
+          </p>
+<ul class="list-disc pl-5 space-y-1.5 text-sm mb-3">
+<li><strong>Aplikasi Seluler:</strong> Unduh aplikasi JagoFarm di Android Play Store / Apple App Store lalu scan QR code pada bodi modul.</li>
+<li><strong>Konektivitas Fleksibel:</strong> Mendukung jaringan Wi-Fi 2.4GHz serta opsi modul SIM Card GSM 4G untuk tambak di pelosok yang minim sinyal internet rumah.</li>
+<li><strong>Layanan On-site Technician:</strong> Kami juga menyediakan opsi pendampingan instalasi langsung oleh teknisi resmi JagoFarm untuk kawasan Jawa, Bali, dan Sumatera Selatan.</li>
+</ul>
+</div>
+</details>
+<!-- Accordion Item 6 -->
+<details class="group bg-white border border-slate-200/90 hover:border-emerald-600/40 rounded-2xl shadow-sm transition-all duration-200">
+<summary class="flex items-center justify-between p-5 sm:p-6 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl">
+<div class="flex items-center gap-3 sm:gap-4 pr-4">
+<span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-100">
+              06
+            </span>
+<span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-800 transition-colors">
+              Metode pembayaran apa saja yang didukung di JagoFarm?
+            </span>
+</div>
+<div class="faq-icon w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+</summary>
+<div class="px-5 sm:px-6 pb-6 pt-1 text-slate-600 border-t border-slate-100 mt-1 leading-relaxed text-sm sm:text-base">
+<p class="mb-3">
+            Kami mendukung ragam transaksi instan &amp; aman yang terintegrasi payment gateway terlisensi Bank Indonesia:
+          </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-medium text-slate-700">
+<div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">QRIS (GoPay, OVO, Dana)</div>
+<div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">Virtual Account (BCA, Mandiri, BRI, BNI)</div>
+<div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">Kartu Kredit Visa &amp; Mastercard</div>
+<div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">Cicilan Paylater &amp; Invoice B2B</div>
+</div>
+</div>
+</details>
+</div>
+<!-- BEGIN: StillNeedHelpCard -->
+<div class="mt-14 relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-900 via-brand-800 to-emerald-800 text-white p-8 sm:p-10 shadow-xl shadow-brand-900/10" data-purpose="help-cta-card">
+<div class="absolute -right-10 -bottom-10 w-64 h-64 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+<div class="max-w-xl">
+<div class="inline-flex items-center gap-2 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-2">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path></svg>
+            Konsultasi Gratis
+          </div>
+<h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
+            Belum menemukan jawaban yang Anda cari?
+          </h2>
+<p class="text-sm sm:text-base text-emerald-100/90 leading-relaxed">
+            Tim teknis dan agronomis JagoFarm siap membantu menjawab pertanyaan spesifik mengenai rancang bangun tambak, instalasi hidroponik komersial, maupun pemilihan nutrisi.
+          </p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-brand-950 font-bold text-sm rounded-xl transition duration-150 shadow-md" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<!-- WhatsApp SVG Icon -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+</svg>
+<span>Hubungi via WhatsApp</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-sm rounded-xl transition duration-150" href="#">
+<span>Kirim Tiket Bantuan</span>
+</a>
+</div>
+</div>
+</div>
+<!-- END: StillNeedHelpCard -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="bg-brand-800 text-white pt-16 pb-12 mt-20" data-purpose="site-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Top Grid: Brand & Link Columns -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-14 border-b border-emerald-700/50">
+<!-- Column 1: Brand Info -->
+<div class="lg:col-span-1 space-y-4">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-emerald-500 text-brand-900 flex items-center justify-center font-bold">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+</svg>
+</div>
+<span class="text-2xl font-bold tracking-tight text-white">Jago<span class="text-emerald-400">Farm</span></span>
+</div>
+<p class="text-xs text-emerald-100/80 leading-relaxed">
+            Solusi pertanian &amp; akuakultur modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak terpal, dan IoT smart farming berkualitas tinggi.
+          </p>
+<div class="flex items-center gap-2.5 pt-2">
+<!-- Share Icon Button -->
+<button aria-label="Bagikan Halaman" class="w-8 h-8 rounded-full bg-emerald-900/60 hover:bg-emerald-700 text-emerald-200 flex items-center justify-center transition-colors" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<!-- Website Global Icon Button -->
+<button aria-label="Bahasa &amp; Negara" class="w-8 h-8 rounded-full bg-emerald-900/60 hover:bg-emerald-700 text-emerald-200 flex items-center justify-center transition-colors" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<!-- Column 2: Produk -->
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 mb-4">Produk</h3>
+<ul class="space-y-2.5 text-xs text-emerald-100/75">
+<li><a class="hover:text-white transition-colors" href="#">Set Tambak</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Set Hidroponik</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Set Aquaponik</a></li>
+<li><a class="hover:text-white transition-colors" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Benih</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Anakan Ikan</a></li>
+</ul>
+</div>
+<!-- Column 3: Informasi -->
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 mb-4">Informasi</h3>
+<ul class="space-y-2.5 text-xs text-emerald-100/75">
+<li><a class="hover:text-white transition-colors" href="#">Tentang Kami</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Cara Pemesanan</a></li>
+<li><a class="hover:text-white transition-colors font-medium text-emerald-300" href="#">FAQ (Pusat Bantuan)</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Hubungi Kami</a></li>
+</ul>
+</div>
+<!-- Column 4: Kebijakan -->
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 mb-4">Kebijakan</h3>
+<ul class="space-y-2.5 text-xs text-emerald-100/75">
+<li><a class="hover:text-white transition-colors" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Kebijakan Pengembalian</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Kebijakan Privasi</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Syarat dan Ketentuan</a></li>
+</ul>
+</div>
+<!-- Column 5: Kontak -->
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 mb-4">Kontak</h3>
+<ul class="space-y-3 text-xs text-emerald-100/80">
+<li class="flex items-start gap-2.5">
+<svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Jl. Pertanian No. 123, Surabaya, Jawa Timur</span>
+</li>
+<li class="flex items-center gap-2.5">
+<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<a class="hover:text-white transition-colors" href="tel:+6281234567890">+62 812-3456-7890</a>
+</li>
+<li class="flex items-center gap-2.5">
+<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<a class="hover:text-white transition-colors" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar: Copyright -->
+<div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-200/60 gap-4">
+<p>© 2026 JagoFarm. All rights reserved.</p>
+<p class="flex items-center gap-4">
+<a class="hover:text-white transition-colors" href="#">Keamanan &amp; Keandalan Terjamin</a>
+<span>•</span>
+<a class="hover:text-white transition-colors" href="#">Sitemap Bantuan</a>
+</p>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="faq-filter-interaction">
+    document.addEventListener('DOMContentLoaded', () => {
+      // Search filter for FAQ titles
+      const searchInput = document.getElementById('faq-search-input');
+      const accordions = document.querySelectorAll('details');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim();
+          
+          accordions.forEach((details) => {
+            const summaryText = details.querySelector('summary')?.innerText.toLowerCase() || '';
+            const contentText = details.querySelector('div')?.innerText.toLowerCase() || '';
+            
+            if (query === '' || summaryText.includes(query) || contentText.includes(query)) {
+              details.style.display = '';
+              if (query.length > 2) {
+                details.setAttribute('open', '');
+              }
+            } else {
+              details.style.display = 'none';
+            }
+          });
+        });
+      }
+    });
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lupa Password - JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            jagogreen: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#1e4638',
+              900: '#12372a',
+              950: '#0a2219'
+            },
+            agri: {
+              sand: '#FAF8F5',
+              surface: '#FBFDFB',
+              border: '#E2E8F0',
+              muted: '#64748B'
+            }
+          },
+          boxShadow: {
+            'soft-card': '0 20px 40px -15px rgba(18, 55, 42, 0.08), 0 0 1px 1px rgba(18, 55, 42, 0.05)',
+            'btn-glow': '0 10px 20px -5px rgba(18, 55, 42, 0.3)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Styles for Ambient Background Pattern -->
+<style data-purpose="background-patterns">
+    .bg-mesh-pattern {
+      background-color: #f7f9f7;
+      background-image: 
+        radial-gradient(at 10% 20%, rgba(22, 163, 74, 0.06) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, rgba(18, 55, 42, 0.07) 0px, transparent 50%),
+        radial-gradient(at 80% 80%, rgba(212, 163, 115, 0.06) 0px, transparent 50%),
+        radial-gradient(at 20% 90%, rgba(22, 163, 74, 0.05) 0px, transparent 50%);
+    }
+    .grid-lines {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(18, 55, 42, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(18, 55, 42, 0.02) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="font-sans bg-mesh-pattern text-slate-800 antialiased min-h-screen flex flex-col justify-between relative selection:bg-jagogreen-800 selection:text-white">
+<!-- BEGIN: AmbientDecorativeElements -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none grid-lines z-0"></div>
+<div aria-hidden="true" class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-jagogreen-100/40 via-transparent to-transparent blur-3xl pointer-events-none z-0"></div>
+<!-- END: AmbientDecorativeElements -->
+<!-- BEGIN: TopBarNav -->
+<header class="relative z-10 w-full pt-8 pb-4 px-6 sm:px-10 flex items-center justify-between max-w-7xl mx-auto">
+<!-- Brand Logo -->
+<a aria-label="JagoFarm Beranda" class="inline-flex items-center gap-2.5 group" href="#">
+<div class="w-10 h-10 rounded-xl bg-jagogreen-900 flex items-center justify-center text-white shadow-md shadow-jagogreen-900/20 group-hover:scale-105 transition-transform duration-200">
+<!-- Leaf / Eco Icon -->
+<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-bold tracking-tight text-jagogreen-900 leading-none">JagoFarm</span>
+<span class="text-[11px] font-medium text-emerald-700 tracking-wider uppercase mt-0.5">Agri &amp; Aquaculture</span>
+</div>
+</a>
+<!-- Support Help link -->
+<a class="text-xs sm:text-sm font-medium text-slate-600 hover:text-jagogreen-900 flex items-center gap-1.5 transition-colors" href="#">
+<svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Bantuan Teknis</span>
+</a>
+</header>
+<!-- END: TopBarNav -->
+<!-- BEGIN: MainContent -->
+<main class="relative z-10 flex-grow flex items-center justify-center px-4 sm:px-6 py-8">
+<div class="w-full max-w-[480px]">
+<!-- Card Container -->
+<section class="bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-soft-card relative overflow-hidden" data-purpose="forgot-password-card">
+<!-- Subtle decorative top accent line -->
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-jagogreen-800 via-emerald-600 to-jagogreen-900"></div>
+<!-- Header badge icon & headings -->
+<div class="flex flex-col items-center text-center">
+<!-- Leaf Brand Badge -->
+<div class="w-14 h-14 rounded-2xl bg-jagogreen-900 text-white flex items-center justify-center shadow-lg shadow-jagogreen-900/25 mb-5 ring-4 ring-emerald-50 relative group">
+<svg class="w-7 h-7 text-emerald-300" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+</svg>
+<!-- Small status ping -->
+<span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+<span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white"></span>
+</span>
+</div>
+<h1 class="text-2xl sm:text-[28px] font-bold text-slate-900 tracking-tight mb-2.5">
+            Lupa Password
+          </h1>
+<p class="text-slate-600 text-sm sm:text-[15px] leading-relaxed max-w-sm mb-7">
+            Masukkan email Anda dan kami akan mengirimkan link untuk mengatur ulang password.
+          </p>
+</div>
+<!-- BEGIN: ResetForm -->
+<form action="#" class="space-y-5" data-purpose="reset-request-form" method="POST" onsubmit="event.preventDefault();">
+<!-- Email Input Group -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="block text-sm font-semibold text-slate-700" for="email">
+                Email
+              </label>
+<span class="text-xs text-slate-400">Akun terdaftar</span>
+</div>
+<div class="relative rounded-xl shadow-sm">
+<!-- Mail icon prefix -->
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="16" rx="2" width="20" x="2" y="4"></rect>
+<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+</svg>
+</div>
+<!-- Input element -->
+<input autocomplete="email" class="block w-full pl-11 pr-4 py-3 sm:py-3.5 text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-jagogreen-800 focus:border-jagogreen-800 transition-all placeholder:text-slate-400" id="email" name="email" placeholder="nama@email.com" required="" type="email"/>
+</div>
+<p class="text-xs text-slate-500 pl-1">Pastikan email aktif untuk menerima instruksi pemulihan.</p>
+</div>
+<!-- Submit Button -->
+<div class="pt-2">
+<button class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-jagogreen-900 hover:bg-[#163e32] active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-btn-glow transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagogreen-900" type="submit">
+<span>Kirim Link Reset</span>
+<!-- Send/Arrow Icon -->
+<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- Navigation Back to Login -->
+<div class="pt-3 text-center">
+<a class="inline-flex items-center gap-2 text-sm font-semibold text-jagogreen-800 hover:text-emerald-800 transition-colors py-1 group" href="#">
+<svg class="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Kembali ke Login</span>
+</a>
+</div>
+</form>
+<!-- END: ResetForm -->
+<!-- Help Desk Divider and WhatsApp Link -->
+<div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-slate-500 text-center">
+<span>Butuh bantuan akses akun?</span>
+<a class="font-medium text-emerald-700 hover:text-emerald-900 underline underline-offset-2 inline-flex items-center gap-1" href="#">
+<span>Hubungi CS JagoFarm</span>
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</section>
+<!-- Trust & Security Assurance Footnote -->
+<aside class="mt-6 flex items-center justify-center gap-2 text-xs text-slate-500" data-purpose="security-note">
+<svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+<path d="m9 12 2 2 4-4"></path>
+</svg>
+<span>Data &amp; privasi dilindungi enkripsi standar SSL 256-bit</span>
+</aside>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: PageFooter -->
+<footer class="relative z-10 w-full py-6 px-4 text-center text-xs text-slate-500">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200/60 pt-4">
+<p>© 2025 JagoFarm Indonesia. Solusi Pertanian &amp; Akuakultur Modern.</p>
+<div class="flex items-center gap-5 text-slate-500">
+<a class="hover:text-jagogreen-900 transition-colors" href="#">Syarat &amp; Ketentuan</a>
+<span>•</span>
+<a class="hover:text-jagogreen-900 transition-colors" href="#">Kebijakan Privasi</a>
+</div>
+</div>
+</footer>
+<!-- END: PageFooter -->
+</body></html>

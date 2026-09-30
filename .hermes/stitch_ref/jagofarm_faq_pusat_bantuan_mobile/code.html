@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pusat Bantuan &amp; FAQ - JagoFarm</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#002117",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-background": "#111c2d",
+            "surface-variant": "#d8e3fb",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-container-low": "#f0f3ff",
+            "on-secondary-fixed-variant": "#604100",
+            "inverse-primary": "#9ed1bd",
+            "surface": "#f9f9ff",
+            "tertiary-container": "#004f35",
+            "surface-container": "#e7eeff",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container-high": "#dee8ff",
+            "secondary-fixed-dim": "#fdba45",
+            "on-primary-fixed-variant": "#1d4f40",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c0c9c3",
+            "tertiary-fixed": "#6ffbbe",
+            "secondary-fixed": "#ffdeae",
+            "surface-dim": "#cfdaf2",
+            "surface-tint": "#376757",
+            "on-surface": "#111c2d",
+            "on-tertiary-container": "#32c98f",
+            "on-primary-container": "#8abda9",
+            "on-secondary": "#ffffff",
+            "tertiary": "#003623",
+            "background": "#f9f9ff",
+            "inverse-surface": "#263143",
+            "on-error": "#ffffff",
+            "primary-container": "#1b4d3e",
+            "primary-fixed": "#baeed9",
+            "surface-container-highest": "#d8e3fb",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "on-surface-variant": "#404945",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-fixed": "#281900",
+            "inverse-on-surface": "#ecf1ff",
+            "outline": "#707974",
+            "on-primary": "#ffffff",
+            "secondary-container": "#fdba45",
+            "secondary": "#7f5700",
+            "on-secondary-container": "#6f4b00",
+            "primary": "#003629"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.25rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "0.75rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen pb-24">
+<!-- TopAppBar Mobile (Consistent with Shared JSON style_shell_layout & token hierarchy) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-mobile py-space-sm bg-surface/90 backdrop-blur-md shadow-sm">
+<div class="flex items-center space-x-3">
+<button aria-label="Kembali" class="w-9 h-9 rounded-full flex items-center justify-center text-primary hover:bg-surface-container transition-colors active:scale-95" onclick="history.back()">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Pusat Bantuan &amp; FAQ</h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim inline-block animate-pulse"></span>
+          Respon Aktif 24/7
+        </span>
+</div>
+</div>
+<div class="flex items-center space-x-1">
+<button aria-label="Bantuan Langsung" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[22px]">contact_support</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-margin-mobile max-w-lg mx-auto flex flex-col space-y-5">
+<!-- Hero Header & Badge -->
+<section class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed/50 border border-primary-fixed-dim/60 text-primary mb-3">
+<span class="material-symbols-outlined text-[16px] text-primary" data-weight="fill">verified</span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wide">Pusat Bantuan &amp; Layanan Informasi</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight mb-2">
+        Pertanyaan yang Sering Diajukan
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Solusi cepat kendala budidaya, garansi pengiriman bibit segar, dan operasional perangkat pintar JagoFarm.
+      </p>
+</section>
+<!-- Global Search Bar Component -->
+<section class="relative">
+<div class="relative flex items-center w-full shadow-sm rounded-full bg-surface-container-lowest border border-outline-variant focus-within:border-primary-container focus-within:ring-2 focus-within:ring-primary-container/20 transition-all">
+<span class="material-symbols-outlined text-outline pl-4 pr-1 text-[22px]" data-icon="search">search</span>
+<input class="w-full py-3 pr-24 bg-transparent text-on-surface placeholder:text-outline text-body-md border-0 focus:ring-0 focus:outline-none" id="faqSearchInput" placeholder="Cari kata kunci (garansi bibit, kargo, IoT)..." type="text"/>
+<button class="absolute right-1.5 px-4 py-2 bg-primary-container text-surface-container-lowest font-label-md text-label-md rounded-full active:scale-95 transition-transform flex items-center gap-1" id="searchBtn">
+<span>Cari</span>
+</button>
+</div>
+</section>
+<!-- Horizontal Category Filter Pills -->
+<section>
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-margin-mobile px-margin-mobile">
+<button class="faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-primary-container text-surface-container-lowest font-label-md text-label-md shadow-sm transition-all" data-category="all">
+          Semua Pertanyaan
+        </button>
+<button class="faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" data-category="account">
+          Umum &amp; Akun
+        </button>
+<button class="faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" data-category="logistics">
+          Pengiriman &amp; Logistik
+        </button>
+<button class="faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" data-category="payment">
+          Metode Pembayaran
+        </button>
+<button class="faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" data-category="seeds">
+          Produk &amp; Bibit Ikan
+        </button>
+<button class="faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" data-category="warranty">
+          Garansi &amp; Klaim DOA
+        </button>
+</div>
+</section>
+<!-- Accordion FAQ Items (Interactive & Themed) -->
+<section class="flex flex-col space-y-3" id="faqAccordionGroup">
+<!-- Accordion 1 (Default Open) -->
+<article class="faq-item bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all duration-200">
+<button aria-expanded="true" class="w-full p-4 flex items-center justify-between text-left focus:outline-none transition-colors select-none" onclick="toggleAccordion(1)" type="button">
+<div class="flex items-center space-x-3 pr-2">
+<span class="w-8 h-8 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">agriculture</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Apa itu JagoFarm?</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200 rotate-180" id="accordion-icon-1">expand_more</span>
+</button>
+<div class="px-4 pb-4 pt-1 border-t border-outline-variant/30 text-on-surface-variant font-body-md text-body-md space-y-2" id="accordion-content-1">
+<p>
+<strong>JagoFarm</strong> adalah ekosistem agri-aquaculture terintegrasi pertama di Indonesia yang menghubungkan pembudidaya tambak, praktisi hidroponik, dan petani komersial dengan pasokan bibit bersertifikasi resmi.
+          </p>
+<div class="grid grid-cols-2 gap-2 pt-2">
+<div class="bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/30 flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">water_voc</span>
+<span class="text-body-sm font-body-sm text-on-surface">Koleksi Bibit Ikan &amp; Udang SPF/SPR</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/30 flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">sensors</span>
+<span class="text-body-sm font-body-sm text-on-surface">IoT Kualitas Air &amp; Feeder Otomatis</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Accordion 2 -->
+<article class="faq-item bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="w-full p-4 flex items-center justify-between text-left focus:outline-none transition-colors select-none" onclick="toggleAccordion(2)" type="button">
+<div class="flex items-center space-x-3 pr-2">
+<span class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Apakah JagoFarm melayani pengiriman ke seluruh Indonesia?</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="accordion-icon-2">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 pt-1 border-t border-outline-variant/30 text-on-surface-variant font-body-md text-body-md space-y-2" id="accordion-content-2">
+<p>
+            Ya, kami bermitra dengan layanan logistik berpendingin (cold-chain), pengiriman kargo udara khusus hewan hidup, dan ekspedisi kilat teruji yang menjangkau seluruh pulau utama di Indonesia.
+          </p>
+<p class="text-body-sm font-body-sm text-on-surface bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/30">
+            📦 Untuk biota perairan (nener, benur, benih lele/nila), kemasan dilengkapi pasokan oksigen murni 100% dengan ketahanan transportasi hingga 36 jam.
+          </p>
+</div>
+</article>
+<!-- Accordion 3 -->
+<article class="faq-item bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="w-full p-4 flex items-center justify-between text-left focus:outline-none transition-colors select-none" onclick="toggleAccordion(3)" type="button">
+<div class="flex items-center space-x-3 pr-2">
+<span class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Bagaimana cara menghubungi customer service &amp; tim ahli budidaya?</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="accordion-icon-3">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 pt-1 border-t border-outline-variant/30 text-on-surface-variant font-body-md text-body-md space-y-2" id="accordion-content-3">
+<p>
+            Anda dapat terhubung langsung melalui WhatsApp Official JagoFarm, live chat via aplikasi, atau mengajukan tiket konsultasi melalui menu <strong>Konsultasi</strong>. Ahli agronomi &amp; teknisi akuakultur kami standby Senin–Minggu pukul 07.00 - 21.00 WIB.
+          </p>
+</div>
+</article>
+<!-- Accordion 4 -->
+<article class="faq-item bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="w-full p-4 flex items-center justify-between text-left focus:outline-none transition-colors select-none" onclick="toggleAccordion(4)" type="button">
+<div class="flex items-center space-x-3 pr-2">
+<span class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">health_and_safety</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Apakah ada garansi kematian (DOA) untuk anakan bibit ikan dan tanaman?</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="accordion-icon-4">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 pt-1 border-t border-outline-variant/30 text-on-surface-variant font-body-md text-body-md space-y-2" id="accordion-content-4">
+<p>
+<strong>Pasti ada.</strong> Kami memberikan perlindungan 100% <em>Dead on Arrival (DOA)</em>. Jika bibit tiba dalam kondisi mati atau layu parah, cukup unggah video unboxing tanpa jeda maksimal 2 jam setelah paket diterima oleh ekspedisi.
+          </p>
+<div class="flex items-center gap-2 p-2 bg-error-container/40 rounded-lg text-on-error-container font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>Penggantian bibit baru atau pengembalian dana 100% diproses dalam 1x24 jam.</span>
+</div>
+</div>
+</article>
+<!-- Accordion 5 -->
+<article class="faq-item bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="w-full p-4 flex items-center justify-between text-left focus:outline-none transition-colors select-none" onclick="toggleAccordion(5)" type="button">
+<div class="flex items-center space-x-3 pr-2">
+<span class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">router</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Bagaimana sistem pemasangan dan integrasi alat IoT Smart Farming?</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="accordion-icon-5">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 pt-1 border-t border-outline-variant/30 text-on-surface-variant font-body-md text-body-md space-y-2" id="accordion-content-5">
+<p>
+            Setiap unit IoT (DO meter digital, sensor pH/TDS kontinu, auto-feeder solar) hadir dengan fitur <em>Plug-and-Play</em> otomatis terhubung ke aplikasi JagoFarm. Tim teknisi rekanan kami juga siap melakukan visit instalasi langsung ke lokasi farm Anda.
+          </p>
+</div>
+</article>
+<!-- Accordion 6 -->
+<article class="faq-item bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="w-full p-4 flex items-center justify-between text-left focus:outline-none transition-colors select-none" onclick="toggleAccordion(6)" type="button">
+<div class="flex items-center space-x-3 pr-2">
+<span class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Metode pembayaran apa saja yang didukung?</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="accordion-icon-6">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 pt-1 border-t border-outline-variant/30 text-on-surface-variant font-body-md text-body-md space-y-2" id="accordion-content-6">
+<p>
+            JagoFarm mendukung pembayaran instan QRIS (Semua E-Wallet), Transfer Bank Virtual Account (BCA, Mandiri, BRI, BNI), Kartu Kredit/Debit, serta skema pendanaan pertanian mikro (Fintech Agri Terdaftar OJK) untuk pembelian sarana produksi skala besar.
+          </p>
+</div>
+</article>
+</section>
+<!-- Card Bantuan Tambahan -->
+<section class="mt-4 bg-gradient-to-br from-primary to-primary-container text-surface-container-lowest rounded-xl p-5 shadow-sm relative overflow-hidden">
+<div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-white/5 pointer-events-none"></div>
+<div class="relative z-10">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 text-tertiary-fixed text-label-sm font-label-sm mb-2 backdrop-blur-sm">
+<span class="material-symbols-outlined text-[16px]">headset_mic</span>
+<span>Bantuan Khusus Pembudidaya</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-surface-container-lowest mb-1">
+          Belum menemukan jawaban yang Anda cari?
+        </h3>
+<p class="font-body-md text-body-md text-on-primary-container mb-4">
+          Tim spesialis budidaya dan layanan teknis kami siap memandu kendala pesanan maupun konsultasi kolam Anda.
+        </p>
+<div class="flex flex-col gap-2.5">
+<!-- Tombol Hijau WhatsApp -->
+<a class="w-full py-3 px-4 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-transform" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>Hubungi via WhatsApp</span>
+</a>
+<!-- Tombol Kirim Tiket Bantuan -->
+<button class="w-full py-3 px-4 rounded-lg bg-surface-container-lowest/15 hover:bg-surface-container-lowest/25 border border-white/20 text-surface-container-lowest font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+<span>Kirim Tiket Bantuan</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Mini Trust Highlights Footer Strip -->
+<section class="grid grid-cols-2 gap-3 pt-2 pb-6">
+<div class="flex items-center gap-2 bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Bibit Terakreditasi</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lolos karantina balai</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[20px]">lock</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Garansi 100% Aman</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Klaim DOA instan</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar mobile JagoFarm (Identical casing, icons & styles from Shared Components JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile py-space-xs bg-surface/95 backdrop-blur-md shadow-sm">
+<!-- Item 1: Beranda -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 active:scale-95 transition-transform hover:text-primary" href="#">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="font-label-sm text-label-sm">Beranda</span>
+</a>
+<!-- Item 2: Katalog -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 active:scale-95 transition-transform hover:text-primary" href="#">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+<span class="font-label-sm text-label-sm">Katalog</span>
+</a>
+<!-- Item 3: Konsultasi (Active item for Help/FAQ/Support ecosystem) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold py-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[22px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-label-sm text-label-sm">Konsultasi</span>
+</a>
+<!-- Item 4: Akun -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 active:scale-95 transition-transform hover:text-primary" href="#">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="font-label-sm text-label-sm">Akun</span>
+</a>
+</nav>
+<!-- Interactive Script for FAQ Accordion & Category Pills -->
+<script>
+    function toggleAccordion(id) {
+      const content = document.getElementById(`accordion-content-${id}`);
+      const icon = document.getElementById(`accordion-icon-${id}`);
+      const isHidden = content.classList.contains('hidden');
+
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+      }
+    }
+
+    // Category button active state toggle
+    const categoryBtns = document.querySelectorAll('.faq-category-btn');
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoryBtns.forEach(b => {
+          b.className = "faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all";
+        });
+        btn.className = "faq-category-btn whitespace-nowrap px-3.5 py-1.5 rounded-full bg-primary-container text-surface-container-lowest font-label-md text-label-md shadow-sm transition-all";
+      });
+    });
+
+    // Simple FAQ Filter on Search input
+    const searchInput = document.getElementById('faqSearchInput');
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      faqItems.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body></html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kebijakan Privasi | JagoFarm Indonesia</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Tailwind CSS CDN v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf6',
+              100: '#dbfdec',
+              200: '#b8f8d9',
+              300: '#80efbf',
+              400: '#43dda0',
+              500: '#19c282',
+              600: '#0e9e69',
+              700: '#0e7c55',
+              800: '#106245',
+              900: '#1b4d3e',
+              950: '#0a2a22',
+            },
+            surface: {
+              light: '#fbfcfb',
+              muted: '#f4f6f4',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-scroll-and-typography">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #1f2937;
+      background-color: #fbfcfb;
+    }
+    .active-nav-link {
+      background-color: #f0fdf6;
+      color: #0e7c55;
+      font-weight: 600;
+      border-left: 3px solid #19c282;
+    }
+  </style>
+</head>
+<body class="bg-surface-light text-slate-800 antialiased selection:bg-brand-100 selection:text-brand-900">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-200">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20 gap-4">
+<!-- Logo -->
+<a class="flex items-center gap-2.5 flex-shrink-0 group" href="#">
+<div class="w-10 h-10 rounded-xl bg-brand-900 flex items-center justify-center text-white shadow-md shadow-brand-900/10 transition-transform group-hover:scale-105">
+<i class="w-5 h-5 text-brand-300" data-lucide="sprout"></i>
+</div>
+<span class="text-2xl font-bold tracking-tight text-brand-900">Jago<span class="text-brand-600">Farm</span></span>
+</a>
+<!-- Search Bar with Category -->
+<div class="hidden md:flex items-center flex-1 max-w-xl mx-6">
+<div class="relative w-full flex items-center">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<i class="w-4 h-4" data-lucide="search"></i>
+</div>
+<input class="w-full pl-10 pr-28 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" placeholder="Cari produk hidroponik, panduan, atau ketentuan..." type="text"/>
+<div class="absolute right-1.5 inset-y-1.5 flex items-center">
+<button class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 hover:border-slate-300 text-xs font-medium text-slate-600 rounded-full transition-colors" type="button">
+<span>Kategori</span>
+<i class="w-3.5 h-3.5 text-slate-400" data-lucide="chevron-down"></i>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Buttons (Cart, Account, Support) -->
+<div class="flex items-center gap-3">
+<a class="relative p-2.5 text-slate-600 hover:text-brand-900 hover:bg-slate-100 rounded-full transition-colors" href="#" title="Keranjang Belanja">
+<i class="w-5 h-5" data-lucide="shopping-cart"></i>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+</a>
+<a class="p-2.5 text-slate-600 hover:text-brand-900 hover:bg-slate-100 rounded-full transition-colors" href="#" title="Akun Pengguna">
+<i class="w-5 h-5" data-lucide="user"></i>
+</a>
+<div class="h-6 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+<a class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-brand-900 bg-brand-50 border border-brand-200 rounded-full hover:bg-brand-100 transition-colors" href="#kontak">
+<i class="w-4 h-4 text-brand-700" data-lucide="shield-check"></i>
+<span>Pusat Privasi</span>
+</a>
+</div>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: HeroSection -->
+<section class="relative bg-gradient-to-b from-brand-50/70 via-surface-light to-surface-light pt-12 pb-10 border-b border-slate-100">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-6">
+<a class="hover:text-brand-900 transition-colors" href="#">Beranda</a>
+<i class="w-3.5 h-3.5 text-slate-400" data-lucide="chevron-right"></i>
+<a class="hover:text-brand-900 transition-colors" href="#">Kebijakan</a>
+<i class="w-3.5 h-3.5 text-slate-400" data-lucide="chevron-right"></i>
+<span class="text-brand-900 font-semibold">Kebijakan Privasi</span>
+</nav>
+<div class="max-w-3xl">
+<!-- Badge Tag -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100/80 text-brand-900 text-xs font-semibold uppercase tracking-wider mb-4 border border-brand-200/50">
+<i class="w-3.5 h-3.5 text-brand-700" data-lucide="shield-check"></i>
+<span>Privasi &amp; Keamanan Data</span>
+</div>
+<!-- Headline & Subtitle -->
+<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+          Kebijakan Privasi
+        </h1>
+<p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+          Bagaimana JagoFarm mengumpulkan, menggunakan, dan melindungi data pribadi Anda dengan standar kepatuhan regulasi UU PDP No. 27 Tahun 2022.
+        </p>
+<!-- Meta info bar -->
+<div class="mt-6 pt-5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+<div class="flex items-center gap-4 flex-wrap">
+<span class="flex items-center gap-1.5">
+<i class="w-4 h-4 text-brand-700" data-lucide="calendar"></i>
+              Terakhir diperbarui: <strong class="text-slate-700 font-semibold">24 September 2026</strong>
+</span>
+<span class="w-1 h-1 rounded-full bg-slate-300"></span>
+<span class="flex items-center gap-1.5">
+<i class="w-4 h-4 text-slate-400" data-lucide="clock"></i>
+              Estimasi baca: ~6 menit
+            </span>
+</div>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-2xs font-medium" onclick="window.print()">
+<i class="w-3.5 h-3.5" data-lucide="printer"></i>
+<span>Cetak Dokumen</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-2xs font-medium">
+<i class="w-3.5 h-3.5" data-lucide="download"></i>
+<span>Unduh PDF</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: MainContentWithSidebar -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+<!-- Welcome Notice Alert Box -->
+<div class="mb-10 p-5 rounded-2xl bg-brand-50/60 border border-brand-200/70 flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-brand-600/10 flex items-center justify-center text-brand-800 flex-shrink-0 mt-0.5">
+<i class="w-5 h-5 text-brand-700" data-lucide="info"></i>
+</div>
+<div class="text-sm leading-relaxed text-slate-700">
+<p class="font-semibold text-brand-950 mb-1">Persetujuan Ketentuan Layanan</p>
+<p>Dengan membuat akun, berbelanja, atau menggunakan ekosistem layanan JagoFarm, Anda menyetujui praktik yang dijelaskan dalam dokumen ini. Bila Anda tidak menyetujui sebagian atau seluruh isinya, mohon hentikan penggunaan layanan kami atau hubungi Petugas Perlindungan Data kami.</p>
+</div>
+</div>
+<!-- Content Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+<!-- BEGIN: StickySidebarNav -->
+<aside class="hidden lg:block lg:col-span-4" data-purpose="quick-navigation">
+<div class="sticky top-28 space-y-6">
+<!-- Table of Contents Container -->
+<div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-2 flex items-center gap-2">
+<i class="w-4 h-4 text-slate-400" data-lucide="list"></i>
+              Daftar Isi Kebijakan
+            </h3>
+<nav class="space-y-1 text-sm font-medium">
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-1">
+<span class="w-5 text-xs text-slate-400 font-mono">01</span>
+<span>Data yang Kami Kumpulkan</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-2">
+<span class="w-5 text-xs text-slate-400 font-mono">02</span>
+<span>Tujuan Penggunaan Data</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-3">
+<span class="w-5 text-xs text-slate-400 font-mono">03</span>
+<span>Pihak Ketiga yang Terlibat</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-4">
+<span class="w-5 text-xs text-slate-400 font-mono">04</span>
+<span>Cookie &amp; Teknologi Serupa</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-5">
+<span class="w-5 text-xs text-slate-400 font-mono">05</span>
+<span>Retensi Penyimpanan Data</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-6">
+<span class="w-5 text-xs text-slate-400 font-mono">06</span>
+<span>Keamanan &amp; Enkripsi Data</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-7">
+<span class="w-5 text-xs text-slate-400 font-mono">07</span>
+<span>Hak Anda atas Data Pribadi</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-8">
+<span class="w-5 text-xs text-slate-400 font-mono">08</span>
+<span>Data Anak-anak</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-9">
+<span class="w-5 text-xs text-slate-400 font-mono">09</span>
+<span>Perubahan Kebijakan</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 hover:text-brand-900 transition-all" href="#section-10">
+<span class="w-5 text-xs text-slate-400 font-mono">10</span>
+<span>Kontak &amp; Saluran DPO</span>
+</a>
+</nav>
+</div>
+<!-- Quick Assistance Box -->
+<div class="bg-gradient-to-br from-brand-900 to-brand-950 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 w-28 h-28 bg-brand-700/20 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center gap-2 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-2">
+<i class="w-4 h-4" data-lucide="lock"></i>
+              DPO Officer
+            </div>
+<h4 class="font-bold text-base text-white mb-1.5">Pertanyaan Privasi?</h4>
+<p class="text-xs text-brand-100/80 mb-4 leading-relaxed">
+              Tim Data Protection Officer (DPO) kami siap melayani permintaan hak data Anda dalam 1x24 jam kerja.
+            </p>
+<a class="inline-flex items-center justify-center w-full gap-2 px-3.5 py-2 rounded-xl bg-white text-brand-950 font-bold text-xs hover:bg-brand-50 transition-colors shadow-xs" href="mailto:hello@jagofarm.id">
+<i class="w-3.5 h-3.5 text-brand-800" data-lucide="mail"></i>
+<span>Hubungi hello@jagofarm.id</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- END: StickySidebarNav -->
+<!-- BEGIN: PolicyArticleContent -->
+<article class="lg:col-span-8 space-y-8">
+<!-- SECTION 1 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-1">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              1
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="folder-archive"></i>
+<h2>Data yang Kami Kumpulkan</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            Dalam rangka memberikan pengalaman operasional pertanian modern, transaksi, dan pengiriman peralatan hidroponik maupun IoT, kami mengumpulkan jenis data berikut:
+          </p>
+<ul class="space-y-3.5 text-sm text-slate-700">
+<li class="flex items-start gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+<i class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="check-circle-2"></i>
+<div>
+<strong class="font-semibold text-slate-900">Data identitas dan kontak:</strong>
+<span class="text-slate-600">nama lengkap, alamat email aktif, nomor telepon/WhatsApp seluler.</span>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+<i class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="check-circle-2"></i>
+<div>
+<strong class="font-semibold text-slate-900">Data pengiriman:</strong>
+<span class="text-slate-600">alamat lengkap domisili/lokasi tambak/kebun, nama penerima, dan nomor kontak penerima untuk keperluan kurir pengiriman barang logistik.</span>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+<i class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="check-circle-2"></i>
+<div>
+<strong class="font-semibold text-slate-900">Data akun:</strong>
+<span class="text-slate-600">alamat email, kata sandi yang disimpan dalam bentuk terenkripsi satu arah (hash), serta preferensi personalisasi akun Anda.</span>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+<i class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="check-circle-2"></i>
+<div>
+<strong class="font-semibold text-slate-900">Riwayat pesanan:</strong>
+<span class="text-slate-600">produk yang dibeli, kuantitas item, nilai transaksi, metode pembayaran yang dipilih, status transaksi, serta nomor resi pengiriman logistik.</span>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+<i class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="check-circle-2"></i>
+<div>
+<strong class="font-semibold text-slate-900">Data teknis:</strong>
+<span class="text-slate-600">alamat IP, jenis perangkat keras, jenis peramban web (browser), halaman sistem yang dikunjungi, serta data cookie sesi (lihat Bagian 4).</span>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+<i class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="check-circle-2"></i>
+<div>
+<strong class="font-semibold text-slate-900">Data komunikasi:</strong>
+<span class="text-slate-600">isi pesan yang Anda kirimkan melalui formulir kontak kami, percakapan live chat, email bantuan, atau tiket layanan pelanggan.</span>
+</div>
+</li>
+</ul>
+<!-- Callout Note for Banking Data Protection -->
+<div class="mt-6 p-4 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs sm:text-sm text-emerald-900 flex items-start gap-3">
+<i class="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" data-lucide="shield-alert"></i>
+<div>
+<span class="font-bold">Keamanan Finansial:</span> 
+              Kami <strong>tidak pernah menyimpan data nomor kartu kredit/debit</strong>, nomor CVV, maupun kredensial perbankan Anda di server kami. Seluruh proses penagihan diproses secara langsung melalui payment gateway resmi berlisensi Bank Indonesia.
+            </div>
+</div>
+</section>
+<!-- SECTION 2 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-2">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              2
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="target"></i>
+<h2>Tujuan Penggunaan Data</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 mb-5">
+            Kami memproses informasi pribadi Anda hanya untuk tujuan-tujuan yang sah dan transparan berikut ini:
+          </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-sm">
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="receipt"></i>
+                Pemrosesan Pesanan
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Memverifikasi transaksi keuangan, menghitung kalkulasi total harga &amp; ongkos kirim, serta menerbitkan konfirmasi faktur pesanan.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="truck"></i>
+                Pengiriman Logistik
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Meneruskan nama, nomor kontak, dan alamat penerima ke kurir ekspedisi agar perlengkapan pertanian tiba tepat waktu.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="headphones"></i>
+                Layanan Pelanggan
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Merespons pertanyaan teknis akuaponik/IoT, konsultasi bibit, menangani keluhan operasional, dan klaim garansi produk.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="shield-check"></i>
+                Pencegahan Fraud
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Mendeteksi transaksi mencurigakan, mencegah pencurian akun, manipulasi voucher promo, serta penyalahgunaan sistem.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="scale"></i>
+                Kewajiban Regulasi
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Menyimpan rekaman catatan transaksi komersial sesuai ketentuan perpajakan dan audit hukum di wilayah Republik Indonesia.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="mail-check"></i>
+                Komunikasi &amp; Edukasi
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Mengirimkan resi otomatis, notifikasi sistem, dan tips pertanian (Anda dapat membatalkan newsletter kapan pun via tombol unsubscribe).</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/40 md:col-span-2">
+<h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="trending-up"></i>
+                Peningkatan Layanan Platform
+              </h4>
+<p class="text-slate-600 text-xs leading-relaxed">Menganalisis pola pembelian agregat tanpa menampilkan identitas personal guna menyempurnakan kurasi katalog, kestabilan server, dan kenyamanan pengguna berbelanja.</p>
+</div>
+</div>
+</section>
+<!-- SECTION 3 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-3">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              3
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="users-2"></i>
+<h2>Pihak Ketiga yang Terlibat</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 mb-4 leading-relaxed">
+            Kami hanya membagikan data yang diperlukan kepada mitra terpercaya berikut, dan <strong>tidak pernah menjual data pribadi Anda kepada pihak manapun:</strong>
+</p>
+<div class="space-y-3 text-sm">
+<div class="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
+<div class="flex items-center justify-between mb-1">
+<strong class="text-slate-900 font-bold">Midtrans</strong>
+<span class="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200/50">Payment Gateway</span>
+</div>
+<p class="text-xs text-slate-600">Pemrosesan pembayaran aman (Virtual Account, QRIS, e-wallet, kartu kredit, dan gerai retail). Menerima data transaksi yang diperlukan sesuai standar kepatuhan PCI-DSS.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
+<div class="flex items-center justify-between mb-1">
+<strong class="text-slate-900 font-bold">Kurir Pengiriman Ekspedisi</strong>
+<span class="text-xs px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 font-medium border border-amber-200/50">Logistik &amp; Kurir</span>
+</div>
+<p class="text-xs text-slate-600">JNE, SiCepat, AnterAja, POS Indonesia menerima nama, alamat tujuan, dan nomor seluler penerima untuk proses serah terima barang ke alamat Anda.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
+<div class="flex items-center justify-between mb-1">
+<strong class="text-slate-900 font-bold">Supabase</strong>
+<span class="text-xs px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-medium border border-emerald-200/50">Database &amp; Autentikasi</span>
+</div>
+<p class="text-xs text-slate-600">Penyimpanan basis data cloud dengan enkripsi at-rest dan in-transit, serta pengelolaan token autentikasi sesi akun pengguna secara aman.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
+<div class="flex items-center justify-between mb-1">
+<strong class="text-slate-900 font-bold">Resend</strong>
+<span class="text-xs px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 font-medium border border-purple-200/50">Email Transaksional</span>
+</div>
+<p class="text-xs text-slate-600">Penyampaian email transaksional otomatis, mencakup konfirmasi pesanan, tautan reset kata sandi, dan nota pembelian.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
+<div class="flex items-center justify-between mb-1">
+<strong class="text-slate-900 font-bold">Penyedia Hosting &amp; Cloud</strong>
+<span class="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium">Infrastruktur</span>
+</div>
+<p class="text-xs text-slate-600">Menjalankan infrastruktur server komputasi web JagoFarm dengan proteksi DDoS dan failover otomatis.</p>
+</div>
+<div class="p-3.5 rounded-xl border border-slate-200/70 hover:border-brand-300 transition-colors bg-white">
+<div class="flex items-center justify-between mb-1">
+<strong class="text-slate-900 font-bold">Penyedia Web Analytics</strong>
+<span class="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium">Evaluasi Layanan</span>
+</div>
+<p class="text-xs text-slate-600">Mengukur trafik dan efisiensi antarmuka sistem secara anonim tanpa mencantumkan identitas asli pengguna.</p>
+</div>
+</div>
+<p class="mt-4 text-xs text-slate-500 leading-relaxed italic">
+            * Kami juga dapat mengungkapkan data pribadi apabila diwajibkan oleh hukum formal, panggilan peradilan negara, atau permintaan resmi aparat penegak hukum yang berwenang demi menjaga keamanan hukum Republik Indonesia.
+          </p>
+</section>
+<!-- SECTION 4 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-4">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              4
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="cookie"></i>
+<h2>Cookie dan Teknologi Serupa</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 mb-4 leading-relaxed">
+            JagoFarm menggunakan cookie dan penyimpanan lokal peramban (local storage) untuk menjaga keandalan fungsionalitas sistem:
+          </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+<div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+<i class="w-4 h-4 text-brand-600" data-lucide="key"></i>
+                Cookie Sesi &amp; Autentikasi
+              </div>
+<p class="text-xs text-slate-600 leading-relaxed">Memastikan status login akun Anda tetap aktif saat berpindah navigasi antarhalaman.</p>
+</div>
+<div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+<div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+<i class="w-4 h-4 text-brand-600" data-lucide="shopping-bag"></i>
+                Cookie Keranjang &amp; Wishlist
+              </div>
+<p class="text-xs text-slate-600 leading-relaxed">Menyimpan daftar produk bibit atau alat pertanian dalam troli agar tidak hilang saat halaman di-refresh.</p>
+</div>
+<div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+<div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+<i class="w-4 h-4 text-brand-600" data-lucide="sliders"></i>
+                Cookie Preferensi
+              </div>
+<p class="text-xs text-slate-600 leading-relaxed">Menyimpan opsi kurir langganan, filter kategori hidroponik favorit, dan tata letak tampilan yang Anda pilih.</p>
+</div>
+<div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+<div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+<i class="w-4 h-4 text-brand-600" data-lucide="bar-chart-2"></i>
+                Cookie Analytics &amp; Performa
+              </div>
+<p class="text-xs text-slate-600 leading-relaxed">Memahami halaman tutorial atau katalog apa yang sering dikunjungi agar kami dapat mengoptimalkan kecepatan server.</p>
+</div>
+</div>
+<div class="mt-4 p-3.5 rounded-xl bg-slate-100/70 text-xs text-slate-600">
+            Anda dapat menonaktifkan cookie melalui pengaturan peramban web (browser). Namun, perlu diketahui bahwa hal ini dapat menyebabkan beberapa fitur esensial (seperti sesi login, keranjang checkout) tidak berjalan dengan optimal.
+          </div>
+</section>
+<!-- SECTION 5 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-5">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              5
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="archive"></i>
+<h2>Retensi Data</h2>
+</div>
+</div>
+<div class="space-y-4 text-sm text-slate-700 leading-relaxed">
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-brand-600 mt-2"></div>
+<p><strong class="text-slate-900">Masa Akun Aktif:</strong> Data akun Anda disimpan selama akun Anda masih berstatus aktif dan digunakan secara berkala.</p>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-brand-600 mt-2"></div>
+<p><strong class="text-slate-900">Catatan Transaksi Keuangan:</strong> Data transaksi disimpan paling lama <strong class="text-slate-900 font-semibold">5 (lima) tahun</strong> setelah pesanan selesai, sebagai kewajiban kepatuhan hukum pembukuan, perpajakan, dan mitigasi sengketa.</p>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-brand-600 mt-2"></div>
+<p><strong class="text-slate-900">Data Pemasaran / Promo:</strong> Berlangganan newsletter atau pesan promo akan disimpan hingga Anda menyatakan berhenti berlangganan (unsubscribe).</p>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-brand-600 mt-2"></div>
+<p><strong class="text-slate-900">Inaktivitas:</strong> Jika akun Anda tidak aktif selama lebih dari <strong class="text-slate-900 font-semibold">24 bulan berturut-turut</strong>, kami berhak menghapus atau menganonimkan data akun Anda, kecuali data yang diwajibkan disimpan menurut regulasi perundang-undangan.</p>
+</div>
+</div>
+</section>
+<!-- SECTION 6 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-6">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              6
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="lock"></i>
+<h2>Keamanan Data</h2>
+</div>
+</div>
+<div class="space-y-3.5 text-sm text-slate-700">
+<div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+<i class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="shield"></i>
+<div>
+<strong class="font-semibold text-slate-900">Enkripsi Jaringan:</strong> Seluruh lalu lintas transmisi antara browser Anda dan server kami dienkripsi menggunakan protokol standar industri HTTPS/TLS v1.3.
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+<i class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="key"></i>
+<div>
+<strong class="font-semibold text-slate-900">Kriptografi Kata Sandi:</strong> Kata sandi Anda diamankan menggunakan algoritma hashing satu arah yang kuat (salted hash), sehingga tidak dapat dibaca oleh staf kami sekalipun.
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+<i class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="user-check"></i>
+<div>
+<strong class="font-semibold text-slate-900">Akses Terbatas (Least Privilege):</strong> Akses ke basis data hanya diberikan kepada personil internal berwenang yang memerlukan akses tersebut, diautentikasi dengan multi-factor authentication (MFA) yang diaudit berkala.
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+<i class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" data-lucide="credit-card"></i>
+<div>
+<strong class="font-semibold text-slate-900">Standar PCI-DSS:</strong> Pembayaran diproses dengan enkripsi end-to-end melalui Midtrans dengan sertifikasi ketat internasional.
+              </div>
+</div>
+</div>
+<p class="mt-4 text-xs text-slate-500 leading-relaxed">
+            Meskipun kami menerapkan proteksi teruji, perlu dipahami bahwa tidak ada metode transmisi internet yang 100% kebal. Kami mengimbau Anda senantiasa menjaga kerahasiaan kata sandi akun dan tidak membagikannya kepada siapa pun.
+          </p>
+</section>
+<!-- SECTION 7 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-7">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              7
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="user-cog"></i>
+<h2>Hak Anda atas Data Pribadi</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 mb-4">
+            Berdasarkan UU Pelindungan Data Pribadi (UU PDP), Anda memiliki hak-hak mutlak berikut atas data Anda:
+          </p>
+<div class="space-y-3 text-sm mb-6">
+<div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+<strong class="text-slate-900 font-semibold">1. Hak Akses:</strong>
+<span class="text-slate-600"> Meminta salinan dan ringkasan data pribadi Anda yang kami simpan.</span>
+</div>
+<div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+<strong class="text-slate-900 font-semibold">2. Hak Koreksi:</strong>
+<span class="text-slate-600"> Memperbaiki informasi alamat atau identitas yang tidak akurat kapan saja melalui menu Profil Pengguna.</span>
+</div>
+<div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+<strong class="text-slate-900 font-semibold">3. Hak Penghapusan (Right to be Forgotten):</strong>
+<span class="text-slate-600"> Meminta penghapusan permanen akun dan riwayat profil, sejauh tidak bertentangan dengan kewajiban retensi perpajakan negara.</span>
+</div>
+<div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+<strong class="text-slate-900 font-semibold">4. Hak Menarik Persetujuan:</strong>
+<span class="text-slate-600"> Menolak email buletin atau materi promosi kapan pun melalui pengaturan notifikasi atau tombol opt-out.</span>
+</div>
+<div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+<strong class="text-slate-900 font-semibold">5. Hak Keberatan dan Pembatasan:</strong>
+<span class="text-slate-600"> Menolak pemrosesan data tertentu, seperti penargetan analytics demografi.</span>
+</div>
+</div>
+<!-- Request Action Callout -->
+<div class="p-4 rounded-xl bg-brand-50/80 border border-brand-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="text-xs text-brand-950">
+<p class="font-bold mb-0.5">Ingin Mengajukan Permintaan Hak Data?</p>
+<p class="text-slate-600">Permintaan akan kami verifikasi dan ditindaklanjuti selambat-lambatnya dalam kurun waktu <strong>14 hari kerja</strong>.</p>
+</div>
+<a class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-brand-900 hover:bg-brand-800 text-white rounded-lg text-xs font-semibold whitespace-nowrap transition-colors shadow-xs" href="mailto:hello@jagofarm.id?subject=Permintaan%20Data%20Pribadi%20-%20JagoFarm">
+<i class="w-3.5 h-3.5" data-lucide="send"></i>
+<span>Kirim Permintaan</span>
+</a>
+</div>
+</section>
+<!-- SECTION 8 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-8">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              8
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="shield-alert"></i>
+<h2>Data Anak-anak</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 leading-relaxed">
+            Layanan JagoFarm tidak ditujukan untuk anak di bawah usia 18 tahun. Kami tidak secara sengaja mengumpulkan maupun menyimpan data pribadi milik anak-anak. Jika Anda selaku orang tua atau wali mengetahui bahwa anak Anda mendaftarkan data di platform kami tanpa izin wali, mohon hubungi kami segera agar data dapat kami hapus dari database kami. Pembelian paket kit hidroponik untuk edukasi anak harus dilakukan dengan pengawasan langsung orang tua/wali sah.
+          </p>
+</section>
+<!-- SECTION 9 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-9">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              9
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="refresh-cw"></i>
+<h2>Perubahan Kebijakan Privasi</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 leading-relaxed">
+            Kami dapat memperbarui kebijakan privasi ini secara berkala seiring perkembangan fitur sistem, teknologi pendukung, maupun penyesuaian regulasi hukum yang berlaku. Versi mutakhir selalu kami publikasikan di tautan ini beserta tanggal pembaruan tercatat. Apabila terdapat pembaruan material yang substansial, kami akan memberitahukan Anda melalui surel (email) resmi atau maklumat pengumuman di beranda situs.
+          </p>
+</section>
+<!-- SECTION 10 -->
+<section class="scroll-mt-28 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs transition-all hover:shadow-xs" id="section-10">
+<div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-slate-100">
+<div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-800 font-bold text-sm">
+              10
+            </div>
+<div class="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-900">
+<i class="w-5 h-5 text-brand-700" data-lucide="mail"></i>
+<h2>Kontak untuk Permintaan Data</h2>
+</div>
+</div>
+<p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            Pertanyaan, saran, keberatan, atau permintaan resmi terkait hak perlindungan data pribadi Anda dapat dialamatkan ke Petugas Perlindungan Data (DPO) kami:
+          </p>
+<!-- Contact Profile Box -->
+<div class="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100/70 border border-slate-200 space-y-4 text-sm">
+<div class="font-bold text-base text-brand-950 flex items-center gap-2">
+<i class="w-5 h-5 text-brand-700" data-lucide="building-2"></i>
+<span>JagoFarm — Divisi Perlindungan Data Pribadi</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-slate-700 pt-2 border-t border-slate-200/80">
+<div>
+<span class="text-slate-400 block text-xs uppercase font-semibold mb-0.5">Surel Resmi (DPO)</span>
+<a class="text-brand-800 font-medium hover:underline flex items-center gap-1.5" href="mailto:hello@jagofarm.id">
+<i class="w-4 h-4 text-slate-400" data-lucide="at-sign"></i>
+                  hello@jagofarm.id
+                </a>
+</div>
+<div>
+<span class="text-slate-400 block text-xs uppercase font-semibold mb-0.5">Telepon &amp; WhatsApp</span>
+<a class="text-slate-800 font-medium flex items-center gap-1.5" href="tel:+6281234567890">
+<i class="w-4 h-4 text-slate-400" data-lucide="phone"></i>
+                  +62 812-3456-7890
+                </a>
+<span class="text-[11px] text-slate-500">(Setiap hari 08.00 – 20.00 WIB)</span>
+</div>
+<div class="md:col-span-2">
+<span class="text-slate-400 block text-xs uppercase font-semibold mb-0.5">Alamat Kantor Operasional</span>
+<p class="text-slate-700 font-medium flex items-start gap-1.5">
+<i class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" data-lucide="map-pin"></i>
+                  Jl. Pertanian No. 123, Sukolilo, Surabaya, Jawa Timur 60111, Indonesia.
+                </p>
+</div>
+</div>
+</div>
+<p class="mt-4 text-xs text-slate-500 leading-relaxed">
+            Anda juga berhak menyampaikan laporan atau pengaduan terkait pelaksanaan perlindungan data pribadi kepada Komisi Perlindungan Data Pribadi Republik Indonesia sesuai ketentuan perundang-undangan nasional.
+          </p>
+</section>
+<!-- Legal Disclaimer Footer Card -->
+<div class="p-4 rounded-xl bg-slate-100/70 border border-slate-200 text-xs text-slate-500 leading-relaxed flex items-start gap-3">
+<i class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" data-lucide="alert-circle"></i>
+<div>
+<strong>Catatan Hukum:</strong> Dokumen ini disusun sebagai informasi umum mengenai tata kelola data pribadi dan bukan merupakan nasihat hukum formal pengganti konsultan hukum tersumpah. Kebijakan lain yang saling melengkapi mencakup:
+            <a class="text-brand-800 font-medium underline" href="#">Kebijakan Pengiriman</a>,
+            <a class="text-brand-800 font-medium underline" href="#">Kebijakan Pengembalian &amp; Refund</a>, dan
+            <a class="text-brand-800 font-medium underline" href="#">Syarat dan Ketentuan Layanan</a>.
+          </div>
+</div>
+</article>
+<!-- END: PolicyArticleContent -->
+</div>
+</main>
+<!-- END: MainContentWithSidebar -->
+<!-- BEGIN: MainFooter -->
+<footer class="bg-brand-900 text-slate-200 pt-16 pb-10 border-t border-brand-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-brand-800/80">
+<!-- Brand Info -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center text-white border border-emerald-400/30">
+<i class="w-5 h-5 text-brand-300" data-lucide="sprout"></i>
+</div>
+<span class="text-2xl font-bold tracking-tight text-white">Jago<span class="text-brand-400">Farm</span></span>
+</div>
+<p class="text-sm text-brand-100/70 max-w-sm leading-relaxed">
+            Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak mandiri, dan IoT smart farming berkualitas tinggi demi ketahanan pangan nusantara.
+          </p>
+<div class="flex items-center gap-3 pt-2">
+<a class="w-8 h-8 rounded-lg bg-brand-800/80 hover:bg-brand-700 flex items-center justify-center text-brand-200 hover:text-white transition-colors" href="#" title="Bagikan">
+<i class="w-4 h-4" data-lucide="share-2"></i>
+</a>
+<a class="w-8 h-8 rounded-lg bg-brand-800/80 hover:bg-brand-700 flex items-center justify-center text-brand-200 hover:text-white transition-colors" href="#" title="Website Resmi">
+<i class="w-4 h-4" data-lucide="globe"></i>
+</a>
+</div>
+</div>
+<!-- Kolom Produk -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-wider text-brand-300 mb-4">Produk</h4>
+<ul class="space-y-2.5 text-sm text-brand-100/80">
+<li><a class="hover:text-white transition-colors" href="#">Set Tambak Bioflok</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Set Hidroponik NFT</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Set Akuaponik Rumah</a></li>
+<li><a class="hover:text-white transition-colors" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Benih Unggul</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Anakan Ikan</a></li>
+</ul>
+</div>
+<!-- Kolom Informasi & Bantuan -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-wider text-brand-300 mb-4">Informasi</h4>
+<ul class="space-y-2.5 text-sm text-brand-100/80">
+<li><a class="hover:text-white transition-colors" href="#">Tentang Kami</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Cara Pemesanan</a></li>
+<li><a class="hover:text-white transition-colors" href="#">FAQ &amp; Tanya Jawab</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Hubungi Kami</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Karir &amp; Kemitraan</a></li>
+</ul>
+</div>
+<!-- Kolom Kebijakan & Kontak -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-wider text-brand-300 mb-4">Kebijakan</h4>
+<ul class="space-y-2.5 text-sm text-brand-100/80 mb-6">
+<li><a class="hover:text-white transition-colors" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Kebijakan Pengembalian</a></li>
+<li><a class="text-white font-medium flex items-center gap-1.5" href="#"><i class="w-3.5 h-3.5 text-brand-400" data-lucide="check"></i>Kebijakan Privasi</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Syarat dan Ketentuan</a></li>
+</ul>
+<h4 class="text-xs font-bold uppercase tracking-wider text-brand-300 mb-2">Kontak Kami</h4>
+<ul class="space-y-2 text-xs text-brand-100/70">
+<li class="flex items-start gap-2">
+<i class="w-3.5 h-3.5 text-brand-400 flex-shrink-0 mt-0.5" data-lucide="map-pin"></i>
+<span>Jl. Pertanian No. 123, Surabaya</span>
+</li>
+<li class="flex items-center gap-2">
+<i class="w-3.5 h-3.5 text-brand-400 flex-shrink-0" data-lucide="phone"></i>
+<span>+62 812-3456-7890</span>
+</li>
+<li class="flex items-center gap-2">
+<i class="w-3.5 h-3.5 text-brand-400 flex-shrink-0" data-lucide="mail"></i>
+<span>hello@jagofarm.id</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Copyright Bar -->
+<div class="mt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-200/60 gap-4">
+<p>© 2026 JagoFarm. Seluruh hak cipta dilindungi undang-undang.</p>
+<div class="flex items-center gap-4">
+<span>Kepatuhan UU PDP No. 27 / 2022</span>
+<span>•</span>
+<span>Enkripsi 256-Bit SSL/TLS</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="icon-initialization">
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+<script data-purpose="active-nav-highlighter">
+    // Highlight table of contents link as user scrolls through sections
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('article > section');
+      const navLinks = document.querySelectorAll('aside[data-purpose="quick-navigation"] nav a');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('bg-brand-50', 'text-brand-900', 'font-semibold', 'border-l-2', 'border-brand-600');
+                link.classList.remove('text-slate-700');
+              } else {
+                link.classList.remove('bg-brand-50', 'text-brand-900', 'font-semibold', 'border-l-2', 'border-brand-600');
+                link.classList.add('text-slate-700');
+              }
+            });
+          }
+        });
+      }, {
+        rootMargin: '-20% 0px -70% 0px'
+      });
+
+      sections.forEach(section => observer.observe(section));
+    });
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

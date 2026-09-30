@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buat Kupon Baru — JagoFarm Management Console</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-container": "#1b4d3e",
+            "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#604100",
+            "tertiary": "#003623",
+            "surface": "#f9f9ff",
+            "surface-container-lowest": "#ffffff",
+            "background": "#f9f9ff",
+            "surface-bright": "#f9f9ff",
+            "inverse-on-surface": "#ecf1ff",
+            "surface-tint": "#376757",
+            "surface-container-high": "#dee8ff",
+            "on-primary": "#ffffff",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#9ed1bd",
+            "on-surface-variant": "#404945",
+            "secondary": "#7f5700",
+            "outline-variant": "#c0c9c3",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#1d4f40",
+            "secondary-container": "#fdba45",
+            "on-tertiary-container": "#32c98f",
+            "surface-container-low": "#f0f3ff",
+            "secondary-fixed-dim": "#fdba45",
+            "surface-dim": "#cfdaf2",
+            "secondary-fixed": "#ffdeae",
+            "outline": "#707974",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#baeed9",
+            "surface-container": "#e7eeff",
+            "on-background": "#111c2d",
+            "surface-variant": "#d8e3fb",
+            "tertiary-fixed": "#6ffbbe",
+            "on-surface": "#111c2d",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#004f35",
+            "surface-container-highest": "#d8e3fb",
+            "on-secondary-fixed": "#281900",
+            "tertiary-fixed-dim": "#4edea3",
+            "primary-fixed-dim": "#9ed1bd",
+            "on-tertiary": "#ffffff",
+            "primary": "#003629",
+            "on-primary-container": "#8abda9",
+            "on-primary-fixed": "#002117",
+            "on-tertiary-fixed": "#002113",
+            "inverse-surface": "#263143",
+            "on-secondary-container": "#6f4b00",
+            "on-tertiary-fixed-variant": "#005236"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "0.75rem",
+            "margin-mobile": "1rem",
+            "gutter": "1.25rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1;
+    }
+    /* Ticket notch effect */
+    .ticket-edge-left, .ticket-edge-right {
+      position: absolute;
+      top: 50%;
+      width: 16px;
+      height: 24px;
+      background-color: #f9f9ff;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    .ticket-edge-left {
+      left: -1px;
+      border-radius: 0 12px 12px 0;
+      border: 1px solid #c0c9c3;
+      border-left: none;
+    }
+    .ticket-edge-right {
+      right: -1px;
+      border-radius: 12px 0 0 12px;
+      border: 1px solid #c0c9c3;
+      border-right: none;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-row">
+<!-- ======================================================== -->
+<!-- 1. SIDEBAR NAVIGASI (Dark Forest Green - JagoFarm Console) -->
+<!-- ======================================================== -->
+<aside class="w-64 bg-[#0f3d2e] text-surface-container-lowest flex-shrink-0 flex flex-col justify-between hidden lg:flex min-h-screen border-r border-[#164e3b] sticky top-0 h-screen select-none">
+<!-- Top Branding & Navigation -->
+<div class="p-5 overflow-y-auto">
+<!-- Logo JagoFarm Console -->
+<div class="flex items-center space-x-3 pb-6 border-b border-[#1b4d3e]/70">
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed-dim/20 border border-tertiary-fixed-dim/40 flex items-center justify-center text-tertiary-fixed shadow-sm">
+<span class="material-symbols-outlined text-2xl fill-icon text-[#32c98f]">eco</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-surface-container-lowest font-extrabold tracking-tight">JagoFarm</span>
+<span class="bg-[#1b4d3e] text-tertiary-fixed text-[10px] font-bold px-1.5 py-0.5 rounded tracking-wider border border-tertiary-fixed/30">V2.4</span>
+</div>
+<p class="font-label-sm text-[10px] tracking-wider text-on-primary-container font-semibold uppercase mt-0.5">AGRI-AQUACULTURE</p>
+</div>
+</div>
+<!-- Navigation Section: UTAMA -->
+<div class="mt-6">
+<span class="text-[11px] font-bold tracking-wider text-[#639382] uppercase px-3">UTAMA</span>
+<nav class="mt-2.5 space-y-1">
+<!-- Dashboard -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">dashboard</span>
+<span>Dashboard</span>
+</div>
+</a>
+<!-- Produk -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">package_2</span>
+<span>Produk</span>
+</div>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-[#1b4d3e] text-[#a4d7c4] border border-[#2b6855]">142</span>
+</a>
+<!-- Pesanan -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">shopping_bag</span>
+<span>Pesanan</span>
+</div>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-[#fdba45] text-[#281900]">3 baru</span>
+</a>
+<!-- Kategori -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">layers</span>
+<span>Kategori</span>
+</div>
+</a>
+<!-- Pelanggan -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">group</span>
+<span>Pelanggan</span>
+</div>
+</a>
+</nav>
+</div>
+<!-- Navigation Section: PEMASARAN & DATA -->
+<div class="mt-7">
+<span class="text-[11px] font-bold tracking-wider text-[#639382] uppercase px-3">PEMASARAN &amp; DATA</span>
+<nav class="mt-2.5 space-y-1">
+<!-- Kupon & Promo (AKTIF) -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#1b4d3e] text-white border border-[#2e745e] font-semibold text-body-md shadow-sm relative group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-tertiary-fixed-dim fill-icon">confirmation_number</span>
+<span class="text-white">Kupon &amp; Promo</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-[#32c98f] shadow-[0_0_8px_#32c98f]"></div>
+</a>
+<!-- Ulasan -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">star</span>
+<span>Ulasan</span>
+</div>
+</a>
+<!-- Laporan -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-all text-body-md font-medium group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-[#7ea999] group-hover:text-white transition-colors">bar_chart</span>
+<span>Laporan</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+<!-- Admin Profile Footer Sidebar -->
+<div class="p-4 border-t border-[#1b4d3e]/70 bg-[#0c3125]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#1b4d3e] to-[#2e745e] text-white font-bold flex items-center justify-center border border-white/20 text-xs shadow-inner">
+            TA
+          </div>
+<div class="overflow-hidden">
+<p class="font-label-md text-label-md text-white font-semibold truncate leading-tight">Test Admin</p>
+<p class="text-[11px] text-[#8abda9] font-medium truncate">Super Admin</p>
+</div>
+</div>
+<button class="text-white/60 hover:text-error hover:bg-white/5 p-1.5 rounded-md transition-colors" title="Keluar Akun" type="button">
+<span class="material-symbols-outlined text-xl">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ======================================================== -->
+<!-- MAIN WRAPPER: TOP HEADER & CONTENT CANVAS -->
+<!-- ======================================================== -->
+<div class="flex-1 flex flex-col min-w-0 bg-background min-h-screen">
+<!-- 2. TOP HEADER BAR ADMIN -->
+<header class="h-16 bg-surface-container-lowest border-b border-outline-variant/60 px-4 md:px-8 flex items-center justify-between sticky top-0 z-40 shadow-[0_1px_3px_rgba(27,77,62,0.04)]">
+<!-- Left: Mobile Menu Toggle & Global Search Bar -->
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<button aria-label="Buka Menu" class="lg:hidden text-on-surface-variant p-1 rounded-md hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-lg">search</span>
+<input class="w-full pl-10 pr-12 py-2 text-body-sm font-body-sm bg-[#f8faf8] border border-outline-variant/60 rounded-full focus:bg-white focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container text-on-surface transition-all placeholder:text-on-surface-variant/60" placeholder="Cari fitur, kupon, atau pesanan... [/]" type="text"/>
+<span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] font-bold bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant border border-outline-variant/50">/</span>
+</div>
+</div>
+<!-- Right Header Cluster: Date, Notification, Profile -->
+<div class="flex items-center gap-3 md:gap-5 pl-4">
+<!-- Live Date Stamp -->
+<div class="hidden sm:flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/40">
+<span class="material-symbols-outlined text-base text-primary-container">calendar_today</span>
+<span>25 September 2026</span>
+</div>
+<!-- Notification Bell with Red Indicator -->
+<button aria-label="Notifikasi" class="relative p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<!-- Divider -->
+<div class="h-6 w-px bg-outline-variant/50 hidden sm:block"></div>
+<!-- Admin Profile Pill -->
+<div class="flex items-center gap-2 pl-1 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary-container text-tertiary-fixed-dim font-bold flex items-center justify-center text-xs ring-2 ring-primary-container/20 group-hover:ring-primary-container/40 transition-all">
+            TA
+          </div>
+<div class="hidden md:block text-left">
+<p class="font-label-md text-label-md font-bold text-on-surface leading-tight">Test Admin Admin</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Console Operator</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-base hidden md:inline">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Breadcrumb Sub-bar -->
+<div class="bg-surface-container-lowest/70 border-b border-outline-variant/40 px-4 md:px-8 py-2 flex items-center justify-between text-body-sm font-body-sm">
+<nav class="flex items-center gap-2 text-on-surface-variant text-xs">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">home</span>
+<span>Kupon &amp; Promosi</span>
+</a>
+<span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+<span class="font-semibold text-primary">Buat Kupon Baru</span>
+</nav>
+<span class="inline-flex items-center gap-1 text-[11px] text-[#00694e] font-semibold bg-[#e6f7f0] px-2 py-0.5 rounded-full border border-[#b2e5d1]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#009b6b] animate-pulse"></span> Mode Pembuatan Aktif
+      </span>
+</div>
+<!-- 3. KONTEN UTAMA (BUAT KUPON BARU) -->
+<main class="flex-1 px-4 md:px-8 py-6 max-w-7xl w-full mx-auto space-y-6">
+<!-- Page Header with Return Button & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-outline-variant/50">
+<div>
+<a class="inline-flex items-center gap-1.5 text-body-sm font-label-md text-primary-container hover:text-primary transition-colors font-semibold group mb-1.5" href="#">
+<span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-0.5">arrow_back</span>
+<span>Kembali ke Daftar Kupon</span>
+</a>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Buat Kupon Promosi Baru</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-0.5">
+            Atur kode voucher diskon, batasan kuota, syarat minimum belanja, dan periode promo untuk pelanggan JagoFarm.
+          </p>
+</div>
+<!-- Top Action Buttons -->
+<div class="flex items-center gap-3 self-start md:self-center">
+<button class="px-4 py-2.5 rounded-md border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low font-label-lg text-label-lg transition-all active:scale-95 shadow-sm" type="button">
+            Simpan sebagai Draf
+          </button>
+<button class="px-5 py-2.5 rounded-md bg-primary-container text-white hover:bg-primary font-label-lg text-label-lg font-bold transition-all shadow-[0_4px_12px_rgba(27,77,62,0.25)] hover:shadow-lg active:scale-95 flex items-center gap-2" id="btn-submit" type="button">
+<span class="material-symbols-outlined text-lg">publish</span>
+<span>Terbitkan Kupon</span>
+</button>
+</div>
+</div>
+<!-- Main Form Grid (2 Kolom: Kiri Form Builder 2/3, Kanan Live Preview 1/3) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- ======================================================== -->
+<!-- FORM BUILDER SECTION (LEFT 7 COLUMNS / 8 on xl) -->
+<!-- ======================================================== -->
+<form class="lg:col-span-7 xl:col-span-8 space-y-6" id="couponForm">
+<!-- CARD 1: INFORMASI DASAR KUPON -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 md:p-6 shadow-[0_2px_8px_rgba(27,77,62,0.03)] hover:border-outline-variant transition-colors">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-outline-variant/40">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">edit_note</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Informasi Dasar Kupon</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Identitas kode dan nama program promosi</p>
+</div>
+</div>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-surface-container text-on-surface-variant">Langkah 1/4</span>
+</div>
+<div class="space-y-4">
+<!-- Kode Kupon Input with Generate Button -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="font-label-lg text-label-lg text-on-surface flex items-center gap-1" for="coupon_code">
+                    Kode Kupon <span class="text-error">*</span>
+</label>
+<button class="text-primary-container hover:text-primary font-label-sm text-xs font-bold flex items-center gap-1 hover:underline" id="btn-generate-code" type="button">
+<span class="material-symbols-outlined text-sm">autorenew</span>
+<span>Generate Kode Otomatis</span>
+</button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-lg">tag</span>
+<input class="w-full pl-10 pr-24 py-2.5 bg-white border border-outline-variant rounded-lg font-mono font-bold tracking-wider text-primary text-base focus:border-primary-container focus:ring-1 focus:ring-primary-container uppercase transition-all" id="coupon_code" maxlength="16" placeholder="Contoh: HEMAT50K, PANENRAYA" type="text" value="PANENBERKAH20"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-on-surface-variant/70 bg-surface-container px-2 py-0.5 rounded">
+                    Maks 16 Huruf
+                  </span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1.5">Gunakan kombinasi huruf kapital dan angka tanpa spasi. Kode ini akan dimasukkan pelanggan pada checkout.</p>
+</div>
+<!-- Nama Promo / Judul Internal -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="promo_title">
+                  Nama Promo / Judul Internal <span class="text-error">*</span>
+</label>
+<input class="w-full px-3.5 py-2.5 bg-white border border-outline-variant rounded-lg text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="promo_title" placeholder="Misal: Promo Akhir Tahun Petani Cerdas" type="text" value="Promo Panen Raya Tambak &amp; Bibit Udang"/>
+<p class="text-xs text-on-surface-variant mt-1">Nama ini digunakan pada daftar admin dan push notifikasi kepada pelanggan.</p>
+</div>
+<!-- Deskripsi Kupon -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="promo_desc">
+                  Deskripsi &amp; Syarat Ketentuan Ringkas
+                </label>
+<textarea class="w-full px-3.5 py-2.5 bg-white border border-outline-variant rounded-lg text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="promo_desc" placeholder="Berlaku untuk semua pembelian bio-imunisasi tambak &amp; bibit unggul perikanan darat..." rows="3">Potongan langsung Rp 50.000 berlaku khusus pesanan peralatan aerasi tambak dan benih unggul dengan minimum transaksi Rp 250.000.</textarea>
+</div>
+<!-- Status Kupon: Radio / Switch Toggle -->
+<div class="pt-2">
+<label class="block font-label-lg text-label-lg text-on-surface mb-2">Status Publikasi Kupon</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<label class="relative flex items-center gap-3 p-3 rounded-lg border-2 border-primary-container bg-[#f2f8f5] cursor-pointer transition-all">
+<input checked="" class="text-primary-container focus:ring-primary-container" name="coupon_status" type="radio" value="active"/>
+<div>
+<span class="block font-label-md text-label-md font-bold text-primary-container">Langsung Aktifkan</span>
+<span class="block text-xs text-on-surface-variant">Kupon langsung dapat dipakai jika periode tiba</span>
+</div>
+</label>
+<label class="relative flex items-center gap-3 p-3 rounded-lg border border-outline-variant bg-white hover:bg-surface-container-low cursor-pointer transition-all">
+<input class="text-primary-container focus:ring-primary-container" name="coupon_status" type="radio" value="draft"/>
+<div>
+<span class="block font-label-md text-label-md font-bold text-on-surface">Simpan Nonaktif</span>
+<span class="block text-xs text-on-surface-variant">Simpan sebagai draf tersembunyi</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 2: TIPE & NILAI DISKON -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 md:p-6 shadow-[0_2px_8px_rgba(27,77,62,0.03)] hover:border-outline-variant transition-colors">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-outline-variant/40">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">percent</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Tipe &amp; Nilai Diskon</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tentukan skema potongan harga yang diterima pembeli</p>
+</div>
+</div>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-surface-container text-on-surface-variant">Langkah 2/4</span>
+</div>
+<!-- Visual Radio Card: Tipe Diskon (Nominal, Persentase, Gratis Ongkir) -->
+<div class="space-y-4">
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-2">Pilih Tipe Diskon <span class="text-error">*</span></label>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="discount-type-container">
+<!-- 1. Potongan Nominal (Selected) -->
+<div class="border-2 border-primary-container bg-[#f2f8f5] rounded-xl p-3.5 cursor-pointer transition-all flex flex-col justify-between relative shadow-sm" id="card-type-nominal" onclick="selectDiscountType('nominal')">
+<div class="flex items-center justify-between mb-2">
+<div class="w-7 h-7 rounded-full bg-primary-container text-tertiary-fixed-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-base font-bold">payments</span>
+</div>
+<span class="w-3.5 h-3.5 rounded-full bg-primary-container ring-4 ring-primary-container/20"></span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Potongan Nominal</p>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Potongan rupiah langsung (misal: Rp 50.000)</p>
+</div>
+</div>
+<!-- 2. Persentase Diskon -->
+<div class="border border-outline-variant bg-white hover:bg-surface-container-low rounded-xl p-3.5 cursor-pointer transition-all flex flex-col justify-between relative" id="card-type-percentage" onclick="selectDiscountType('percentage')">
+<div class="flex items-center justify-between mb-2">
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-base">percent</span>
+</div>
+<span class="w-3.5 h-3.5 rounded-full border border-outline-variant"></span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Persentase Diskon</p>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Potongan persen dengan batas maksimum (Rp)</p>
+</div>
+</div>
+<!-- 3. Gratis Ongkir -->
+<div class="border border-outline-variant bg-white hover:bg-surface-container-low rounded-xl p-3.5 cursor-pointer transition-all flex flex-col justify-between relative" id="card-type-shipping" onclick="selectDiscountType('shipping')">
+<div class="flex items-center justify-between mb-2">
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-base">local_shipping</span>
+</div>
+<span class="w-3.5 h-3.5 rounded-full border border-outline-variant"></span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Gratis Ongkir</p>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Subsidi biaya pengiriman logistik agrikultur</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Nilai Diskon Input Dynamic Fields -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+<!-- Field Diskon Nominal / Persentase -->
+<div id="field-discount-value">
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="discount_value" id="label-discount-value">
+                    Nilai Potongan (Rp) <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-primary-container" id="prefix-discount">Rp</span>
+<input class="w-full pl-11 pr-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-price-md text-price-md font-bold text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="discount_value" type="text" value="50.000"/>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Nominal potongan harga murni.</p>
+</div>
+<!-- Field Batas Maksimal Diskon (Hanya relevan jika persentase) -->
+<div class="opacity-40 pointer-events-none" id="field-max-discount">
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="max_discount">
+                    Maksimal Potongan (Opsional)
+                  </label>
+<div class="relative">
+<span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">Rp</span>
+<input class="w-full pl-11 pr-3.5 py-2.5 bg-[#f8faf8] border border-outline-variant/60 rounded-lg text-on-surface font-body-md" disabled="" id="max_discount" placeholder="100.000" type="text"/>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Berlaku untuk tipe diskon persentase.</p>
+</div>
+</div>
+<!-- Minimum Pembelian -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="min_purchase">
+                  Syarat Minimum Belanja (Rp) <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-primary-container">Rp</span>
+<input class="w-full pl-11 pr-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-price-md text-price-md font-bold text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="min_purchase" type="text" value="250.000"/>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-on-surface-variant mt-1.5">
+<span class="material-symbols-outlined text-sm text-[#00694e]">info</span>
+<span>Kupon hanya berlaku jika subtotal produk belanja mencapai jumlah ini sebelum ongkir.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 3: BATASAN PENGGUNAAN & KUOTA -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 md:p-6 shadow-[0_2px_8px_rgba(27,77,62,0.03)] hover:border-outline-variant transition-colors">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-outline-variant/40">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">group_work</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Batasan Penggunaan &amp; Kuota</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kendali budget promosi dan alokasi target pembeli</p>
+</div>
+</div>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-surface-container text-on-surface-variant">Langkah 3/4</span>
+</div>
+<div class="space-y-4">
+<!-- Grid Kuota & Batas Akun -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Total Kuota -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="font-label-lg text-label-lg text-on-surface" for="total_quota">
+                      Total Kuota Penggunaan
+                    </label>
+<label class="inline-flex items-center gap-1.5 text-xs text-on-surface-variant cursor-pointer">
+<input class="rounded text-primary-container focus:ring-primary-container" id="unlimited_quota" type="checkbox"/>
+<span>Tanpa Batas</span>
+</label>
+</div>
+<div class="relative">
+<input class="w-full px-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="total_quota" min="1" type="number" value="100"/>
+<span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-on-surface-variant font-medium">Klaim Kupon</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Kupon otomatis nonaktif setelah 100 kali berhasil dibayar.</p>
+</div>
+<!-- Batas Pakai per Pelanggan -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="per_user_limit">
+                    Batas Pakai per Pelanggan
+                  </label>
+<select class="w-full px-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="per_user_limit">
+<option selected="" value="1">1 kali pemakaian per akun</option>
+<option value="2">2 kali pemakaian per akun</option>
+<option value="5">5 kali pemakaian per akun</option>
+<option value="unlimited">Tidak dibatasi</option>
+</select>
+<p class="text-xs text-on-surface-variant mt-1">Mencegah penyalahgunaan voucher promo oleh satu user.</p>
+</div>
+</div>
+<!-- Target Pelanggan -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="customer_segment">
+                  Target Segmen Pelanggan
+                </label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-lg">person_search</span>
+<select class="w-full pl-10 pr-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="customer_segment">
+<option selected="" value="all">Semua Pelanggan (Publik Terbuka)</option>
+<option value="new">Pelanggan Baru (First Order Pesanan Pertama)</option>
+<option value="verified">Mitra Tani &amp; Pembudidaya Terverifikasi (KTA JagoFarm)</option>
+<option value="reseller">Distributor &amp; Koperasi Tambak</option>
+</select>
+</div>
+</div>
+<!-- Pembatasan Kategori / Produk (Pill Tag Selector) -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5">
+                  Berlaku untuk Kategori Produk
+                </label>
+<div class="flex flex-wrap gap-2 pt-1" id="category-pills">
+<button class="category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-container text-white border border-primary-container flex items-center gap-1.5 shadow-sm" data-category="all" type="button">
+<span class="material-symbols-outlined text-sm">check</span>
+<span>Semua Produk</span>
+</button>
+<button class="category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface border border-outline-variant hover:border-primary-container flex items-center gap-1.5 transition-colors" data-category="pond" type="button">
+<span class="material-symbols-outlined text-sm text-[#00694e]">water</span>
+<span>Set Tambak &amp; Kolam</span>
+</button>
+<button class="category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface border border-outline-variant hover:border-primary-container flex items-center gap-1.5 transition-colors" data-category="fish" type="button">
+<span class="material-symbols-outlined text-sm text-[#00694e]">phishing</span>
+<span>Anakan Ikan &amp; Udang</span>
+</button>
+<button class="category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface border border-outline-variant hover:border-primary-container flex items-center gap-1.5 transition-colors" data-category="iot" type="button">
+<span class="material-symbols-outlined text-sm text-[#00694e]">sensors</span>
+<span>IoT &amp; Smart Farming</span>
+</button>
+<button class="category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface border border-outline-variant hover:border-primary-container flex items-center gap-1.5 transition-colors" data-category="seeds" type="button">
+<span class="material-symbols-outlined text-sm text-[#00694e]">psychiatry</span>
+<span>Benih &amp; Nutrisi Tanaman</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 4: PERIODE BERLAKU -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 md:p-6 shadow-[0_2px_8px_rgba(27,77,62,0.03)] hover:border-outline-variant transition-colors">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-outline-variant/40">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">calendar_month</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Periode Berlaku</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Jadwal tanggal aktivasi dan kadaluarsa kupon</p>
+</div>
+</div>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-surface-container text-on-surface-variant">Langkah 4/4</span>
+</div>
+<div class="space-y-4">
+<!-- Tanggal Mulai & Tanggal Berakhir -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Start Date & Time -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="start_datetime">
+                    Waktu Mulai <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-lg">event_available</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="start_datetime" type="datetime-local" value="2026-09-25T00:00"/>
+</div>
+<span class="text-[11px] text-on-surface-variant mt-1 block">WIB (Waktu Indonesia Barat)</span>
+</div>
+<!-- End Date & Time -->
+<div>
+<label class="block font-label-lg text-label-lg text-on-surface mb-1.5" for="end_datetime">
+                    Waktu Berakhir <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-lg">event_busy</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="end_datetime" type="datetime-local" value="2026-10-25T23:59"/>
+</div>
+<span class="text-[11px] text-on-surface-variant mt-1 block">Promo otomatis berakhir pukul 23:59 WIB</span>
+</div>
+</div>
+<!-- Checkbox Berlaku Selamanya -->
+<div class="pt-2">
+<label class="inline-flex items-center gap-2 cursor-pointer">
+<input class="rounded text-primary-container focus:ring-primary-container" id="no_expiry" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface">Tidak ada batas waktu (Berlaku selamanya sampai kuota habis)</span>
+</label>
+</div>
+</div>
+</div>
+</form>
+<!-- ======================================================== -->
+<!-- RIGHT COLUMN: LIVE PREVIEW & REKOMENDASI (5 COLUMNS / 4 on xl) -->
+<!-- ======================================================== -->
+<div class="lg:col-span-5 xl:col-span-4 space-y-6 lg:sticky lg:top-20">
+<!-- CARD PREVIEW VOUCHER (REALISTIS TIKET AGRI-COMMERCE) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-5 shadow-[0_4px_20px_rgba(27,77,62,0.06)] relative overflow-hidden">
+<div class="flex items-center justify-between mb-3.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">visibility</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Live Kupon Preview</span>
+</div>
+<span class="text-[11px] font-bold uppercase tracking-wider text-primary bg-[#e8f5f0] border border-[#a4d7c4] px-2 py-0.5 rounded-full">
+                Tampilan Pelanggan
+              </span>
+</div>
+<p class="text-xs text-on-surface-variant mb-4">Simulasi tampilan kartu voucher yang akan dilihat pembeli di keranjang belanja JagoFarm:</p>
+<!-- THE VOUCHER CARD ITSELF -->
+<div class="relative bg-gradient-to-br from-[#0c382a] via-[#164e3b] to-[#1f634c] text-white rounded-xl p-4 shadow-lg border border-[#2a7a5f] overflow-hidden select-none">
+<!-- Left and Right Ticket Perforated Notches -->
+<div class="ticket-edge-left"></div>
+<div class="ticket-edge-right"></div>
+<!-- Soft Watermark Eco Pattern Background -->
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/5 pointer-events-none flex items-center justify-center">
+<span class="material-symbols-outlined text-7xl text-white/10">eco</span>
+</div>
+<!-- Top Row: Voucher Header & Category -->
+<div class="flex items-center justify-between pb-3 border-b border-white/15 relative z-10">
+<div class="flex items-center gap-1.5">
+<div class="w-6 h-6 rounded bg-[#32c98f]/20 flex items-center justify-center text-[#32c98f]">
+<span class="material-symbols-outlined text-sm font-bold">eco</span>
+</div>
+<span class="font-headline-sm text-xs font-extrabold tracking-tight text-white">JagoFarm Promo</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider bg-[#fdba45] text-[#281900] px-2 py-0.5 rounded shadow-sm" id="preview-badge-type">
+                  POTONGAN NOMINAL
+                </span>
+</div>
+<!-- Middle: Value & Terms -->
+<div class="py-3.5 relative z-10">
+<div class="flex items-baseline gap-1.5">
+<span class="text-xs text-[#a3dec7] font-medium">Diskon</span>
+<span class="text-2xl font-extrabold font-headline-lg text-white tracking-tight" id="preview-discount-amount">
+                    Rp 50.000
+                  </span>
+</div>
+<p class="text-xs text-[#c0e6d7] font-medium mt-0.5" id="preview-min-order">
+                  Min. belanja Rp 250.000
+                </p>
+<p class="text-[11px] text-white/80 line-clamp-1 mt-1 font-medium" id="preview-title">
+                  Promo Panen Raya Tambak &amp; Bibit Udang
+                </p>
+</div>
+<!-- Perforated Cut Line Graphic -->
+<div class="border-t border-dashed border-white/30 my-1 relative z-10"></div>
+<!-- Bottom Row: Voucher Code & Copy Pill -->
+<div class="flex items-center justify-between pt-2.5 relative z-10">
+<div>
+<span class="text-[10px] uppercase tracking-wider text-white/70 block">Kode Voucher</span>
+<span class="font-mono text-sm font-bold tracking-widest text-[#6ffbbe] bg-black/20 px-2 py-0.5 rounded border border-white/10" id="preview-code">
+                    PANENBERKAH20
+                  </span>
+</div>
+<div class="text-right">
+<span class="text-[10px] text-white/70 block">Berlaku Hingga</span>
+<span class="text-xs font-semibold text-white" id="preview-expiry">
+                    25 Okt 2026
+                  </span>
+</div>
+</div>
+</div>
+<!-- Copy Code Quick Action Info -->
+<div class="mt-3 flex items-center justify-between text-[11px] text-on-surface-variant bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary-container">check_circle</span>
+<span>Badge kompatibel dengan checkout web &amp; app</span>
+</span>
+<span class="font-semibold text-primary">100 Kuota</span>
+</div>
+</div>
+<!-- CARD TIPS PROMO EFEKTIF (AGRITECH INSIGHT) -->
+<div class="bg-gradient-to-br from-[#f2f8f5] to-[#e4f1eb] rounded-xl border border-[#b8dfce] p-4 text-on-surface relative shadow-sm">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#1b4d3e] text-[#4edea3] flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
+<span class="material-symbols-outlined text-lg">lightbulb</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-primary">Tips Promo Efektif JagoFarm</h4>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                  "Kupon nominal dengan min. belanja Rp 250.000 memiliki rasio konversi <strong>28% lebih tinggi</strong> pada kategori pakan dan peralatan aerator kolam dibanding diskon persentase."
+                </p>
+<div class="mt-2.5 pt-2 border-t border-[#b8dfce]/80 flex items-center gap-2 text-[11px] font-semibold text-primary-container">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>Rekomendasi sistem: pertahankan batas minimal transaksi</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RINGKASAN VALIDASI FORM (CHECKLIST KELENGKAPAN) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 p-5 shadow-[0_2px_8px_rgba(27,77,62,0.03)]">
+<h4 class="font-headline-sm text-sm font-bold text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-primary-container">checklist</span>
+<span>Kelengkapan Parameter Kupon</span>
+</h4>
+<ul class="space-y-2.5 text-xs">
+<li class="flex items-center justify-between text-on-surface">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-[#00895d]">check_circle</span>
+<span>Kode kupon valid &amp; unik</span>
+</span>
+<span class="font-mono font-bold text-[#00694e]">OK</span>
+</li>
+<li class="flex items-center justify-between text-on-surface">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-[#00895d]">check_circle</span>
+<span>Nilai diskon telah ditentukan</span>
+</span>
+<span class="font-mono font-bold text-[#00694e]">OK</span>
+</li>
+<li class="flex items-center justify-between text-on-surface">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-[#00895d]">check_circle</span>
+<span>Syarat min. pembelian rasional</span>
+</span>
+<span class="font-mono font-bold text-[#00694e]">OK</span>
+</li>
+<li class="flex items-center justify-between text-on-surface">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-[#00895d]">check_circle</span>
+<span>Periode waktu aktif tervalidasi</span>
+</span>
+<span class="font-mono font-bold text-[#00694e]">OK</span>
+</li>
+</ul>
+<!-- Sticky/Action Buttons on Mobile & Desktop -->
+<div class="mt-5 pt-4 border-t border-outline-variant/40 flex flex-col gap-2">
+<button class="w-full py-2.5 rounded-lg bg-primary-container text-white font-label-lg text-label-lg font-bold hover:bg-primary transition-all shadow-md active:scale-98 flex items-center justify-center gap-2" onclick="triggerSave()" type="button">
+<span class="material-symbols-outlined text-base">check</span>
+<span>Terbitkan Kupon Sekarang</span>
+</button>
+<button class="w-full py-2 rounded-lg text-on-surface-variant hover:text-error text-xs font-semibold hover:bg-surface-container-low transition-colors" type="button">
+                Batal dan Kembali
+              </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- 4. FOOTER ADMIN -->
+<footer class="mt-12 bg-surface-container-lowest border-t border-outline-variant/50 py-4 px-4 md:px-8 text-xs text-on-surface-variant">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+<p class="text-center sm:text-left">
+          © 2026 JagoFarm — Agri-Aquaculture Ecosystem Management Console
+        </p>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Bantuan &amp; Panduan Kupon</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi</a>
+<span class="text-outline-variant">•</span>
+<span class="text-primary-container font-semibold">Status API: Terhubung</span>
+</div>
+</div>
+</footer>
+</div>
+<!-- ======================================================== -->
+<!-- LIGHTWEIGHT INTERACTIVE JAVASCRIPT LOGIC -->
+<!-- ======================================================== -->
+<script>
+    // State management for Discount Type
+    let currentDiscountType = 'nominal';
+
+    const inputCode = document.getElementById('coupon_code');
+    const inputTitle = document.getElementById('promo_title');
+    const inputValue = document.getElementById('discount_value');
+    const inputMin = document.getElementById('min_purchase');
+    const inputEnd = document.getElementById('end_datetime');
+
+    const previewCode = document.getElementById('preview-code');
+    const previewTitle = document.getElementById('preview-title');
+    const previewAmount = document.getElementById('preview-discount-amount');
+    const previewMin = document.getElementById('preview-min-order');
+    const previewBadge = document.getElementById('preview-badge-type');
+    const previewExpiry = document.getElementById('preview-expiry');
+
+    // Live update listeners
+    inputCode.addEventListener('input', function(e) {
+      const val = e.target.value.toUpperCase().replace(/\s+/g, '');
+      e.target.value = val;
+      previewCode.textContent = val || 'KODEKUPON';
+    });
+
+    inputTitle.addEventListener('input', function(e) {
+      previewTitle.textContent = e.target.value || 'Judul Kupon Promosi';
+    });
+
+    inputValue.addEventListener('input', function(e) {
+      updatePreviewAmount();
+    });
+
+    inputMin.addEventListener('input', function(e) {
+      previewMin.textContent = 'Min. belanja Rp ' + (e.target.value || '0');
+    });
+
+    inputEnd.addEventListener('change', function(e) {
+      if (e.target.value) {
+        const d = new Date(e.target.value);
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        previewExpiry.textContent = d.toLocaleDateString('id-ID', options);
+      }
+    });
+
+    // Generate random code helper
+    document.getElementById('btn-generate-code').addEventListener('click', function() {
+      const prefixes = ['PANEN', 'JAGO', 'AGRI', 'TAMBAK', 'SUBUR', 'PETANI'];
+      const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+      const randomNum = Math.floor(10 + Math.random() * 90);
+      const generated = randomPrefix + randomNum + 'K';
+      inputCode.value = generated;
+      previewCode.textContent = generated;
+    });
+
+    // Discount Type Switcher Function
+    function selectDiscountType(type) {
+      currentDiscountType = type;
+      const cardNominal = document.getElementById('card-type-nominal');
+      const cardPercentage = document.getElementById('card-type-percentage');
+      const cardShipping = document.getElementById('card-type-shipping');
+
+      const labelVal = document.getElementById('label-discount-value');
+      const prefix = document.getElementById('prefix-discount');
+      const maxDiscountField = document.getElementById('field-max-discount');
+      const maxDiscountInput = document.getElementById('max_discount');
+
+      // Reset card styles
+      [cardNominal, cardPercentage, cardShipping].forEach(card => {
+        card.className = "border border-outline-variant bg-white hover:bg-surface-container-low rounded-xl p-3.5 cursor-pointer transition-all flex flex-col justify-between relative";
+        card.querySelector('.w-3\\.5').className = "w-3.5 h-3.5 rounded-full border border-outline-variant";
+      });
+
+      // Highlight active card
+      let activeCard = cardNominal;
+      if (type === 'percentage') activeCard = cardPercentage;
+      if (type === 'shipping') activeCard = cardShipping;
+
+      activeCard.className = "border-2 border-primary-container bg-[#f2f8f5] rounded-xl p-3.5 cursor-pointer transition-all flex flex-col justify-between relative shadow-sm";
+      activeCard.querySelector('.w-3\\.5').className = "w-3.5 h-3.5 rounded-full bg-primary-container ring-4 ring-primary-container/20";
+
+      // Logic adjustments
+      if (type === 'nominal') {
+        labelVal.innerHTML = 'Nilai Potongan (Rp) <span class="text-error">*</span>';
+        prefix.textContent = 'Rp';
+        inputValue.value = '50.000';
+        inputValue.disabled = false;
+        maxDiscountField.classList.add('opacity-40', 'pointer-events-none');
+        maxDiscountInput.disabled = true;
+        previewBadge.textContent = 'POTONGAN NOMINAL';
+      } else if (type === 'percentage') {
+        labelVal.innerHTML = 'Besar Persentase Diskon (%) <span class="text-error">*</span>';
+        prefix.textContent = '%';
+        inputValue.value = '15';
+        inputValue.disabled = false;
+        maxDiscountField.classList.remove('opacity-40', 'pointer-events-none');
+        maxDiscountInput.disabled = false;
+        previewBadge.textContent = 'DISKON PERSEN';
+      } else if (type === 'shipping') {
+        labelVal.innerHTML = 'Maksimal Subsidi Ongkir (Rp) <span class="text-error">*</span>';
+        prefix.textContent = 'Rp';
+        inputValue.value = '25.000';
+        inputValue.disabled = false;
+        maxDiscountField.classList.add('opacity-40', 'pointer-events-none');
+        maxDiscountInput.disabled = true;
+        previewBadge.textContent = 'GRATIS ONGKIR';
+      }
+
+      updatePreviewAmount();
+    }
+
+    function updatePreviewAmount() {
+      if (currentDiscountType === 'nominal') {
+        previewAmount.textContent = 'Rp ' + (inputValue.value || '0');
+      } else if (currentDiscountType === 'percentage') {
+        previewAmount.textContent = (inputValue.value || '0') + '% OFF';
+      } else if (currentDiscountType === 'shipping') {
+        previewAmount.textContent = 'Gratis Ongkir s.d Rp ' + (inputValue.value || '0');
+      }
+    }
+
+    // Category Pill Multi-selection
+    const categoryPills = document.querySelectorAll('.category-pill');
+    categoryPills.forEach(pill => {
+      pill.addEventListener('click', function() {
+        const cat = this.getAttribute('data-category');
+        if (cat === 'all') {
+          categoryPills.forEach(p => {
+            p.className = "category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface border border-outline-variant hover:border-primary-container flex items-center gap-1.5 transition-colors";
+          });
+          this.className = "category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-container text-white border border-primary-container flex items-center gap-1.5 shadow-sm";
+        } else {
+          // uncheck 'all'
+          categoryPills[0].className = "category-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface border border-outline-variant hover:border-primary-container flex items-center gap-1.5 transition-colors";
+          this.classList.toggle('bg-primary-container');
+          this.classList.toggle('text-white');
+          this.classList.toggle('border-primary-container');
+        }
+      });
+    });
+
+    // Checkbox Unlimited Quota
+    document.getElementById('unlimited_quota').addEventListener('change', function(e) {
+      const quotaInput = document.getElementById('total_quota');
+      if (e.target.checked) {
+        quotaInput.disabled = true;
+        quotaInput.value = '';
+        quotaInput.placeholder = '∞ Tidak Terbatas';
+      } else {
+        quotaInput.disabled = false;
+        quotaInput.value = '100';
+      }
+    });
+
+    // Checkbox No Expiry
+    document.getElementById('no_expiry').addEventListener('change', function(e) {
+      const endInput = document.getElementById('end_datetime');
+      if (e.target.checked) {
+        endInput.disabled = true;
+        previewExpiry.textContent = 'Tanpa Batas Waktu';
+      } else {
+        endInput.disabled = false;
+        const d = new Date(endInput.value);
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        previewExpiry.textContent = d.toLocaleDateString('id-ID', options);
+      }
+    });
+
+    // Submission Toast Feedback
+    function triggerSave() {
+      const code = inputCode.value || 'KUPON';
+      alert('Kupon promosi "' + code + '" berhasil diterbitkan dan siap digunakan pelanggan di ekosistem JagoFarm!');
+    }
+
+    document.getElementById('btn-submit').addEventListener('click', triggerSave);
+  </script>
+</body></html>

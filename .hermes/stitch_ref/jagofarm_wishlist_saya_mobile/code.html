@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Wishlist Saya - JagoFarm</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#32c98f",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary-container": "#6f4b00",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#6ffbbe",
+            "outline-variant": "#c0c9c3",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed-variant": "#1d4f40",
+            "surface-dim": "#cfdaf2",
+            "secondary-container": "#fdba45",
+            "error-container": "#ffdad6",
+            "secondary-fixed": "#ffdeae",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "on-secondary-fixed-variant": "#604100",
+            "on-secondary-fixed": "#281900",
+            "background": "#f9f9ff",
+            "surface-container-highest": "#d8e3fb",
+            "on-primary-container": "#8abda9",
+            "secondary-fixed-dim": "#fdba45",
+            "secondary": "#7f5700",
+            "on-surface": "#111c2d",
+            "on-tertiary-fixed-variant": "#005236",
+            "primary-container": "#1b4d3e",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "inverse-primary": "#9ed1bd",
+            "inverse-surface": "#263143",
+            "on-error-container": "#93000a",
+            "on-background": "#111c2d",
+            "on-primary-fixed": "#002117",
+            "surface-container-high": "#dee8ff",
+            "surface-variant": "#d8e3fb",
+            "primary-fixed": "#baeed9",
+            "primary": "#003629",
+            "outline": "#707974",
+            "on-surface-variant": "#404945",
+            "tertiary": "#003623",
+            "surface-container": "#e7eeff",
+            "on-tertiary": "#ffffff",
+            "surface": "#f9f9ff",
+            "tertiary-container": "#004f35",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-tint": "#376757",
+            "surface-container-low": "#f0f3ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "0.75rem",
+            "margin": "2rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter": "1.25rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "display-hero": ["52px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "price-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "price-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Hide scrollbars for cleaner horizontal rails */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary-fixed selection:text-primary">
+<!-- Mobile Viewport Container (~390px - 420px standard mobile wrapper) -->
+<div class="w-full max-w-[428px] min-h-screen bg-surface flex flex-col relative pb-24 shadow-2xl">
+<!-- TopAppBar Mobile -->
+<header class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[428px] z-50 flex items-center justify-between px-margin-mobile py-space-sm bg-surface/90 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-2">
+<button aria-label="Kembali" class="w-9 h-9 rounded-full flex items-center justify-center text-primary hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Wishlist Saya</h1>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-bold">0 item</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Cari Produk" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button aria-label="Keranjang Belanja" class="w-9 h-9 rounded-full relative flex items-center justify-center text-primary hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute 1 top-1 right-1 w-4 h-4 bg-secondary text-on-secondary rounded-full flex items-center justify-center text-[10px] font-bold font-label-sm shadow-sm ring-2 ring-surface">2</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area (Spaced for fixed TopBar) -->
+<main class="flex-1 mt-14 flex flex-col">
+<!-- Empty State Section -->
+<section class="px-margin-mobile pt-space-lg pb-space-lg flex flex-col items-center text-center">
+<!-- Modern Circular Pastel Illustrated Icon -->
+<div class="relative w-28 h-28 rounded-full bg-primary-fixed/40 flex items-center justify-center mb-space-md ring-8 ring-primary-fixed/20 shadow-inner">
+<div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-tertiary-fixed text-4xl fill-icon" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<!-- Decorative Floating Sparkle -->
+<div class="absolute top-1 right-2 w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="spa">spa</span>
+</div>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary mb-space-xs tracking-tight">Wishlist kamu masih kosong</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[320px] mb-space-md">
+          Simpan produk pertanian, hidroponik, atau benih favoritmu di sini agar lebih mudah dipantau dan dibeli kapan saja.
+        </p>
+<!-- CTA Utama -->
+<a class="w-full max-w-[280px] bg-primary-container hover:bg-primary text-on-primary py-space-sm px-space-lg rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-sm transition-all duration-200 active:scale-95" href="#katalog">
+<span class="material-symbols-outlined text-xl" data-icon="storefront">storefront</span>
+<span>Jelajahi Produk Sekarang</span>
+</a>
+<!-- Reference Preview Banner from Desktop State -->
+<div class="mt-space-lg w-full rounded-xl overflow-hidden border border-outline-variant/60 shadow-sm relative group">
+<img alt="Pratinjau Katalog Desktop JagoFarm" class="w-full h-32 object-cover object-top opacity-90 group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGsZP_Q9jETm5opcPBMACK5sBtkwQXoQi1kJnLoZ2FZjPnpsbSh3DvjRxJHVHLFkoqDVLSXxP_4ob5kBq0nls0w9uU-tzWeqAhg7brwYAUoqJ10hmgtw-tkRqmGNOsR8URnlLBRVUj9WG0ry0tnA0BoEBYFTzckrhOXoy94guPZj3l180p7jbE3YiioqitbgsZ9pkMlMX71HKEhrhB6BnKgtK-AhPiii2hsVEoP1a1RkdoIXOctQ-_h5NU3luF8K4gDqI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent flex items-end p-space-sm">
+<div class="text-left text-on-primary">
+<span class="font-label-sm text-label-sm bg-secondary px-2 py-0.5 rounded-full text-on-secondary inline-block mb-1">Inspirasi Tani</span>
+<p class="font-headline-sm text-headline-sm font-semibold text-white drop-shadow-sm">Temukan 500+ Alat Pertanian Teruji</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Filter / Kategori Populer Cepat (Horizontal Scrollable Chips) -->
+<section class="py-space-xs border-y border-outline-variant/40 bg-surface-container-low/60">
+<div class="px-margin-mobile mb-1 flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-bold">Kategori Populer</span>
+<span class="font-label-sm text-label-sm text-primary font-medium">Geser ›</span>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto px-margin-mobile py-1 no-scrollbar">
+<!-- Chip 1 -->
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant hover:border-primary-container text-on-surface text-body-sm font-body-sm shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-primary text-base" data-icon="psychology">psychology</span>
+<span>Biji & Benih Unggul</span>
+</button>
+<!-- Chip 2 -->
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant hover:border-primary-container text-on-surface text-body-sm font-body-sm shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-primary text-base" data-icon="water_drop">water_drop</span>
+<span>Set Hidroponik</span>
+</button>
+<!-- Chip 3 -->
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant hover:border-primary-container text-on-surface text-body-sm font-body-sm shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-primary text-base" data-icon="waves">waves</span>
+<span>Set Tambak & Kolam</span>
+</button>
+<!-- Chip 4 -->
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant hover:border-primary-container text-on-surface text-body-sm font-body-sm shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-primary text-base" data-icon="sensors">sensors</span>
+<span>IoT Smart Farming</span>
+</button>
+<!-- Chip 5 -->
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant hover:border-primary-container text-on-surface text-body-sm font-body-sm shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-primary text-base" data-icon="science">science</span>
+<span>Pupuk & Nutrisi</span>
+</button>
+</div>
+</section>
+<!-- Section Rekomendasi Produk Pilihan (Clean Mobile 2-Column Grid) -->
+<section class="px-margin-mobile pt-space-lg pb-space-md" id="katalog">
+<!-- Section Header -->
+<div class="flex items-center justify-between mb-space-sm">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Rekomendasi Produk Pilihan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Produk favorit para petani & pembudidaya</p>
+</div>
+<a class="font-label-md text-label-md font-bold text-primary hover:underline flex items-center gap-0.5 flex-shrink-0" href="#">
+<span>Lihat Semua</span>
+<span class="material-symbols-outlined text-base" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- 2-Column Product Cards Grid -->
+<div class="grid grid-cols-2 gap-gutter-mobile">
+<!-- Card 1: Hidroponik Vertikal -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean studio product photograph of a modern vertical hydroponic tower kit with 36 planting holes, lush emerald green leafy lettuce growing under crisp natural studio lighting, on an off-white pristine minimal background, representing high quality commercial precision agri-tech." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqUElLbbIrKTBl6Su1SrUYwv2TK6vyihkA8MrmIintESQHhLYfZM8jNyqlrolv7WSu5lkyUoIvOOe3JlYO47agb54GsR1dDj3XOFhW4Ovdd8y9zLqgwT5qlpBdkQ41rI89ihF0OVchTU9pjaWa6CGdg5MTMYvEINHlQw9WFyaPBLTGQc3M5mfkp9lerP_hZwBvrYvAB63ugcABk5H9Yz1pbPDjg2LJ5XcB-ye82XstvReXRXLTPbc-Nw"/>
+<!-- Floating Glassmorphic Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-secondary-fixed/90 backdrop-blur-md text-on-secondary-fixed font-label-sm text-label-sm font-bold border border-white/40 shadow-xs">
+                Best Seller
+              </span>
+<!-- Wishlist Action Button -->
+<button aria-label="Tambah ke Favorit" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-error shadow-sm hover:bg-white active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-base fill-icon" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1 text-[11px] font-label-sm text-secondary mb-1">
+<span class="material-symbols-outlined text-xs fill-icon" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.9</span>
+<span class="text-on-surface-variant font-normal">(128)</span>
+</div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface line-clamp-2 leading-snug mb-1.5">Set Hidroponik Vertikal 36 Lubang Lengkap</h4>
+</div>
+<div class="pt-1 border-t border-outline-variant/30 flex items-center justify-between mt-1">
+<div>
+<div class="text-[11px] line-through text-outline font-body-sm leading-tight">Rp 750.000</div>
+<div class="font-price-md text-price-md text-primary font-bold">Rp 650.000</div>
+</div>
+<button aria-label="Beli Set Hidroponik" class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary active:scale-95 shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2: Bibit Ikan Nila -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A commercial quality macro photograph of healthy juvenile black tilapia fish (bibit nila hitam) swimming in pure oxygenated clear hatchery water, displaying glossy scales and lively movement in an Indonesian professional aquaculture pond setup." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi7c_ErrehXEPa8WH6ijv0x1vzXjmglQcyhmwyWQvp861riBv57eYwLw_MZ52eri4-B8EXzzgG2HSRlpg1pGVpRWwgkkaKmhcSDg4jdf94sMtZwysdpkJNV41gbtb6Iy_R1beXtZummKwu9mHppofbm2VqdNZrhfXqn-Iy7v5P7j18aBbkJ7H_wnJ4676wmvWIGwyFCQCeBH2LPsGkuvL4q44fse7S06NWlveCoQZpZCJ8XZP8gG7HVw"/>
+<!-- Floating Glassmorphic Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface-container-high/90 backdrop-blur-md text-primary font-label-sm text-label-sm font-bold border border-white/40 shadow-xs">
+                Garansi Hidup
+              </span>
+<!-- Wishlist Action Button -->
+<button aria-label="Tambah ke Favorit" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-outline hover:text-error shadow-sm hover:bg-white active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1 text-[11px] font-label-sm text-secondary mb-1">
+<span class="material-symbols-outlined text-xs fill-icon" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">5.0</span>
+<span class="text-on-surface-variant font-normal">(42)</span>
+</div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface line-clamp-2 leading-snug mb-1.5">Bibit Ikan Nila Hitam Super (Isi 100 Ekor)</h4>
+</div>
+<div class="pt-1 border-t border-outline-variant/30 flex items-center justify-between mt-1">
+<div>
+<span class="text-[10px] text-on-surface-variant font-label-sm">/paket 100 ekor</span>
+<div class="font-price-md text-price-md text-primary font-bold">Rp 75.000</div>
+</div>
+<button aria-label="Beli Bibit Ikan" class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary active:scale-95 shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 3: Sensor DO Digital IoT -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-tech digital Dissolved Oxygen (DO) probe sensor for smart fish farming pond monitoring, connected with an industrial weatherproof telemetry transmitter box, photographed sharply in crisp daylight agri-tech studio setup." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXe1c_GhaNni5r6L9JPcq_mOmQihOLHNId2AP5-141ZIG5BE4PYgnTZLrd2lfKa30InpK03lgfL9q4na5fqnyZZnhBCgvGfHtmybNgn5RqG6V64Po6BWZuU6fJYkJHf6RTjSfRLwCJqVVQm_khFVsXBaEw7OlVv-y3Xhzo70wuKm5SrHcxomjr0XRFz1LDNEkrEoKNEm9ZxEQuK7X-Lj5a1EBdKKDdLZZpgV8TzJJBDuZI0bqOk4btvA"/>
+<!-- Floating Glassmorphic Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-tertiary-fixed/90 backdrop-blur-md text-on-tertiary-fixed font-label-sm text-label-sm font-bold border border-white/40 shadow-xs">
+                Smart IoT
+              </span>
+<!-- Wishlist Action Button -->
+<button aria-label="Tambah ke Favorit" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-outline hover:text-error shadow-sm hover:bg-white active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1 text-[11px] font-label-sm text-secondary mb-1">
+<span class="material-symbols-outlined text-xs fill-icon" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.8</span>
+<span class="text-on-surface-variant font-normal">(19)</span>
+</div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface line-clamp-2 leading-snug mb-1.5">Sensor DO (Dissolved Oxygen) Digital IoT</h4>
+</div>
+<div class="pt-1 border-t border-outline-variant/30 flex items-center justify-between mt-1">
+<div>
+<div class="font-price-md text-price-md text-primary font-bold">Rp 450.000</div>
+</div>
+<button aria-label="Beli Sensor DO" class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary active:scale-95 shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 4: AB Mix Nutrisi -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/70 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow relative">
+<div class="relative w-full aspect-square bg-[#F1F5F2] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium 1 liter set of bottle fertilizers labeled AB Mix Nutrisi Hidroponik Sayuran Daun, set neatly on a clean agricultural workshop bench with crisp organic botanical typography and natural greens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo8Ih_HEaam3WgMQPABSHnJiODUHADNx0YaAdydbCbgvev52h4Or-MKmdUDXK7iPp54ah2bwx5vd3GABoHCKTYa83fcaeySwW-yHFp5k18KAivtBAbHIr0-XeDB_Hd1ZinjDSCv96s7PdGp31IWMpzpjCe2sWHsPlgX_c89fWSK5lO47iWm1at12xJlUv-C2kStfVmZg2D6CiOxOenLdxxAZyho-V_Y9QIJcQqs7ogl-BQ6KDPJu6VvA"/>
+<!-- Floating Glassmorphic Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface-container-high/90 backdrop-blur-md text-tertiary font-label-sm text-label-sm font-bold border border-white/40 shadow-xs">
+                Pupuk Organik
+              </span>
+<!-- Wishlist Action Button -->
+<button aria-label="Tambah ke Favorit" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-outline hover:text-error shadow-sm hover:bg-white active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1 text-[11px] font-label-sm text-secondary mb-1">
+<span class="material-symbols-outlined text-xs fill-icon" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.9</span>
+<span class="text-on-surface-variant font-normal">(210)</span>
+</div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface line-clamp-2 leading-snug mb-1.5">AB Mix Nutrisi Sayuran Daun Premium 1L</h4>
+</div>
+<div class="pt-1 border-t border-outline-variant/30 flex items-center justify-between mt-1">
+<div>
+<div class="text-[11px] line-through text-outline font-body-sm leading-tight">Rp 45.000</div>
+<div class="font-price-md text-price-md text-primary font-bold">Rp 35.000</div>
+</div>
+<button aria-label="Beli AB Mix" class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary active:scale-95 shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Value Proposition Trust Badges (Horizontal scroll compact grid) -->
+<section class="px-margin-mobile pt-space-sm pb-space-lg">
+<div class="p-3.5 bg-surface-container-low rounded-2xl border border-outline-variant/50">
+<div class="grid grid-cols-2 gap-3">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="verified">verified</span>
+</div>
+<div>
+<h5 class="font-label-md text-label-md font-bold text-on-surface">100% Benih Unggul</h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Bersertifikat resmi</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="local_shipping">local_shipping</span>
+</div>
+<div>
+<h5 class="font-label-md text-label-md font-bold text-on-surface">Kirim Beroksigen</h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Garansi hidup aman</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="support_agent">support_agent</span>
+</div>
+<div>
+<h5 class="font-label-md text-label-md font-bold text-on-surface">Konsultasi Ahli</h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Agronom & teknisi</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="assignment_return">assignment_return</span>
+</div>
+<div>
+<h5 class="font-label-md text-label-md font-bold text-on-surface">Garansi 7 Hari</h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Jaminan penggantian</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Mobile Persisten (Exact Shared Component implementation) -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[428px] z-50 flex justify-around items-center px-margin-mobile py-space-xs bg-surface/95 backdrop-blur-md shadow-sm">
+<!-- Beranda -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Beranda</span>
+</a>
+<!-- Katalog (Active mapping as primary intent is browsing/wishlist store items) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl fill-icon" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-label-sm font-label-sm mt-0.5">Katalog</span>
+</a>
+<!-- Konsultasi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="psychology">psychology</span>
+<span class="text-label-sm font-label-sm mt-0.5">Konsultasi</span>
+</a>
+<!-- Akun -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Akun</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pembayaran (Checkout) - JagoFarm Modern Agri-Aquaculture</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+              primary: '#1b4d3e',
+              primaryDark: '#133e31',
+              forest: '#143d30',
+              accent: '#34d399',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-elements">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .badge-soft-green {
+      background-color: #e8f5e9;
+      color: #1b4d3e;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-100 selection:text-emerald-900">
+<!-- BEGIN: MainHeader -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs" data-purpose="main-navigation">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20 gap-6">
+<!-- Brand Logo -->
+<a class="flex items-center gap-2.5 text-brand-primary shrink-0 transition-opacity hover:opacity-90" href="#">
+<div class="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+<svg class="w-6 h-6 stroke-current fill-none stroke-[2.2]" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+</svg>
+</div>
+<span class="text-2xl font-bold tracking-tight text-slate-900">Jago<span class="text-brand-primary">Farm</span></span>
+</a>
+<!-- Search Bar with Category Dropdown -->
+<div class="hidden md:flex flex-1 max-w-xl items-center relative">
+<div class="w-full relative flex items-center">
+<input class="w-full pl-11 pr-24 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all shadow-inner" placeholder="Cari bibit, sensor IoT kolam, pakan ikan, hidroponik..." type="text"/>
+<div class="absolute left-3.5 text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<button class="absolute right-2 px-3 py-1 bg-white hover:bg-slate-100 text-xs font-semibold text-slate-600 rounded-full border border-slate-200 transition-colors" type="button">
+              Semua
+            </button>
+</div>
+</div>
+<!-- Header Actions and Navigation Links -->
+<div class="flex items-center gap-5 shrink-0">
+<nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-600">
+<a class="hover:text-brand-primary transition-colors" href="#">Set Tambak</a>
+<a class="hover:text-brand-primary transition-colors" href="#">Hidroponik</a>
+<a class="hover:text-brand-primary transition-colors" href="#">IoT &amp; Smart Farming</a>
+<a class="hover:text-brand-primary transition-colors" href="#">Konsultasi</a>
+</nav>
+<div class="h-6 w-px bg-slate-200 hidden lg:block"></div>
+<!-- Quick Toggle to demo empty state from user snapshot -->
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-600 transition" id="stateToggleBtn" onclick="toggleCartView()" title="Klik untuk beralih antara Mode Checkout Lengkap &amp; Mode Keranjang Kosong">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span id="stateToggleText">Lihat State: Kosong</span>
+</button>
+<!-- Cart Icon with Badge -->
+<div class="relative cursor-pointer hover:opacity-80 transition-opacity p-2 text-slate-700">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+<span class="absolute top-1 right-1 bg-brand-primary text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white" id="cartBadgeCount">2</span>
+</div>
+<!-- User Profile Icon -->
+<div class="flex items-center gap-2 cursor-pointer p-1 rounded-full hover:ring-2 hover:ring-slate-200 transition">
+<div class="w-9 h-9 rounded-full bg-emerald-100 text-brand-primary font-bold flex items-center justify-center text-sm border border-emerald-300">
+              BS
+            </div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: BreadcrumbAndStepper -->
+<section class="bg-white border-b border-slate-200" data-purpose="checkout-header-progress">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex items-center text-xs font-medium text-slate-500 mb-4">
+<a class="hover:text-brand-primary transition" href="#">Beranda</a>
+<svg class="w-3.5 h-3.5 mx-2 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<a class="hover:text-brand-primary transition" href="#">Keranjang Belanja</a>
+<svg class="w-3.5 h-3.5 mx-2 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-brand-primary font-bold">Pembayaran &amp; Pengiriman</span>
+</nav>
+<!-- Step Indicator Bar -->
+<div class="flex items-center justify-between max-w-2xl mx-auto py-2">
+<!-- Step 1 -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 text-brand-primary flex items-center justify-center font-bold text-sm">
+<svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<span class="text-xs sm:text-sm font-semibold text-slate-800">1. Keranjang</span>
+</div>
+<div class="flex-1 h-0.5 mx-4 bg-brand-primary"></div>
+<!-- Step 2 -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-emerald-50">
+            2
+          </div>
+<span class="text-xs sm:text-sm font-bold text-brand-primary">2. Pengiriman &amp; Bayar</span>
+</div>
+<div class="flex-1 h-0.5 mx-4 bg-slate-200"></div>
+<!-- Step 3 -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center font-bold text-sm">
+            3
+          </div>
+<span class="text-xs sm:text-sm font-medium text-slate-400">3. Pesanan Selesai</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: BreadcrumbAndStepper -->
+<!-- BEGIN: CheckoutMainContent -->
+<main class="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full" data-purpose="page-main-body">
+<!-- STATE 1: ACTIVE CHECKOUT INTERFACE -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" id="checkoutActiveState">
+<!-- LEFT COLUMN: Customer Information, Shipping, & Payment -->
+<div class="lg:col-span-8 space-y-6">
+<!-- 1. Alamat Pengiriman Section -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm" data-purpose="shipping-address-container">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 text-brand-primary flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-base font-bold text-slate-900 tracking-tight">Alamat Pengiriman</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-xs font-bold text-brand-primary hover:text-brand-primaryDark transition px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 border border-transparent hover:border-emerald-200">
+                Pilih Alamat Lain
+              </button>
+<button class="text-xs font-bold text-slate-600 hover:text-slate-900 transition px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">
+                + Tambah Baru
+              </button>
+</div>
+</div>
+<!-- Active Address Card -->
+<div class="p-4 rounded-xl border-2 border-brand-primary bg-emerald-50/20 relative">
+<div class="flex flex-wrap items-center gap-2 mb-1.5">
+<span class="text-sm font-bold text-slate-900">Budi Santoso</span>
+<span class="text-xs text-slate-500 font-medium">(+62 812-3456-7890)</span>
+<span class="px-2 py-0.5 bg-brand-primary text-white text-[10px] font-bold rounded-md uppercase tracking-wider">Utama</span>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-semibold rounded-md">Kebun &amp; Kolam</span>
+</div>
+<p class="text-sm text-slate-600 leading-relaxed">
+              Jl. Raya Tambak No. 45, RT 03 / RW 05, Kel. Kedung Baruk, Kec. Rungkut, Kota Surabaya, Jawa Timur 60293
+            </p>
+<div class="mt-3 pt-3 border-t border-slate-200/60 flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
+<svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg>
+                Lokasi terverifikasi oleh GPS Logistik JagoFarm
+              </span>
+<button class="text-xs font-semibold text-slate-500 hover:text-brand-primary">Ubah Data</button>
+</div>
+</div>
+<!-- Special Delivery Note -->
+<div class="mt-4">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Catatan untuk Kurir (Opsional)</label>
+<div class="relative">
+<input class="w-full text-xs text-slate-700 bg-slate-50/70 border border-slate-200 rounded-lg px-3.5 py-2.5 focus:bg-white focus:ring-1 focus:ring-brand-primary focus:border-brand-primary transition" placeholder="Misal: Taruh di dekat tandon nutrisi, hubungi sebelum sampai..." type="text" value="Titipkan di pos satpam depan atau langsung ke area greenhouse tambak timur."/>
+</div>
+</div>
+</section>
+<!-- 2. Review Produk Pesanan -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm" data-purpose="items-review-container">
+<div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 text-brand-primary flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m0 4v10l8 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-base font-bold text-slate-900 tracking-tight">Daftar Produk (2 Barang)</h2>
+</div>
+<span class="text-xs text-slate-500 font-medium">Dikirim dari: <strong class="text-slate-700">Hub Surabaya Agrotech</strong></span>
+</div>
+<div class="divide-y divide-slate-100">
+<!-- Product Item 1: Living Fish Fry -->
+<div class="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden relative">
+<!-- Product Icon/Illustration placeholder -->
+<div class="w-full h-full bg-gradient-to-br from-emerald-100 to-teal-50 flex items-center justify-center text-brand-primary">
+<svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 2c5 0 9 4 9 9s-4 9-9 9a9 9 0 0 1-9-9c0-5 4-9 9-9z"></path>
+<path d="M19 12c-2.5 0-5-1.5-6-4M9 16c1-2.5 3.5-4 6-4"></path>
+</svg>
+</div>
+<span class="absolute bottom-0 right-0 bg-emerald-800 text-white text-[9px] font-bold px-1 rounded-tl">Bibit</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-sm font-bold text-slate-900 hover:text-brand-primary transition cursor-pointer">Benih Ikan Mas Koki Unggul (Grade A)</h3>
+<span class="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 font-bold px-1.5 py-0.5 rounded">Packing Oksigen</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">Ukuran: 5-7 cm | Paket isi 5 ekor | Garansi Hidup</p>
+<div class="flex items-center gap-3 mt-1.5 text-xs text-slate-600">
+<span>Rp 75.000 <span class="text-slate-400">× 2 paket</span></span>
+</div>
+</div>
+</div>
+<div class="text-right sm:self-center shrink-0">
+<p class="text-sm font-bold text-slate-900">Rp 150.000</p>
+<span class="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-medium inline-block mt-0.5">Garansi DO (Dead on Arrival)</span>
+</div>
+</div>
+<!-- Product Item 2: IoT Device -->
+<div class="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden relative">
+<div class="w-full h-full bg-gradient-to-br from-cyan-100 to-emerald-50 flex items-center justify-center text-teal-800">
+<svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<rect height="16" rx="2" width="16" x="4" y="4"></rect>
+<path d="M9 9h6v6H9z"></path>
+<path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+</svg>
+</div>
+<span class="absolute bottom-0 right-0 bg-blue-800 text-white text-[9px] font-bold px-1 rounded-tl">IoT</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-sm font-bold text-slate-900 hover:text-brand-primary transition cursor-pointer">Paket IoT Monitoring Kolam &amp; Tambak V3</h3>
+<span class="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded">WiFi + 4G LTE</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">Termasuk: Sensor Dissolved Oxygen (DO), pH, Suhu, &amp; Cloud 1 Tahun</p>
+<div class="flex items-center gap-3 mt-1.5 text-xs text-slate-600">
+<span>Rp 2.200.000 <span class="text-slate-400">× 1 unit</span></span>
+</div>
+</div>
+</div>
+<div class="text-right sm:self-center shrink-0">
+<p class="text-sm font-bold text-slate-900">Rp 2.200.000</p>
+<span class="text-[11px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full font-medium inline-block mt-0.5">Garansi Resmi 1 Tahun</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Metode Pengiriman Section -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm" data-purpose="shipping-methods-container">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 text-brand-primary flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-base font-bold text-slate-900 tracking-tight">Pilih Ekspedisi / Kurir</h2>
+</div>
+<span class="text-xs font-semibold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">Proteksi Benih Hidup</span>
+</div>
+<!-- Courier Options Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<!-- Option 1: Selected / Recommended -->
+<label class="relative flex flex-col p-4 border-2 border-brand-primary bg-emerald-50/20 rounded-xl cursor-pointer transition shadow-xs hover:border-brand-primary">
+<input checked="" class="sr-only" name="courier_option" type="radio"/>
+<div class="flex items-center justify-between mb-2">
+<span class="font-bold text-sm text-slate-900">SiCepat BEST</span>
+<span class="w-4 h-4 rounded-full border-2 border-brand-primary flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-brand-primary"></span>
+</span>
+</div>
+<div class="text-xs text-slate-500 mb-2">Estimasi Tiba: <strong>1 - 2 Hari</strong></div>
+<span class="inline-block text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded w-max mb-3">Rekomendasi Cepat</span>
+<p class="mt-auto text-sm font-extrabold text-brand-primary">Rp 35.000</p>
+</label>
+<!-- Option 2: Cargo / JNE -->
+<label class="relative flex flex-col p-4 border border-slate-200 hover:border-emerald-300 rounded-xl cursor-pointer transition bg-white">
+<input class="sr-only" name="courier_option" type="radio"/>
+<div class="flex items-center justify-between mb-2">
+<span class="font-bold text-sm text-slate-900">JNE Trucking (JTR)</span>
+<span class="w-4 h-4 rounded-full border border-slate-300"></span>
+</div>
+<div class="text-xs text-slate-500 mb-2">Estimasi Tiba: <strong>2 - 3 Hari</strong></div>
+<span class="inline-block text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded w-max mb-3">Hemat Beban Berat</span>
+<p class="mt-auto text-sm font-extrabold text-slate-800">Rp 28.000</p>
+</label>
+<!-- Option 3: Specialized Live Cold-Box -->
+<label class="relative flex flex-col p-4 border border-slate-200 hover:border-emerald-300 rounded-xl cursor-pointer transition bg-white">
+<input class="sr-only" name="courier_option" type="radio"/>
+<div class="flex items-center justify-between mb-2">
+<span class="font-bold text-sm text-slate-900">Special AquaCold</span>
+<span class="w-4 h-4 rounded-full border border-slate-300"></span>
+</div>
+<div class="text-xs text-slate-500 mb-2">Estimasi Tiba: <strong>Hari Ini / Sameday</strong></div>
+<span class="inline-block text-[10px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded w-max mb-3">Dedicated Coldbox</span>
+<p class="mt-auto text-sm font-extrabold text-slate-800">Rp 50.000</p>
+</label>
+</div>
+<!-- Insurance Addon Checkbox -->
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-start gap-3 bg-slate-50/80 p-3.5 rounded-xl border border-slate-200">
+<input checked="" class="mt-1 w-4 h-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300 cursor-pointer" id="insurance_check" type="checkbox"/>
+<label class="text-xs text-slate-700 cursor-pointer select-none" for="insurance_check">
+<span class="font-bold text-slate-900">Asuransi Kerusakan Tanaman &amp; Kematian Bibit Ikan (Rp 10.000)</span>
+<span class="block text-slate-500 mt-0.5 leading-normal">
+                Garansi 100% penggantian barang baru atau pengembalian dana jika ikan mati dalam perjalanan atau komponen sensor rusak fisik.
+              </span>
+</label>
+</div>
+</section>
+<!-- 4. Metode Pembayaran Section -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm" data-purpose="payment-methods-container">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 text-brand-primary flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-base font-bold text-slate-900 tracking-tight">Pilih Metode Pembayaran</h2>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-slate-500">
+<svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg>
+<span>Aman &amp; Terenkripsi</span>
+</div>
+</div>
+<!-- Payment Options Accordion/Cards -->
+<div class="space-y-3">
+<!-- Payment 1: QRIS Instant (Selected) -->
+<label class="block border-2 border-brand-primary bg-emerald-50/20 rounded-xl p-4 cursor-pointer transition">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<input checked="" class="w-4 h-4 text-brand-primary focus:ring-brand-primary border-slate-300" name="payment_channel" type="radio"/>
+<span class="font-bold text-sm text-slate-900">QRIS (GoPay, OVO, ShopeePay, DANA, BCA Mobile)</span>
+</div>
+<span class="text-[10px] font-bold text-brand-primary bg-emerald-100 px-2 py-0.5 rounded">Verifikasi Otomatis</span>
+</div>
+<div class="mt-3 pl-7 flex flex-wrap items-center gap-2">
+<span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] font-bold text-slate-700">QRIS Nasional</span>
+<span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] font-bold text-slate-700">GoPay</span>
+<span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] font-bold text-slate-700">OVO</span>
+<span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] font-bold text-slate-700">ShopeePay</span>
+<span class="text-xs text-slate-500 ml-1">Bebas biaya admin</span>
+</div>
+</label>
+<!-- Payment 2: Virtual Account -->
+<label class="block border border-slate-200 hover:border-emerald-300 bg-white rounded-xl p-4 cursor-pointer transition">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 text-brand-primary focus:ring-brand-primary border-slate-300" name="payment_channel" type="radio"/>
+<span class="font-bold text-sm text-slate-900">Transfer Virtual Account (VA)</span>
+</div>
+<span class="text-xs text-slate-400">BCA, Mandiri, BRI, BNI</span>
+</div>
+</label>
+<!-- Payment 3: Credit Card / Debit Online -->
+<label class="block border border-slate-200 hover:border-emerald-300 bg-white rounded-xl p-4 cursor-pointer transition">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 text-brand-primary focus:ring-brand-primary border-slate-300" name="payment_channel" type="radio"/>
+<span class="font-bold text-sm text-slate-900">Kartu Kredit / Debit Online</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
+<span>Visa</span> • <span>Mastercard</span> • <span>JCB</span>
+</div>
+</div>
+</label>
+<!-- Payment 4: PayLater & Agri-Credit -->
+<label class="block border border-slate-200 hover:border-emerald-300 bg-white rounded-xl p-4 cursor-pointer transition">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 text-brand-primary focus:ring-brand-primary border-slate-300" name="payment_channel" type="radio"/>
+<span class="font-bold text-sm text-slate-900">Cicilan Petani Modern / PayLater</span>
+</div>
+<span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Bunga 0% s.d 3 Bulan</span>
+</div>
+</label>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: Sticky Order Summary & Checkout Action -->
+<aside class="lg:col-span-4 sticky top-28 space-y-5" data-purpose="order-summary-sidebar">
+<!-- Order Summary Card -->
+<div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm">
+<h2 class="text-base font-bold text-slate-900 tracking-tight pb-3 border-b border-slate-100 mb-4">
+            Ringkasan Belanja
+          </h2>
+<!-- Voucher / Promo Code Box -->
+<div class="mb-5">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kupon / Voucher Diskon</label>
+<div class="flex gap-2">
+<div class="relative flex-1">
+<input class="w-full text-xs font-bold uppercase tracking-wider text-brand-primary bg-emerald-50/50 border border-emerald-300 rounded-lg pl-3 pr-8 py-2.5 focus:ring-brand-primary focus:border-brand-primary" type="text" value="JAGOSALE"/>
+<div class="absolute right-2.5 top-3 text-emerald-600">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg>
+</div>
+</div>
+<button class="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition" type="button">
+                Terapkan
+              </button>
+</div>
+<p class="text-[11px] text-emerald-700 font-semibold mt-1.5 flex items-center gap-1">
+<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Kupon aktif: Hemat Rp 50.000 Spesial Panen!
+            </p>
+</div>
+<!-- Price Line Items -->
+<div class="space-y-2.5 text-xs text-slate-600">
+<div class="flex justify-between">
+<span>Total Harga (2 Produk)</span>
+<span class="font-semibold text-slate-800">Rp 2.350.000</span>
+</div>
+<div class="flex justify-between">
+<span>Biaya Pengiriman (SiCepat BEST)</span>
+<span class="font-semibold text-slate-800">Rp 35.000</span>
+</div>
+<div class="flex justify-between">
+<span>Asuransi Proteksi Benih &amp; IoT</span>
+<span class="font-semibold text-slate-800">Rp 10.000</span>
+</div>
+<div class="flex justify-between text-emerald-700 font-semibold">
+<span>Potongan Voucher Promo</span>
+<span>- Rp 50.000</span>
+</div>
+<div class="flex justify-between">
+<span>Biaya Penanganan / Layanan</span>
+<span class="font-semibold text-emerald-700">GRATIS</span>
+</div>
+<!-- Divider -->
+<div class="pt-3 border-t border-slate-200"></div>
+<!-- Total Price Grand -->
+<div class="flex items-baseline justify-between pt-1">
+<div>
+<span class="text-sm font-bold text-slate-900 block">Total Tagihan</span>
+<span class="text-[10px] text-slate-500">Termasuk PPN 11%</span>
+</div>
+<div class="text-right">
+<span class="text-xl font-extrabold text-brand-primary tracking-tight">Rp 2.345.000</span>
+</div>
+</div>
+</div>
+<!-- Pay Button -->
+<button class="w-full mt-6 py-3.5 px-4 bg-brand-primary hover:bg-brand-primaryDark text-white font-bold text-sm rounded-xl shadow-lg shadow-brand-primary/20 hover:shadow-brand-primary/30 flex items-center justify-center gap-2 transition duration-150 transform active:scale-[0.99]" onclick="simulatePayment()" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Bayar Sekarang (Rp 2.345.000)</span>
+</button>
+<!-- T&C Disclaimer -->
+<p class="text-[11px] text-slate-500 text-center leading-relaxed mt-3.5">
+            Dengan mengklik "Bayar Sekarang", Anda menyetujui 
+            <a class="underline hover:text-brand-primary" href="#">Syarat &amp; Ketentuan</a> serta 
+            <a class="underline hover:text-brand-primary" href="#">Kebijakan Privasi</a> JagoFarm.
+          </p>
+<!-- Trust & Guarantees Box -->
+<div class="mt-6 pt-5 border-t border-slate-100 space-y-2.5">
+<div class="flex items-center gap-2.5 text-xs text-slate-700">
+<div class="w-5 h-5 rounded-full bg-emerald-100 text-brand-primary flex items-center justify-center shrink-0">
+<svg class="w-3 h-3 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<span class="font-medium">100% Garansi Benih Tiba Hidup &amp; Sehat</span>
+</div>
+<div class="flex items-center gap-2.5 text-xs text-slate-700">
+<div class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+<svg class="w-3 h-3 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<span class="font-medium">Garansi Resmi Sensor IoT 1 Tahun</span>
+</div>
+<div class="flex items-center gap-2.5 text-xs text-slate-700">
+<div class="w-5 h-5 rounded-full bg-emerald-100 text-brand-primary flex items-center justify-center shrink-0">
+<svg class="w-3 h-3 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<span class="font-medium">Konsultasi Agri-Aquaculture Gratis via Chat</span>
+</div>
+</div>
+</div>
+<!-- Help Desk Floating Snippet -->
+<div class="bg-emerald-50/60 rounded-xl p-4 border border-emerald-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-900">Butuh Bantuan Checkout?</p>
+<p class="text-[11px] text-slate-600">Hubungi Agrikonsultan JagoFarm</p>
+</div>
+</div>
+<a class="text-xs font-bold text-brand-primary hover:underline" href="#">Chat WA</a>
+</div>
+</aside>
+</div>
+<!-- STATE 2: EMPTY CART STATE (Replicating exact visual from user context 18-checkout.png) -->
+<div class="hidden py-16 px-4 text-center max-w-xl mx-auto" data-purpose="empty-cart-state" id="checkoutEmptyState">
+<!-- Empty shopping bag icon matching snapshot -->
+<div class="w-24 h-24 mx-auto mb-6 rounded-3xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 shadow-inner">
+<svg class="w-14 h-14" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M9 14h6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Keranjang Kosong</h1>
+<p class="mt-2 text-slate-600 text-sm sm:text-base leading-relaxed">
+        Yuk, mulai belanja produk pertanian modern dan perlengkapan budidaya perikanan terbaik!
+      </p>
+<div class="mt-6">
+<button class="inline-flex items-center gap-2 px-8 py-3 bg-brand-primary hover:bg-brand-primaryDark text-white font-semibold text-sm rounded-xl shadow-md transition duration-150 transform active:scale-95" onclick="toggleCartView()">
+<span>Belanja Sekarang</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</main>
+<!-- END: CheckoutMainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="bg-brand-forest text-slate-200 pt-16 pb-8 border-t border-emerald-950 mt-16" data-purpose="site-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 pb-12 border-b border-emerald-900/60">
+<!-- Brand Summary Column -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center gap-2.5 text-white">
+<div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+<svg class="w-5 h-5 stroke-current fill-none stroke-[2.2]" viewbox="0 0 24 24">
+<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+</svg>
+</div>
+<span class="text-2xl font-bold tracking-tight text-white">JagoFarm</span>
+</div>
+<p class="text-sm text-slate-300 leading-relaxed max-w-sm">
+            Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak, dan IoT smart farming berkualitas tinggi.
+          </p>
+<!-- Social and Web Buttons -->
+<div class="flex items-center gap-3 pt-2">
+<a aria-label="Bagikan" class="w-9 h-9 rounded-lg bg-emerald-900/80 hover:bg-emerald-800 text-slate-300 hover:text-white flex items-center justify-center transition" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a aria-label="Website Internasional" class="w-9 h-9 rounded-lg bg-emerald-900/80 hover:bg-emerald-800 text-slate-300 hover:text-white flex items-center justify-center transition" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</div>
+<!-- Col 1: Produk -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Produk</h3>
+<ul class="space-y-2.5 text-xs text-slate-300">
+<li><a class="hover:text-emerald-400 transition" href="#">Set Tambak</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Set Hidroponik</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Set Aquaponik</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">IoT &amp; Smart Farming</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Benih Unggul</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Anakan Ikan</a></li>
+</ul>
+</div>
+<!-- Col 2: Informasi -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Informasi</h3>
+<ul class="space-y-2.5 text-xs text-slate-300">
+<li><a class="hover:text-emerald-400 transition" href="#">Tentang Kami</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Cara Pemesanan</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">FAQ</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Hubungi Kami</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Karir Agritech</a></li>
+</ul>
+</div>
+<!-- Col 3: Kebijakan -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Kebijakan</h3>
+<ul class="space-y-2.5 text-xs text-slate-300">
+<li><a class="hover:text-emerald-400 transition" href="#">Kebijakan Pengiriman</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Kebijakan Pengembalian</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Kebijakan Privasi</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Syarat dan Ketentuan</a></li>
+<li><a class="hover:text-emerald-400 transition" href="#">Protokol Karantina Ikan</a></li>
+</ul>
+</div>
+<!-- Col 4: Kontak -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Kontak</h3>
+<ul class="space-y-3 text-xs text-slate-300">
+<li class="flex items-start gap-2.5">
+<svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Jl. Pertanian No. 123, Surabaya, Jawa Timur</span>
+</li>
+<li class="flex items-center gap-2.5">
+<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>+62 812-3456-7890</span>
+</li>
+<li class="flex items-center gap-2.5">
+<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<a class="hover:text-emerald-400 transition" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+</li>
+</ul>
+</div>
+</div>
+<!-- Copyright Bar -->
+<div class="pt-8 text-center text-xs text-slate-400">
+<p>© 2026 JagoFarm. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="toggle-view-states">
+    // Logic to toggle between active checkout view and empty cart snapshot view
+    let isEmpty = false;
+
+    function toggleCartView() {
+      isEmpty = !isEmpty;
+      const activeStateEl = document.getElementById('checkoutActiveState');
+      const emptyStateEl = document.getElementById('checkoutEmptyState');
+      const toggleTextEl = document.getElementById('stateToggleText');
+      const badgeCountEl = document.getElementById('cartBadgeCount');
+
+      if (isEmpty) {
+        activeStateEl.classList.add('hidden');
+        emptyStateEl.classList.remove('hidden');
+        toggleTextEl.textContent = 'Kembali ke Checkout';
+        badgeCountEl.textContent = '0';
+      } else {
+        activeStateEl.classList.remove('hidden');
+        emptyStateEl.classList.add('hidden');
+        toggleTextEl.textContent = 'Lihat State: Kosong';
+        badgeCountEl.textContent = '2';
+      }
+    }
+
+    function simulatePayment() {
+      alert('Membuka Gateway Pembayaran QRIS JagoFarm. Mohon siapkan aplikasi e-wallet Anda.');
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

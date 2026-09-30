@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Tambah Alamat Baru - JagoFarm Mobile</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#baeed9",
+            "on-tertiary-container": "#32c98f",
+            "error": "#ba1a1a",
+            "surface-variant": "#d8e3fb",
+            "outline": "#707974",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-tertiary-fixed": "#002113",
+            "surface-container-high": "#dee8ff",
+            "surface": "#f9f9ff",
+            "background": "#f9f9ff",
+            "on-primary": "#ffffff",
+            "surface-container-highest": "#d8e3fb",
+            "on-secondary-container": "#6f4b00",
+            "secondary-container": "#fdba45",
+            "on-primary-fixed": "#002117",
+            "outline-variant": "#c0c9c3",
+            "primary-fixed-dim": "#9ed1bd",
+            "surface-tint": "#376757",
+            "surface-bright": "#f9f9ff",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-tertiary": "#ffffff",
+            "on-surface": "#111c2d",
+            "surface-container-lowest": "#ffffff",
+            "inverse-primary": "#9ed1bd",
+            "tertiary": "#003623",
+            "on-error-container": "#93000a",
+            "on-error": "#ffffff",
+            "surface-dim": "#cfdaf2",
+            "on-surface-variant": "#404945",
+            "surface-container-low": "#f0f3ff",
+            "inverse-surface": "#263143",
+            "on-primary-fixed-variant": "#1d4f40",
+            "on-secondary-fixed": "#281900",
+            "tertiary-container": "#004f35",
+            "secondary-fixed": "#ffdeae",
+            "inverse-on-surface": "#ecf1ff",
+            "tertiary-fixed": "#6ffbbe",
+            "error-container": "#ffdad6",
+            "surface-container": "#e7eeff",
+            "primary-container": "#1b4d3e",
+            "on-secondary-fixed-variant": "#604100",
+            "on-secondary": "#ffffff",
+            "secondary": "#7f5700",
+            "primary": "#003629",
+            "secondary-fixed-dim": "#fdba45",
+            "on-background": "#111c2d",
+            "on-primary-container": "#8abda9"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "gutter-mobile": "0.75rem",
+            "margin-mobile": "1rem",
+            "gutter": "1.25rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "price-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "price-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", {"lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "price-md": ["16px", {"lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "body-md": ["14px", {"lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "display-hero-mobile": ["34px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "headline-sm": ["18px", {"lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+            "price-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+            "display-hero": ["52px", {"lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "headline-lg-mobile": ["26px", {"lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #f1f5f2;
+      color: #111c2d;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Ambient diffuse shadow for agritech cards */
+    .agri-card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(27, 77, 62, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+    }
+    .touch-target {
+      min-height: 44px;
+    }
+    /* Safe padding for modern devices */
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F4F6F4] text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary-fixed selection:text-primary">
+<!-- Mobile Viewport Container (~390px iPhone standard) -->
+<div class="w-full max-w-[420px] bg-[#F8FAF9] min-h-screen flex flex-col relative shadow-2xl border-x border-[#E2E8F0]">
+<!-- Top Bar Mobile (Linear/Task Subpage: Suppressed Bottom Nav, Enhanced Focused App Bar) -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md px-margin-mobile py-space-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Kembali" class="w-10 h-10 -ml-1 rounded-full flex items-center justify-center text-primary active:scale-95 transition-transform hover:bg-[#F1F5F2]" type="button">
+<span class="material-symbols-outlined text-primary text-[24px]">arrow_back</span>
+</button>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Tambah Alamat Baru</h1>
+</div>
+<span class="inline-flex items-center gap-1 text-[10px] font-label-sm font-bold text-[#065F46] bg-[#D1FAE5] px-2 py-0.5 rounded-full mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
+            Buku Alamat Logistik
+          </span>
+</div>
+</div>
+<!-- Bantuan CS Button -->
+<button aria-label="Bantuan dan Konsultasi CS" class="w-10 h-10 rounded-full border border-[#E2E8F0] flex items-center justify-center text-primary-container active:scale-95 transition-all bg-white hover:bg-surface-container" type="button">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">support_agent</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 px-margin-mobile pt-space-md pb-32 space-y-space-md">
+<!-- Operational Step Indicator Pill -->
+<div class="bg-primary-container text-white p-space-md rounded-xl shadow-sm relative overflow-hidden flex items-center justify-between">
+<div class="relative z-10">
+<div class="flex items-center gap-1.5 text-primary-fixed font-label-md text-label-md mb-0.5">
+<span class="material-symbols-outlined text-[16px]">local_shipping</span>
+<span>Verifikasi Pengiriman Agrikultur</span>
+</div>
+<p class="font-body-sm text-body-sm text-surface-container font-medium">Lengkapi rincian titik koordinat untuk kelancaran armada kargo.</p>
+</div>
+<div class="relative z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-primary-fixed border border-white/20 shrink-0">
+<span class="font-label-lg text-label-lg font-bold">1/1</span>
+</div>
+<!-- Abstract Botanical Ring -->
+<div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-primary/40 blur-xl pointer-events-none"></div>
+</div>
+<!-- Section 1: Tipe & Label Lokasi -->
+<section class="bg-surface-container-lowest p-space-md rounded-xl border border-[#E2E8F0] agri-card-shadow space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-[#D1FAE5] text-[#065F46] flex items-center justify-center font-bold text-xs">1</span>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Tipe &amp; Label Lokasi</h2>
+</div>
+<span class="text-xs font-semibold text-outline">Wajib</span>
+</div>
+<!-- 2x2 Operational Facility Cards Grid -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Card 1: Tambak Pembesaran (Selected) -->
+<button class="relative p-3 rounded-lg border-2 border-[#1B4D3E] bg-[#F1F8F5] text-left flex flex-col justify-between transition-all active:scale-98" type="button">
+<div class="flex justify-between items-start mb-2">
+<div class="w-8 h-8 rounded-full bg-[#1B4D3E] text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">water</span>
+</div>
+<span class="material-symbols-outlined text-[#1B4D3E] text-[18px]" data-weight="fill">check_circle</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Tambak Pembesaran</p>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight mt-0.5">Bioflok &amp; Kolam Air</p>
+</div>
+</button>
+<!-- Card 2: Kantor & Hidroponik -->
+<button class="relative p-3 rounded-lg border border-[#E2E8F0] bg-white text-left flex flex-col justify-between transition-all active:scale-98 hover:border-outline-variant" type="button">
+<div class="flex justify-between items-start mb-2">
+<div class="w-8 h-8 rounded-full bg-[#F1F5F2] text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">potted_plant</span>
+</div>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Kantor &amp; Hidroponik</p>
+<p class="font-body-sm text-[11px] text-outline leading-tight mt-0.5">Instalasi Vertikal</p>
+</div>
+</button>
+<!-- Card 3: Gudang & Greenhouse -->
+<button class="relative p-3 rounded-lg border border-[#E2E8F0] bg-white text-left flex flex-col justify-between transition-all active:scale-98 hover:border-outline-variant" type="button">
+<div class="flex justify-between items-start mb-2">
+<div class="w-8 h-8 rounded-full bg-[#F1F5F2] text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">warehouse</span>
+</div>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Gudang &amp; Greenhouse</p>
+<p class="font-body-sm text-[11px] text-outline leading-tight mt-0.5">Penyimpanan Saprotan</p>
+</div>
+</button>
+<!-- Card 4: Rumah Tinggal -->
+<button class="relative p-3 rounded-lg border border-[#E2E8F0] bg-white text-left flex flex-col justify-between transition-all active:scale-98 hover:border-outline-variant" type="button">
+<div class="flex justify-between items-start mb-2">
+<div class="w-8 h-8 rounded-full bg-[#F1F5F2] text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">home</span>
+</div>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Rumah Tinggal</p>
+<p class="font-body-sm text-[11px] text-outline leading-tight mt-0.5">Domisili Pribadi</p>
+</div>
+</button>
+</div>
+<!-- Input Label Alamat -->
+<div class="space-y-1.5 pt-1">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="address-label">Nama Label Alamat</label>
+<div class="relative">
+<input class="w-full h-11 px-3.5 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all" id="address-label" placeholder="Contoh: Kolam Udang Blok Barat, Greenhouse Melon" type="text" value="Tambak Bioflok Nila Sleman"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-[20px]">bookmark</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant">Bantu membedakan titik bongkar jika Anda memiliki multiple farm.</p>
+</div>
+</section>
+<!-- Section 2: Kontak Penerima di Lokasi -->
+<section class="bg-surface-container-lowest p-space-md rounded-xl border border-[#E2E8F0] agri-card-shadow space-y-3.5">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-[#D1FAE5] text-[#065F46] flex items-center justify-center font-bold text-xs">2</span>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Kontak Penerima di Lokasi</h2>
+</div>
+<div class="space-y-1.5">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="recipient-name">Nama Lengkap Penerima</label>
+<div class="relative">
+<input class="w-full h-11 pl-10 pr-3.5 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none" id="recipient-name" type="text" value="Pak Hendra Wardana"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[20px]">person</span>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="recipient-phone">Nomor WhatsApp / Telepon Aktif</label>
+<div class="relative">
+<input class="w-full h-11 pl-10 pr-3.5 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none" id="recipient-phone" type="tel" value="+62 812-3456-7890"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[20px]">phone_iphone</span>
+</div>
+</div>
+<!-- Amber Callout Box (Urgency & Logistics Protocol) -->
+<div class="p-3 rounded-lg bg-[#FEF3C7] border border-[#FDE68A] flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[#B45309] text-[20px] shrink-0 mt-0.5" data-weight="fill">warning</span>
+<div class="space-y-0.5">
+<p class="font-label-sm text-label-sm font-bold text-[#92400E]">Penting untuk Logistik Bio-Organik</p>
+<p class="font-body-sm text-[11px] leading-relaxed text-[#78350F]">
+              Wajib aktif 24 jam untuk koordinasi kedatangan kurir kargo berpendingin atau truk bibit ikan hidup.
+            </p>
+</div>
+</div>
+</section>
+<!-- Section 3: Pinpoint Lokasi Presisi (Peta GPS Interaktif) -->
+<section class="bg-surface-container-lowest p-space-md rounded-xl border border-[#E2E8F0] agri-card-shadow space-y-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-[#D1FAE5] text-[#065F46] flex items-center justify-center font-bold text-xs">3</span>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Pinpoint Lokasi Presisi</h2>
+</div>
+<span class="flex items-center gap-1 text-[11px] font-label-sm font-semibold text-[#065F46] bg-[#D1FAE5] px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]">gps_fixed</span>
+            GPS Aktif
+          </span>
+</div>
+<!-- Interactive Mini-Map Card Container -->
+<div class="relative w-full h-44 rounded-xl overflow-hidden border border-[#CBD5E1] group shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Detailed top-down aerial satellite view of an agricultural biofloc aquaculture facility in Sleman Yogyakarta. Show multiple circular aeration fish ponds, green foliage, neat access gravel road for transport trucks, with soft tropical daylight, clean modern agronomic landscape photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc18OqyRNY_f0rHDNZ5ETQiXE8UQDJChH5DaJyT-mrmWA5OAShgzjRSPh7k_wJ6f1ziUkTDbbRzTG2Bxrcp6lNdMQQsjblohA0_62vvRzRXSbJnx0AxGUWVQzCD8IrdTRgC4js_Y9wuu0_7S087FYKso1PzjfGF42AVbfyZChxLApBgMLFzEBQj6v8P6oXqWRHfp0HV2bVMP_n3dh8eM8mAjle8s-SUIT5waAZDlL84VQen54J9-PFtg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-black/20"></div>
+<!-- Target Reticle & Pin Marker -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-12 h-12 rounded-full bg-[#10B981]/30 animate-ping"></span>
+<div class="w-10 h-10 rounded-full bg-[#1B4D3E] text-white flex items-center justify-center shadow-lg border-2 border-white z-10">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">location_on</span>
+</div>
+</div>
+</div>
+<!-- Bottom Floating Precision Glass Badge -->
+<div class="absolute bottom-2 left-2 right-2 p-2 rounded-lg bg-white/90 backdrop-blur-md border border-white/60 flex items-center justify-between shadow-sm">
+<div class="truncate pr-2">
+<p class="font-label-sm text-[11px] font-bold text-primary truncate">Kolam Nila Bioflok B (-7.701290, 110.398110)</p>
+<div class="flex items-center gap-1 text-[10px] text-[#065F46] font-medium">
+<span class="material-symbols-outlined text-[12px]">verified</span>
+                Koordinat Terverifikasi Akurat (Radius 5m)
+              </div>
+</div>
+<span class="w-2 h-2 rounded-full bg-[#10B981] shrink-0"></span>
+</div>
+</div>
+<!-- Action Button to adjust pin -->
+<button class="w-full h-11 rounded-lg border-1.5 border-[#1B4D3E] text-[#1B4D3E] font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 hover:bg-[#F1F8F5] active:scale-98 transition-all bg-white" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_location_alt</span>
+          Pilih / Geser Titik di Peta
+        </button>
+</section>
+<!-- Section 4: Detail Wilayah Administratif -->
+<section class="bg-surface-container-lowest p-space-md rounded-xl border border-[#E2E8F0] agri-card-shadow space-y-3.5">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-[#D1FAE5] text-[#065F46] flex items-center justify-center font-bold text-xs">4</span>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Detail Wilayah Administratif</h2>
+</div>
+<!-- 2-column Dropdowns -->
+<div class="grid grid-cols-2 gap-2.5">
+<div class="space-y-1">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Provinsi</label>
+<div class="relative">
+<select class="w-full h-11 px-3 pr-8 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-xs appearance-none focus:border-primary-container focus:ring-1 focus:ring-primary-container">
+<option selected="">D.I. Yogyakarta</option>
+<option>Jawa Tengah</option>
+<option>Jawa Timur</option>
+<option>Jawa Barat</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-outline text-[18px] pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Kota/Kabupaten</label>
+<div class="relative">
+<select class="w-full h-11 px-3 pr-8 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-xs appearance-none focus:border-primary-container focus:ring-1 focus:ring-primary-container">
+<option selected="">Kabupaten Sleman</option>
+<option>Kabupaten Bantul</option>
+<option>Kota Yogyakarta</option>
+<option>Kulon Progo</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-outline text-[18px] pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Kecamatan</label>
+<div class="relative">
+<select class="w-full h-11 px-3 pr-8 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-xs appearance-none focus:border-primary-container focus:ring-1 focus:ring-primary-container">
+<option selected="">Ngaglik</option>
+<option>Mlati</option>
+<option>Depok</option>
+<option>Cangkringan</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-outline text-[18px] pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Kode Pos</label>
+<input class="w-full h-11 px-3 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container" type="text" value="55581"/>
+</div>
+</div>
+<!-- Textarea Alamat Lengkap & Patokan -->
+<div class="space-y-1.5 pt-1">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="address-details">Alamat Lengkap &amp; Patokan Jalan</label>
+<textarea class="w-full p-3 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-body-md leading-snug focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none" id="address-details" placeholder="Tuliskan nama jalan, nomor bangunan, RT/RW, dan patokan mencolok" rows="3">Jl. Kaliurang KM 9.5, RT 03 / RW 12, Dusun Tambakan, patokan gerbang bambu hijau 150m timur pos kamling</textarea>
+</div>
+</section>
+<!-- Section 5: Instruksi Khusus Logistik Kargo Agrikultur -->
+<section class="bg-surface-container-lowest p-space-md rounded-xl border border-[#E2E8F0] agri-card-shadow space-y-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-[#D1FAE5] text-[#065F46] flex items-center justify-center font-bold text-xs">5</span>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Instruksi Khusus Logistik</h2>
+</div>
+<span class="text-[10px] font-label-sm font-bold text-[#B45309] bg-[#FEF3C7] px-2 py-0.5 rounded-full uppercase tracking-wider">
+            Khusus Kargo
+          </span>
+</div>
+<div class="space-y-1.5">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="cargo-notes">Catatan Akses Armada Truk / Kurir Bibit</label>
+<textarea class="w-full p-3 rounded-lg border border-[#CBD5E1] bg-white text-on-surface font-body-md text-body-md leading-snug focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none" id="cargo-notes" placeholder="Akses muat truk, kondisi jalan, atau jam operasional penerimaan kolam" rows="2">Akses jalan cor beton muat truk engkel / pick-up L300. Jika gerbang tambak tertutup, hubungi mandor jaga kolam</textarea>
+</div>
+<!-- Checkbox Options -->
+<div class="pt-2 space-y-3 border-t border-[#F1F5F2]">
+<label class="flex items-center gap-3 cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded text-[#1B4D3E] border-[#CBD5E1] focus:ring-[#1B4D3E] focus:ring-offset-0 transition" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Jadikan sebagai Alamat Utama</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded text-[#1B4D3E] border-[#CBD5E1] focus:ring-[#1B4D3E] focus:ring-offset-0 transition" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Aktifkan Presisi GPS untuk Kurir Real-Time Tracking</span>
+<span class="font-body-sm text-[11px] text-outline">Driver kargo langsung dinavigasi ke gerbang tambak terdekat</span>
+</div>
+</label>
+</div>
+</section>
+<!-- Standar Pengiriman Kargo JagoFarm (Trust Pillar Card) -->
+<section class="bg-gradient-to-br from-[#F4FBF7] to-[#E6F4ED] p-space-md rounded-xl border border-[#D1FAE5] space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1B4D3E] text-[20px]" data-weight="fill">verified_user</span>
+<h3 class="font-label-lg text-label-lg font-bold text-primary">Standar Pengiriman Kargo JagoFarm</h3>
+</div>
+<div class="grid grid-cols-1 gap-2.5">
+<div class="flex items-start gap-2.5">
+<div class="w-6 h-6 rounded-full bg-white shadow-xs flex items-center justify-center shrink-0 text-[#1B4D3E] mt-0.5">
+<span class="material-symbols-outlined text-[14px]">local_shipping</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm font-bold text-on-surface">Akses Angkutan Berat</p>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">Pengiriman pakan curah tonase &amp; bioflok besar via armada armada CDD/CDE berpendingin.</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-6 h-6 rounded-full bg-white shadow-xs flex items-center justify-center shrink-0 text-[#1B4D3E] mt-0.5">
+<span class="material-symbols-outlined text-[14px]">air</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm font-bold text-on-surface">Penerimaan Benih Beroksigen</p>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">Protokol aerasi khusus bibit ikan &amp; probiotik kultur mikroorganisme hidup.</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-6 h-6 rounded-full bg-white shadow-xs flex items-center justify-center shrink-0 text-[#1B4D3E] mt-0.5">
+<span class="material-symbols-outlined text-[14px]">health_and_safety</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm font-bold text-on-surface">Garansi D.O.A (Dead On Arrival) 100%</p>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">Penggantian bibit gratis jika kendala tiba di titik koordinat yang telah divalidasi.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action Bar (One-Hand Ergonomic Operation) -->
+<footer class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto z-50 bg-white/95 backdrop-blur-md px-margin-mobile pt-3 pb-safe border-t border-[#E2E8F0] shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+<div class="flex items-center gap-2.5 mb-1">
+<!-- Secondary Action: Batal -->
+<button class="w-1/3 h-12 rounded-xl border border-[#CBD5E1] text-on-surface font-label-lg text-label-lg font-bold hover:bg-[#F8FAF9] active:scale-95 transition-transform flex items-center justify-center" type="button">
+          Batal
+        </button>
+<!-- Primary Action: Simpan Alamat Baru -->
+<button class="w-2/3 h-12 rounded-xl bg-primary-container text-white font-label-lg text-label-lg font-bold hover:bg-primary active:scale-98 transition-all shadow-md flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">check</span>
+<span>Simpan Alamat Baru</span>
+</button>
+</div>
+<!-- Home Indicator Safe Area spacer bar -->
+<div class="w-32 h-1 bg-slate-300 rounded-full mx-auto mt-2 mb-1"></div>
+</footer>
+</div>
+<!-- Inline Script for Tab / Facility Toggle Interactions -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle operational facility cards
+      const facilityButtons = document.querySelectorAll('section:nth-of-type(1) .grid button');
+      facilityButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          facilityButtons.forEach(b => {
+            b.classList.remove('border-2', 'border-[#1B4D3E]', 'bg-[#F1F8F5]');
+            b.classList.add('border', 'border-[#E2E8F0]', 'bg-white');
+            const checkIcon = b.querySelector('.material-symbols-outlined[data-weight="fill"]');
+            if (checkIcon) checkIcon.remove();
+          });
+
+          btn.classList.remove('border', 'border-[#E2E8F0]', 'bg-white');
+          btn.classList.add('border-2', 'border-[#1B4D3E]', 'bg-[#F1F8F5]');
+
+          const headerDiv = btn.querySelector('div:first-child');
+          if (!btn.querySelector('.material-symbols-outlined[data-weight="fill"]')) {
+            const check = document.createElement('span');
+            check.className = 'material-symbols-outlined text-[#1B4D3E] text-[18px]';
+            check.setAttribute('data-weight', 'fill');
+            check.textContent = 'check_circle';
+            headerDiv.appendChild(check);
+          }
+        });
+      });
+    });
+  </script>
+</body></html>
