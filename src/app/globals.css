@@ -50,6 +50,32 @@
   --color-outline-variant: #c0c9c3;
   --color-surface-container: #e7eeff;
 
+  /* Stitch Design: Forest Green Scale */
+  --color-forest-50: #f0f7f4;
+  --color-forest-100: #dceee6;
+  --color-forest-200: #bbded0;
+  --color-forest-300: #8ec4b2;
+  --color-forest-400: #5da590;
+  --color-forest-500: #3e8873;
+  --color-forest-600: #2e6c5b;
+  --color-forest-700: #25574a;
+  --color-forest-800: #1b4d3e;
+  --color-forest-900: #163f33;
+  --color-forest-950: #0b241d;
+
+  /* Stitch Design: Mint Scale */
+  --color-mint-50: #f3faf6;
+  --color-mint-100: #e5f5ed;
+  --color-mint-200: #ccebdc;
+  --color-mint-300: #a3d9c0;
+  --color-mint-400: #6fbe9b;
+  --color-mint-500: #46a17b;
+  --color-mint-600: #338161;
+
+  /* Stitch Design: Custom Shadows */
+  --shadow-soft: 0 4px 20px -2px rgba(27, 77, 62, 0.06);
+  --shadow-card-hover: 0 12px 28px -4px rgba(27, 77, 62, 0.12);
+
   /* Legacy App Theme Variables */
   --color-foreground: #111c2d;
   --color-primary-foreground: #ffffff;
