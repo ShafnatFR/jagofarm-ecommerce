@@ -280,7 +280,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Link href="/account/addresses/new">
-                    <Button variant="outline" size="sm" className="text-xs font-bold">
+                    <Button variant="secondary" size="sm" className="text-xs font-bold">
                       + Tambah Baru
                     </Button>
                   </Link>
