@@ -13,6 +13,17 @@ export default async function HomePage() {
       _count: { select: { reviews: { where: { isApproved: true } } } },
     },
   });
+  // 5 random products for hero showcase (changes every reload)
+  const heroProducts = await prisma.$queryRaw<{id:string;name:string;slug:string;base_price:any;discount_price:any;image_url:string|null;category_name:string}[]>`
+    SELECT p.id, p.name, p.slug, p.base_price, p.discount_price,
+           pi.url as image_url, c.name as category_name
+    FROM products p
+    LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
+    LEFT JOIN categories c ON c.id = p.category_id
+    WHERE p.is_active = true
+    ORDER BY RANDOM()
+    LIMIT 5
+  `;
   return (
     <div className="w-full">
       {/* HERO SECTION */}
@@ -67,61 +78,43 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-            {/* Right Hero Visual Bento Card */}
+            {/* Right Hero — 5 Random Products Showcase */}
             <div className="lg:col-span-5 relative">
-              <div className="relative bg-gradient-to-br from-primary-container to-primary/95 border border-white/20 rounded-2xl p-6 shadow-2xl backdrop-blur-sm overflow-hidden">
-                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-tertiary-fixed/20 border border-tertiary-fixed/40 flex items-center justify-center text-tertiary-fixed">
-                      <span className="material-symbols-outlined text-[22px]">sensors</span>
+              <div className="grid grid-cols-2 gap-3">
+                {/* Main featured product (first random) */}
+                {heroProducts[0] && (
+                  <Link href={`/products/${heroProducts[0].slug}`} className="col-span-2 relative group rounded-2xl overflow-hidden aspect-[16/9] bg-surface-container-highest/20 border border-white/10">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={heroProducts[0].name} src={heroProducts[0].image_url || "/placeholder-product.png"}/>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <span className="text-label-sm font-label-sm bg-secondary-fixed-dim text-primary px-2 py-0.5 rounded-full font-bold">{heroProducts[0].category_name}</span>
+                      <h3 className="text-headline-sm font-headline-sm text-white mt-1.5 line-clamp-1">{heroProducts[0].name}</h3>
+                      <p className="text-label-md font-label-md text-white/80 mt-0.5">Rp {Number(heroProducts[0].discount_price || heroProducts[0].base_price).toLocaleString("id-ID")}</p>
                     </div>
-                    <div>
-                      <h3 className="text-headline-sm font-headline-sm text-on-primary">Tambak Udang Vaname #04</h3>
-                      <p className="text-label-md font-label-md text-primary-fixed-dim">Sistem Bioflok Terkoneksi IoT</p>
+                  </Link>
+                )}
+                {/* 4 smaller product cards */}
+                {heroProducts.slice(1, 5).map((p) => (
+                  <Link key={p.id} href={`/products/${p.slug}`} className="relative group rounded-xl overflow-hidden aspect-square bg-surface-container-highest/20 border border-white/10">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.name} src={p.image_url || "/placeholder-product.png"}/>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <h3 className="text-label-md font-label-md text-white line-clamp-1 font-semibold">{p.name}</h3>
+                      <p className="text-label-sm font-label-sm text-white/70">Rp {Number(p.discount_price || p.base_price).toLocaleString("id-ID")}</p>
                     </div>
+                  </Link>
+                ))}
+                {/* Fallback if less than 5 products */}
+                {heroProducts.length === 0 && (
+                  <div className="col-span-2 flex items-center justify-center aspect-[16/9] rounded-2xl bg-white/10 border border-white/20">
+                    <p className="text-primary-fixed-dim text-body-md">Produk segera hadir</p>
                   </div>
-                  <div className="flex items-center gap-1.5 bg-emerald-500/20 border border-emerald-400/30 px-2.5 py-1 rounded-full">
-                    <span className="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
-                    <span className="text-label-sm font-label-sm text-tertiary-fixed uppercase font-bold tracking-wider">Live</span>
-                  </div>
-                </div>
-                <div className="relative rounded-xl overflow-hidden mb-5 aspect-[4/3] bg-surface-container-highest/20 group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Aquaculture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPxGG-dH91AF0yCS1bFwXM6PNLiVBgffT8CCHwo1DTldWOJ5IwyXFJhnTnThQmJiF3NrzGU-is6FDzNzspHkIL6g-D6lgN9ztEmR5IVZivF2G5zJ-QB8lMAKmd44XduI0N_TmIt5Bvft3emh4kRox8HEt7jIIYDM8gHnwIZN0bUHxpDGep_7l09pj-MMG3z5rj_smhR3n8Wkk3kVch6YmHld0JUql99gE2SRZkehQ0Vod8H6V1zKK21w"/>
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-2 rounded-xl text-primary border border-white/50 shadow-md">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-tertiary-container text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>water_drop</span>
-                      <div>
-                        <p className="text-label-sm font-label-sm text-outline">Kondisi Air Tambak</p>
-                        <p className="text-label-lg font-label-lg font-bold text-primary">Sangat Optimal (Grade A)</p>
-                      </div>
-                    </div>
-                    <span className="text-headline-sm font-headline-sm text-primary font-extrabold">98.2%</span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                    <p className="text-label-sm font-label-sm text-primary-fixed-dim">Dissolved O₂</p>
-                    <p className="text-headline-sm font-headline-sm font-extrabold text-tertiary-fixed mt-0.5">6.8 mg/L</p>
-                    <span className="inline-block mt-1 text-[10px] font-semibold text-white/70 bg-white/10 px-2 py-0.5 rounded">Normal</span>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                    <p className="text-label-sm font-label-sm text-primary-fixed-dim">Derajat Keasaman</p>
-                    <p className="text-headline-sm font-headline-sm font-extrabold text-secondary-fixed-dim mt-0.5">pH 7.4</p>
-                    <span className="inline-block mt-1 text-[10px] font-semibold text-white/70 bg-white/10 px-2 py-0.5 rounded">Stabil</span>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                    <p className="text-label-sm font-label-sm text-primary-fixed-dim">Suhu Kolam</p>
-                    <p className="text-headline-sm font-headline-sm font-extrabold text-on-primary mt-0.5">28.5 °C</p>
-                    <span className="inline-block mt-1 text-[10px] font-semibold text-white/70 bg-white/10 px-2 py-0.5 rounded">Ideal</span>
-                  </div>
-                </div>
+                )}
               </div>
               <div className="flex items-center justify-center gap-2 mt-4">
-                <span className="w-6 h-2 rounded-full bg-secondary-fixed-dim"></span>
-                <span className="w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 cursor-pointer"></span>
-                <span className="w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 cursor-pointer"></span>
+                <span className="text-label-sm font-label-sm text-primary-fixed-dim">↻ Refresh untuk produk lain</span>
               </div>
             </div>
           </div>
