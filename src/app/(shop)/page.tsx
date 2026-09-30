@@ -1,6 +1,18 @@
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { ProductCard } from "@/components/product/product-card";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const featuredProducts = await prisma.product.findMany({
+    where: { isActive: true, isFeatured: true },
+    orderBy: { createdAt: "desc" },
+    take: 8,
+    include: {
+      images: { where: { isPrimary: true }, take: 1 },
+      category: { select: { id: true, name: true, slug: true } },
+      _count: { select: { reviews: { where: { isApproved: true } } } },
+    },
+  });
   return (
     <div className="w-full">
       {/* HERO SECTION */}
@@ -238,269 +250,28 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Product Card 1 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Benih Pakcoy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTquTNWikCg0aYjdTL7KnZgc5RZBKmrtv1wDxVPL6V4CQEOFmeqtFtWAzZFEacHe7YDR0Ho-U3UlU0UYllHpdKneOXpbnpqlbDn12I87kcSYKcBhu05zQlX2T3a37WE8hOJQz_6QBehy_yBSKnE0v-nlRUdFdWbdi8WOiuJpCLqYmYDkSSIhK3pgfe1J_DbUVF1SgfBlpi-iQNFK8tgZPbmHZHv3cdTaifDrElI4-F_8QA2U662adb7Q"/>
-                <span className="absolute top-2.5 left-2.5 bg-secondary-fixed-dim text-primary text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">Unggulan</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">Benih &amp; Tanaman</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.9</span>
-                  <span className="text-outline text-[11px] ml-1">(1.2rb terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Benih Pakcoy Premium F1 (100 Biji)
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm text-outline">Harga Spesial</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 25.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 2 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Paket IoT" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLm82fByr-Gr3NUho_P7iSm8LPaO1KE41iFtdxs9I2mK8unkzgiGLVTbWzfwF-zADc0iAYRIx5biFje8RFccS-ngEUFouHm4TXfwHS610egDSSqWvqaKsxnySmiNeGDiMG7i9B8qN26NiYMGt9_aBQFv-r6pD4UOUgMwnUNfoqGPq5UpqVkxRwGrXkzBmyTkvmO5vu_PfTP-215h-4KzhtI8LA_R7xz7wMxY8G4OjGlGChjDPKbHL2hA"/>
-                <span className="absolute top-2.5 left-2.5 bg-tertiary text-tertiary-fixed text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">IoT Powered</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">IoT &amp; Smart Farming</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">5.0</span>
-                  <span className="text-outline text-[11px] ml-1">(420 terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Paket IoT Kolam Tambak Pro Lengkap
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm text-outline">Garansi 2 Tahun</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 2.200.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 3 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Auto Feeder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFeg1x0P1AEs8tTjN5PJrmonzhTqpwI-jNpQ_uZGBHbCnLlmDZdSeRkJUiLgwGAXqCbqn8BeRMesDug7Y9ajR1eBqxhKwvmCd4u6ei0PnBMXJQCwNRpVgocpnYlvwQ1tJQK2A4EKigaawlO813jk8u56_Z_xZ-AQetUeg_OUUF_YMqjmRuSWfUC5YzwBC361zeIfuh6sOMbzDeyBFbLkK09kFrLcl7rnkp2q4oxYnvIQRmMuT0EhEGLQ"/>
-                <span className="absolute top-2.5 left-2.5 bg-secondary-fixed-dim text-primary text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">Unggulan</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">IoT &amp; Smart Farming</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.8</span>
-                  <span className="text-outline text-[11px] ml-1">(680 terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Auto Feeder Pakan Otomatis Wi-Fi
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm text-outline">Kapasitas 15kg</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 350.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 4 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Sensor pH" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwTUddSBtF2uU8omKSU-ezzLqaU986wii_4naNSH3dj7qJOUmJz9h3Fd0PlKeyz-TawW83QJpArkOkHlk_j4gqCsqpAE0lvf8ncEhz27YOPUR0hVyAcbIfOkkTXHGt-85-wL9EKUkguJAMh8c48_LAcCQA2u9sl6tQiew2oHjygb2iIN_eTxcC-kU4HXFOVMv1UwFTnLmJkydI3UKKM--u3wwj13qOZaPrknOfIVN93zzKjjeCzHKCeg"/>
-                <span className="absolute top-2.5 left-2.5 bg-secondary-fixed-dim text-primary text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">Unggulan</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">Alat Ukur Air</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.9</span>
-                  <span className="text-outline text-[11px] ml-1">(2.1rb terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Sensor pH Meter Digital Akurasi Tinggi
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm text-outline">Kalibrasi Otomatis</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 285.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 5 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Aquaponik Mini" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Od40xEu0Px_AsfoIh0vmIjpI1HwC5fRmNc22FHWUbqOqjJIJDgTNsjDm42Cqvk-ONqXJgDRs1e7DBb0RhkPbrDEUKb4w6o8kVEEIjQFrTygVCdhm59We77av8WF7WKhi3_rgbtWSzkS70SZck4kcebn3tPmY2smvZylYLExjqNFBS7dL69XTPl_RvhSMN0Hr0HOrmocE6wNZ9M1pEDV6cdcidALr3c0oHkN2joJVT5FD60tY6BguiA"/>
-                <span className="absolute top-2.5 left-2.5 bg-secondary-fixed-dim text-primary text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">Unggulan</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">Set Aquaponik</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.9</span>
-                  <span className="text-outline text-[11px] ml-1">(150 terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Set Aquaponik Mini (Rumahan Urban Farm)
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm text-outline">Paket Siap Rakit</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 2.800.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 6 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Hidroponik Wick" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt6Ug-NssABML1bUOYrv3Xo5P-04WNFoAlWmi0gVuQ1X-zbX-xMFM-Xc8Nc8gK7ZxCR3TOzS8soN41rR-6ZrbduXF1Pxr0s2Ak_Kl30_4p2ALt1ScAwdr4VRVkT1smt0pDPP6JU418abrToPFh6rPMK3P4Fh23yPnEuN4t92xRlBXDBa7283df49nst5A2qT-1tgHBSbh5nNJK-royIhlYOf-UCzLrIDeNrzMN56hxLojUIliQVGETYg"/>
-                <span className="absolute top-2.5 left-2.5 bg-secondary-fixed-dim text-primary text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">Unggulan</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">Set Hidroponik</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.7</span>
-                  <span className="text-outline text-[11px] ml-1">(890 terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Set Hidroponik Wick System Pemula
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm text-outline">Termasuk Nutrisi AB Mix</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 450.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 7 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="NFT 6 Lubang" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdpswTzBTOExZC5Anl681nAZGTNx-vGBk75gz-cIxamUO-op5uDijMvyI8yho5nKEBF-uvphL8_PH2l_SgDN63tyZ4XxY8fj4KJbiRR6sixDluPwO9Nn2eilpj99Kd0YWC-HmPkxC9kRq9GDhmWnxlEFLoqFWal7dW3QdnabBdKmVpNEDlM7DA5VVVrCYITXtD9_ZhI2x1p665ouzBe7APH1NMjisE0y6is1XtY2HAvem6Cy4N0kxbMQ"/>
-                <span className="absolute top-2.5 left-2.5 bg-error-container text-on-error-container text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">-12%</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">Set Hidroponik</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.9</span>
-                  <span className="text-outline text-[11px] ml-1">(520 terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Set Hidroponik NFT 6 Lubang Vertikal
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm line-through text-outline">Rp 850.000</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 750.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Product Card 8 */}
-            <div className="bg-surface-container-lowest border border-outline-variant hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group">
-              <div className="relative rounded-xl overflow-hidden aspect-square bg-[#F1F5F2] mb-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Bioflok Lele" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvNkSCJ_2xrnbcOPnu4YTxaQmEWPW1M8BuW8J3FPUL8JZDUJaABPM8fVdVQe--MfqZ5RJXcBHXtE-4WxIKgW4KdsSUOjliycfWd-piyAToRcPV029zaD05SWSnxgnIpimWmCJO-yzGiwJdf-9Tcvgb0g9-ps_6E1X2K65NFg-f0ioq14nLhapI2J2mFY59-Otnr20F4pjdFoZ-r17euWKiawoEP_m6DX8WMoyPh-BkxnXoa_dLAx9zDQ"/>
-                <span className="absolute top-2.5 left-2.5 bg-error-container text-on-error-container text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold shadow-sm">-11%</span>
-                <button aria-label="Favorit" className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-outline hover:text-error flex items-center justify-center transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-label-sm font-label-sm text-outline">Set Tambak</span>
-                <span className="text-outline">•</span>
-                <div className="flex items-center text-amber-500 text-label-sm font-label-sm font-semibold">
-                  <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="ml-0.5 text-on-surface">4.8</span>
-                  <span className="text-outline text-[11px] ml-1">(1.1rb terjual)</span>
-                </div>
-              </div>
-              <h3 className="text-headline-sm font-headline-sm text-on-surface line-clamp-2 group-hover:text-primary transition-colors flex-1">
-                Set Tambak Bioflok Lele Starter D-2M
-              </h3>
-              <div className="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
-                <div>
-                  <span className="text-label-sm font-label-sm line-through text-outline">Rp 1.850.000</span>
-                  <p className="text-price-lg font-price-lg text-primary">Rp 1.650.000</p>
-                </div>
-                <button aria-label="Tambah ke Keranjang" className="w-10 h-10 rounded-xl bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors shadow-sm active:scale-95">
-                  <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
+            {featuredProducts.map((p, i) => (
+              <ProductCard
+                key={p.id}
+                index={i}
+                product={{
+                  id: p.id,
+                  name: p.name,
+                  slug: p.slug,
+                  price: Number(p.basePrice),
+                  discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
+                  image: p.images?.[0]?.url || "/placeholder-product.png",
+                  category: p.category.name,
+                  isFeatured: p.isFeatured,
+                  weightGram: p.weightGram ?? undefined,
+                  rating: undefined,
+                  reviewCount: p._count.reviews,
+                }}
+              />
+            ))}
+            {featuredProducts.length === 0 && (
+              <p className="col-span-full text-center text-on-surface-variant py-8">Belum ada produk unggulan.</p>
+            )}
           </div>
           
           <div className="mt-10 text-center">
@@ -512,79 +283,61 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION: FEATURED BUNDLE SPOTLIGHT */}
+      {/* SECTION: FEATURED PRODUCT SPOTLIGHT */}
+      {featuredProducts.length > 0 && (() => {
+        const spot = featuredProducts[0];
+        const spotImage = spot.images?.[0]?.url || "/placeholder-product.png";
+        const spotPrice = spot.discountPrice
+          ? Number(spot.discountPrice)
+          : Number(spot.basePrice);
+        const spotSlug = spot.slug;
+        return (
       <section className="py-14 md:py-16 max-w-7xl mx-auto px-margin">
         <div className="bg-surface-container-lowest border border-outline-variant rounded-3xl p-6 md:p-10 shadow-sm hover:shadow-md transition-shadow">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 relative rounded-2xl overflow-hidden aspect-[16/10] bg-surface-container-low group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Bundle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALUOkJyK8A9qpfneXdqxPQXxx6E9KwjIepiFXL9iQ6ojPu9RcqKK8hTeCClPBe9PUypc_r4aXbf_7-zr2Mjg4Mmgm3E8QrmMGubzrBrHgbt-ahakOSsOhV8H4ORYrWvTzriKurvcmNJ42VePL-L9J18c88ZYWCCbsapFGs7z4Z0iZQ-pq2UKlxzAh-aFeyt-zCk_KEqbNWAdOaZnk2wc-txXH3lYvLil7bg_NKODXf2VHWcwg3xDsNAw"/>
+              <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={spot.name} src={spotImage}/>
               <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent"></div>
               <div className="absolute top-4 left-4">
                 <span className="bg-primary text-on-primary text-label-md font-label-md px-3 py-1 rounded-full font-bold shadow-md flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-[16px] text-secondary-fixed-dim">local_fire_department</span>
-                  Set Bundle Terlaris
+                  Produk Unggulan
                 </span>
-              </div>
-              <div className="absolute bottom-4 left-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md p-3 rounded-xl border border-white/40 flex items-center justify-between">
-                <div>
-                  <p className="text-label-sm font-label-sm text-outline">Daya Berkecambah</p>
-                  <p className="text-headline-sm font-headline-sm font-bold text-primary">≥ 95% Sertifikasi Resmi</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-label-sm font-label-sm text-outline">Masa Panen Cepat</p>
-                  <p className="text-headline-sm font-headline-sm font-bold text-secondary">25 - 28 Hari</p>
-                </div>
               </div>
             </div>
             <div className="lg:col-span-6 flex flex-col items-start space-y-4">
-              <span className="text-label-md font-label-md text-secondary font-bold uppercase tracking-wider">Benih Tanaman Hortikultura</span>
+              <span className="text-label-md font-label-md text-secondary font-bold uppercase tracking-wider">{spot.category.name}</span>
               <h2 className="text-headline-lg font-headline-lg text-on-surface">
-                Benih Pakcoy Premium (100 biji) &amp; Starter Nutrisi
+                {spot.name}
               </h2>
               <p className="text-body-md font-body-md text-on-surface-variant leading-relaxed">
-                Benih pakcoy F1 hibrida dengan daya adaptasi tinggi di dataran rendah maupun tinggi. Daun hijau tebal, renyah, tahan busuk hitam dan cepat panen dalam 25 hari.
+                {spot.shortDesc || spot.description?.slice(0, 200) || "Produk pilihan berkualitas tinggi untuk kebutuhan pertanian dan akuakultur modern Anda."}
               </p>
-              <div className="space-y-2.5 py-2 w-full">
-                <div className="flex items-center gap-2.5 text-body-md font-body-md text-on-surface">
-                  <span className="w-5 h-5 rounded-full bg-tertiary-fixed/40 text-tertiary flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[16px]">check</span>
-                  </span>
-                  <span>Ready stock siap kirim instan hari ini</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-body-md font-body-md text-on-surface">
-                  <span className="w-5 h-5 rounded-full bg-tertiary-fixed/40 text-tertiary flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[16px]">check</span>
-                  </span>
-                  <span>Gratis ongkir untuk pembelian minimum 4 paket</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-body-md font-body-md text-on-surface">
-                  <span className="w-5 h-5 rounded-full bg-tertiary-fixed/40 text-tertiary flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[16px]">check</span>
-                  </span>
-                  <span>Bonus PDF Panduan Budidaya Intensif via WhatsApp</span>
-                </div>
-              </div>
               <div className="pt-2 w-full">
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-price-lg font-price-lg text-primary text-[28px]">Rp 25.000</span>
-                  <span className="text-body-sm font-body-sm text-outline">/ pack isi 100 butir</span>
+                  <span className="text-price-lg font-price-lg text-primary text-[28px]">Rp {spotPrice.toLocaleString("id-ID")}</span>
+                  {spot.discountPrice && (
+                    <span className="text-body-sm font-body-sm text-outline line-through">Rp {Number(spot.basePrice).toLocaleString("id-ID")}</span>
+                  )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <button className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm px-7 py-3.5 rounded-full shadow-md transition-all active:scale-95">
+                  <Link className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm px-7 py-3.5 rounded-full shadow-md transition-all active:scale-95" href={`/products/${spotSlug}`}>
                     <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
                     <span>Beli Sekarang</span>
-                  </button>
-                  <button className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-surface-container hover:bg-surface-container-high text-primary font-headline-sm text-headline-sm px-6 py-3.5 rounded-full border border-outline-variant transition-colors">
+                  </Link>
+                  <Link className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-surface-container hover:bg-surface-container-high text-primary font-headline-sm text-headline-sm px-6 py-3.5 rounded-full border border-outline-variant transition-colors" href={`/products/${spotSlug}`}>
                     <span>Lihat Detail</span>
                     <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+        );
+      })()}
 
       {/* SECTION: CALL TO ACTION BANNER */}
       <section className="py-8 max-w-7xl mx-auto px-margin" id="konsultasi">
