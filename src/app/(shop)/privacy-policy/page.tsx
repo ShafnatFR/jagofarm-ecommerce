@@ -10,14 +10,14 @@ const sections = [
 export default function PrivacyPolicyPage() {
   return (
     <div className="w-full">
-      <section className="bg-primary text-on-primary py-16 md:py-20">
+      <section className="bg-forest-800 text-white py-16 md:py-20">
         <div className="max-w-4xl mx-auto px-margin text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-secondary-fixed-dim text-label-md font-label-md mb-6 backdrop-blur-sm">
             <span className="material-symbols-outlined text-[16px]">shield</span>
             <span>Privasi</span>
           </div>
-          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-on-primary font-extrabold tracking-tight mb-4">Kebijakan Privasi</h1>
-          <p className="text-body-lg font-body-lg text-primary-fixed max-w-2xl mx-auto">Kami menjaga privasi data Anda dengan serius. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda.</p>
+          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-white font-extrabold tracking-tight mb-4">Kebijakan Privasi</h1>
+          <p className="text-body-lg font-body-lg text-forest-100 max-w-2xl mx-auto">Kami menjaga privasi data Anda dengan serius. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda.</p>
         </div>
       </section>
 
@@ -27,7 +27,7 @@ export default function PrivacyPolicyPage() {
             {sections.map((section) => (
               <div key={section.title}>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary-fixed/20 text-primary flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-forest-100 text-primary flex items-center justify-center">
                     <span className="material-symbols-outlined text-[20px]">{section.icon}</span>
                   </div>
                   <h2 className="text-headline-md font-headline-md text-on-surface">{section.title}</h2>
@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
           <span className="material-symbols-outlined text-[32px] text-primary mb-2">mail</span>
           <h3 className="text-headline-sm font-headline-sm text-on-surface">Pertanyaan tentang Privasi?</h3>
           <p className="text-body-md font-body-md text-on-surface-variant mt-1 mb-4">Hubungi kami jika Anda memiliki pertanyaan tentang kebijakan privasi ini.</p>
-          <a href="mailto:hello@jagofarm.id" className="inline-flex items-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-label-lg font-label-lg px-5 py-2.5 rounded-full transition-all active:scale-95">
+          <a href="mailto:hello@jagofarm.id" className="inline-flex items-center gap-2 bg-primary hover:bg-forest-700 text-white font-label-lg font-label-lg px-5 py-2.5 rounded-full transition-all active:scale-95">
             <span className="material-symbols-outlined text-[18px]">mail</span>
             hello@jagofarm.id
           </a>

@@ -3,14 +3,14 @@ export const metadata = { title: "Kebijakan Pengiriman - JagoFarm" };
 export default function ShippingPolicyPage() {
   return (
     <div className="w-full">
-      <section className="bg-primary text-on-primary py-16 md:py-20">
+      <section className="bg-forest-800 text-white py-16 md:py-20">
         <div className="max-w-4xl mx-auto px-margin text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-secondary-fixed-dim text-label-md font-label-md mb-6 backdrop-blur-sm">
             <span className="material-symbols-outlined text-[16px]">local_shipping</span>
             <span>Pengiriman</span>
           </div>
-          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-on-primary font-extrabold tracking-tight mb-4">Kebijakan Pengiriman</h1>
-          <p className="text-body-lg font-body-lg text-primary-fixed max-w-2xl mx-auto">Standardisasi pengiriman bibit hidup beroksigen murni &amp; perlengkapan smart farming ke seluruh Indonesia.</p>
+          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-white font-extrabold tracking-tight mb-4">Kebijakan Pengiriman</h1>
+          <p className="text-body-lg font-body-lg text-forest-100 max-w-2xl mx-auto">Standardisasi pengiriman bibit hidup beroksigen murni &amp; perlengkapan smart farming ke seluruh Indonesia.</p>
         </div>
       </section>
 
@@ -48,7 +48,7 @@ export default function ShippingPolicyPage() {
                   <h3 className="text-headline-sm font-headline-sm text-on-surface">{c.name}</h3>
                   <p className="text-body-sm font-body-sm text-on-surface-variant">{c.desc}</p>
                 </div>
-                {c.badge && <span className="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-fixed/20 text-primary">{c.badge}</span>}
+                {c.badge && <span className="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-forest-100 text-primary">{c.badge}</span>}
               </div>
             ))}
           </div>
@@ -74,7 +74,7 @@ export default function ShippingPolicyPage() {
         <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 md:p-8 shadow-sm">
           <h2 className="text-headline-md font-headline-md text-on-surface mb-4">Pengiriman Produk Hidup</h2>
           <p className="text-body-md font-body-md text-on-surface-variant leading-relaxed mb-4">Anakan ikan dan bibit hidup dikirim menggunakan kemasan khusus dengan oksigen murni dan isolasi suhu.</p>
-          <div className="bg-primary-fixed/10 border border-primary-fixed/20 rounded-xl p-4">
+          <div className="bg-forest-50 border border-primary-fixed/20 rounded-xl p-4">
             <h3 className="text-headline-sm font-headline-sm text-primary mb-2">Garansi Live Arrival</h3>
             <p className="text-body-md font-body-md text-on-surface-variant">Jika ikan/bibit mati dalam perjalanan, kami ganti 100% atau refund. Sertakan video unboxing tanpa jeda maksimal 2 jam setelah paket tiba.</p>
           </div>

@@ -76,10 +76,10 @@ export default function FaqPage() {
       {/* HeroSection */}
       <section className="relative pt-16 pb-12 overflow-hidden border-b border-outline-variant/30 bg-gradient-to-b from-primary-fixed/10 via-surface-container-lowest to-surface-container-lowest">
         <div className="absolute inset-0 pointer-events-none opacity-40">
-          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary-fixed/30 blur-3xl rounded-full" />
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-forest-100/30 blur-3xl rounded-full" />
         </div>
         <div className="relative max-w-4xl mx-auto px-margin text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-fixed/10 border border-primary-fixed/40 text-primary text-label-md font-label-md uppercase tracking-wider mb-6 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-50 border border-primary-fixed/40 text-primary text-label-md font-label-md uppercase tracking-wider mb-6 shadow-sm">
             <span className="material-symbols-outlined text-[16px]">help</span>
             <span>Pusat Bantuan &amp; FAQ</span>
           </div>
@@ -91,7 +91,7 @@ export default function FaqPage() {
           </p>
           {/* Search */}
           <div className="relative max-w-2xl mx-auto">
-            <div className="relative flex items-center shadow-lg rounded-2xl bg-surface-container-lowest border border-outline-variant focus-within:border-primary-container focus-within:ring-4 focus-within:ring-primary-container/10 transition-all p-1.5">
+            <div className="relative flex items-center shadow-lg rounded-2xl bg-surface-container-lowest border border-outline-variant focus-within:border-forest-700 focus-within:ring-4 focus-within:ring-primary-container/10 transition-all p-1.5">
               <div className="pl-3.5 pr-2 text-outline">
                 <span className="material-symbols-outlined text-[20px]">search</span>
               </div>
@@ -102,7 +102,7 @@ export default function FaqPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <button className="px-5 py-2.5 bg-primary-container hover:opacity-90 text-on-primary font-medium text-body-md font-body-md rounded-xl transition-colors shadow-sm flex items-center gap-1.5" type="button">
+              <button className="px-5 py-2.5 bg-forest-700 hover:opacity-90 text-white font-medium text-body-md font-body-md rounded-xl transition-colors shadow-sm flex items-center gap-1.5" type="button">
                 <span>Cari</span>
               </button>
             </div>
@@ -120,7 +120,7 @@ export default function FaqPage() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-body-md font-body-md whitespace-nowrap transition-all focus:outline-none ${
                 activeCategory === cat
-                  ? "bg-primary-container text-on-primary shadow-sm ring-2 ring-primary-container/20 font-semibold"
+                  ? "bg-forest-700 text-white shadow-sm ring-2 ring-primary-container/20 font-semibold"
                   : "bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:border-outline hover:bg-surface-container-low font-medium"
               }`}
             >
@@ -142,7 +142,7 @@ export default function FaqPage() {
                   type="button"
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`w-2 h-2 rounded-full shrink-0 ${isOpen ? "bg-primary-container" : "bg-outline-variant"}`} />
+                    <span className={`w-2 h-2 rounded-full shrink-0 ${isOpen ? "bg-forest-700" : "bg-outline-variant"}`} />
                     <span className="text-headline-sm font-headline-sm text-on-surface leading-snug">{item.question}</span>
                   </div>
                   <div className={`w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center shrink-0 text-on-surface-variant transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>
@@ -162,24 +162,24 @@ export default function FaqPage() {
         </div>
 
         {/* HelpCTA */}
-        <div className="mt-14 bg-primary rounded-3xl p-8 sm:p-10 text-on-primary shadow-xl relative overflow-hidden">
+        <div className="mt-14 bg-primary rounded-3xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden">
           <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-white/5 rounded-full blur-2xl pointer-events-none" />
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
             <div className="max-w-md">
-              <div className="inline-flex items-center gap-2 text-label-md font-label-md text-primary-fixed uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full mb-3">
+              <div className="inline-flex items-center gap-2 text-label-md font-label-md text-forest-100 uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full mb-3">
                 <span>Dukungan Teknis Agrobisnis</span>
               </div>
               <h3 className="text-headline-md font-headline-md tracking-tight">Tidak menemukan jawaban?</h3>
-              <p className="mt-2 text-primary-fixed/80 text-body-md font-body-md">
+              <p className="mt-2 text-forest-100/80 text-body-md font-body-md">
                 Konsultasikan rencana budidaya atau kendala instalasi Anda langsung bersama teknisi spesialis JagoFarm.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto flex-shrink-0">
-              <a className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-body-md font-body-md bg-primary-container hover:opacity-90 text-on-primary shadow-md transition-all" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+              <a className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-body-md font-body-md bg-forest-700 hover:opacity-90 text-white shadow-md transition-all" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
                 <span className="material-symbols-outlined text-[20px]">chat</span>
                 <span>Chat WhatsApp CS</span>
               </a>
-              <a className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-medium text-body-md font-body-md bg-white/10 hover:bg-white/20 border border-white/20 text-on-primary transition-all" href="mailto:hello@jagofarm.id">
+              <a className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-medium text-body-md font-body-md bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all" href="mailto:hello@jagofarm.id">
                 <span className="material-symbols-outlined text-[18px]">mail</span>
                 <span>Kirim Email</span>
               </a>

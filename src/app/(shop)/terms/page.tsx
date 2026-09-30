@@ -13,14 +13,14 @@ const terms = [
 export default function TermsPage() {
   return (
     <div className="w-full">
-      <section className="bg-primary text-on-primary py-16 md:py-20">
+      <section className="bg-forest-800 text-white py-16 md:py-20">
         <div className="max-w-4xl mx-auto px-margin text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-secondary-fixed-dim text-label-md font-label-md mb-6 backdrop-blur-sm">
             <span className="material-symbols-outlined text-[16px]">gavel</span>
             <span>Syarat</span>
           </div>
-          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-on-primary font-extrabold tracking-tight mb-4">Syarat dan Ketentuan</h1>
-          <p className="text-body-lg font-body-lg text-primary-fixed max-w-2xl mx-auto">Dengan menggunakan layanan JagoFarm, Anda menyetujui syarat dan ketentuan berikut.</p>
+          <h1 className="text-headline-lg font-headline-lg md:text-[48px] md:leading-[56px] text-white font-extrabold tracking-tight mb-4">Syarat dan Ketentuan</h1>
+          <p className="text-body-lg font-body-lg text-forest-100 max-w-2xl mx-auto">Dengan menggunakan layanan JagoFarm, Anda menyetujui syarat dan ketentuan berikut.</p>
         </div>
       </section>
 
@@ -30,7 +30,7 @@ export default function TermsPage() {
             {terms.map((term) => (
               <div key={term.title} className="pb-8 border-b border-outline-variant last:border-0 last:pb-0">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary-fixed/20 text-primary flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-forest-100 text-primary flex items-center justify-center">
                     <span className="material-symbols-outlined text-[20px]">{term.icon}</span>
                   </div>
                   <h2 className="text-headline-md font-headline-md text-on-surface">{term.title}</h2>
