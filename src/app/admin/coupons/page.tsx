@@ -120,9 +120,9 @@ export default function CouponsPage() {
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-40 rounded bg-gray-200" />
-        <div className="h-16 rounded-lg bg-gray-200" />
-        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-14 rounded bg-gray-200" />)}</div>
+        <div className="h-8 w-40 rounded bg-surface-container" />
+        <div className="h-16 rounded-lg bg-surface-container" />
+        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-14 rounded bg-surface-container" />)}</div>
       </div>
     )
   }
@@ -132,7 +132,7 @@ export default function CouponsPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat kupon: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kupon: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
@@ -143,8 +143,8 @@ export default function CouponsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Kupon</h1>
-          <p className="text-sm text-gray-500">{coupons.length} kupon terdaftar</p>
+          <h1 className="text-2xl font-bold text-on-surface">Kupon</h1>
+          <p className="text-sm text-on-surface-variant">{coupons.length} kupon terdaftar</p>
         </div>
         <Button onClick={openCreate}><Icon name="add" size={16} className="mr-2" />Buat Kupon</Button>
       </div>
@@ -165,7 +165,7 @@ export default function CouponsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b bg-gray-50/80 text-left text-gray-500">
+                  <tr className="border-b bg-surface-container-low/80 text-left text-on-surface-variant">
                     <th className="px-4 py-3 font-medium">Kode</th>
                     <th className="px-4 py-3 font-medium">Tipe</th>
                     <th className="px-4 py-3 font-medium">Nilai</th>
@@ -178,21 +178,21 @@ export default function CouponsPage() {
                 </thead>
                 <tbody>
                   {filtered.map((coupon, i) => (
-                    <tr key={coupon.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                    <tr key={coupon.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <code className="rounded bg-[#1B4D3E]/5 px-2 py-0.5 font-mono text-sm font-bold text-[#1B4D3E]">{coupon.code}</code>
-                          <button onClick={() => handleCopy(coupon.code)} className="text-gray-400 hover:text-gray-600"><Icon name="content_copy" size={12} /></button>
+                          <button onClick={() => handleCopy(coupon.code)} className="text-gray-400 hover:text-on-surface-variant"><Icon name="content_copy" size={12} /></button>
                         </div>
                       </td>
                       <td className="px-4 py-3"><Badge variant="secondary">{coupon.type === "PERCENTAGE" ? "Persentase" : "Nominal"}</Badge></td>
                       <td className="px-4 py-3 font-medium">{coupon.type === "PERCENTAGE" ? `${coupon.value}%` : formatPrice(coupon.value)}</td>
-                      <td className="px-4 py-3 text-gray-600">{formatPrice(coupon.minOrder)}</td>
+                      <td className="px-4 py-3 text-on-surface-variant">{formatPrice(coupon.minOrder)}</td>
                       <td className="px-4 py-3 text-center">
                         <span className={coupon.usageCount >= coupon.usageLimit ? "text-red-500 font-medium" : ""}>{coupon.usageCount}</span>
                         <span className="text-gray-400">/{coupon.usageLimit}</span>
                       </td>
-                      <td className="px-4 py-3 text-xs text-gray-500">{formatDate(coupon.startDate)} — {formatDate(coupon.endDate)}</td>
+                      <td className="px-4 py-3 text-xs text-on-surface-variant">{formatDate(coupon.startDate)} — {formatDate(coupon.endDate)}</td>
                       <td className="px-4 py-3">
                         <Badge variant={statusConfig[coupon.status]?.variant || "default"}>{statusConfig[coupon.status]?.label || coupon.status}</Badge>
                       </td>

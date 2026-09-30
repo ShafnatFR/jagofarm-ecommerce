@@ -281,7 +281,7 @@ export default function ProductDetailPage() {
                 <span className="px-2.5 py-1 rounded-md bg-surface-container text-primary text-xs font-bold uppercase tracking-wide">
                   {product.category.name}
                 </span>
-                <span className="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
+                <span className="px-2.5 py-1 rounded-md bg-primary-fixed/20 text-primary text-xs font-bold">
                   Kondisi Aktif &amp; Tersedia
                 </span>
                 {product.sku && (
@@ -334,8 +334,8 @@ export default function ProductDetailPage() {
               </div>
               {product.stock != null && (
                 <div className="flex items-center gap-2 self-start sm:self-center">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+                  <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-xs font-bold text-primary bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant">
                     Stok: {product.stock} tersedia
                   </span>
                 </div>
@@ -507,7 +507,7 @@ export default function ProductDetailPage() {
                   ].map((feat, i) => (
                     <div key={i} className="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50">
                       <span className="text-xs font-bold text-primary flex items-center gap-1.5">
-                        <Icon name="check_circle" size={16} className="text-emerald-600" />
+                        <Icon name="check_circle" size={16} className="text-primary" />
                         {feat.title}
                       </span>
                       <p className="text-xs text-on-surface-variant mt-1">{feat.desc}</p>
@@ -526,7 +526,7 @@ export default function ProductDetailPage() {
                         <h3 className="text-base font-bold text-on-surface">Ulasan Pembeli</h3>
                         <p className="text-xs text-outline">Berdasarkan {totalReviews} transaksi terverifikasi</p>
                       </div>
-                      <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-bold text-primary bg-primary-fixed/20 px-2.5 py-1 rounded-full">
                         {avgRating >= 4.5 ? "Sangat Baik" : avgRating >= 3.5 ? "Baik" : "Cukup"}
                       </span>
                     </div>
@@ -632,7 +632,7 @@ export default function ProductDetailPage() {
                           </div>
                           <div>
                             <span className="text-sm font-bold text-on-surface">{r.user}</span>
-                            <span className="inline-block ml-1.5 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 rounded">Terverifikasi</span>
+                            <span className="inline-block ml-1.5 text-[10px] text-primary font-semibold bg-surface-container-low px-1.5 rounded">Terverifikasi</span>
                           </div>
                         </div>
                         <span className="text-[11px] text-outline">{r.date}</span>

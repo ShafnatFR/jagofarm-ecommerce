@@ -249,9 +249,9 @@ export default function OrdersPage() {
   if (loading && orders.length === 0) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-40 rounded bg-gray-200" />
-        <div className="h-16 rounded-lg bg-gray-200" />
-        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-16 rounded bg-gray-200" />)}</div>
+        <div className="h-8 w-40 rounded bg-surface-container" />
+        <div className="h-16 rounded-lg bg-surface-container" />
+        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-16 rounded bg-surface-container" />)}</div>
       </div>
     )
   }
@@ -261,7 +261,7 @@ export default function OrdersPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat pesanan: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pesanan: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
@@ -274,8 +274,8 @@ export default function OrdersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Pesanan</h1>
-        <p className="text-sm text-gray-500">{total} pesanan total</p>
+        <h1 className="text-2xl font-bold text-on-surface">Pesanan</h1>
+        <p className="text-sm text-on-surface-variant">{total} pesanan total</p>
       </div>
 
       <Card>
@@ -311,7 +311,7 @@ export default function OrdersPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b bg-gray-50/80 text-left text-gray-500">
+                  <tr className="border-b bg-surface-container-low/80 text-left text-on-surface-variant">
                     <th className="px-4 py-3 font-medium">No. Pesanan</th>
                     <th className="px-4 py-3 font-medium">Tanggal</th>
                     <th className="px-4 py-3 font-medium">Pelanggan</th>
@@ -329,9 +329,9 @@ export default function OrdersPage() {
                     const status = statusConfig[order.status]
                     const payment = paymentConfig[order.paymentStatus]
                     return (
-                      <tr key={order.id} className={busyId === order.id ? "bg-[#1B4D3E]/5" : i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                      <tr key={order.id} className={busyId === order.id ? "bg-[#1B4D3E]/5" : i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                         <td className="px-4 py-3 font-mono text-xs font-medium">{order.orderNumber}</td>
-                        <td className="px-4 py-3 text-gray-600">{formatDate(order.date)}</td>
+                        <td className="px-4 py-3 text-on-surface-variant">{formatDate(order.date)}</td>
                         <td className="px-4 py-3">
                           <p className="font-medium">{order.customer}</p>
                           <p className="text-xs text-gray-400">{order.email}</p>
@@ -345,7 +345,7 @@ export default function OrdersPage() {
                         </td>
                         <td className="px-4 py-3">
                           {order.trackingNumber ? (
-                            <span className="font-mono text-xs text-gray-600">{order.trackingNumber}</span>
+                            <span className="font-mono text-xs text-on-surface-variant">{order.trackingNumber}</span>
                           ) : (
                             <span className="text-xs text-gray-300">-</span>
                           )}
@@ -415,7 +415,7 @@ export default function OrdersPage() {
 
           {orders.length > 0 && (
             <div className="flex flex-col items-center justify-between gap-3 border-t px-4 py-3 sm:flex-row">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-on-surface-variant">
                 Menampilkan {firstRow}–{lastRow} dari {total} pesanan
               </p>
               <div className="flex items-center gap-2">
@@ -427,7 +427,7 @@ export default function OrdersPage() {
                 >
                   <Icon name="chevron_left" size={16} className="mr-1" /> Sebelumnya
                 </Button>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-on-surface-variant">
                   Halaman {page} / {totalPages}
                 </span>
                 <Button
@@ -450,7 +450,7 @@ export default function OrdersPage() {
             <DialogTitle>Input Resi Pengiriman</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-on-surface-variant">
               Pesanan <span className="font-mono font-medium">{resiOrder?.orderNumber}</span>
               {resiOrder?.customer ? ` — ${resiOrder.customer}` : ""}
             </p>
@@ -472,7 +472,7 @@ export default function OrdersPage() {
               value={resiEtd}
               onChange={(e) => setResiEtd(e.target.value)}
             />
-            <p className="rounded-lg bg-[#1B4D3E]/5 p-3 text-xs text-gray-600">
+            <p className="rounded-lg bg-[#1B4D3E]/5 p-3 text-xs text-on-surface-variant">
               Menyimpan resi akan mengisi tanggal kirim dan menaikkan status pesanan ke
               &quot;Dikirim&quot; bila statusnya masih Menunggu atau Diproses.
             </p>

@@ -149,7 +149,7 @@ const statusColors: Record<string, string> = {
   shipped: "bg-indigo-100 text-indigo-800",
   delivered: "bg-green-100 text-green-800",
   cancelled: "bg-red-100 text-red-800",
-  expired: "bg-gray-100 text-gray-800",
+  expired: "bg-surface-container-low text-on-surface",
 };
 
 const SNAP_SCRIPT_ID = "midtrans-snap-script";
@@ -681,8 +681,8 @@ export default function OrderDetailPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/3" />
-          <div className="h-64 bg-gray-200 rounded" />
+          <div className="h-8 bg-surface-container rounded w-1/3" />
+          <div className="h-64 bg-surface-container rounded" />
         </div>
       </div>
     );
@@ -752,7 +752,7 @@ export default function OrderDetailPage() {
                 const isActive = i <= currentStepIndex;
                 return (
                   <div key={step.key} className="flex flex-col items-center text-center flex-1">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${isActive ? "bg-primary text-white" : "bg-gray-200 text-gray-400"}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${isActive ? "bg-primary text-white" : "bg-surface-container text-gray-400"}`}>
                       <Icon name={step.icon} size={20} />
                     </div>
                     <span className={`text-xs ${isActive ? "text-primary font-medium" : "text-muted-foreground"}`}>{step.label}</span>

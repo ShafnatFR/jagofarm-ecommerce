@@ -154,14 +154,14 @@ export default function AdminReportsPage() {
   if (loading && !data && !error) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-56 rounded bg-gray-200" />
-        <div className="h-20 rounded-lg bg-gray-200" />
+        <div className="h-8 w-56 rounded bg-surface-container" />
+        <div className="h-20 rounded-lg bg-surface-container" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-32 rounded-lg bg-gray-200" />
+            <div key={i} className="h-32 rounded-lg bg-surface-container" />
           ))}
         </div>
-        <div className="h-64 rounded-lg bg-gray-200" />
+        <div className="h-64 rounded-lg bg-surface-container" />
       </div>
     )
   }
@@ -171,7 +171,7 @@ export default function AdminReportsPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat laporan: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat laporan: {error}</p>
           <button onClick={() => fetchReport()} className="mt-2 text-sm text-[#1B4D3E] underline">
             Coba lagi
           </button>
@@ -199,8 +199,8 @@ export default function AdminReportsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Laporan Penjualan</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-on-surface">Laporan Penjualan</h1>
+          <p className="text-sm text-on-surface-variant">
             Periode {from} s/d {to} ({groupBy === "day" ? "per hari" : "per bulan"})
           </p>
         </div>
@@ -228,7 +228,7 @@ export default function AdminReportsPage() {
                 className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
                   activePreset === preset.key
                     ? "border-[#1B4D3E] bg-[#1B4D3E]/10 text-[#1B4D3E]"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-800"
+                    : "border-outline-variant text-on-surface-variant hover:border-outline-variant hover:text-on-surface"
                 }`}
               >
                 {preset.label}
@@ -263,7 +263,7 @@ export default function AdminReportsPage() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium">Kelompok</label>
-              <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+              <div className="flex gap-1 rounded-lg bg-surface-container-low p-1">
                 {(
                   [
                     { key: "day", label: "Harian" },
@@ -277,7 +277,7 @@ export default function AdminReportsPage() {
                     className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
                       groupBy === option.key
                         ? "bg-white text-[#1B4D3E] shadow-sm"
-                        : "text-gray-500 hover:text-gray-700"
+                        : "text-on-surface-variant hover:text-on-surface-variant"
                     }`}
                   >
                     {option.label}
@@ -298,8 +298,8 @@ export default function AdminReportsPage() {
           </div>
 
           {data?.definition && (
-            <p className="rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-500">
-              <span className="font-medium text-gray-600">Definisi pesanan terjual: </span>
+            <p className="rounded-lg bg-surface-container-low px-3 py-2 text-xs text-on-surface-variant">
+              <span className="font-medium text-on-surface-variant">Definisi pesanan terjual: </span>
               {data.definition}
             </p>
           )}
@@ -314,8 +314,8 @@ export default function AdminReportsPage() {
                 <Icon name={card.icon} size={20} />
               </div>
               <div className="mt-4">
-                <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-                <p className="text-sm text-gray-500">{card.title}</p>
+                <p className="text-2xl font-bold text-on-surface">{card.value}</p>
+                <p className="text-sm text-on-surface-variant">{card.title}</p>
               </div>
             </CardContent>
           </Card>
@@ -326,7 +326,7 @@ export default function AdminReportsPage() {
         <Card>
           <CardContent className="py-16 text-center">
             <Icon name="bar_chart" size={40} className="mx-auto text-gray-300" />
-            <p className="mt-3 text-sm font-medium text-gray-500">
+            <p className="mt-3 text-sm font-medium text-on-surface-variant">
               Tidak ada penjualan pada rentang tanggal ini
             </p>
             <p className="mt-1 text-xs text-gray-400">
@@ -345,7 +345,7 @@ export default function AdminReportsPage() {
             <CardContent className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left text-gray-500">
+                  <tr className="border-b text-left text-on-surface-variant">
                     <th className="pb-3 font-medium">Periode</th>
                     <th className="pb-3 text-right font-medium">Pendapatan</th>
                     <th className="pb-3 text-right font-medium">Pesanan</th>
@@ -354,14 +354,14 @@ export default function AdminReportsPage() {
                 </thead>
                 <tbody>
                   {series.map((row, i) => (
-                    <tr key={row.key} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                    <tr key={row.key} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                       <td className="py-2.5">
-                        <span className="font-medium text-gray-800">{row.label}</span>
+                        <span className="font-medium text-on-surface">{row.label}</span>
                         <span className="ml-1 text-xs text-gray-400">{row.key}</span>
                       </td>
                       <td className="py-2.5 text-right font-medium">{formatPrice(row.revenue)}</td>
-                      <td className="py-2.5 text-right text-gray-600">{row.orders}</td>
-                      <td className="py-2.5 text-right text-gray-600">{row.items}</td>
+                      <td className="py-2.5 text-right text-on-surface-variant">{row.orders}</td>
+                      <td className="py-2.5 text-right text-on-surface-variant">{row.items}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -394,11 +394,11 @@ export default function AdminReportsPage() {
                       <div key={row.categoryId} className="space-y-1.5">
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">{row.categoryName}</span>
-                          <span className="text-gray-500">
+                          <span className="text-on-surface-variant">
                             {formatPrice(row.revenue)} · {row.items} item
                           </span>
                         </div>
-                        <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-low">
                           <div
                             className="h-full rounded-full bg-[#1B4D3E]/80"
                             style={{ width: `${pct}%` }}
@@ -424,7 +424,7 @@ export default function AdminReportsPage() {
               ) : (
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b text-left text-gray-500">
+                    <tr className="border-b text-left text-on-surface-variant">
                       <th className="pb-3 font-medium">#</th>
                       <th className="pb-3 font-medium">Produk</th>
                       <th className="pb-3 text-right font-medium">Terjual</th>
@@ -433,10 +433,10 @@ export default function AdminReportsPage() {
                   </thead>
                   <tbody>
                     {topProducts.map((product, i) => (
-                      <tr key={product.productId} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                      <tr key={product.productId} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                         <td className="py-2.5 text-gray-400">{i + 1}</td>
-                        <td className="py-2.5 font-medium text-gray-800">{product.name}</td>
-                        <td className="py-2.5 text-right text-gray-600">{product.qty} item</td>
+                        <td className="py-2.5 font-medium text-on-surface">{product.name}</td>
+                        <td className="py-2.5 text-right text-on-surface-variant">{product.qty} item</td>
                         <td className="py-2.5 text-right font-medium">{formatPrice(product.revenue)}</td>
                       </tr>
                     ))}

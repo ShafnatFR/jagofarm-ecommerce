@@ -44,7 +44,7 @@ const colorMap: Record<string, string> = {
   paid: "bg-green-500",
   processing: "bg-blue-500",
   shipped: "bg-indigo-500",
-  delivered: "bg-emerald-500",
+  delivered: "bg-primary",
   cancelled: "bg-red-500",
   expired: "bg-gray-400",
 }
@@ -174,18 +174,18 @@ function MonthlyRevenueChart({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-on-surface-variant">
           Total {months} bulan terakhir:{" "}
-          <span className="font-semibold text-gray-800">{formatPrice(total)}</span>
+          <span className="font-semibold text-on-surface">{formatPrice(total)}</span>
         </p>
-        <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+        <div className="flex gap-1 rounded-lg bg-surface-container-low p-1">
           {[6, 12].map((option) => (
             <button
               key={option}
               type="button"
               onClick={() => setMonths(option)}
               className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                months === option ? "bg-white text-[#1B4D3E] shadow-sm" : "text-gray-500 hover:text-gray-700"
+                months === option ? "bg-white text-[#1B4D3E] shadow-sm" : "text-on-surface-variant hover:text-on-surface-variant"
               }`}
             >
               {option} bulan
@@ -195,17 +195,17 @@ function MonthlyRevenueChart({
       </div>
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50">
+        <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low">
           <div className="flex flex-col items-center gap-2">
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1B4D3E] border-t-transparent" />
             <p className="text-sm text-gray-400">Memuat data pendapatan...</p>
           </div>
         </div>
       ) : !hasData ? (
-        <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50">
+        <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low">
           <div className="text-center">
             <Icon name="trending_up" size={40} className="mx-auto text-gray-300" />
-            <p className="mt-2 text-sm text-gray-500">Belum ada pendapatan pada {months} bulan terakhir</p>
+            <p className="mt-2 text-sm text-on-surface-variant">Belum ada pendapatan pada {months} bulan terakhir</p>
             <p className="text-xs text-gray-400">Grafik akan terisi otomatis setelah ada pesanan masuk</p>
           </div>
         </div>
@@ -216,17 +216,17 @@ function MonthlyRevenueChart({
               const height = bucket.revenue > 0 ? Math.max(4, Math.round((bucket.revenue / peak) * BAR_AREA_HEIGHT)) : 2
               return (
                 <div key={bucket.key} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
-                  <span className="text-[10px] font-medium text-gray-500">
+                  <span className="text-[10px] font-medium text-on-surface-variant">
                     {bucket.revenue > 0 ? compactRupiah(bucket.revenue) : ""}
                   </span>
                   <div
                     className={`w-full max-w-14 rounded-t-md transition-colors ${
-                      bucket.revenue > 0 ? "bg-[#1B4D3E]/80 hover:bg-[#1B4D3E]" : "bg-gray-200"
+                      bucket.revenue > 0 ? "bg-[#1B4D3E]/80 hover:bg-[#1B4D3E]" : "bg-surface-container"
                     }`}
                     style={{ height: `${height}px` }}
                     title={`${bucket.fullLabel}: ${formatPrice(bucket.revenue)} dari ${bucket.orders} pesanan`}
                   />
-                  <span className="text-[11px] font-medium text-gray-500" title={bucket.fullLabel}>
+                  <span className="text-[11px] font-medium text-on-surface-variant" title={bucket.fullLabel}>
                     {bucket.label}
                   </span>
                 </div>
@@ -277,15 +277,15 @@ export default function AdminDashboardPage() {
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-40 rounded bg-gray-200" />
+        <div className="h-8 w-40 rounded bg-surface-container" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => <div key={i} className="h-32 rounded-lg bg-gray-200" />)}
+          {[...Array(4)].map((_, i) => <div key={i} className="h-32 rounded-lg bg-surface-container" />)}
         </div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 h-80 rounded-lg bg-gray-200" />
-          <div className="h-80 rounded-lg bg-gray-200" />
+          <div className="lg:col-span-2 h-80 rounded-lg bg-surface-container" />
+          <div className="h-80 rounded-lg bg-surface-container" />
         </div>
-        <div className="h-64 rounded-lg bg-gray-200" />
+        <div className="h-64 rounded-lg bg-surface-container" />
       </div>
     )
   }
@@ -295,7 +295,7 @@ export default function AdminDashboardPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat data: {error || "Unknown error"}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat data: {error || "Unknown error"}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
@@ -312,15 +312,15 @@ export default function AdminDashboardPage() {
   const statusCounts = data.stats.orderStatusCounts ?? {}
   const breakdown: StatusBreakdown[] = Array.isArray(data.orderStatusBreakdown) && data.orderStatusBreakdown.length > 0
     ? data.orderStatusBreakdown
-    : Object.entries(statusCounts).map(([status, count]) => ({ status, count: count as number, color: colorMap[status] || "bg-gray-500" }))
+    : Object.entries(statusCounts).map(([status, count]) => ({ status, count: count as number, color: colorMap[status] || "bg-surface-container-low0" }))
 
   const totalBreakdown = breakdown.reduce((s, o) => s + o.count, 0)
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-sm text-gray-500">Ringkasan performa toko Anda</p>
+        <h1 className="text-2xl font-bold text-on-surface">Dashboard</h1>
+        <p className="text-sm text-on-surface-variant">Ringkasan performa toko Anda</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -339,10 +339,10 @@ export default function AdminDashboardPage() {
                 )}
               </div>
               <div className="mt-4">
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-on-surface">
                   {stat.format === "price" ? formatPrice(stat.value) : stat.value.toLocaleString("id-ID")}
                 </p>
-                <p className="text-sm text-gray-500">{stat.title}</p>
+                <p className="text-sm text-on-surface-variant">{stat.title}</p>
               </div>
             </CardContent>
           </Card>
@@ -367,9 +367,9 @@ export default function AdminDashboardPage() {
                 <div key={item.status} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-medium">{statusConfig[item.status]?.label || item.status}</span>
-                    <span className="text-gray-500">{item.count} ({pct}%)</span>
+                    <span className="text-on-surface-variant">{item.count} ({pct}%)</span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-low">
                     <div className={`h-full rounded-full ${colorMap[item.status] || "bg-gray-400"}`} style={{ width: `${pct}%` }} />
                   </div>
                 </div>
@@ -391,7 +391,7 @@ export default function AdminDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left text-gray-500">
+                  <tr className="border-b text-left text-on-surface-variant">
                     <th className="pb-3 font-medium">No. Pesanan</th>
                     <th className="pb-3 font-medium">Pelanggan</th>
                     <th className="pb-3 font-medium">Tanggal</th>
@@ -403,10 +403,10 @@ export default function AdminDashboardPage() {
                   {data.recentOrders.map((order, i) => {
                     const orderDate = order.date || order.createdAt
                     return (
-                      <tr key={order.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                      <tr key={order.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                         <td className="py-3 font-mono text-xs font-medium">{order.orderNumber || order.id}</td>
                         <td className="py-3">{order.customer || order.user?.name || order.user?.email || "-"}</td>
-                        <td className="py-3 text-gray-500">{orderDate ? formatDate(orderDate) : "-"}</td>
+                        <td className="py-3 text-on-surface-variant">{orderDate ? formatDate(orderDate) : "-"}</td>
                         <td className="py-3 font-medium">{formatPrice(order.total)}</td>
                         <td className="py-3">
                           <Badge variant={statusConfig[order.status]?.variant || "default"}>

@@ -44,21 +44,21 @@ export default function ForgotPasswordPage() {
     <>
       {/* Ambient Decorative Elements */}
       <div aria-hidden="true" className="fixed inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #1B4D3E 1px, transparent 0)", backgroundSize: "40px 40px" }} />
-      <div aria-hidden="true" className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-emerald-100/40 via-transparent to-transparent blur-3xl pointer-events-none" />
+      <div aria-hidden="true" className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-primary-fixed-100/40 via-transparent to-transparent blur-3xl pointer-events-none" />
 
       {/* Top Bar */}
       <header className="relative z-10 w-full pt-8 pb-4 px-6 sm:px-10 flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="inline-flex items-center gap-2.5 group">
           <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-200">
-            <Icon name="eco" size={20} className="text-emerald-400" />
+            <Icon name="eco" size={20} className="text-tertiary-fixed" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tight text-primary leading-none">JagoFarm</span>
-            <span className="text-[11px] font-medium text-emerald-700 tracking-wider uppercase mt-0.5">Agri & Aquaculture</span>
+            <span className="text-[11px] font-medium text-primary tracking-wider uppercase mt-0.5">Agri & Aquaculture</span>
           </div>
         </Link>
         <a className="text-xs sm:text-sm font-medium text-slate-600 hover:text-primary flex items-center gap-1.5 transition-colors" href="#">
-          <Icon name="help" size={16} className="text-emerald-700" />
+          <Icon name="help" size={16} className="text-primary" />
           <span>Bantuan Teknis</span>
         </a>
       </header>
@@ -68,13 +68,13 @@ export default function ForgotPasswordPage() {
         <div className="w-full max-w-[480px]">
           <section className="bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-lg relative overflow-hidden">
             {/* Top accent line */}
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-emerald-600 to-primary" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-primary-fixed-600 to-primary" />
 
             {sent ? (
               <div className="text-center space-y-5 py-4">
                 <div className="flex justify-center">
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center">
-                    <Icon name="mark_email_read" size={32} className="text-emerald-600" />
+                  <div className="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center">
+                    <Icon name="mark_email_read" size={32} className="text-primary" />
                   </div>
                 </div>
                 <h2 className="text-xl font-bold text-slate-900">Email Terkirim</h2>
@@ -93,10 +93,10 @@ export default function ForgotPasswordPage() {
                 {/* Header */}
                 <div className="flex flex-col items-center text-center">
                   <div className="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/25 mb-5 ring-4 ring-emerald-50 relative">
-                    <Icon name="eco" size={28} className="text-emerald-300" />
+                    <Icon name="eco" size={28} className="text-primary-fixed-dim" />
                     <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-                      <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white" />
+                      <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-primary border-2 border-white" />
                     </span>
                   </div>
                   <h1 className="text-2xl sm:text-[28px] font-bold text-slate-900 tracking-tight mb-2.5">Lupa Password</h1>
@@ -136,15 +136,15 @@ export default function ForgotPasswordPage() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-primary hover:bg-emerald-900 active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-md transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-primary hover:bg-primary-container active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-md transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60"
                     >
                       <span>{loading ? "Mengirim..." : "Kirim Link Reset"}</span>
-                      {!loading && <Icon name="arrow_forward" size={16} className="text-emerald-400" />}
+                      {!loading && <Icon name="arrow_forward" size={16} className="text-tertiary-fixed" />}
                     </button>
                   </div>
 
                   <div className="pt-3 text-center">
-                    <Link href="/login" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-emerald-800 transition-colors py-1 group">
+                    <Link href="/login" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary transition-colors py-1 group">
                       <Icon name="arrow_back" size={16} className="transition-transform duration-200 group-hover:-translate-x-1" />
                       <span>Kembali ke Login</span>
                     </Link>
@@ -154,7 +154,7 @@ export default function ForgotPasswordPage() {
                 {/* Help section */}
                 <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-slate-500 text-center">
                   <span>Butuh bantuan akses akun?</span>
-                  <a className="font-medium text-emerald-700 hover:text-emerald-900 underline underline-offset-2 inline-flex items-center gap-1" href="#">
+                  <a className="font-medium text-primary hover:text-emerald-900 underline underline-offset-2 inline-flex items-center gap-1" href="#">
                     <span>Hubungi CS JagoFarm</span>
                     <Icon name="open_in_new" size={12} />
                   </a>
@@ -165,7 +165,7 @@ export default function ForgotPasswordPage() {
 
           {/* Security footnote */}
           <aside className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-500">
-            <Icon name="verified_user" size={16} className="text-emerald-600 flex-shrink-0" />
+            <Icon name="verified_user" size={16} className="text-primary flex-shrink-0" />
             <span>Data & privasi dilindungi enkripsi standar SSL 256-bit</span>
           </aside>
         </div>

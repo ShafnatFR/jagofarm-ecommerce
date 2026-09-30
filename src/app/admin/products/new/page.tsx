@@ -109,8 +109,8 @@ export default function NewProductPage() {
       <div className="flex items-center gap-4">
         <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tambah Produk</h1>
-          <p className="text-sm text-gray-500">Buat produk baru untuk toko Anda</p>
+          <h1 className="text-2xl font-bold text-on-surface">Tambah Produk</h1>
+          <p className="text-sm text-on-surface-variant">Buat produk baru untuk toko Anda</p>
         </div>
       </div>
 
@@ -127,7 +127,7 @@ export default function NewProductPage() {
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Kategori</label>
                   {loadingCats ? (
-                    <div className="h-10 animate-pulse rounded-lg bg-gray-100" />
+                    <div className="h-10 animate-pulse rounded-lg bg-surface-container-low" />
                   ) : (
                     <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
                       <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
@@ -184,7 +184,7 @@ export default function NewProductPage() {
                     <p className="text-sm font-medium">Produk Unggulan</p>
                     <p className="text-xs text-gray-400">Tampilkan di halaman utama</p>
                   </div>
-                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-[#1B4D3E]" : "bg-gray-200"}`} onClick={() => updateField("featured", !form.featured)}>
+                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-[#1B4D3E]" : "bg-surface-container"}`} onClick={() => updateField("featured", !form.featured)}>
                     <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${form.featured ? "translate-x-[22px]" : "translate-x-0.5"}`} />
                   </div>
                 </label>

@@ -17,7 +17,7 @@ const statusConfig: Record<string, { label: string; color: string }> = {
   shipped: { label: "Dikirim", color: "bg-indigo-100 text-indigo-700" },
   delivered: { label: "Selesai", color: "bg-green-100 text-green-700" },
   cancelled: { label: "Dibatalkan", color: "bg-red-100 text-red-700" },
-  expired: { label: "Kedaluwarsa", color: "bg-gray-100 text-gray-700" },
+  expired: { label: "Kedaluwarsa", color: "bg-surface-container-low text-on-surface-variant" },
 };
 
 interface OrderItemProduct {

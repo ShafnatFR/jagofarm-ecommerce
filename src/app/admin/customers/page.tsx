@@ -147,9 +147,9 @@ export default function CustomersPage() {
   if (loading && customers.length === 0) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-40 rounded bg-gray-200" />
-        <div className="h-16 rounded-lg bg-gray-200" />
-        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-14 rounded bg-gray-200" />)}</div>
+        <div className="h-8 w-40 rounded bg-surface-container" />
+        <div className="h-16 rounded-lg bg-surface-container" />
+        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-14 rounded bg-surface-container" />)}</div>
       </div>
     )
   }
@@ -159,7 +159,7 @@ export default function CustomersPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat pelanggan: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pelanggan: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
@@ -169,8 +169,8 @@ export default function CustomersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Pelanggan</h1>
-        <p className="text-sm text-gray-500">{customers.length} pelanggan terdaftar</p>
+        <h1 className="text-2xl font-bold text-on-surface">Pelanggan</h1>
+        <p className="text-sm text-on-surface-variant">{customers.length} pelanggan terdaftar</p>
       </div>
 
       <Card>
@@ -193,7 +193,7 @@ export default function CustomersPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b bg-gray-50/80 text-left text-gray-500">
+                  <tr className="border-b bg-surface-container-low/80 text-left text-on-surface-variant">
                     <th className="px-4 py-3 font-medium">Pelanggan</th>
                     <th className="px-4 py-3 font-medium">Kontak</th>
                     <th className="px-4 py-3 text-center font-medium">Pesanan</th>
@@ -205,7 +205,7 @@ export default function CustomersPage() {
                 </thead>
                 <tbody>
                   {customers.map((customer, i) => (
-                    <tr key={customer.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                    <tr key={customer.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1B4D3E]/10 text-sm font-bold text-[#1B4D3E]">
@@ -216,14 +216,14 @@ export default function CustomersPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-col gap-0.5">
-                          <span className="flex items-center gap-1.5 text-gray-600"><Icon name="mail" size={12} /> {customer.email}</span>
+                          <span className="flex items-center gap-1.5 text-on-surface-variant"><Icon name="mail" size={12} /> {customer.email}</span>
                           <span className="flex items-center gap-1.5 text-gray-400"><Icon name="call" size={12} /> {customer.phone}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3 text-center"><Badge variant="secondary">{customer.ordersCount}</Badge></td>
                       <td className="px-4 py-3 font-medium text-[#1B4D3E]">{formatPrice(customer.totalSpent)}</td>
-                      <td className="px-4 py-3 text-gray-500">{customer.joinedAt ? formatDate(customer.joinedAt) : "-"}</td>
-                      <td className="px-4 py-3 text-gray-500">{customer.lastOrder ? formatDate(customer.lastOrder) : "-"}</td>
+                      <td className="px-4 py-3 text-on-surface-variant">{customer.joinedAt ? formatDate(customer.joinedAt) : "-"}</td>
+                      <td className="px-4 py-3 text-on-surface-variant">{customer.lastOrder ? formatDate(customer.lastOrder) : "-"}</td>
                       <td className="px-4 py-3 text-right">
                         <Button
                           variant="ghost"
@@ -250,13 +250,13 @@ export default function CustomersPage() {
           </DialogHeader>
 
           {detailLoading ? (
-            <div className="flex h-40 items-center justify-center gap-2 text-sm text-gray-500">
+            <div className="flex h-40 items-center justify-center gap-2 text-sm text-on-surface-variant">
               <Icon name="progress_activity" size={16} className="animate-spin" /> Memuat detail pelanggan...
             </div>
           ) : detailError || !detail ? (
             <div className="flex h-40 flex-col items-center justify-center gap-2 text-center">
               <Icon name="info" size={32} className="text-red-400" />
-              <p className="text-sm text-gray-600">{detailError || "Detail pelanggan tidak tersedia."}</p>
+              <p className="text-sm text-on-surface-variant">{detailError || "Detail pelanggan tidak tersedia."}</p>
             </div>
           ) : (
             <div className="max-h-[70vh] space-y-5 overflow-y-auto pr-1">
@@ -266,8 +266,8 @@ export default function CustomersPage() {
                   {(detail.name || detail.email).charAt(0)}
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">{detail.name || "-"}</p>
-                  <p className="text-xs text-gray-500">{detail.email}</p>
+                  <p className="font-semibold text-on-surface">{detail.name || "-"}</p>
+                  <p className="text-xs text-on-surface-variant">{detail.email}</p>
                   <p className="text-xs text-gray-400">
                     {detail.phone || "Telepon belum diisi"} • Bergabung{" "}
                     {detail.createdAt ? formatDate(detail.createdAt) : "-"}
@@ -277,16 +277,16 @@ export default function CustomersPage() {
 
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <div className="rounded-lg border p-3">
-                  <p className="text-xs text-gray-500">Jumlah Pesanan</p>
-                  <p className="text-lg font-bold text-gray-900">{detail.summary.orderCount}</p>
+                  <p className="text-xs text-on-surface-variant">Jumlah Pesanan</p>
+                  <p className="text-lg font-bold text-on-surface">{detail.summary.orderCount}</p>
                 </div>
                 <div className="rounded-lg border p-3">
-                  <p className="text-xs text-gray-500">Total Belanja</p>
+                  <p className="text-xs text-on-surface-variant">Total Belanja</p>
                   <p className="text-lg font-bold text-[#1B4D3E]">{formatPrice(detail.summary.totalSpent)}</p>
                 </div>
                 <div className="rounded-lg border p-3">
-                  <p className="text-xs text-gray-500">Order Terakhir</p>
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-xs text-on-surface-variant">Order Terakhir</p>
+                  <p className="text-sm font-medium text-on-surface-variant">
                     {detail.summary.lastOrderAt ? formatDateTime(detail.summary.lastOrderAt) : "-"}
                   </p>
                 </div>
@@ -294,7 +294,7 @@ export default function CustomersPage() {
 
               {/* Alamat */}
               <div>
-                <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-900">
+                <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-on-surface">
                   <Icon name="location_on" size={16} className="text-[#1B4D3E]" /> Daftar Alamat ({detail.addresses.length})
                 </p>
                 {detail.addresses.length === 0 ? (
@@ -302,12 +302,12 @@ export default function CustomersPage() {
                 ) : (
                   <div className="space-y-2">
                     {detail.addresses.map((address) => (
-                      <div key={address.id} className="rounded-lg border p-3 text-xs text-gray-600">
+                      <div key={address.id} className="rounded-lg border p-3 text-xs text-on-surface-variant">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-gray-900">{address.label}</span>
+                          <span className="font-medium text-on-surface">{address.label}</span>
                           {address.isDefault && <Badge variant="success">Utama</Badge>}
                         </div>
-                        <p className="mt-1 font-medium text-gray-800">
+                        <p className="mt-1 font-medium text-on-surface">
                           {address.recipientName} • {address.phone}
                         </p>
                         <p>
@@ -322,7 +322,7 @@ export default function CustomersPage() {
 
               {/* Order terakhir */}
               <div>
-                <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-900">
+                <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-on-surface">
                   <Icon name="shopping_cart" size={16} className="text-[#1B4D3E]" /> Order Terakhir
                 </p>
                 {detail.summary.recentOrders.length === 0 ? (
@@ -331,7 +331,7 @@ export default function CustomersPage() {
                   <div className="overflow-x-auto rounded-lg border">
                     <table className="w-full text-xs">
                       <thead>
-                        <tr className="bg-gray-50/80 text-left text-gray-500">
+                        <tr className="bg-surface-container-low/80 text-left text-on-surface-variant">
                           <th className="px-3 py-2 font-medium">No. Pesanan</th>
                           <th className="px-3 py-2 font-medium">Tanggal</th>
                           <th className="px-3 py-2 text-center font-medium">Item</th>
@@ -344,7 +344,7 @@ export default function CustomersPage() {
                         {detail.summary.recentOrders.map((order) => (
                           <tr key={order.id} className="border-t">
                             <td className="px-3 py-2 font-mono">{order.orderNumber}</td>
-                            <td className="px-3 py-2 text-gray-500">{formatDate(order.createdAt)}</td>
+                            <td className="px-3 py-2 text-on-surface-variant">{formatDate(order.createdAt)}</td>
                             <td className="px-3 py-2 text-center">{order.itemCount}</td>
                             <td className="px-3 py-2 text-right font-medium">{formatPrice(order.total)}</td>
                             <td className="px-3 py-2">

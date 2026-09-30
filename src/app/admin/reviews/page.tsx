@@ -54,7 +54,7 @@ function Stars({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((n) => (
         <Icon key={n} name="star" size={12} />
       ))}
-      <span className="ml-1 text-xs text-gray-500">{rating}/5</span>
+      <span className="ml-1 text-xs text-on-surface-variant">{rating}/5</span>
     </div>
   )
 }
@@ -186,11 +186,11 @@ export default function AdminReviewsPage() {
   if (loading && reviews.length === 0 && !error) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-40 rounded bg-gray-200" />
-        <div className="h-14 rounded-lg bg-gray-200" />
+        <div className="h-8 w-40 rounded bg-surface-container" />
+        <div className="h-14 rounded-lg bg-surface-container" />
         <div className="space-y-3">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-20 rounded bg-gray-200" />
+            <div key={i} className="h-20 rounded bg-surface-container" />
           ))}
         </div>
       </div>
@@ -202,7 +202,7 @@ export default function AdminReviewsPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat ulasan: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat ulasan: {error}</p>
           <button
             onClick={() => fetchData()}
             className="mt-2 text-sm text-[#1B4D3E] underline"
@@ -222,8 +222,8 @@ export default function AdminReviewsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Moderasi Ulasan</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-on-surface">Moderasi Ulasan</h1>
+          <p className="text-sm text-on-surface-variant">
             {total} ulasan{summary ? ` · rata-rata ${summary.averageRating.toFixed(1)} bintang` : ""}
           </p>
         </div>
@@ -262,7 +262,7 @@ export default function AdminReviewsPage() {
           {reviews.length === 0 ? (
             <div className="py-16 text-center">
               <Icon name="forum" size={40} className="mx-auto text-gray-300" />
-              <p className="mt-3 text-sm font-medium text-gray-500">
+              <p className="mt-3 text-sm font-medium text-on-surface-variant">
                 {search.trim()
                   ? "Tidak ada ulasan yang cocok dengan pencarian"
                   : status === "pending"
@@ -279,7 +279,7 @@ export default function AdminReviewsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b bg-gray-50/80 text-left text-gray-500">
+                  <tr className="border-b bg-surface-container-low/80 text-left text-on-surface-variant">
                     <th className="px-4 py-3 font-medium">Ulasan</th>
                     <th className="px-4 py-3 font-medium">Produk</th>
                     <th className="px-4 py-3 font-medium">Pengguna</th>
@@ -292,11 +292,11 @@ export default function AdminReviewsPage() {
                   {reviews.map((review, i) => (
                     <tr
                       key={review.id}
-                      className={i % 2 === 0 ? "bg-white align-top" : "bg-gray-50/50 align-top"}
+                      className={i % 2 === 0 ? "bg-white align-top" : "bg-surface-container-low/50 align-top"}
                     >
                       <td className="max-w-md px-4 py-3">
                         <Stars rating={review.rating} />
-                        <p className="mt-1.5 text-gray-700">
+                        <p className="mt-1.5 text-on-surface-variant">
                           {review.comment?.trim() || (
                             <span className="text-gray-400 italic">Tanpa komentar</span>
                           )}
@@ -327,10 +327,10 @@ export default function AdminReviewsPage() {
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <p className="font-medium text-gray-800">{review.userName}</p>
-                        <p className="text-xs text-gray-500">{review.userEmail || "-"}</p>
+                        <p className="font-medium text-on-surface">{review.userName}</p>
+                        <p className="text-xs text-on-surface-variant">{review.userEmail || "-"}</p>
                       </td>
-                      <td className="px-4 py-3 text-xs text-gray-500">
+                      <td className="px-4 py-3 text-xs text-on-surface-variant">
                         {formatDate(review.createdAt)}
                       </td>
                       <td className="px-4 py-3">
@@ -388,7 +388,7 @@ export default function AdminReviewsPage() {
 
       {pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-on-surface-variant">
             Menampilkan {reviews.length} dari {pagination.total} ulasan
           </p>
           <div className="flex items-center gap-2">
@@ -400,7 +400,7 @@ export default function AdminReviewsPage() {
             >
               <Icon name="chevron_left" size={16} className="mr-1" /> Sebelumnya
             </Button>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-on-surface-variant">
               Halaman {pagination.page} / {pagination.totalPages}
             </span>
             <Button

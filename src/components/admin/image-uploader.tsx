@@ -153,7 +153,7 @@ export function ImageUploader({
           {value.map((url, index) => (
             <div
               key={`${url}-${index}`}
-              className="group relative aspect-square overflow-hidden rounded-lg border bg-gray-50"
+              className="group relative aspect-square overflow-hidden rounded-lg border bg-surface-container-low"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -201,7 +201,7 @@ export function ImageUploader({
               type="button"
               onClick={openPicker}
               disabled={locked}
-              className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 transition-colors hover:border-[#1B4D3E]/40 hover:text-[#1B4D3E] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low text-gray-400 transition-colors hover:border-[#1B4D3E]/40 hover:text-[#1B4D3E] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isBusy ? (
                 <Icon name="progress_activity" size={20} className="animate-spin" />
@@ -239,19 +239,19 @@ export function ImageUploader({
             "flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors",
             dragging
               ? "border-[#1B4D3E] bg-[#1B4D3E]/5"
-              : "border-gray-200 bg-gray-50 hover:border-[#1B4D3E]/40",
+              : "border-outline-variant bg-surface-container-low hover:border-[#1B4D3E]/40",
             locked && "cursor-not-allowed opacity-60"
           )}
         >
           {isBusy ? (
             <>
               <Icon name="progress_activity" size={28} className="mb-2 animate-spin text-[#1B4D3E]" />
-              <p className="text-sm text-gray-600">Mengunggah {uploading} gambar...</p>
+              <p className="text-sm text-on-surface-variant">Mengunggah {uploading} gambar...</p>
             </>
           ) : (
             <>
               <Icon name="upload" size={28} />
-              <p className="text-sm text-gray-600">Seret &amp; lepas gambar di sini</p>
+              <p className="text-sm text-on-surface-variant">Seret &amp; lepas gambar di sini</p>
               <p className="text-xs text-gray-400">atau klik untuk memilih (maks. {max} gambar, 5 MB/gambar)</p>
               <Button variant="secondary" size="sm" className="mt-3" type="button" disabled={locked}>
                 Pilih File

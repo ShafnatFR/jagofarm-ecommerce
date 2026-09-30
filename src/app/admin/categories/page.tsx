@@ -33,16 +33,16 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
 
   return (
     <div>
-      <div className={`flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors hover:bg-gray-50 ${depth > 0 ? "ml-6" : ""}`}>
+      <div className={`flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors hover:bg-surface-container-low ${depth > 0 ? "ml-6" : ""}`}>
         <div className="flex items-center gap-2">
           {hasChildren ? (
-            <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-600">
+            <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-on-surface-variant">
               {expanded ? <Icon name="expand_more" size={16} /> : <Icon name="chevron_right" size={16} />}
             </button>
           ) : <div className="w-4" />}
           <Icon name="account_tree" size={16} className="text-[#1B4D3E]" />
           <span className="font-medium">{category.name}</span>
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{productCount} produk</span>
+          <span className="rounded-full bg-surface-container-low px-2 py-0.5 text-xs text-on-surface-variant">{productCount} produk</span>
           {category.isActive === false && <Badge variant="secondary">Nonaktif</Badge>}
         </div>
         <div className="flex items-center gap-1">
@@ -203,8 +203,8 @@ export default function CategoriesPage() {
   if (loading && categories.length === 0) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-40 rounded bg-gray-200" />
-        <div className="space-y-2">{[...Array(5)].map((_, i) => <div key={i} className="h-12 rounded bg-gray-200" />)}</div>
+        <div className="h-8 w-40 rounded bg-surface-container" />
+        <div className="space-y-2">{[...Array(5)].map((_, i) => <div key={i} className="h-12 rounded bg-surface-container" />)}</div>
       </div>
     )
   }
@@ -214,7 +214,7 @@ export default function CategoriesPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat kategori: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kategori: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
@@ -225,8 +225,8 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Kategori</h1>
-          <p className="text-sm text-gray-500">Kelola kategori produk</p>
+          <h1 className="text-2xl font-bold text-on-surface">Kategori</h1>
+          <p className="text-sm text-on-surface-variant">Kelola kategori produk</p>
         </div>
         <Button onClick={handleAdd}><Icon name="add" size={16} className="mr-2" />Tambah Kategori</Button>
       </div>
@@ -247,7 +247,7 @@ export default function CategoriesPage() {
             </div>
           )}
           {deleting && (
-            <div className="border-t bg-gray-50 px-4 py-2 text-xs text-gray-500">Menghapus kategori...</div>
+            <div className="border-t bg-surface-container-low px-4 py-2 text-xs text-on-surface-variant">Menghapus kategori...</div>
           )}
         </CardContent>
       </Card>

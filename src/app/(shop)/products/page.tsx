@@ -137,7 +137,7 @@ function ProductsContent() {
                 ) : "Semua Produk"}
               </h1>
               {!loading && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface-container-low text-primary border border-outline-variant">
                   {total} produk ditemukan
                 </span>
               )}
@@ -227,7 +227,7 @@ function ProductsContent() {
                   </button>
                 )}
                 <Link href="/products">
-                  <span className="inline-flex items-center px-4 py-2 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-emerald-900 transition">
+                  <span className="inline-flex items-center px-4 py-2 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary-container transition">
                     Lihat semua produk
                   </span>
                 </Link>
@@ -240,7 +240,7 @@ function ProductsContent() {
                       <Link
                         key={cat.id}
                         href={`/products?category=${encodeURIComponent(cat.slug)}`}
-                        className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-primary text-slate-700 font-medium transition-colors text-xs"
+                        className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-surface-container-low hover:text-primary text-slate-700 font-medium transition-colors text-xs"
                       >
                         {cat.name}
                       </Link>
@@ -308,7 +308,7 @@ function ProductsContent() {
 
           {/* Consultation Banner */}
           {!loading && products.length > 0 && (
-            <div className="mt-8 rounded-2xl bg-gradient-to-r from-primary to-emerald-800 p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+            <div className="mt-8 rounded-2xl bg-gradient-to-r from-primary to-primary-fixed-800 p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
               <div className="absolute -right-12 -bottom-12 w-48 h-48 rounded-full bg-white/5 pointer-events-none" />
               <div className="space-y-2 text-center md:text-left z-10">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-semibold">
@@ -322,8 +322,8 @@ function ProductsContent() {
               </div>
               <div className="flex flex-col sm:flex-row gap-3 z-10 w-full md:w-auto">
                 <a href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank"
-                  className="px-5 py-3 rounded-xl bg-white text-primary font-bold text-xs hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2 shadow-md">
-                  <Icon name="chat" size={16} className="text-emerald-600" />
+                  className="px-5 py-3 rounded-xl bg-white text-primary font-bold text-xs hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2 shadow-md">
+                  <Icon name="chat" size={16} className="text-primary" />
                   <span>Tanya Tim Ahli via WhatsApp</span>
                 </a>
               </div>

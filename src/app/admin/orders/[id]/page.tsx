@@ -215,7 +215,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   if (loading && !order) {
     return (
       <div className="space-y-6">
-        {[1, 2, 3].map((i) => <div key={i} className="h-40 animate-pulse rounded-xl bg-gray-100" />)}
+        {[1, 2, 3].map((i) => <div key={i} className="h-40 animate-pulse rounded-xl bg-surface-container-low" />)}
       </div>
     )
   }
@@ -224,7 +224,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
         <Icon name="info" size={40} className="text-red-400" />
-        <p className="text-sm text-gray-600">{error || "Pesanan tidak ditemukan"}</p>
+        <p className="text-sm text-on-surface-variant">{error || "Pesanan tidak ditemukan"}</p>
         <Link href="/admin/orders"><Button variant="secondary">Kembali ke daftar pesanan</Button></Link>
       </div>
     )
@@ -253,8 +253,8 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button>
           </Link>
           <div>
-            <h1 className="font-mono text-2xl font-bold text-gray-900">{order.orderNumber}</h1>
-            <p className="text-sm text-gray-500">Dibuat {formatDateTime(order.createdAt)}</p>
+            <h1 className="font-mono text-2xl font-bold text-on-surface">{order.orderNumber}</h1>
+            <p className="text-sm text-on-surface-variant">Dibuat {formatDateTime(order.createdAt)}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -276,7 +276,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b bg-gray-50/80 text-left text-gray-500">
+                      <tr className="border-b bg-surface-container-low/80 text-left text-on-surface-variant">
                         <th className="px-4 py-3 font-medium">Produk</th>
                         <th className="px-4 py-3 font-medium text-center">Qty</th>
                         <th className="px-4 py-3 font-medium text-right">Harga</th>
@@ -285,10 +285,10 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     </thead>
                     <tbody>
                       {order.items.map((item, i) => (
-                        <tr key={item.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                        <tr key={item.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
-                              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
                                 {item.productImage ? (
                                   // eslint-disable-next-line @next/next/no-img-element
                                   <img
@@ -303,7 +303,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                                 )}
                               </div>
                               <div>
-                                <p className="font-medium text-gray-900">{item.productName || "Produk"}</p>
+                                <p className="font-medium text-on-surface">{item.productName || "Produk"}</p>
                                 {item.variantName && (
                                   <p className="text-xs text-gray-400">Varian: {item.variantName}</p>
                                 )}
@@ -320,13 +320,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 </div>
 
                 <div className="space-y-2 border-t p-4 text-sm">
-                  <div className="flex justify-between text-gray-600">
+                  <div className="flex justify-between text-on-surface-variant">
                     <span>Subtotal</span><span>{formatPrice(order.subtotal)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-600">
+                  <div className="flex justify-between text-on-surface-variant">
                     <span>Diskon</span><span>-{formatPrice(order.discount)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-600">
+                  <div className="flex justify-between text-on-surface-variant">
                     <span>Ongkos Kirim{order.shippingService ? ` (${order.shippingService})` : ""}</span>
                     <span>{formatPrice(order.shippingCost)}</span>
                   </div>
@@ -350,10 +350,10 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   {timeline.map((step) => (
                     <li key={step.label} className="flex items-start gap-3">
                       <span
-                        className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${step.value ? "bg-[#1B4D3E]" : "bg-gray-200"}`}
+                        className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${step.value ? "bg-[#1B4D3E]" : "bg-surface-container"}`}
                       />
                       <div>
-                        <p className={`text-sm font-medium ${step.value ? "text-gray-900" : "text-gray-400"}`}>
+                        <p className={`text-sm font-medium ${step.value ? "text-on-surface" : "text-gray-400"}`}>
                           {step.label}
                         </p>
                         <p className="text-xs text-gray-400">
@@ -398,7 +398,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Ubah Status</label>
                   {options.length === 0 ? (
-                    <p className="rounded-lg bg-gray-50 p-3 text-xs text-gray-500">
+                    <p className="rounded-lg bg-surface-container-low p-3 text-xs text-on-surface-variant">
                       Status pesanan ini sudah final dan tidak dapat diubah lagi.
                     </p>
                   ) : (
@@ -455,9 +455,9 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-1 text-sm">
-                <p className="font-medium text-gray-900">{order.user?.name || "-"}</p>
-                <p className="text-gray-500">{order.user?.email || "-"}</p>
-                <p className="text-gray-500">{order.user?.phone || "Telepon belum diisi"}</p>
+                <p className="font-medium text-on-surface">{order.user?.name || "-"}</p>
+                <p className="text-on-surface-variant">{order.user?.email || "-"}</p>
+                <p className="text-on-surface-variant">{order.user?.phone || "Telepon belum diisi"}</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -472,9 +472,9 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
               <CardContent className="space-y-1 text-sm">
                 {address ? (
                   <>
-                    <p className="font-medium text-gray-900">{address.recipientName}</p>
-                    <p className="text-gray-500">{address.phone}</p>
-                    <p className="text-gray-500">
+                    <p className="font-medium text-on-surface">{address.recipientName}</p>
+                    <p className="text-on-surface-variant">{address.phone}</p>
+                    <p className="text-on-surface-variant">
                       {address.detail ? `${address.detail}, ` : ""}
                       {address.district}, {address.city}, {address.province} {address.postalCode}
                     </p>
@@ -483,7 +483,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 ) : (
                   <p className="text-gray-400">Alamat pengiriman tidak tersedia.</p>
                 )}
-                <div className="mt-3 space-y-1 border-t pt-3 text-xs text-gray-500">
+                <div className="mt-3 space-y-1 border-t pt-3 text-xs text-on-surface-variant">
                   <p>Kurir: {order.shippingCourier || "-"}</p>
                   <p>Layanan: {order.shippingService || "-"}</p>
                   <p>Resi: {order.trackingNumber || "-"}</p>

@@ -77,22 +77,22 @@ export default function RegisterPage() {
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[760px]">
           {/* Left Branded Showcase */}
-          <section className="hidden lg:flex lg:col-span-5 bg-gradient-to-br from-emerald-900 via-primary to-emerald-950 p-10 flex-col justify-between relative overflow-hidden text-white">
-            <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+          <section className="hidden lg:flex lg:col-span-5 bg-gradient-to-br from-primary-fixed-900 via-primary to-primary-fixed-950 p-10 flex-col justify-between relative overflow-hidden text-white">
+            <div className="absolute -top-24 -left-24 w-72 h-72 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-teal-400/15 rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative z-10">
               <div className="inline-flex items-center gap-3">
                 <div className="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner">
-                  <Icon name="eco" size={24} className="text-emerald-400" />
+                  <Icon name="eco" size={24} className="text-tertiary-fixed" />
                 </div>
                 <div>
                   <span className="text-2xl font-bold tracking-tight text-white block leading-none">JagoFarm</span>
-                  <span className="text-[11px] font-medium text-emerald-300/80 tracking-wide uppercase">Smart Agri-Aquaculture</span>
+                  <span className="text-[11px] font-medium text-primary-fixed-dim/80 tracking-wide uppercase">Smart Agri-Aquaculture</span>
                 </div>
               </div>
               <div className="mt-12 space-y-3">
-                <div className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
+                <div className="inline-block px-3 py-1 rounded-full bg-primary/20 border border-emerald-400/30 text-primary-fixed-dim text-xs font-semibold">
                   Platform Pertanian #1 di Indonesia
                 </div>
                 <h1 className="text-3xl font-extrabold tracking-tight leading-snug text-white">
@@ -106,7 +106,7 @@ export default function RegisterPage() {
 
             <div className="relative z-10 my-8 space-y-3.5">
               <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5 text-emerald-300">
+                <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center shrink-0 mt-0.5 text-primary-fixed-dim">
                   <Icon name="check" size={16} />
                 </div>
                 <div>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                 </div>
               </div>
               <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5 text-emerald-300">
+                <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center shrink-0 mt-0.5 text-primary-fixed-dim">
                   <Icon name="bolt" size={16} />
                 </div>
                 <div>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                 <div className="flex -space-x-2 overflow-hidden">
                   <span className="inline-block h-7 w-7 rounded-full bg-emerald-300 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">BP</span>
                   <span className="inline-block h-7 w-7 rounded-full bg-teal-200 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">AH</span>
-                  <span className="inline-block h-7 w-7 rounded-full bg-emerald-100 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">RS</span>
+                  <span className="inline-block h-7 w-7 rounded-full bg-primary-fixed/20 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">RS</span>
                 </div>
                 <span>Bergabung bersama <strong className="text-white font-semibold">10.000+</strong> petani modern</span>
               </div>
@@ -168,8 +168,8 @@ export default function RegisterPage() {
               {awaitingConfirmation ? (
                 <div className="text-center space-y-6 py-8">
                   <div className="flex justify-center">
-                    <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center">
-                      <Icon name="mark_email_read" size={40} className="text-emerald-600" />
+                    <div className="w-20 h-20 rounded-full bg-surface-container-low flex items-center justify-center">
+                      <Icon name="mark_email_read" size={40} className="text-primary" />
                     </div>
                   </div>
                   <p className="text-sm text-slate-600 max-w-sm mx-auto">
@@ -311,7 +311,7 @@ export default function RegisterPage() {
                     </div>
 
                     <p className="text-[11px] text-slate-500 flex items-center gap-1.5 pt-0.5">
-                      <Icon name="info" size={14} className="text-emerald-600 shrink-0" />
+                      <Icon name="info" size={14} className="text-primary shrink-0" />
                       Gunakan minimal 8 karakter dengan kombinasi huruf dan angka.
                     </p>
 
@@ -320,7 +320,7 @@ export default function RegisterPage() {
                       <label className="flex items-start gap-2.5 cursor-pointer text-xs text-slate-600 select-none">
                         <input type="checkbox" required className="w-4 h-4 rounded text-primary focus:ring-emerald-500 border-slate-300 mt-0.5 transition" />
                         <span>
-                          Saya menyetujui <a className="text-primary font-semibold underline decoration-emerald-300 hover:text-emerald-700" href="#">Syarat & Ketentuan</a> serta <a className="text-primary font-semibold underline decoration-emerald-300 hover:text-emerald-700" href="#">Kebijakan Privasi</a> JagoFarm.
+                          Saya menyetujui <a className="text-primary font-semibold underline decoration-emerald-300 hover:text-primary" href="#">Syarat & Ketentuan</a> serta <a className="text-primary font-semibold underline decoration-emerald-300 hover:text-primary" href="#">Kebijakan Privasi</a> JagoFarm.
                         </span>
                       </label>
                     </div>
@@ -330,10 +330,10 @@ export default function RegisterPage() {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-primary hover:bg-emerald-900 active:scale-[0.99] transition-all duration-200 shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group text-sm tracking-wide focus:outline-none focus:ring-4 focus:ring-emerald-600/30 disabled:opacity-60"
+                        className="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-primary hover:bg-primary-container active:scale-[0.99] transition-all duration-200 shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group text-sm tracking-wide focus:outline-none focus:ring-4 focus:ring-emerald-600/30 disabled:opacity-60"
                       >
                         <span>{loading ? "Mendaftar..." : "Daftar Sekarang"}</span>
-                        {!loading && <Icon name="arrow_forward" size={16} className="text-emerald-300 group-hover:translate-x-0.5 transition-transform" />}
+                        {!loading && <Icon name="arrow_forward" size={16} className="text-primary-fixed-dim group-hover:translate-x-0.5 transition-transform" />}
                       </button>
                     </div>
                   </form>
@@ -345,15 +345,15 @@ export default function RegisterPage() {
             <div className="mt-8 pt-6 border-t border-slate-100">
               <div className="grid grid-cols-3 gap-2 text-center text-[11px] text-slate-500 font-medium">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-1">
-                  <Icon name="lock" size={16} className="text-emerald-600 shrink-0" />
+                  <Icon name="lock" size={16} className="text-primary shrink-0" />
                   <span>Enkripsi 256-bit</span>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-1">
-                  <Icon name="verified" size={16} className="text-emerald-600 shrink-0" />
+                  <Icon name="verified" size={16} className="text-primary shrink-0" />
                   <span>100% Produk Asli</span>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-1">
-                  <Icon name="support_agent" size={16} className="text-emerald-600 shrink-0" />
+                  <Icon name="support_agent" size={16} className="text-primary shrink-0" />
                   <span>Dukungan Ahli Tani</span>
                 </div>
               </div>

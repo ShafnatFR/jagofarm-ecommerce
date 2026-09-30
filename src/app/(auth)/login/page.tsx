@@ -62,9 +62,9 @@ function LoginForm() {
   return (
     <main className="flex-1 flex flex-col lg:flex-row w-full min-h-screen">
       {/* Left Hero Section */}
-      <section className="hidden lg:flex lg:w-1/2 xl:w-7/12 relative bg-gradient-to-br from-primary via-emerald-900 to-emerald-800 text-white p-12 xl:p-16 flex-col justify-between overflow-hidden">
+      <section className="hidden lg:flex lg:w-1/2 xl:w-7/12 relative bg-gradient-to-br from-primary via-primary-fixed-900 to-primary-fixed-800 text-white p-12 xl:p-16 flex-col justify-between overflow-hidden">
         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex items-center justify-between">
@@ -72,14 +72,14 @@ function LoginForm() {
             <Icon name="arrow_back" size={16} className="transition-transform group-hover:-translate-x-1" />
             Kembali ke Beranda
           </Link>
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-medium text-emerald-300 flex items-center gap-1.5">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-medium text-primary-fixed-dim flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             IoT Sensor Aktif 24/7
           </div>
         </div>
 
         <div className="relative z-10 max-w-xl my-auto py-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-6 border border-white/15">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-primary-fixed-dim text-xs font-semibold uppercase tracking-wider mb-6 border border-white/15">
             <Icon name="eco" size={14} />
             Platform Agroteknologi Terpadu
           </div>
@@ -91,7 +91,7 @@ function LoginForm() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-xl flex items-start gap-3">
-              <div className="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg shrink-0">
+              <div className="p-2 bg-primary/20 text-primary-fixed-dim rounded-lg shrink-0">
                 <Icon name="water_drop" size={20} />
               </div>
               <div>
@@ -100,7 +100,7 @@ function LoginForm() {
               </div>
             </div>
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-xl flex items-start gap-3">
-              <div className="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg shrink-0">
+              <div className="p-2 bg-primary/20 text-primary-fixed-dim rounded-lg shrink-0">
                 <Icon name="menu_book" size={20} />
               </div>
               <div>
@@ -112,17 +112,17 @@ function LoginForm() {
           <div className="flex items-center gap-8 pt-4 border-t border-white/10">
             <div>
               <div className="text-2xl font-bold text-white tracking-tight">12.500+</div>
-              <div className="text-xs text-emerald-300/80">Petani & Pembudidaya</div>
+              <div className="text-xs text-primary-fixed-dim/80">Petani & Pembudidaya</div>
             </div>
             <div className="h-8 w-px bg-white/15" />
             <div>
               <div className="text-2xl font-bold text-white tracking-tight">99.4%</div>
-              <div className="text-xs text-emerald-300/80">Tingkat Keberhasilan Panen</div>
+              <div className="text-xs text-primary-fixed-dim/80">Tingkat Keberhasilan Panen</div>
             </div>
             <div className="h-8 w-px bg-white/15" />
             <div>
               <div className="text-2xl font-bold text-white tracking-tight">34 Provinsi</div>
-              <div className="text-xs text-emerald-300/80">Jangkauan Distribusi</div>
+              <div className="text-xs text-primary-fixed-dim/80">Jangkauan Distribusi</div>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@ function LoginForm() {
               <Icon name="arrow_back" size={14} />
               Kembali ke Beranda
             </Link>
-            <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+            <span className="text-xs font-medium text-primary bg-surface-container-low px-2 py-0.5 rounded-full border border-outline-variant">
               JagoFarm v3.2
             </span>
           </div>
@@ -163,7 +163,7 @@ function LoginForm() {
           </div>
 
           {notice && (
-            <div className="mb-4 bg-emerald-50 text-emerald-700 text-sm p-3 rounded-xl border border-emerald-200">{notice}</div>
+            <div className="mb-4 bg-surface-container-low text-primary text-sm p-3 rounded-xl border border-outline-variant">{notice}</div>
           )}
           {error && (
             <div className="mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-xl border border-red-200">{error}</div>
@@ -250,7 +250,7 @@ function LoginForm() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary hover:bg-emerald-900 active:bg-emerald-950 text-white font-semibold text-sm transition-all shadow-md shadow-primary/20 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60"
+                className="w-full mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary hover:bg-primary-container active:bg-emerald-950 text-white font-semibold text-sm transition-all shadow-md shadow-primary/20 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60"
               >
                 <span>{loading ? "Masuk..." : "Masuk ke Akun"}</span>
                 {!loading && <Icon name="arrow_forward" size={16} />}
@@ -261,7 +261,7 @@ function LoginForm() {
           {/* Trust Badges */}
           <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col items-center justify-center text-center">
             <div className="flex items-center gap-2 text-xs text-slate-400">
-              <Icon name="verified_user" size={16} className="text-emerald-600 shrink-0" />
+              <Icon name="verified_user" size={16} className="text-primary shrink-0" />
               <span>Dilindungi enkripsi SSL 256-bit &bull; JagoFarm Ecosystem</span>
             </div>
             <p className="text-[11px] text-slate-400 mt-2">
@@ -276,7 +276,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="animate-pulse w-full min-h-screen bg-gray-200" />}>
+    <Suspense fallback={<div className="animate-pulse w-full min-h-screen bg-surface-container" />}>
       <LoginForm />
     </Suspense>
   );

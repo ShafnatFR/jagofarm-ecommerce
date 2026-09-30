@@ -132,7 +132,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   if (loading) {
     return (
       <div className="space-y-6">
-        {[1, 2, 3].map((i) => <div key={i} className="h-40 animate-pulse rounded-xl bg-gray-100" />)}
+        {[1, 2, 3].map((i) => <div key={i} className="h-40 animate-pulse rounded-xl bg-surface-container-low" />)}
       </div>
     );
   }
@@ -140,7 +140,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   if (error && !form.name) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
-        <p className="text-gray-500">{error}</p>
+        <p className="text-on-surface-variant">{error}</p>
         <Link href="/admin/products"><Button variant="secondary">Kembali</Button></Link>
       </div>
     );
@@ -152,8 +152,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         <div className="flex items-center gap-4">
           <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Produk</h1>
-            <p className="text-sm text-gray-500">Edit informasi produk #{id}</p>
+            <h1 className="text-2xl font-bold text-on-surface">Edit Produk</h1>
+            <p className="text-sm text-on-surface-variant">Edit informasi produk #{id}</p>
           </div>
         </div>
         <Button variant="destructive" size="sm" type="button"><Icon name="delete" size={16} className="mr-2" />Hapus</Button>
@@ -172,7 +172,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Kategori</label>
                   {loadingCats ? (
-                    <div className="h-10 animate-pulse rounded-lg bg-gray-100" />
+                    <div className="h-10 animate-pulse rounded-lg bg-surface-container-low" />
                   ) : (
                     <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
                       <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
@@ -229,7 +229,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     <p className="text-sm font-medium">Produk Unggulan</p>
                     <p className="text-xs text-gray-400">Tampilkan di halaman utama</p>
                   </div>
-                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-[#1B4D3E]" : "bg-gray-200"}`} onClick={() => updateField("featured", !form.featured)}>
+                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-[#1B4D3E]" : "bg-surface-container"}`} onClick={() => updateField("featured", !form.featured)}>
                     <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${form.featured ? "translate-x-[22px]" : "translate-x-0.5"}`} />
                   </div>
                 </label>

@@ -81,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-3 bg-[#F8F7F4]">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#1B4D3E] border-t-transparent" />
-        <p className="text-sm text-gray-500">Memeriksa hak akses...</p>
+        <p className="text-sm text-on-surface-variant">Memeriksa hak akses...</p>
       </div>
     )
   }
@@ -91,8 +91,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="flex h-screen items-center justify-center bg-[#F8F7F4] p-6">
         <div className="w-full max-w-md rounded-xl border bg-white p-8 text-center shadow-sm">
           <Icon name="shield" size={48} className="mx-auto text-red-500" />
-          <h1 className="mt-4 text-xl font-bold text-gray-900">Akses ditolak</h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <h1 className="mt-4 text-xl font-bold text-on-surface">Akses ditolak</h1>
+          <p className="mt-2 text-sm text-on-surface-variant">
             Halaman admin hanya dapat diakses oleh admin atau staf. Akun Anda tidak memiliki
             wewenang untuk membuka halaman ini.
           </p>
@@ -189,7 +189,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
               <Icon name="menu" size={20} />
             </Button>
-            <div className="hidden items-center gap-2 rounded-lg bg-gray-100 px-3 py-2 md:flex">
+            <div className="hidden items-center gap-2 rounded-lg bg-surface-container-low px-3 py-2 md:flex">
               <Icon name="search" size={16} className="text-gray-400" />
               <input
                 type="text"
@@ -199,7 +199,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100">
+            <button className="relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low">
               <Icon name="notifications" size={20} />
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
             </button>

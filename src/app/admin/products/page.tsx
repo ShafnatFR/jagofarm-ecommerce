@@ -82,9 +82,9 @@ export default function ProductsPage() {
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 w-48 rounded bg-gray-200" />
-        <div className="h-16 rounded-lg bg-gray-200" />
-        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-16 rounded bg-gray-200" />)}</div>
+        <div className="h-8 w-48 rounded bg-surface-container" />
+        <div className="h-16 rounded-lg bg-surface-container" />
+        <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-16 rounded bg-surface-container" />)}</div>
       </div>
     )
   }
@@ -94,7 +94,7 @@ export default function ProductsPage() {
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
-          <p className="mt-2 text-sm text-gray-600">Gagal memuat produk: {error}</p>
+          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat produk: {error}</p>
           <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
@@ -105,8 +105,8 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Produk</h1>
-          <p className="text-sm text-gray-500">{products.length} produk terdaftar</p>
+          <h1 className="text-2xl font-bold text-on-surface">Produk</h1>
+          <p className="text-sm text-on-surface-variant">{products.length} produk terdaftar</p>
         </div>
         <Link href="/admin/products/new"><Button><Icon name="add" size={16} className="mr-2" />Tambah Produk</Button></Link>
       </div>
@@ -138,7 +138,7 @@ export default function ProductsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b bg-gray-50/80 text-left text-gray-500">
+                  <tr className="border-b bg-surface-container-low/80 text-left text-on-surface-variant">
                     <th className="px-4 py-3 font-medium">Produk</th>
                     <th className="px-4 py-3 font-medium">Kategori</th>
                     <th className="px-4 py-3 font-medium">Harga</th>
@@ -149,19 +149,19 @@ export default function ProductsPage() {
                 </thead>
                 <tbody>
                   {products.map((product, i) => (
-                    <tr key={product.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                    <tr key={product.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
                             <div className="flex h-full w-full items-center justify-center text-gray-400"><Icon name="inventory_2" size={20} /></div>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{product.name}</p>
+                            <p className="font-medium text-on-surface">{product.name}</p>
                             <p className="text-xs text-gray-400">/{product.slug}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-gray-600">{product.category}</td>
+                      <td className="px-4 py-3 text-on-surface-variant">{product.category}</td>
                       <td className="px-4 py-3">
                         {product.discountPrice ? (
                           <div>
@@ -171,7 +171,7 @@ export default function ProductsPage() {
                         ) : <span className="font-medium">{formatPrice(product.price)}</span>}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={product.stock <= 10 ? "font-medium text-red-500" : "text-gray-600"}>{product.stock}</span>
+                        <span className={product.stock <= 10 ? "font-medium text-red-500" : "text-on-surface-variant"}>{product.stock}</span>
                       </td>
                       <td className="px-4 py-3">
                         {product.featured && <Badge variant="warning">Unggulan</Badge>}
@@ -185,7 +185,7 @@ export default function ProductsPage() {
                           </Button>
                           {activeMenu === product.id && (
                             <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border bg-white py-1 shadow-lg">
-                              <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50" onClick={() => setActiveMenu(null)}>
+                              <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-container-low" onClick={() => setActiveMenu(null)}>
                                 <Icon name="edit" size={16} /> Edit
                               </Link>
                               <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50" onClick={() => { setActiveMenu(null); handleDelete(product.id, product.name) }}>

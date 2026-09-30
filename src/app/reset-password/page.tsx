@@ -64,7 +64,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFBFB] px-4">
-      <Card className="w-full max-w-md border-emerald-100 shadow-md">
+      <Card className="w-full max-w-md border-outline-variant shadow-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
           {status === "invalid" && (
             <div className="text-center space-y-4">
               <div className="flex justify-center"><Icon name="error" size={64} className="text-red-500" /></div>
-              <p className="text-sm text-gray-600">Link tidak valid atau kadaluarsa. Silakan minta tautan reset password baru.</p>
+              <p className="text-sm text-on-surface-variant">Link tidak valid atau kadaluarsa. Silakan minta tautan reset password baru.</p>
               <Link href="/forgot-password"><Button className="w-full">Minta Link Baru</Button></Link>
               <Link href="/login" className="flex items-center justify-center gap-1 text-sm text-primary hover:underline">Kembali ke Login</Link>
             </div>
@@ -96,8 +96,8 @@ export default function ResetPasswordPage() {
 
           {status === "done" && (
             <div className="text-center space-y-4">
-              <div className="flex justify-center"><Icon name="check_circle" size={64} className="text-emerald-500" /></div>
-              <p className="text-sm text-gray-600">Password berhasil diperbarui. Mengarahkan Anda ke halaman masuk...</p>
+              <div className="flex justify-center"><Icon name="check_circle" size={64} className="text-primary" /></div>
+              <p className="text-sm text-on-surface-variant">Password berhasil diperbarui. Mengarahkan Anda ke halaman masuk...</p>
               <Link href="/login?reset=true"><Button variant="secondary" className="w-full">Masuk sekarang</Button></Link>
             </div>
           )}
