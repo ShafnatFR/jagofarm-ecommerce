@@ -74,8 +74,9 @@ export function Navbar() {
               IoT &amp; Smart Farming
               <span className="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim"></span>
             </Link>
-            <Link className="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="/contact">
+            <Link className="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 flex items-center gap-1" href="/consultation">
               Konsultasi
+              <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse" />
             </Link>
           </nav>
 
