@@ -71,15 +71,6 @@ export default function CheckoutPage() {
   const [error, setError] = useState("");
   const [insuranceChecked, setInsuranceChecked] = useState(true);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      await hydrate();
-      if (!cancelled) setReady(true);
-    })();
-    return () => { cancelled = true; };
-  }, [hydrate]);
-
   const fetchAddresses = useCallback(async () => {
     setLoadingAddr(true);
     setError("");
@@ -100,9 +91,15 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
+    let cancelled = false;
+    void hydrate().then(() => {
+      if (!cancelled) setReady(true);
+    });
+    // Cart dan alamat independen; ambil bersamaan agar alamat tidak menunggu cart.
     void fetchAddresses();
-  }, [ready, fetchAddresses]);
+    return () => { cancelled = true; };
+  }, [hydrate, fetchAddresses]);
+
 
   useEffect(() => {
     if (ready && items.length === 0) router.replace("/cart");
