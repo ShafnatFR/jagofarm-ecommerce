@@ -68,7 +68,6 @@ export function isMayarRestrictPaymentMethod(): boolean {
  * bank mana yang aktif, dan invoice Mayar tidak menerima kartu lewat field ini.
  */
 export function mapPaymentMethodHint(hint?: string): string | undefined {
-  if (!isMayarRestrictPaymentMethod()) return undefined;
   const value = (hint ?? "").trim().toLowerCase();
   const supported = new Set([
     "qris",
