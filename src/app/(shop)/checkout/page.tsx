@@ -171,13 +171,46 @@ export default function CheckoutPage() {
         return;
       }
       const orderNumber: string | undefined = data?.orderNumber ?? data?.order?.orderNumber;
+      if (!orderNumber) {
+        throw new Error("Nomor pesanan tidak diterima dari server.");
+      }
+
       clearCart();
       if (data?.couponWarning) {
         toast({ title: "Pesanan dibuat tanpa diskon", description: String(data.couponWarning) });
       } else {
-        toast({ title: "Pesanan berhasil dibuat", description: orderNumber ? `Nomor pesanan ${orderNumber}` : undefined });
+        toast({ title: "Pesanan berhasil dibuat", description: `Nomor pesanan ${orderNumber}` });
       }
-      router.push(orderNumber ? `/orders/${orderNumber}` : "/orders");
+
+      // Buat invoice gateway segera setelah order tersimpan.
+      // Untuk Mayar, buka hosted checkout langsung; jangan berhenti di halaman
+      // "pesanan selesai" tanpa halaman pembayaran.
+      const paymentResponse = await fetch("/api/payments/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderNumber }),
+      });
+      const paymentData = await paymentResponse.json().catch(() => null) as {
+        provider?: string;
+        paymentUrl?: string;
+        redirectUrl?: string;
+      } | null;
+
+      const paymentUrl = paymentData?.paymentUrl ?? paymentData?.redirectUrl;
+      if (paymentResponse.ok && paymentUrl) {
+        window.location.assign(paymentUrl);
+        return;
+      }
+
+      // Fallback aman: order tetap bisa dibayar dari halaman detail pesanan.
+      if (!paymentResponse.ok) {
+        toast({
+          variant: "destructive",
+          title: "Order dibuat, pembayaran belum dimulai",
+          description: "Buka detail pesanan untuk mencoba pembayaran lagi.",
+        });
+      }
+      router.push(`/orders/${orderNumber}`);
     } catch {
       const message = "Gagal membuat pesanan. Periksa koneksi internet Anda.";
       setError(message);
