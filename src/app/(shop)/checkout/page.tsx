@@ -155,11 +155,10 @@ export default function CheckoutPage() {
   );
 
   useEffect(() => {
-    if (step !== 2) return;
     const address = addresses.find((a) => a.id === selectedAddress);
     if (!address) return;
     void fetchShipping(address);
-  }, [step, selectedAddress, addresses, fetchShipping]);
+  }, [selectedAddress, addresses, fetchShipping]);
 
   async function submitOrder() {
     const option = shippingOptions[selectedShipping];
@@ -295,7 +294,7 @@ export default function CheckoutPage() {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground shadow-md ring-4 ring-primary/10">
             2
           </div>
-          <span className="text-xs font-bold text-primary sm:text-sm">2. Pengiriman &amp; Bayar</span>
+          <span className="text-xs font-bold text-primary sm:text-sm">2. Pembayaran Mayar</span>
         </div>
         <div className="mx-4 h-0.5 flex-1 bg-border" />
         {/* Step 3: Pending */}
@@ -403,8 +402,9 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="pt-4">
-                    <Button onClick={() => setStep(2)} disabled={!selectedAddress}>
-                      Lanjut ke Pengiriman <Icon name="chevron_right" size={16} className="ml-1" />
+                    <Button onClick={() => void submitOrder()} disabled={!selectedAddress || loadingShip || !selectedOption}>
+                      {loadingShip ? "Menghitung ongkir..." : "Buat Pesanan & Bayar"}
+                      {!loadingShip && <Icon name="arrow_forward" size={16} className="ml-1" />}
                     </Button>
                   </div>
                 </>
@@ -413,7 +413,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Step 2: Shipping */}
-          {step === 2 && (
+          {false && step === 2 && (
             <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
@@ -436,7 +436,7 @@ export default function CheckoutPage() {
               ) : shippingOptions.length === 0 ? (
                 <div className="flex items-center justify-between rounded-xl border border-dashed p-4">
                   <p className="text-sm text-muted-foreground">{shippingError || "Tidak ada opsi pengiriman tersedia."}</p>
-                  {addr && <Button variant="secondary" size="sm" onClick={() => fetchShipping(addr)}>Coba lagi</Button>}
+                  {addr && <Button variant="secondary" size="sm" onClick={() => { if (addr) void fetchShipping(addr); }}>Coba lagi</Button>}
                 </div>
               ) : (
                 <div className="grid gap-3 md:grid-cols-3">
@@ -499,7 +499,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Step 3: Payment */}
-          {step === 3 && (
+          {false && step === 3 && (
             <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
