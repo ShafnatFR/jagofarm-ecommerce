@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
@@ -42,6 +42,7 @@ interface ReviewSummary {
 
 export default function ProductDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const slug = params.slug as string;
   const addItem = useCartStore((s) => s.addItem);
 
@@ -157,6 +158,11 @@ export default function ProductDetailPage() {
     });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
+  }
+
+  function handleBuyNow() {
+    handleAddToCart();
+    router.push("/checkout");
   }
 
   /* ---------- Star rating helpers ---------- */
@@ -421,6 +427,8 @@ export default function ProductDetailPage() {
                   {addedToCart ? "Ditambahkan ✓" : "Tambah ke Keranjang"}
                 </Button>
                 <Button
+                  onClick={handleBuyNow}
+                  type="button"
                   size="lg"
                   className="w-full rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold shadow-md shadow-primary/20"
                 >
