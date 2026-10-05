@@ -28,7 +28,7 @@ const addressSchema = z.object({
   phone: z.string().min(8).max(20),
   province: z.string().min(1).max(100),
   city: z.string().min(1).max(100),
-  district: z.string().min(1).max(100).optional().default(""),
+  district: z.string().max(100).optional().default(""),
   postalCode: z.string().min(4).max(10),
   detail: z.string().optional(),
   street: z.string().optional(), // alias for detail
