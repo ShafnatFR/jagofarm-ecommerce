@@ -129,6 +129,18 @@ export default function CheckoutPage() {
         if (!res.ok) throw new Error(errorMessage(data?.error));
         const raw: ShippingOption[] = data?.results ?? data?.costs ?? [];
         const options = raw.filter((opt) => opt && typeof opt.cost === "number");
+        const isMayarTestProduct = items.some(
+          (item) => item.slug === "produk-uji-mayar-rp-0"
+        );
+        if (isMayarTestProduct) {
+          options.unshift({
+            courier: "test",
+            courierName: "JagoFarm Test",
+            service: "Gratis Testing",
+            cost: 0,
+            etd: "langsung",
+          });
+        }
         setShippingOptions(options);
         setSelectedShipping(0);
         if (options.length === 0) setShippingError("Tidak ada opsi pengiriman untuk kota ini.");
@@ -139,7 +151,7 @@ export default function CheckoutPage() {
         setLoadingShip(false);
       }
     },
-    [totalWeight]
+    [totalWeight, items]
   );
 
   useEffect(() => {
