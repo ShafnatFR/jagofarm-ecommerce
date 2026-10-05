@@ -294,13 +294,11 @@ async function createPayment(
 
   const items = buildInvoiceItems(input);
 
-  const payload: Record<string, unknown> = {
+  const paymentMethod = mapPaymentMethodHint(input.paymentMethodHint);
+  const basePayload: Record<string, unknown> = {
     name: input.customer.name?.trim() || "Pelanggan",
     email: input.customer.email.trim(),
-    items,
     description: `Pembayaran pesanan ${input.orderNumber}`,
-    // extraData dikembalikan utuh oleh Mayar (respons + webhook), jadi
-    // `orderNumber` bisa dipakai untuk mencari order tanpa menebak.
     extraData: {
       orderNumber: input.orderNumber,
       provider: "mayar",
@@ -308,18 +306,23 @@ async function createPayment(
     },
   };
 
-  if (input.customer.mobile?.trim()) payload.mobile = input.customer.mobile.trim();
+  if (input.customer.mobile?.trim()) basePayload.mobile = input.customer.mobile.trim();
   if (input.expiresAt && !Number.isNaN(input.expiresAt.getTime())) {
-    payload.expiredAt = input.expiresAt.toISOString();
+    basePayload.expiredAt = input.expiresAt.toISOString();
   }
 
-  const paymentMethod = mapPaymentMethodHint(input.paymentMethodHint);
-  if (paymentMethod) payload.paymentMethod = paymentMethod;
+  // Payment Request API mendukung paymentMethod spesifik dan menghindari
+  // halaman select-channel. Invoice API dipakai bila channel tidak dipilih.
+  const endpoint = paymentMethod ? "/payments/create" : "/invoices/create";
+  const payload: Record<string, unknown> = paymentMethod
+    ? { ...basePayload, amount: Math.round(input.amount), paymentMethod }
+    : { ...basePayload, items, redirectUrl: input.redirectUrl };
 
-  const body = await mayarRequest("/invoices/create", {
+  const body = await mayarRequest(endpoint, {
     method: "POST",
     body: JSON.stringify(payload),
   });
+
   const data = extractData(body);
 
   const id = asString(data.id);
