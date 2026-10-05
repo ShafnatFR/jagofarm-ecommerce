@@ -944,6 +944,19 @@ export default function OrderDetailPage() {
                     {order.paymentStatus}
                   </Badge>
                 </div>
+                <div className="rounded-xl border border-border bg-surface-container-low p-2">
+                  <iframe
+                    title="Pembayaran Mayar"
+                    src={activePaymentUrl}
+                    className="h-[680px] w-full rounded-lg border-0 bg-white"
+                    loading="eager"
+                    allow="payment *"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Jika halaman tidak tampil di dalam kotak, buka pembayaran di tab baru.
+                </p>
                 <a
                   href={activePaymentUrl}
                   target="_blank"
@@ -951,17 +964,8 @@ export default function OrderDetailPage() {
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                 >
                   <Icon name="open_in_new" size={16} />
-                  Buka Halaman Pembayaran
+                  Buka di tab baru
                 </a>
-                <Button
-                  className="w-full"
-                  onClick={() => {
-                    window.location.href = activePaymentUrl;
-                  }}
-                >
-                  <Icon name="credit_card" size={16} className="mr-2" />
-                  Lanjutkan ke Pembayaran
-                </Button>
                 <Button
                   variant="secondary"
                   className="w-full"

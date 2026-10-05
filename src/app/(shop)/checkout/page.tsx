@@ -198,7 +198,11 @@ export default function CheckoutPage() {
 
       const paymentUrl = paymentData?.paymentUrl ?? paymentData?.redirectUrl;
       if (paymentResponse.ok && paymentUrl) {
-        window.location.assign(paymentUrl);
+        if (paymentData?.provider === "mayar") {
+          router.push(`/orders/${orderNumber}?payment=embed`);
+        } else {
+          window.location.assign(paymentUrl);
+        }
         return;
       }
 
