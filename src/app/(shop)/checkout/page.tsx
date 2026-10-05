@@ -32,10 +32,19 @@ interface ShippingOption {
 }
 
 const paymentMethods = [
-  { id: "qris", name: "QRIS", desc: "GoPay, OVO, ShopeePay, DANA", badge: "Verifikasi Otomatis", icon: "qr_code" },
-  { id: "bank_transfer", name: "Transfer Virtual Account (VA)", desc: "BCA, Mandiri, BRI, BNI", badge: null, icon: "account_balance" },
-  { id: "credit_card", name: "Kartu Kredit / Debit Online", desc: "Visa • Mastercard • JCB", badge: null, icon: "credit_card" },
-  { id: "cicilan", name: "Cicilan / PayLater", desc: "Bunga 0% s.d 3 Bulan", badge: "Promo", icon: "payments" },
+  { id: "qris", name: "QRIS", desc: "Scan QRIS langsung di halaman Mayar", badge: "Langsung", icon: "qr_code" },
+  { id: "va/mandiri", name: "VA Mandiri", desc: "Nomor VA Mandiri langsung", badge: null, icon: "account_balance" },
+  { id: "va/bni", name: "VA BNI", desc: "Nomor VA BNI langsung", badge: null, icon: "account_balance" },
+  { id: "va/bri", name: "VA BRI", desc: "Nomor VA BRI langsung", badge: null, icon: "account_balance" },
+  { id: "va/bsi", name: "VA BSI", desc: "Nomor VA BSI langsung", badge: null, icon: "account_balance" },
+  { id: "va/cimb", name: "VA CIMB Niaga", desc: "Nomor VA CIMB langsung", badge: null, icon: "account_balance" },
+  { id: "va/permata", name: "VA Permata", desc: "Nomor VA Permata langsung", badge: null, icon: "account_balance" },
+  { id: "ewallet/gopay", name: "GoPay", desc: "Pembayaran GoPay langsung", badge: null, icon: "account_balance_wallet" },
+  { id: "ewallet/dana", name: "DANA", desc: "Pembayaran DANA langsung", badge: null, icon: "account_balance_wallet" },
+  { id: "ewallet/linkaja", name: "LinkAja", desc: "Pembayaran LinkAja langsung", badge: null, icon: "account_balance_wallet" },
+  { id: "ewallet/shopeepay", name: "ShopeePay", desc: "Pembayaran ShopeePay langsung", badge: null, icon: "account_balance_wallet" },
+  { id: "ewallet/jenius", name: "Jenius", desc: "Pembayaran Jenius langsung", badge: null, icon: "account_balance_wallet" },
+  { id: "outlet/alfamart", name: "Alfamart", desc: "Kode pembayaran Alfamart langsung", badge: null, icon: "store" },
 ];
 
 /** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */

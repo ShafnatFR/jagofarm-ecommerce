@@ -69,18 +69,24 @@ export function isMayarRestrictPaymentMethod(): boolean {
  */
 export function mapPaymentMethodHint(hint?: string): string | undefined {
   if (!isMayarRestrictPaymentMethod()) return undefined;
-  switch ((hint ?? "").trim().toLowerCase()) {
-    case "qris":
-      return "qris";
-    case "ewallet":
-      return "ewallet/gopay";
-    case "cstore":
-      return "outlet/alfamart";
-    case "bank_transfer":
-    case "credit_card":
-    default:
-      return undefined;
-  }
+  const value = (hint ?? "").trim().toLowerCase();
+  const supported = new Set([
+    "qris",
+    "va/bni",
+    "va/bri",
+    "va/mandiri",
+    "va/cimb",
+    "va/permata",
+    "va/bjb",
+    "va/bsi",
+    "ewallet/dana",
+    "ewallet/gopay",
+    "ewallet/linkaja",
+    "ewallet/shopeepay",
+    "ewallet/jenius",
+    "outlet/alfamart",
+  ]);
+  return supported.has(value) ? value : undefined;
 }
 
 // ── Secret webhook ──────────────────────────────────────────────────────────
