@@ -17,6 +17,7 @@ type NominatimAddress = {
   municipality?: string;
   county?: string;
   state?: string;
+  state_district?: string;
   postcode?: string;
 };
 
@@ -50,7 +51,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       detail: detail || payload.display_name || "",
       city: address.city || address.town || address.municipality || address.county || "",
-      province: address.state || "",
+      province: address.state || address.state_district || address.city || "",
       postalCode: address.postcode || "",
     });
   } catch (error) {
