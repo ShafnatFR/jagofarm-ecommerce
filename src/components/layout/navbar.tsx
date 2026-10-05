@@ -1,16 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
 import { useCartStore } from "@/lib/cart-store";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 
 const SEARCH_PLACEHOLDER = "Cari paket tambak, kit hidroponik, sensor IoT, benih...";
 
 export function Navbar() {
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const cartCount = useCartStore((s) => s.totalItems());
+
+  useEffect(() => {
+    const supabase = createClient();
+    let mounted = true;
+
+    void supabase.auth.getUser().then(({ data }) => {
+      if (mounted) setUser(data.user);
+    });
+
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (mounted) setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      mounted = false;
+      authSubscription.subscription.unsubscribe();
+    };
+  }, []);
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUser(null);
+    router.refresh();
+  }
 
   return (
     <>
@@ -100,10 +132,25 @@ export function Navbar() {
             </Link>
             <div className="h-6 w-px bg-outline-variant mx-1 hidden sm:block"></div>
             {/* Account Circle */}
-            <Link href="/account" aria-label="account_circle" className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
-              <span className="material-symbols-outlined text-[28px] text-primary">account_circle</span>
-              <span className="hidden sm:inline-block text-label-lg font-label-lg font-semibold text-primary">Masuk / Daftar</span>
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-1">
+                <Link href="/account" aria-label="Akun saya" className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+                  <span className="material-symbols-outlined text-[28px] text-primary">account_circle</span>
+                  <span className="hidden sm:flex flex-col items-start leading-tight">
+                    <span className="text-label-lg font-label-lg font-semibold text-primary">Akun saya</span>
+                    <span className="max-w-[150px] truncate text-[11px] text-on-surface-variant">{user.email}</span>
+                  </span>
+                </Link>
+                <button type="button" onClick={handleSignOut} className="hidden md:inline-flex text-[11px] font-semibold text-outline hover:text-error px-2 py-1 rounded-full hover:bg-surface-container" aria-label="Keluar">
+                  Keluar
+                </button>
+              </div>
+            ) : (
+              <Link href="/account" aria-label="account_circle" className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+                <span className="material-symbols-outlined text-[28px] text-primary">account_circle</span>
+                <span className="hidden sm:inline-block text-label-lg font-label-lg font-semibold text-primary">Masuk / Daftar</span>
+              </Link>
+            )}
           </div>
         </div>
       </header>
