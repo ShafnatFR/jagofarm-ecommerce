@@ -34,6 +34,7 @@ export function AddressForm({ initialValues, existingCount }: Props) {
   const [locationMessage, setLocationMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [mapUrl, setMapUrl] = useState<string | null>(null);
 
   function update<K extends keyof AddressFormValues>(key: K, value: AddressFormValues[K]) {
     setValues((current) => ({ ...current, [key]: value }));
@@ -65,6 +66,7 @@ export function AddressForm({ initialValues, existingCount }: Props) {
             province: data.province || current.province,
             postalCode: data.postalCode || current.postalCode,
           }));
+          setMapUrl(`https://www.google.com/maps?q=${encodeURIComponent(`${coords.latitude},${coords.longitude}`)}&z=17&output=embed`);
           setLocationMessage("Lokasi ditemukan. Periksa alamat sebelum menyimpan.");
         } catch (caught) {
           setLocationMessage("");
@@ -150,6 +152,21 @@ export function AddressForm({ initialValues, existingCount }: Props) {
             <label htmlFor="postalCode" className="block text-sm font-medium mb-1">Kode Pos <span className="text-red-500">*</span></label>
             <input type="text" id="postalCode" value={values.postalCode} onChange={(event) => update("postalCode", event.target.value)} required pattern="[0-9]{5}" className={inputClass} />
           </div>
+        </div>
+
+        <div className="rounded-lg border border-border overflow-hidden bg-slate-50">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border">
+            <div>
+              <h3 className="text-sm font-semibold">Peta Lokasi</h3>
+              <p className="text-xs text-muted-foreground">Gunakan lokasi saya untuk menampilkan titik GPS di Google Maps.</p>
+            </div>
+            {mapUrl && <a href={mapUrl.replace("&output=embed", "")} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary hover:underline">Buka Maps</a>}
+          </div>
+          {mapUrl ? (
+            <iframe title="Peta lokasi alamat" src={mapUrl} className="h-64 w-full border-0" loading="lazy" allowFullScreen />
+          ) : (
+            <div className="flex h-40 items-center justify-center px-6 text-center text-sm text-muted-foreground">Peta akan muncul setelah lokasi GPS ditemukan.</div>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
