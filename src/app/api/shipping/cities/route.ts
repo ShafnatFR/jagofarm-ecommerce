@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       // Provinsi tidak dikenal: kembalikan daftar kosong (tidak bikin form error)
     }
 
-    let cities = await getCities(provinceId);
+    let cities = await getCities(provinceId, searchQuery);
 
     if (searchQuery) {
       cities = cities.filter((city) =>

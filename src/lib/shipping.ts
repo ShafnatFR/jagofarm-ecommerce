@@ -327,8 +327,12 @@ export async function getProvinces(): Promise<Province[]> {
   if (provincesCache) return provincesCache;
 
   try {
-    const provinces = await rajaOngkirFetch<Province[]>("/province");
-    provincesCache = provinces ?? [];
+    const rows = await rajaOngkirFetch<Array<{ id?: number; name?: string }>>(
+      "/destination/province"
+    );
+    provincesCache = (rows ?? [])
+      .filter((row) => row.id && row.name)
+      .map((row) => ({ province_id: String(row.id), province: String(row.name) }));
     return provincesCache;
   } catch (error) {
     console.error("RajaOngkir provinces lookup failed:", error);
@@ -338,21 +342,50 @@ export async function getProvinces(): Promise<Province[]> {
 }
 
 /** Daftar kota, opsional difilter province_id */
-export async function getCities(provinceId?: string): Promise<City[]> {
+export async function getCities(
+  provinceId?: string,
+  searchTerm?: string
+): Promise<City[]> {
   if (USE_MOCK) {
     if (process.env.NODE_ENV === "production") throw new Error("RajaOngkir belum dikonfigurasi untuk production");
     if (!provinceId) return MOCK_CITIES;
     return MOCK_CITIES.filter((c) => c.province_id === provinceId);
   }
 
-  const cacheKey = provinceId ?? "__all__";
+  const cacheKey = `${provinceId ?? "__all__"}:${searchTerm?.trim().toLowerCase() ?? ""}`;
   const cached = citiesByProvinceCache.get(cacheKey);
   if (cached) return cached;
 
   try {
-    const query = provinceId ? `?province=${encodeURIComponent(provinceId)}` : "";
-    const cities = await rajaOngkirFetch<City[]>(`/city${query}`);
-    const list = cities ?? [];
+    const province = provinceId ? await resolveProvince(provinceId) : null;
+    const query = searchTerm?.trim() || province?.province || "";
+    const endpoint = `/destination/domestic-destination?search=${encodeURIComponent(query)}&limit=100&offset=0`;
+    const rows = await rajaOngkirFetch<Array<{
+      id?: number;
+      province_name?: string;
+      city_name?: string;
+      zip_code?: string;
+    }>>(endpoint);
+    const seen = new Set<string>();
+    const list: City[] = [];
+    for (const row of rows ?? []) {
+      const rowProvince = String(row.province_name ?? "").trim();
+      if (
+        province &&
+        normalizeCityName(rowProvince) !== normalizeCityName(province.province)
+      ) continue;
+      const name = String(row.city_name ?? "").trim();
+      if (!row.id || !name || seen.has(name.toLowerCase())) continue;
+      seen.add(name.toLowerCase());
+      list.push({
+        city_id: String(row.id),
+        province_id: provinceId ?? "",
+        province: row.province_name ?? province?.province ?? "",
+        type: "",
+        city_name: name,
+        postal_code: row.zip_code ?? "",
+      });
+    }
     citiesByProvinceCache.set(cacheKey, list);
     if (!provinceId) allCitiesCache = list;
     return list;
