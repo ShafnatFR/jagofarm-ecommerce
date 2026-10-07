@@ -772,7 +772,7 @@ export default function OrderDetailPage() {
         </Card>
       )}
 
-      <div className="grid gap-6">
+      <div className="grid items-start gap-6 md:grid-cols-2">
         {/* Items */}
         <div className="space-y-4">
           <Card>
@@ -974,9 +974,9 @@ export default function OrderDetailPage() {
         </div>
 
         {/* Payment workspace */}
-        <div className="grid items-start gap-6 md:grid-cols-2">
-          <div className="space-y-4">
-          <Card>
+        <div className="contents">
+          <div className="contents">
+          <Card className="md:col-start-1 md:row-start-2">
             <CardHeader>
               <CardTitle className="text-lg">Ringkasan</CardTitle>
             </CardHeader>
@@ -1003,7 +1003,7 @@ export default function OrderDetailPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="md:col-start-1 md:row-start-3">
             <CardHeader>
               <CardTitle className="text-lg">Pembayaran</CardTitle>
             </CardHeader>
@@ -1071,7 +1071,7 @@ export default function OrderDetailPage() {
             </CardContent>
           </Card>
 
-          <div className="space-y-2">
+          <div className="space-y-2 md:col-start-1 md:row-start-4">
             {isPending && (
               <Button
                 variant="destructive"
@@ -1085,7 +1085,7 @@ export default function OrderDetailPage() {
           </div>
 
           {showPaymentPanel && activePaymentUrl && (
-            <Card>
+            <Card className="md:col-start-2 md:row-start-1 md:row-span-4">
               <CardHeader>
                 <CardTitle className="text-lg">Pembayaran Mayar</CardTitle>
               </CardHeader>
