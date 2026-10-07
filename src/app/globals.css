@@ -1,95 +1,73 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* New Theme Colors */
-  --color-background: #f9f9ff;
-  --color-secondary-fixed-dim: #fdba45;
-  --color-inverse-surface: #263143;
-  --color-tertiary-fixed: #6ffbbe;
-  --color-primary-fixed-dim: #9ed1bd;
-  --color-on-primary: #ffffff;
-  --color-on-tertiary: #ffffff;
-  --color-on-secondary-fixed-variant: #604100;
-  --color-on-surface-variant: #404945;
-  --color-on-error-container: #93000a;
-  --color-on-tertiary-fixed: #002113;
-  --color-primary: #003629;
-  --color-error-container: #ffdad6;
-  --color-on-primary-fixed-variant: #1d4f40;
-  --color-on-error: #ffffff;
-  --color-on-primary-fixed: #002117;
-  --color-secondary: #7f5700;
-  --color-on-tertiary-container: #32c98f;
-  --color-secondary-container: #fdba45;
-  --color-error: #ba1a1a;
-  --color-on-tertiary-fixed-variant: #005236;
-  --color-surface-tint: #376757;
-  --color-on-secondary: #ffffff;
-  --color-surface-bright: #f9f9ff;
-  --color-outline: #707974;
+  /* Simplified Green and White Theme */
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-bright: #ffffff;
   --color-surface-container-lowest: #ffffff;
-  --color-primary-fixed: #baeed9;
-  --color-surface-container-high: #dee8ff;
-  --color-tertiary: #003623;
-  --color-secondary-fixed: #ffdeae;
-  --color-on-background: #111c2d;
-  --color-on-secondary-container: #6f4b00;
-  --color-tertiary-container: #004f35;
-  --color-inverse-on-surface: #ecf1ff;
-  --color-surface-container-highest: #d8e3fb;
-  --color-surface-variant: #d8e3fb;
-  --color-surface-container-low: #f0f3ff;
-  --color-inverse-primary: #9ed1bd;
-  --color-on-secondary-fixed: #281900;
-  --color-surface: #f9f9ff;
-  --color-on-primary-container: #8abda9;
-  --color-on-surface: #111c2d;
-  --color-surface-dim: #cfdaf2;
-  --color-primary-container: #1b4d3e;
-  --color-tertiary-fixed-dim: #4edea3;
-  --color-outline-variant: #c0c9c3;
-  --color-surface-container: #e7eeff;
+  --color-surface-container-low: #ffffff;
+  --color-surface-container: #ffffff;
+  --color-surface-container-high: #ffffff;
+  --color-surface-container-highest: #ffffff;
+  --color-surface-variant: #ffffff;
+  --color-surface-dim: #ffffff;
 
-  /* Stitch Design: Forest Green Scale */
-  --color-forest-50: #f0f7f4;
-  --color-forest-100: #dceee6;
-  --color-forest-200: #bbded0;
-  --color-forest-300: #8ec4b2;
-  --color-forest-400: #5da590;
-  --color-forest-500: #3e8873;
-  --color-forest-600: #2e6c5b;
-  --color-forest-700: #25574a;
-  --color-forest-800: #1b4d3e;
-  --color-forest-900: #163f33;
-  --color-forest-950: #0b241d;
+  --color-on-background: #15803d;
+  --color-on-surface: #15803d;
+  --color-on-surface-variant: #15803d;
+  --color-inverse-on-surface: #ffffff;
 
-  /* Stitch Design: Mint Scale */
-  --color-mint-50: #f3faf6;
-  --color-mint-100: #e5f5ed;
-  --color-mint-200: #ccebdc;
-  --color-mint-300: #a3d9c0;
-  --color-mint-400: #6fbe9b;
-  --color-mint-500: #46a17b;
-  --color-mint-600: #338161;
+  --color-primary: #15803d;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #15803d;
+  --color-on-primary-container: #ffffff;
+  --color-inverse-primary: #ffffff;
+  --color-primary-fixed: #15803d;
+  --color-primary-fixed-dim: #15803d;
+  --color-on-primary-fixed: #ffffff;
+  --color-on-primary-fixed-variant: #ffffff;
 
-  /* Stitch Design: Custom Shadows */
-  --shadow-soft: 0 4px 20px -2px rgba(27, 77, 62, 0.06);
-  --shadow-card-hover: 0 12px 28px -4px rgba(27, 77, 62, 0.12);
+  --color-secondary: #ffffff;
+  --color-on-secondary: #15803d;
+  --color-secondary-container: #ffffff;
+  --color-on-secondary-container: #15803d;
+  --color-secondary-fixed: #ffffff;
+  --color-secondary-fixed-dim: #ffffff;
+  --color-on-secondary-fixed: #15803d;
+  --color-on-secondary-fixed-variant: #15803d;
+
+  --color-tertiary: #ffffff;
+  --color-on-tertiary: #15803d;
+  --color-tertiary-container: #ffffff;
+  --color-on-tertiary-container: #15803d;
+  --color-tertiary-fixed: #ffffff;
+  --color-tertiary-fixed-dim: #ffffff;
+  --color-on-tertiary-fixed: #15803d;
+  --color-on-tertiary-fixed-variant: #15803d;
+
+  --color-error: #ef4444;
+  --color-on-error: #ffffff;
+  --color-error-container: #ef4444;
+  --color-on-error-container: #ffffff;
+
+  --color-outline: #15803d;
+  --color-outline-variant: #15803d;
 
   /* Legacy App Theme Variables */
-  --color-foreground: #111c2d;
+  --color-foreground: #15803d;
   --color-primary-foreground: #ffffff;
-  --color-secondary-foreground: #111c2d;
-  --color-accent: #fdba45;
-  --color-accent-foreground: #111c2d;
-  --color-muted: #f0f3ff;
-  --color-muted-foreground: #404945;
+  --color-secondary-foreground: #15803d;
+  --color-accent: #15803d;
+  --color-accent-foreground: #ffffff;
+  --color-muted: #ffffff;
+  --color-muted-foreground: #15803d;
   --color-card: #ffffff;
-  --color-card-foreground: #111c2d;
-  --color-border: #c0c9c3;
-  --color-input: #c0c9c3;
-  --color-ring: #003629;
-  --color-destructive: #ba1a1a;
+  --color-card-foreground: #15803d;
+  --color-border: #15803d;
+  --color-input: #15803d;
+  --color-ring: #15803d;
+  --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
   
   --radius: 0.75rem;
