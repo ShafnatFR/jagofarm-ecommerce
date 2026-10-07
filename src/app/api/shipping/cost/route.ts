@@ -161,9 +161,11 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Shipping cost error:", error);
+    const message = error instanceof Error ? error.message : "Gagal menghitung biaya pengiriman";
+    const isClientInputError = /tujuan|area id|destination|no costs|tidak ditemukan/i.test(message);
     return NextResponse.json(
-      { error: "Gagal menghitung biaya pengiriman" },
-      { status: 500 }
+      { error: isClientInputError ? message : "Gagal menghitung biaya pengiriman" },
+      { status: isClientInputError ? 400 : 503 }
     );
   }
 }
