@@ -291,7 +291,7 @@ export default function CheckoutPage() {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground shadow-md ring-4 ring-primary/10">
             2
           </div>
-          <span className="text-xs font-bold text-primary sm:text-sm">2. Pembayaran Mayar</span>
+          <span className="text-xs font-bold text-primary sm:text-sm">2. Pilih Kurir</span>
         </div>
         <div className="mx-4 h-0.5 flex-1 bg-border" />
         {/* Step 3: Pending */}
@@ -299,7 +299,7 @@ export default function CheckoutPage() {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary font-bold text-muted-foreground">
             3
           </div>
-          <span className="text-xs font-medium text-muted-foreground sm:text-sm">3. Pesanan Selesai</span>
+          <span className="text-xs font-medium text-muted-foreground sm:text-sm">3. Pembayaran Mayar</span>
         </div>
       </div>
 
@@ -399,8 +399,8 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="pt-4">
-                    <Button onClick={() => void submitOrder()} disabled={!selectedAddress || loadingShip || !selectedOption}>
-                      {loadingShip ? "Menghitung ongkir..." : "Buat Pesanan & Bayar"}
+                    <Button onClick={() => setStep(2)} disabled={!selectedAddress || loadingShip}>
+                      {loadingShip ? "Menghitung ongkir..." : "Lanjut pilih kurir"}
                       {!loadingShip && <Icon name="arrow_forward" size={16} className="ml-1" />}
                     </Button>
                   </div>
@@ -410,7 +410,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Step 2: Shipping */}
-          {false && step === 2 && (
+          {step === 2 && (
             <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
@@ -504,7 +504,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Step 3: Payment */}
-          {false && step === 3 && (
+          {step === 3 && (
             <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
