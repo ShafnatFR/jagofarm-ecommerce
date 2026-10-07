@@ -772,9 +772,9 @@ export default function OrderDetailPage() {
         </Card>
       )}
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid gap-6">
         {/* Items */}
-        <div className="md:col-span-2 space-y-4">
+        <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Item Pesanan</CardTitle>
@@ -819,13 +819,6 @@ export default function OrderDetailPage() {
                             </span>
                           </>
                         )}
-                        <Button
-                          size="sm"
-                          variant="accent"
-                          onClick={() => handleReorderItem(item)}
-                        >
-                          <Icon name="shopping_cart" size={12} className="mr-1" /> Beli Lagi
-                        </Button>
                       </div>
                     </div>
                     <p className="font-semibold">{formatPrice(item.total)}</p>
@@ -918,7 +911,7 @@ export default function OrderDetailPage() {
           )}
 
           {/* Panel pembayaran provider redirect-based (mis. Mayar) */}
-          {showPaymentPanel && activePaymentUrl && (
+          {false && showPaymentPanel && activePaymentUrl && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Pembayaran Online</CardTitle>
@@ -927,27 +920,27 @@ export default function OrderDetailPage() {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Penyedia</span>
                   <span className="font-medium">
-                    {providerLabel(paymentProviderId)}
+                    {providerLabel(paymentProviderId ?? undefined)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Metode</span>
                   <span className="font-medium uppercase">
-                    {order.paymentMethod || "Pilih di halaman pembayaran"}
+                    {order?.paymentMethod || "Pilih di halaman pembayaran"}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Status</span>
                   <Badge
-                    variant={order.paymentStatus === "paid" ? "default" : "secondary"}
+                    variant={order?.paymentStatus === "paid" ? "default" : "secondary"}
                   >
-                    {order.paymentStatus}
+                    {order?.paymentStatus}
                   </Badge>
                 </div>
                 <div className="rounded-xl border border-border bg-surface-container-low p-2">
                   <iframe
                     title="Pembayaran Mayar"
-                    src={activePaymentUrl}
+                    src={activePaymentUrl ?? ""}
                     className="h-[680px] w-full rounded-lg border-0 bg-white"
                     loading="eager"
                     allow="payment *"
@@ -958,7 +951,7 @@ export default function OrderDetailPage() {
                   Jika halaman tidak tampil di dalam kotak, buka pembayaran di tab baru.
                 </p>
                 <a
-                  href={activePaymentUrl}
+                  href={activePaymentUrl ?? ""}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
@@ -980,8 +973,9 @@ export default function OrderDetailPage() {
           )}
         </div>
 
-        {/* Summary */}
-        <div className="space-y-4">
+        {/* Payment workspace */}
+        <div className="grid items-start gap-6 md:grid-cols-2">
+          <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Ringkasan</CardTitle>
@@ -1078,42 +1072,6 @@ export default function OrderDetailPage() {
           </Card>
 
           <div className="space-y-2">
-            {canReorder && (
-              <Button
-                variant="secondary"
-                className="w-full"
-                onClick={handleReorderAll}
-              >
-                <Icon name="shopping_cart" size={16} className="mr-2" /> Beli Lagi Semua Item
-              </Button>
-            )}
-
-            {canPay && (
-              <Button className="w-full" onClick={() => void handlePay()} disabled={paying}>
-                {paying ? (
-                  <>
-                    <Icon name="progress_activity" size={16} className="mr-2 animate-spin" /> Memproses...
-                  </>
-                ) : (
-                  <>
-                    <Icon name="credit_card" size={16} className="mr-2" /> Bayar Sekarang
-                  </>
-                )}
-              </Button>
-            )}
-
-            {isPending && !showPaymentPanel && (
-              <Button
-                variant="secondary"
-                className="w-full"
-                onClick={() => void refreshStatus(true)}
-                disabled={refreshing}
-              >
-                <Icon name="refresh" size={16} />
-                Cek Status Pembayaran
-              </Button>
-            )}
-
             {isPending && (
               <Button
                 variant="destructive"
@@ -1125,7 +1083,34 @@ export default function OrderDetailPage() {
               </Button>
             )}
           </div>
+
+          {showPaymentPanel && activePaymentUrl && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Pembayaran Mayar</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <iframe
+                  title="Pembayaran Mayar"
+                  src={activePaymentUrl}
+                  className="h-[680px] w-full rounded-lg border-0 bg-white"
+                  loading="eager"
+                  allow="payment *"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+                <a
+                  href={activePaymentUrl ?? ""}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                >
+                  <Icon name="open_in_new" size={16} /> Buka di tab baru
+                </a>
+              </CardContent>
+            </Card>
+          )}
         </div>
+      </div>
       </div>
 
       <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
