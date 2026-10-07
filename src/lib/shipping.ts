@@ -69,6 +69,8 @@ export interface DestinationInput {
   destinationCity?: string | null;
   /** city_id RajaOngkir (numerik) kalau sudah diketahui */
   destinationCityId?: string | null;
+  /** district_id RajaOngkir/aggregator jika tersedia */
+  destinationDistrictId?: string | null;
 }
 
 export interface ResolvedDestination {
@@ -124,7 +126,7 @@ export function normalizeCouriers(input?: unknown): string[] {
 
   const cleaned = raw
     .map((c) => c.trim().toLowerCase())
-    .filter((c) => c.length > 0);
+    .filter((c) => c.length > 0 && DEFAULT_COURIERS.includes(c));
 
   return cleaned.length > 0 ? Array.from(new Set(cleaned)) : DEFAULT_COURIERS;
 }
@@ -318,7 +320,10 @@ let provincesCache: Province[] | null = null;
 
 /** Daftar provinsi (mock atau RajaOngkir) */
 export async function getProvinces(): Promise<Province[]> {
-  if (USE_MOCK) return MOCK_PROVINCES;
+  if (USE_MOCK) {
+    if (process.env.NODE_ENV === "production") throw new Error("RajaOngkir belum dikonfigurasi untuk production");
+    return MOCK_PROVINCES;
+  }
   if (provincesCache) return provincesCache;
 
   try {
@@ -326,7 +331,8 @@ export async function getProvinces(): Promise<Province[]> {
     provincesCache = provinces ?? [];
     return provincesCache;
   } catch (error) {
-    console.error("RajaOngkir provinces lookup failed, using mock:", error);
+    console.error("RajaOngkir provinces lookup failed:", error);
+    if (process.env.NODE_ENV === "production") throw error;
     return MOCK_PROVINCES;
   }
 }
@@ -334,6 +340,7 @@ export async function getProvinces(): Promise<Province[]> {
 /** Daftar kota, opsional difilter province_id */
 export async function getCities(provinceId?: string): Promise<City[]> {
   if (USE_MOCK) {
+    if (process.env.NODE_ENV === "production") throw new Error("RajaOngkir belum dikonfigurasi untuk production");
     if (!provinceId) return MOCK_CITIES;
     return MOCK_CITIES.filter((c) => c.province_id === provinceId);
   }
@@ -350,7 +357,8 @@ export async function getCities(provinceId?: string): Promise<City[]> {
     if (!provinceId) allCitiesCache = list;
     return list;
   } catch (error) {
-    console.error("RajaOngkir cities lookup failed, using mock:", error);
+    console.error("RajaOngkir cities lookup failed:", error);
+    if (process.env.NODE_ENV === "production") throw error;
     if (!provinceId) return MOCK_CITIES;
     return MOCK_CITIES.filter((c) => c.province_id === provinceId);
   }
@@ -497,10 +505,16 @@ export async function getShippingOptions(
     );
 
   if (USE_MOCK) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("RajaOngkir belum dikonfigurasi untuk production");
+    }
     return { options: mocked(), source: "mock", destination: resolved };
   }
 
   if (!resolved.cityId) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("Kota tujuan tidak memiliki area ID RajaOngkir yang valid");
+    }
     // Kota tujuan tidak bisa di-resolve ke city_id RajaOngkir
     return { options: mocked(), source: "mock", destination: resolved };
   }
@@ -516,7 +530,8 @@ export async function getShippingOptions(
     if (options.length === 0) throw new Error("RajaOngkir returned no costs");
     return { options, source: "rajaongkir", destination: resolved };
   } catch (error) {
-    console.error("RajaOngkir cost lookup failed, using mock:", error);
+    console.error("RajaOngkir cost lookup failed:", error);
+    if (process.env.NODE_ENV === "production") throw error;
     return { options: mocked(), source: "mock", destination: resolved };
   }
 }

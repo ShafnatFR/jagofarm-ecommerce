@@ -62,6 +62,9 @@ export interface Product {
   discountPrice: Decimal | null;
   sku: string;
   weightGram: number;
+  lengthCm: number | null;
+  widthCm: number | null;
+  heightCm: number | null;
   stock: number;
   isActive: boolean;
   isFeatured: boolean;
@@ -104,8 +107,11 @@ export interface Address {
   recipientName: string;
   phone: string;
   province: string;
+  provinceId: string | null;
   city: string;
+  cityId: string | null;
   district: string;
+  districtId: string | null;
   postalCode: string;
   detail: string | null;
   isDefault: boolean;

@@ -8,19 +8,20 @@ import {
   normalizeCouriers,
   type ShippingOptionResult,
 } from "@/lib/shipping";
+import { calculateChargeableWeight, type ShippingQuoteItem } from "@/lib/shipping-quote";
 
 /** Ambil nama kota dari alamat milik user (kalau yang dikirim ternyata UUID alamat). */
-async function resolveCityFromAddress(addressId: string): Promise<string | null> {
+async function resolveCityFromAddress(addressId: string): Promise<{ city: string; cityId: string | null; districtId: string | null } | null> {
   try {
     const session = await auth();
     if (!session?.user?.id) return null;
 
     const address = await prisma.address.findFirst({
       where: { id: addressId, userId: session.user.id },
-      select: { city: true },
+      select: { city: true, cityId: true, districtId: true },
     });
 
-    return address?.city ?? null;
+    return address ? { city: address.city, cityId: address.cityId, districtId: address.districtId } : null;
   } catch (error) {
     console.error("Resolve address city failed:", error);
     return null;
@@ -63,9 +64,11 @@ export async function POST(request: NextRequest) {
     if (!destinationCity && !destinationCityId) {
       if (isUuid(legacyDestination)) {
         // UUID alamat TIDAK boleh dikirim ke RajaOngkir -> resolve ke nama kota.
-        const cityName = await resolveCityFromAddress(legacyDestination);
-        if (cityName) {
-          destinationCity = cityName;
+        const address = await resolveCityFromAddress(legacyDestination);
+        if (address) {
+          destinationCity = address.city;
+          body.destinationCityId = address.cityId;
+          body.destinationDistrictId = address.districtId;
         } else {
           return NextResponse.json(
             {
@@ -90,13 +93,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const dimensions = Array.isArray(body.dimensions)
+      ? body.dimensions as ShippingQuoteItem[]
+      : [];
+    const weightQuote = dimensions.length > 0
+      ? calculateChargeableWeight(dimensions, Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000))
+      : { actualWeightGram: Math.round(weight), volumetricWeightGram: 0, chargeableWeightGram: Math.round(weight), divisor: Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000) };
+
     const { options, source, destination } = await getShippingOptions(
       WAREHOUSE.CITY_ID,
       {
         destinationCity: destinationCity || null,
-        destinationCityId: destinationCityId || null,
+        destinationCityId: readString(body.destinationCityId) || destinationCityId || null,
+        destinationDistrictId: readString(body.destinationDistrictId) || null,
       },
-      Math.round(weight),
+      weightQuote.chargeableWeightGram,
       couriers
     );
 
@@ -109,7 +120,8 @@ export async function POST(request: NextRequest) {
       costs: results,
       source,
       destination,
-      weight: Math.round(weight),
+      weight: weightQuote.chargeableWeightGram,
+      weightBreakdown: weightQuote,
       couriers,
     });
   } catch (error) {

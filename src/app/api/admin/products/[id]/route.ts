@@ -27,6 +27,9 @@ const PATCHABLE_FIELDS = [
   "discountPrice",
   "sku",
   "weightGram",
+  "lengthCm",
+  "widthCm",
+  "heightCm",
   "stock",
   "isActive",
   "isFeatured",
@@ -53,7 +56,7 @@ function pickProductFields(input: unknown) {
       else delete out[key];
     }
   }
-  for (const key of ["weightGram", "stock"]) {
+  for (const key of ["weightGram", "stock", "lengthCm", "widthCm", "heightCm"]) {
     const value = out[key];
     if (typeof value === "string") {
       const num = Number(value);

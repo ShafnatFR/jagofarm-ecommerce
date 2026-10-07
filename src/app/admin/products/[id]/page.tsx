@@ -29,7 +29,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const [images, setImages] = useState<string[]>([]);
   const [form, setForm] = useState({
     name: "", slug: "", category: "", description: "", shortDescription: "",
-    basePrice: "", discountPrice: "", sku: "", weight: "", stock: "", featured: false, tags: [] as string[],
+    basePrice: "", discountPrice: "", sku: "", weight: "", length: "", width: "", height: "", stock: "", featured: false, tags: [] as string[],
   });
   const [tagInput, setTagInput] = useState("");
 
@@ -50,6 +50,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         discountPrice: product.discountPrice ? String(product.discountPrice) : "",
         sku: product.sku ?? "",
         weight: product.weightGram != null ? String(product.weightGram) : "",
+        length: product.lengthCm != null ? String(product.lengthCm) : "",
+        width: product.widthCm != null ? String(product.widthCm) : "",
+        height: product.heightCm != null ? String(product.heightCm) : "",
         stock: product.stock != null ? String(product.stock) : "",
         featured: product.isFeatured ?? product.featured ?? false,
         tags: product.tags ?? [],
@@ -83,11 +86,15 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     const basePrice = Number(form.basePrice);
     const weightGram = Number(form.weight);
     const stock = Number(form.stock);
+    const lengthCm = Number(form.length);
+    const widthCm = Number(form.width);
+    const heightCm = Number(form.height);
 
     if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
     if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
     if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
     if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
+    if (![lengthCm, widthCm, heightCm].every((value) => Number.isFinite(value) && value > 0)) { setError("Dimensi paket wajib diisi dalam cm."); return; }
     if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
 
     setSaving(true);
@@ -102,6 +109,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         discountPrice: Number(form.discountPrice) > 0 ? Number(form.discountPrice) : null,
         sku: form.sku.trim(),
         weightGram: Math.trunc(weightGram),
+        lengthCm: Math.trunc(lengthCm),
+        widthCm: Math.trunc(widthCm),
+        heightCm: Math.trunc(heightCm),
         stock: Math.trunc(stock),
         isFeatured: form.featured,
         tags: form.tags,
@@ -203,6 +213,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                   <Input label="Harga Diskon (Rp)" type="number" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
                   <Input label="SKU" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
                   <Input label="Berat (gram)" type="number" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
+                  <Input label="Panjang paket (cm)" type="number" value={form.length} onChange={(e) => updateField("length", e.target.value)} required />
+                  <Input label="Lebar paket (cm)" type="number" value={form.width} onChange={(e) => updateField("width", e.target.value)} required />
+                  <Input label="Tinggi paket (cm)" type="number" value={form.height} onChange={(e) => updateField("height", e.target.value)} required />
                   <Input label="Stok" type="number" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
                 </div>
               </CardContent>
