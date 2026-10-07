@@ -112,6 +112,7 @@ export const checkoutSchema = z.object({
       "ewallet",
       "qris",
       "cstore",
+      "mayar",
     ],
     { message: "Metode pembayaran wajib dipilih" }
   ),

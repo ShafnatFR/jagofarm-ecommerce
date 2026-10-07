@@ -33,21 +33,8 @@ interface ShippingOption {
   etd: string;
 }
 
-const paymentMethods = [
-  { id: "qris", name: "QRIS", desc: "Scan QRIS langsung di halaman Mayar", badge: "Langsung", icon: "qr_code" },
-  { id: "va/mandiri", name: "VA Mandiri", desc: "Nomor VA Mandiri langsung", badge: null, icon: "account_balance" },
-  { id: "va/bni", name: "VA BNI", desc: "Nomor VA BNI langsung", badge: null, icon: "account_balance" },
-  { id: "va/bri", name: "VA BRI", desc: "Nomor VA BRI langsung", badge: null, icon: "account_balance" },
-  { id: "va/bsi", name: "VA BSI", desc: "Nomor VA BSI langsung", badge: null, icon: "account_balance" },
-  { id: "va/cimb", name: "VA CIMB Niaga", desc: "Nomor VA CIMB langsung", badge: null, icon: "account_balance" },
-  { id: "va/permata", name: "VA Permata", desc: "Nomor VA Permata langsung", badge: null, icon: "account_balance" },
-  { id: "ewallet/gopay", name: "GoPay", desc: "Pembayaran GoPay langsung", badge: null, icon: "account_balance_wallet" },
-  { id: "ewallet/dana", name: "DANA", desc: "Pembayaran DANA langsung", badge: null, icon: "account_balance_wallet" },
-  { id: "ewallet/linkaja", name: "LinkAja", desc: "Pembayaran LinkAja langsung", badge: null, icon: "account_balance_wallet" },
-  { id: "ewallet/shopeepay", name: "ShopeePay", desc: "Pembayaran ShopeePay langsung", badge: null, icon: "account_balance_wallet" },
-  { id: "ewallet/jenius", name: "Jenius", desc: "Pembayaran Jenius langsung", badge: null, icon: "account_balance_wallet" },
-  { id: "outlet/alfamart", name: "Alfamart", desc: "Kode pembayaran Alfamart langsung", badge: null, icon: "store" },
-];
+const MAYAR_PAYMENT_LABEL = "Pembayaran via Mayar";
+
 
 /** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */
 function errorMessage(error: unknown): string {
@@ -73,7 +60,6 @@ export default function CheckoutPage() {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
   const [selectedShipping, setSelectedShipping] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState("qris");
   const [notes, setNotes] = useState("");
   const [loadingAddr, setLoadingAddr] = useState(true);
   const [loadingShip, setLoadingShip] = useState(false);
@@ -161,7 +147,6 @@ export default function CheckoutPage() {
     const option = shippingOptions[selectedShipping];
     if (!selectedAddress) { toast({ variant: "destructive", title: "Alamat belum dipilih" }); setStep(1); return; }
     if (!option) { toast({ variant: "destructive", title: "Kurir belum dipilih" }); setStep(2); return; }
-    if (!selectedPayment) { toast({ variant: "destructive", title: "Metode pembayaran belum dipilih" }); return; }
 
     setSubmitting(true);
     setError("");
@@ -175,7 +160,7 @@ export default function CheckoutPage() {
           shippingService: option.service,
           shippingCost: Number(option.cost) || 0,
           shippingEtd: option.etd || undefined,
-          paymentMethod: selectedPayment,
+          paymentMethod: "mayar",
           couponCode: serverCart?.coupon && !serverCart.couponError ? serverCart.coupon.code : "",
           notes: notes.trim() || undefined,
         }),
@@ -519,39 +504,18 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                {paymentMethods.map((m) => (
-                  <label
-                    key={m.id}
-                    className={cn(
-                      "block cursor-pointer rounded-xl border-2 p-4 transition",
-                      selectedPayment === m.id
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="radio"
-                          name="payment"
-                          checked={selectedPayment === m.id}
-                          onChange={() => setSelectedPayment(m.id)}
-                          className="h-4 w-4 border-border text-primary focus:ring-primary"
-                        />
-                        <span className="text-sm font-bold">{m.name}</span>
-                      </div>
-                      {m.badge ? (
-                        <span className="rounded bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{m.badge}</span>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">{m.desc}</span>
-                      )}
-                    </div>
-                    {m.badge && (
-                      <div className="mt-2 pl-7 text-xs text-muted-foreground">{m.desc}</div>
-                    )}
-                  </label>
-                ))}
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <Icon name="lock" size={18} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{MAYAR_PAYMENT_LABEL}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Pilihan QRIS, virtual account, e-wallet, dan channel lain tersedia di halaman pembayaran Mayar.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-2 pt-4">
