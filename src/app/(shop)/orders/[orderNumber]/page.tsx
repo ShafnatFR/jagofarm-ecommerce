@@ -774,8 +774,8 @@ export default function OrderDetailPage() {
 
       <div className="grid items-start gap-6 md:grid-cols-2">
         {/* Items */}
-        <div className="space-y-4">
-          <Card>
+        <div className="flex flex-col space-y-4">
+          <Card className="order-2">
             <CardHeader>
               <CardTitle className="text-lg">Item Pesanan</CardTitle>
             </CardHeader>
@@ -829,7 +829,7 @@ export default function OrderDetailPage() {
           </Card>
 
           {/* Shipping Address */}
-          <Card>
+          <Card className="order-1">
             <CardHeader>
               <CardTitle className="text-lg">Alamat Pengiriman</CardTitle>
             </CardHeader>
@@ -1071,7 +1071,7 @@ export default function OrderDetailPage() {
             </CardContent>
           </Card>
 
-          <div className="space-y-2 md:col-start-1 md:row-start-4">
+          <div className="space-y-2 md:col-start-2 md:row-start-5">
             {isPending && (
               <Button
                 variant="destructive"
