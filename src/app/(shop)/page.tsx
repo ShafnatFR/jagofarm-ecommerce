@@ -27,7 +27,7 @@ export default async function HomePage() {
         _count: { select: { reviews: { where: { isApproved: true } } } },
       },
     }),
-    prisma.$queryRaw<{id:string;name:string;slug:string;base_price:any;discount_price:any;image_url:string|null;category_name:string}[]>`
+    prisma.$queryRaw<{id:string;name:string;slug:string;base_price:unknown;discount_price:unknown;image_url:string|null;category_name:string}[]>`
       SELECT p.id, p.name, p.slug, p.base_price, p.discount_price,
              pi.url as image_url, c.name as category_name
       FROM products p

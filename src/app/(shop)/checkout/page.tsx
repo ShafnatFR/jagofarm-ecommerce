@@ -107,6 +107,7 @@ export default function CheckoutPage() {
       if (!cancelled) setReady(true);
     });
     // Cart dan alamat independen; ambil bersamaan agar alamat tidak menunggu cart.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- memulai fetch alamat saat checkout dimuat
     void fetchAddresses();
     return () => { cancelled = true; };
   }, [hydrate, fetchAddresses]);
@@ -152,6 +153,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     const address = addresses.find((a) => a.id === selectedAddress);
     if (!address) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- quote ongkir disinkronkan ke alamat terpilih
     void fetchShipping(address);
   }, [selectedAddress, addresses, fetchShipping]);
 

@@ -93,12 +93,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const dimensions = Array.isArray(body.dimensions)
-      ? body.dimensions as ShippingQuoteItem[]
+    let dimensions = Array.isArray(body.dimensions)
+      ? (body.dimensions as ShippingQuoteItem[])
       : [];
+
+    // Checkout tidak boleh menentukan sendiri berat/dimensi quote. Jika user
+    // terautentikasi, ambil paket dari cart server sebagai sumber kebenaran.
+    const session = await auth();
+    if (session?.user?.id) {
+      const cart = await prisma.cart.findUnique({
+        where: { userId: session.user.id },
+        include: {
+          items: {
+            select: {
+              quantity: true,
+              product: {
+                select: {
+                  weightGram: true,
+                  lengthCm: true,
+                  widthCm: true,
+                  heightCm: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      if (cart?.items.length) {
+        dimensions = cart.items.map((item) => ({
+          quantity: item.quantity,
+          weightGram: item.product.weightGram,
+          lengthCm: item.product.lengthCm,
+          widthCm: item.product.widthCm,
+          heightCm: item.product.heightCm,
+        }));
+      }
+    }
+
+    const divisor = Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000);
     const weightQuote = dimensions.length > 0
-      ? calculateChargeableWeight(dimensions, Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000))
-      : { actualWeightGram: Math.round(weight), volumetricWeightGram: 0, chargeableWeightGram: Math.round(weight), divisor: Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000) };
+      ? calculateChargeableWeight(dimensions, divisor)
+      : { actualWeightGram: Math.round(weight), volumetricWeightGram: 0, chargeableWeightGram: Math.round(weight), divisor };
 
     const { options, source, destination } = await getShippingOptions(
       WAREHOUSE.CITY_ID,
