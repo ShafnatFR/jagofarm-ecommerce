@@ -6,6 +6,9 @@ import { sendEmailSafe } from "@/lib/email";
 import { orderCreatedEmail, toEmailOrder } from "@/lib/email-templates";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
 import { checkoutSchema } from "@/lib/validators";
+import { getShippingOptions, normalizeCouriers } from "@/lib/shipping";
+import { WAREHOUSE } from "@/lib/constants";
+import { calculateChargeableWeight, validateSelectedShippingOption } from "@/lib/shipping-quote";
 
 /** Error bisnis checkout (dibedakan dari error tak terduga -> 500). */
 class CheckoutError extends Error {
@@ -170,15 +173,12 @@ export async function POST(request: NextRequest) {
     const data = parsed.data;
     const userId = session.user.id;
 
-    // Ongkir datang dari body (pilihan kurir user), nominal lain dihitung di sini.
-    const shippingCost = Math.round(Number(data.shippingCost));
     const notes = data.notes?.trim() ? data.notes.trim() : null;
-    const shippingEtd = data.shippingEtd?.trim() ? data.shippingEtd.trim() : null;
 
     // Pastikan alamat milik user
     const address = await prisma.address.findFirst({
       where: { id: data.shippingAddressId, userId },
-      select: { id: true },
+      select: { id: true, city: true, cityId: true, districtId: true },
     });
     if (!address) {
       return NextResponse.json(
@@ -201,6 +201,48 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    const weightQuote = calculateChargeableWeight(
+      cart.items.map((item) => ({
+        quantity: item.quantity,
+        weightGram: item.product.weightGram,
+        lengthCm: item.product.lengthCm,
+        widthCm: item.product.widthCm,
+        heightCm: item.product.heightCm,
+      }))
+    );
+
+    const requestedCouriers = normalizeCouriers(data.shippingCourier);
+    if (!requestedCouriers.includes(data.shippingCourier.trim().toLowerCase())) {
+      throw new CheckoutError("Kurir pengiriman tidak didukung", 400);
+    }
+
+    let shippingQuote: Awaited<ReturnType<typeof getShippingOptions>>;
+    try {
+      shippingQuote = await getShippingOptions(
+        WAREHOUSE.CITY_ID,
+        {
+          destinationCity: address.city,
+          destinationCityId: address.cityId,
+          destinationDistrictId: address.districtId,
+        },
+        weightQuote.chargeableWeightGram,
+        requestedCouriers
+      );
+    } catch (error) {
+      throw new CheckoutError(
+        error instanceof Error ? `Gagal memvalidasi ongkir: ${error.message}` : "Gagal memvalidasi ongkir",
+        503
+      );
+    }
+
+    const selectedShipping = validateSelectedShippingOption(
+      shippingQuote.options,
+      data.shippingCourier,
+      data.shippingService
+    );
+    const shippingCost = Math.round(selectedShipping.cost);
+    const shippingEtd = selectedShipping.etd?.trim() || null;
 
     // ── Hitung ulang seluruh nominal dari data DB (jangan percaya client) ──
     let subtotal = 0;
@@ -289,6 +331,20 @@ export async function POST(request: NextRequest) {
           shippingService: data.shippingService,
           shippingCost,
           shippingEtd,
+          shippingQuoteSource: shippingQuote.source,
+          shippingQuoteFetchedAt: new Date(),
+          shippingOriginCityId: WAREHOUSE.CITY_ID,
+          shippingDestinationCityId: address.cityId,
+          shippingDestinationDistrictId: address.districtId,
+          shippingActualWeightGram: weightQuote.actualWeightGram,
+          shippingVolumetricWeightGram: weightQuote.volumetricWeightGram,
+          shippingChargeableWeightGram: weightQuote.chargeableWeightGram,
+          shippingQuoteSnapshot: {
+            selected: selectedShipping,
+            options: shippingQuote.options,
+            destination: shippingQuote.destination,
+            weight: weightQuote,
+          } as unknown as Prisma.InputJsonValue,
           subtotal,
           discount,
           total,

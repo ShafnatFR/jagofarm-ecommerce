@@ -203,7 +203,7 @@ export const COUPON_DISCOUNT_TYPE_LABELS: Record<string, string> = {
 // ── Warehouse ─────────────────────────────────────────
 
 export const WAREHOUSE = {
-  CITY_ID: process.env.WAREHOUSE_CITY_ID ?? "232", // Default: Bandung
+  CITY_ID: process.env.WAREHOUSE_CITY_ID ?? "5099", // Sukapura, Dayeuhkolot, Bandung (RajaOngkir V2)
   NAME: "Gudang JagoFarm",
   ADDRESS: "Jl. Pertanian No. 123, Bandung, Jawa Barat 40123",
 } as const;

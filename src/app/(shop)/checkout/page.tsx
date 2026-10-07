@@ -18,6 +18,8 @@ interface Address {
   detail: string | null;
   district?: string;
   city: string;
+  cityId?: string | null;
+  districtId?: string | null;
   province: string;
   postalCode: string;
   isDefault: boolean;
@@ -105,6 +107,7 @@ export default function CheckoutPage() {
       if (!cancelled) setReady(true);
     });
     // Cart dan alamat independen; ambil bersamaan agar alamat tidak menunggu cart.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- memulai fetch alamat saat checkout dimuat
     void fetchAddresses();
     return () => { cancelled = true; };
   }, [hydrate, fetchAddresses]);
@@ -123,24 +126,17 @@ export default function CheckoutPage() {
         const res = await fetch("/api/shipping/cost", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ destinationCity: address.city, weight }),
+          body: JSON.stringify({
+            destinationCity: address.city,
+            destinationCityId: address.cityId,
+            destinationDistrictId: address.districtId,
+            weight,
+          }),
         });
         const data = await res.json().catch(() => null);
         if (!res.ok) throw new Error(errorMessage(data?.error));
         const raw: ShippingOption[] = data?.results ?? data?.costs ?? [];
         const options = raw.filter((opt) => opt && typeof opt.cost === "number");
-        const isMayarTestProduct = items.some(
-          (item) => item.slug === "produk-uji-mayar-rp-0"
-        );
-        if (isMayarTestProduct) {
-          options.unshift({
-            courier: "test",
-            courierName: "JagoFarm Test",
-            service: "Gratis Testing",
-            cost: 0,
-            etd: "langsung",
-          });
-        }
         setShippingOptions(options);
         setSelectedShipping(0);
         if (options.length === 0) setShippingError("Tidak ada opsi pengiriman untuk kota ini.");
@@ -157,6 +153,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     const address = addresses.find((a) => a.id === selectedAddress);
     if (!address) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- quote ongkir disinkronkan ke alamat terpilih
     void fetchShipping(address);
   }, [selectedAddress, addresses, fetchShipping]);
 
@@ -452,7 +449,15 @@ export default function CheckoutPage() {
                       )}
                     >
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-bold">{(opt.courierName || opt.courier).toUpperCase()}</span>
+                        <div>
+                          <span className="text-sm font-bold">{(opt.courierName || opt.courier).toUpperCase()}</span>
+                          {i === shippingOptions.reduce((best, candidate, index, all) => candidate.cost < all[best].cost ? index : best, 0) && (
+                            <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">Termurah</span>
+                          )}
+                          {i === shippingOptions.reduce((best, candidate, index, all) => Number.parseInt(candidate.etd, 10) < Number.parseInt(all[best].etd, 10) ? index : best, 0) && (
+                            <span className="ml-2 rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold text-blue-700">Tercepat</span>
+                          )}
+                        </div>
                         <span
                           className={cn(
                             "flex h-4 w-4 items-center justify-center rounded-full border-2",

@@ -7,6 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "test": "tsx --test tests/shipping-quote.test.ts",
     "postinstall": "prisma generate || exit 0",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

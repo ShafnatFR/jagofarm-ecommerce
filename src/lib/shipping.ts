@@ -14,7 +14,7 @@ import { SHIPPING_COURIER_LABELS } from "@/lib/constants";
 
 const RAJAONGKIR_API_KEY = process.env.RAJAONGKIR_API_KEY ?? "";
 const RAJAONGKIR_BASE_URL =
-  process.env.RAJAONGKIR_BASE_URL ?? "https://api.rajaongkir.com/starter";
+  process.env.RAJAONGKIR_BASE_URL ?? "https://rajaongkir.komerce.id/api/v1";
 
 const USE_MOCK = !RAJAONGKIR_API_KEY;
 
@@ -69,6 +69,8 @@ export interface DestinationInput {
   destinationCity?: string | null;
   /** city_id RajaOngkir (numerik) kalau sudah diketahui */
   destinationCityId?: string | null;
+  /** district_id RajaOngkir/aggregator jika tersedia */
+  destinationDistrictId?: string | null;
 }
 
 export interface ResolvedDestination {
@@ -124,7 +126,7 @@ export function normalizeCouriers(input?: unknown): string[] {
 
   const cleaned = raw
     .map((c) => c.trim().toLowerCase())
-    .filter((c) => c.length > 0);
+    .filter((c) => c.length > 0 && DEFAULT_COURIERS.includes(c));
 
   return cleaned.length > 0 ? Array.from(new Set(cleaned)) : DEFAULT_COURIERS;
 }
@@ -147,7 +149,7 @@ async function rajaOngkirFetch<T>(endpoint: string): Promise<T> {
   }
 
   const data = await response.json();
-  return data.rajaongkir?.results ?? data.rajaongkir;
+  return data.data ?? data.rajaongkir?.results ?? data.rajaongkir ?? data;
 }
 
 // ── Mock data ─────────────────────────────────────────
@@ -318,39 +320,78 @@ let provincesCache: Province[] | null = null;
 
 /** Daftar provinsi (mock atau RajaOngkir) */
 export async function getProvinces(): Promise<Province[]> {
-  if (USE_MOCK) return MOCK_PROVINCES;
+  if (USE_MOCK) {
+    if (process.env.NODE_ENV === "production") throw new Error("RajaOngkir belum dikonfigurasi untuk production");
+    return MOCK_PROVINCES;
+  }
   if (provincesCache) return provincesCache;
 
   try {
-    const provinces = await rajaOngkirFetch<Province[]>("/province");
-    provincesCache = provinces ?? [];
+    const rows = await rajaOngkirFetch<Array<{ id?: number; name?: string }>>(
+      "/destination/province"
+    );
+    provincesCache = (rows ?? [])
+      .filter((row) => row.id && row.name)
+      .map((row) => ({ province_id: String(row.id), province: String(row.name) }));
     return provincesCache;
   } catch (error) {
-    console.error("RajaOngkir provinces lookup failed, using mock:", error);
+    console.error("RajaOngkir provinces lookup failed:", error);
+    if (process.env.NODE_ENV === "production") throw error;
     return MOCK_PROVINCES;
   }
 }
 
 /** Daftar kota, opsional difilter province_id */
-export async function getCities(provinceId?: string): Promise<City[]> {
+export async function getCities(
+  provinceId?: string,
+  searchTerm?: string
+): Promise<City[]> {
   if (USE_MOCK) {
+    if (process.env.NODE_ENV === "production") throw new Error("RajaOngkir belum dikonfigurasi untuk production");
     if (!provinceId) return MOCK_CITIES;
     return MOCK_CITIES.filter((c) => c.province_id === provinceId);
   }
 
-  const cacheKey = provinceId ?? "__all__";
+  const cacheKey = `${provinceId ?? "__all__"}:${searchTerm?.trim().toLowerCase() ?? ""}`;
   const cached = citiesByProvinceCache.get(cacheKey);
   if (cached) return cached;
 
   try {
-    const query = provinceId ? `?province=${encodeURIComponent(provinceId)}` : "";
-    const cities = await rajaOngkirFetch<City[]>(`/city${query}`);
-    const list = cities ?? [];
+    const province = provinceId ? await resolveProvince(provinceId) : null;
+    const query = searchTerm?.trim() || province?.province || "";
+    const endpoint = `/destination/domestic-destination?search=${encodeURIComponent(query)}&limit=100&offset=0`;
+    const rows = await rajaOngkirFetch<Array<{
+      id?: number;
+      province_name?: string;
+      city_name?: string;
+      zip_code?: string;
+    }>>(endpoint);
+    const seen = new Set<string>();
+    const list: City[] = [];
+    for (const row of rows ?? []) {
+      const rowProvince = String(row.province_name ?? "").trim();
+      if (
+        province &&
+        normalizeCityName(rowProvince) !== normalizeCityName(province.province)
+      ) continue;
+      const name = String(row.city_name ?? "").trim();
+      if (!row.id || !name || seen.has(name.toLowerCase())) continue;
+      seen.add(name.toLowerCase());
+      list.push({
+        city_id: String(row.id),
+        province_id: provinceId ?? "",
+        province: row.province_name ?? province?.province ?? "",
+        type: "",
+        city_name: name,
+        postal_code: row.zip_code ?? "",
+      });
+    }
     citiesByProvinceCache.set(cacheKey, list);
     if (!provinceId) allCitiesCache = list;
     return list;
   } catch (error) {
-    console.error("RajaOngkir cities lookup failed, using mock:", error);
+    console.error("RajaOngkir cities lookup failed:", error);
+    if (process.env.NODE_ENV === "production") throw error;
     if (!provinceId) return MOCK_CITIES;
     return MOCK_CITIES.filter((c) => c.province_id === provinceId);
   }
@@ -387,32 +428,55 @@ export async function resolveProvince(
   );
 }
 
-/** Cari kota berdasarkan city_id numerik */
+/** Cari kota berdasarkan city_id numerik; V2 menerima destination ID langsung. */
 export async function findCityById(cityId: string): Promise<City | null> {
   const numeric = cityId.trim().match(/\d+/)?.[0];
   if (!numeric) return null;
-  const cities = await getAllCities();
-  return cities.find((c) => c.city_id === numeric) ?? null;
+  return {
+    city_id: numeric,
+    province_id: "",
+    province: "",
+    type: "",
+    city_name: "",
+    postal_code: "",
+  };
 }
 
-/** Cari kota berdasarkan nama (case-insensitive, toleran prefix Kota/Kabupaten) */
+/** Cari lokasi V2 berdasarkan label kota/kecamatan. */
 export async function findCityByName(cityName: string): Promise<City | null> {
   const query = normalizeCityName(cityName);
   if (!query) return null;
+  if (USE_MOCK) {
+    const cities = await getAllCities();
+    const scored = cities
+      .map((city) => ({ city, score: scoreCityMatch(query, normalizeCityName(city.city_name)) }))
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score || Number(a.city.city_id) - Number(b.city.city_id));
+    return scored[0]?.city ?? null;
+  }
 
-  const cities = await getAllCities();
-  const scored = cities
-    .map((city) => ({
-      city,
-      score: scoreCityMatch(query, normalizeCityName(city.city_name)),
-    }))
-    .filter((entry) => entry.score > 0)
-    .sort(
-      (a, b) =>
-        b.score - a.score || Number(a.city.city_id) - Number(b.city.city_id)
-    );
-
-  return scored[0]?.city ?? null;
+  const rows = await rajaOngkirFetch<Array<{
+    id?: number;
+    label?: string;
+    province_name?: string;
+    city_name?: string;
+    district_name?: string;
+    zip_code?: string;
+  }>>(`/destination/domestic-destination?search=${encodeURIComponent(cityName)}&limit=20&offset=0`);
+  const first = rows.find((row) =>
+    [row.city_name, row.district_name, row.label]
+      .filter(Boolean)
+      .some((value) => normalizeCityName(String(value)).includes(query))
+  ) ?? rows[0];
+  if (!first?.id) return null;
+  return {
+    city_id: String(first.id),
+    province_id: "",
+    province: first.province_name ?? "",
+    type: "",
+    city_name: first.city_name ?? first.district_name ?? cityName,
+    postal_code: first.zip_code ?? "",
+  };
 }
 
 /**
@@ -423,9 +487,11 @@ export async function resolveDestination(
   input: DestinationInput
 ): Promise<ResolvedDestination> {
   const rawId =
-    typeof input.destinationCityId === "string"
-      ? input.destinationCityId.trim()
-      : "";
+    typeof input.destinationDistrictId === "string" && !isUuid(input.destinationDistrictId)
+      ? input.destinationDistrictId.trim()
+      : typeof input.destinationCityId === "string"
+        ? input.destinationCityId.trim()
+        : "";
   const rawName =
     typeof input.destinationCity === "string" ? input.destinationCity.trim() : "";
 
@@ -497,10 +563,16 @@ export async function getShippingOptions(
     );
 
   if (USE_MOCK) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("RajaOngkir belum dikonfigurasi untuk production");
+    }
     return { options: mocked(), source: "mock", destination: resolved };
   }
 
   if (!resolved.cityId) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("Kota tujuan tidak memiliki area ID RajaOngkir yang valid");
+    }
     // Kota tujuan tidak bisa di-resolve ke city_id RajaOngkir
     return { options: mocked(), source: "mock", destination: resolved };
   }
@@ -516,7 +588,8 @@ export async function getShippingOptions(
     if (options.length === 0) throw new Error("RajaOngkir returned no costs");
     return { options, source: "rajaongkir", destination: resolved };
   } catch (error) {
-    console.error("RajaOngkir cost lookup failed, using mock:", error);
+    console.error("RajaOngkir cost lookup failed:", error);
+    if (process.env.NODE_ENV === "production") throw error;
     return { options: mocked(), source: "mock", destination: resolved };
   }
 }
@@ -540,22 +613,21 @@ export async function getCost(
     return generateMockCost(dest?.city_name ?? "", weightGram, couriers);
   }
 
-  const courierList = couriers.join(":");
+  const body = new URLSearchParams({
+    origin: originCityId,
+    destination: destinationCityId,
+    weight: String(Math.max(1, Math.round(weightGram))),
+    courier: couriers.join(":"),
+    price: "lowest",
+  });
 
-  const body = `origin=${encodeURIComponent(
-    originCityId
-  )}&destination=${encodeURIComponent(
-    destinationCityId
-  )}&weight=${encodeURIComponent(String(weightGram))}&courier=${encodeURIComponent(
-    courierList
-  )}`;
-
-  const response = await fetch(`${RAJAONGKIR_BASE_URL}/cost`, {
+  const response = await fetch(`${RAJAONGKIR_BASE_URL}/calculate/domestic-cost`, {
     method: "POST",
     headers: {
       key: RAJAONGKIR_API_KEY,
       "Content-Type": "application/x-www-form-urlencoded",
       Accept: "application/json",
+      "User-Agent": "JagoFarm shipping/2.0",
     },
     body,
   });
@@ -565,8 +637,31 @@ export async function getCost(
     throw new Error(`RajaOngkir cost API error: ${response.status} - ${text}`);
   }
 
-  const data = await response.json();
-  return data.rajaongkir?.results ?? [];
+  const envelope = (await response.json()) as {
+    data?: Array<{
+      name?: string;
+      code?: string;
+      service?: string;
+      description?: string;
+      cost?: number;
+      etd?: string;
+    }>;
+    meta?: { message?: string };
+  };
+  const rows = envelope.data ?? [];
+  return rows.map((row) => ({
+    code: (row.code ?? "").toLowerCase(),
+    name: row.name ?? courierLabel(row.code ?? ""),
+    costs: [{
+      service: row.service ?? "REG",
+      description: row.description ?? row.service ?? "",
+      cost: [{
+        value: Number(row.cost ?? 0),
+        etd: row.etd ?? "-",
+        note: "",
+      }],
+    }],
+  }));
 }
 
 /** True kalau ongkir sedang memakai data mock (tanpa RAJAONGKIR_API_KEY) */
