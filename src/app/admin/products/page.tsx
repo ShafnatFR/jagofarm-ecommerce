@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatPrice } from "@/lib/utils"
+import { AdminRefreshButton } from "../admin-refresh"
 
 /** Bentuk mentah produk dari GET /api/admin/products (toleran dua penamaan field). */
 interface ProductApiItem {
@@ -95,7 +96,7 @@ export default function ProductsPage() {
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat produk: {error}</p>
-          <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -108,7 +109,10 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold text-on-surface">Produk</h1>
           <p className="text-sm text-on-surface-variant">{products.length} produk terdaftar</p>
         </div>
-        <Link href="/admin/products/new"><Button><Icon name="add" size={16} className="mr-2" />Tambah Produk</Button></Link>
+        <div className="flex items-center gap-2">
+          <AdminRefreshButton endpointPrefixes={["/api/admin/products", "/api/admin/categories"]} onRefresh={() => fetchData()} loading={loading} />
+          <Link href="/admin/products/new"><Button><Icon name="add" size={16} className="mr-2" />Tambah Produk</Button></Link>
+        </div>
       </div>
 
       <Card>

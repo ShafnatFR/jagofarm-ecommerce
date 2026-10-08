@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDateTime } from "@/lib/utils"
+import { AdminRefreshButton } from "../../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -260,9 +261,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
         <div className="flex items-center gap-2">
           <Badge variant={status.variant}>{status.label}</Badge>
           <Badge variant={payment.variant}>{payment.label}</Badge>
-          <Button variant="secondary" size="sm" onClick={fetchOrder} disabled={loading}>
-            <Icon name="refresh" size={16} className="mr-1" /> Muat ulang
-          </Button>
+          <AdminRefreshButton endpointPrefixes={["/api/admin/orders"]} onRefresh={fetchOrder} loading={loading} />
         </div>
       </div>
 

@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/components/ui/use-toast"
 import { formatDate } from "@/lib/utils"
+import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -227,6 +228,7 @@ export default function AdminReviewsPage() {
             {total} ulasan{summary ? ` · rata-rata ${summary.averageRating.toFixed(1)} bintang` : ""}
           </p>
         </div>
+        <AdminRefreshButton endpointPrefixes={["/api/admin/reviews"]} onRefresh={fetchData} loading={loading} />
       </div>
 
       <Card>

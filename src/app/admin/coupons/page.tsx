@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -54,23 +55,26 @@ export default function CouponsPage() {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
 
+  const fetchData = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const r = await fetch("/api/admin/coupons")
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      const d = await r.json()
+      setCoupons((d.coupons || []).map((c: CouponApiItem) => ({
+        id: c.id, code: c.code, type: c.discountType || c.type || "percentage",
+        value: c.discountValue ?? c.value ?? 0, minOrder: c.minOrderValue ?? c.minOrder ?? 0,
+        maxDiscount: c.maxDiscount ?? null, usageLimit: c.usageLimit ?? 0,
+        usageCount: c.usedCount ?? c.usageCount ?? 0, startDate: c.startsAt || c.startDate || "",
+        endDate: c.expiresAt || c.endDate || "", status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate || "") < new Date() ? "EXPIRED" : "ACTIVE",
+      })))
+    } catch (e) { setError(toMessage(e)) } finally { setLoading(false) }
+  }
+
   useEffect(() => {
-    fetch("/api/admin/coupons")
-      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((d) => setCoupons((d.coupons || []).map((c: CouponApiItem) => ({
-        id: c.id, code: c.code,
-        type: c.discountType || c.type || "percentage",
-        value: c.discountValue ?? c.value ?? 0,
-        minOrder: c.minOrderValue ?? c.minOrder ?? 0,
-        maxDiscount: c.maxDiscount ?? null,
-        usageLimit: c.usageLimit ?? 0,
-        usageCount: c.usedCount ?? c.usageCount ?? 0,
-        startDate: c.startsAt || c.startDate || "",
-        endDate: c.expiresAt || c.endDate || "",
-        status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate || "") < new Date() ? "EXPIRED" : "ACTIVE",
-      }))))
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount updates the page loading state.
+    void fetchData()
   }, [])
 
   const filtered = coupons.filter((c) => c.code.toLowerCase().includes(search.toLowerCase()))
@@ -133,7 +137,7 @@ export default function CouponsPage() {
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kupon: {error}</p>
-          <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => void fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -146,7 +150,10 @@ export default function CouponsPage() {
           <h1 className="text-2xl font-bold text-on-surface">Kupon</h1>
           <p className="text-sm text-on-surface-variant">{coupons.length} kupon terdaftar</p>
         </div>
-        <Button onClick={openCreate}><Icon name="add" size={16} className="mr-2" />Buat Kupon</Button>
+        <div className="flex items-center gap-2">
+          <AdminRefreshButton endpointPrefixes={["/api/admin/coupons"]} onRefresh={fetchData} loading={loading} />
+          <Button onClick={openCreate}><Icon name="add" size={16} className="mr-2" />Buat Kupon</Button>
+        </div>
       </div>
 
       <Card>

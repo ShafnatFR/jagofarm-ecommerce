@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
+import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -215,7 +216,7 @@ export default function CategoriesPage() {
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kategori: {error}</p>
-          <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -223,12 +224,15 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-on-surface">Kategori</h1>
           <p className="text-sm text-on-surface-variant">Kelola kategori produk</p>
         </div>
-        <Button onClick={handleAdd}><Icon name="add" size={16} className="mr-2" />Tambah Kategori</Button>
+        <div className="flex items-center gap-2">
+          <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={fetchData} loading={loading} />
+          <Button onClick={handleAdd}><Icon name="add" size={16} className="mr-2" />Tambah Kategori</Button>
+        </div>
       </div>
 
       <Card>

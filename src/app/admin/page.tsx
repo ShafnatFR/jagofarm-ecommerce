@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { AdminRefreshButton } from "./admin-refresh"
 
 interface Stats {
   revenue: number; orders: number; customers: number; avgOrderValue: number;
@@ -251,28 +252,33 @@ export default function AdminDashboardPage() {
   const [monthlyRevenue, setMonthlyRevenue] = useState<MonthlyRevenuePoint[] | undefined>(undefined)
   const [historyLoading, setHistoryLoading] = useState(true)
 
-  useEffect(() => {
-    fetch("/api/admin/stats")
-      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then(setData)
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
+  const fetchDashboard = useCallback(async () => {
+    setLoading(true)
+    setHistoryLoading(true)
+    setError(null)
+    const [summary, history] = await Promise.allSettled([
+      fetch("/api/admin/stats").then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() }),
+      fetch("/api/admin/stats?period=365").then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() }),
+    ])
+    if (summary.status === "fulfilled") setData(summary.value)
+    else setError(summary.reason instanceof Error ? summary.reason.message : String(summary.reason))
+    if (history.status === "fulfilled") {
+      const monthly = Array.isArray(history.value?.monthlyRevenue) ? history.value.monthlyRevenue : []
+      setMonthlyRevenue(monthly.length > 0 ? monthly : undefined)
+      setRevenueHistory(Array.isArray(history.value?.dailyRevenue) ? history.value.dailyRevenue : [])
+    } else {
+      setMonthlyRevenue(undefined)
+      setRevenueHistory([])
+    }
+    setLoading(false)
+    setHistoryLoading(false)
   }, [])
 
-  // Data pendapatan 12 bulan untuk grafik bulanan (KPI tetap memakai periode default).
-  // `monthlyRevenue` (agregasi server) diprioritaskan; `dailyRevenue` disimpan
-  // sebagai fallback kalau field baru belum tersedia.
   useEffect(() => {
-    fetch("/api/admin/stats?period=365")
-      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((res) => {
-        const monthly = Array.isArray(res?.monthlyRevenue) ? res.monthlyRevenue : []
-        setMonthlyRevenue(monthly.length > 0 ? monthly : undefined)
-        setRevenueHistory(Array.isArray(res?.dailyRevenue) ? res.dailyRevenue : [])
-      })
-      .catch(() => { setMonthlyRevenue(undefined); setRevenueHistory([]) })
-      .finally(() => setHistoryLoading(false))
-  }, [])
+    // Fetch both dashboard ranges together so local refresh has one loading boundary.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount updates the page loading state.
+    void fetchDashboard()
+  }, [fetchDashboard])
 
   if (loading) {
     return (
@@ -296,7 +302,7 @@ export default function AdminDashboardPage() {
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat data: {error || "Unknown error"}</p>
-          <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => void fetchDashboard()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -318,9 +324,12 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-on-surface">Dashboard</h1>
-        <p className="text-sm text-on-surface-variant">Ringkasan performa toko Anda</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-on-surface">Dashboard</h1>
+          <p className="text-sm text-on-surface-variant">Ringkasan performa toko Anda</p>
+        </div>
+        <AdminRefreshButton endpointPrefixes={["/api/admin/stats"]} onRefresh={fetchDashboard} loading={loading} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

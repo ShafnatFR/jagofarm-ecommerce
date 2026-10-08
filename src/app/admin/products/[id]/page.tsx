@@ -12,6 +12,7 @@ import { ImageUploader } from "@/components/admin/image-uploader";
 import { useToast } from "@/components/ui/use-toast";
 import { slugify } from "@/lib/utils";
 import Link from "next/link";
+import { AdminRefreshButton } from "../../admin-refresh";
 
 interface Category { id: string; name: string; }
 
@@ -33,41 +34,38 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   });
   const [tagInput, setTagInput] = useState("");
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`/api/admin/products/${id}`).then((r) => { if (!r.ok) throw new Error("Gagal memuat produk"); return r.json(); }),
-      fetch("/api/admin/categories").then((r) => r.ok ? r.json() : { categories: [] }),
-    ]).then(([data, catData]) => {
-      // API GET mengembalikan { product: {...} }
+  const fetchProduct = useCallback(async () => {
+    setLoading(true);
+    setLoadingCats(true);
+    setError("");
+    try {
+      const [data, catData] = await Promise.all([
+        fetch(`/api/admin/products/${id}`).then((r) => { if (!r.ok) throw new Error("Gagal memuat produk"); return r.json(); }),
+        fetch("/api/admin/categories").then((r) => r.ok ? r.json() : { categories: [] }),
+      ]);
       const product = data?.product ?? data ?? {};
       setForm({
-        name: product.name ?? "",
-        slug: product.slug ?? "",
-        category: product.category?.id ?? product.categoryId ?? "",
-        description: product.description ?? "",
-        shortDescription: product.shortDesc ?? product.shortDescription ?? "",
-        basePrice: product.basePrice != null ? String(product.basePrice) : "",
-        discountPrice: product.discountPrice ? String(product.discountPrice) : "",
-        sku: product.sku ?? "",
-        weight: product.weightGram != null ? String(product.weightGram) : "",
-        length: product.lengthCm != null ? String(product.lengthCm) : "",
-        width: product.widthCm != null ? String(product.widthCm) : "",
-        height: product.heightCm != null ? String(product.heightCm) : "",
-        stock: product.stock != null ? String(product.stock) : "",
-        featured: product.isFeatured ?? product.featured ?? false,
-        tags: product.tags ?? [],
+        name: product.name ?? "", slug: product.slug ?? "", category: product.category?.id ?? product.categoryId ?? "",
+        description: product.description ?? "", shortDescription: product.shortDesc ?? product.shortDescription ?? "",
+        basePrice: product.basePrice != null ? String(product.basePrice) : "", discountPrice: product.discountPrice ? String(product.discountPrice) : "",
+        sku: product.sku ?? "", weight: product.weightGram != null ? String(product.weightGram) : "", length: product.lengthCm != null ? String(product.lengthCm) : "",
+        width: product.widthCm != null ? String(product.widthCm) : "", height: product.heightCm != null ? String(product.heightCm) : "", stock: product.stock != null ? String(product.stock) : "",
+        featured: product.isFeatured ?? product.featured ?? false, tags: product.tags ?? [],
       });
-      setImages(
-        (Array.isArray(product.images) ? (product.images as ProductImageRow[]) : [])
-          .slice()
-          .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-          .map((img) => img.url)
-          .filter((url): url is string => typeof url === "string" && url.length > 0)
-      );
+      setImages((Array.isArray(product.images) ? (product.images as ProductImageRow[]) : []).slice().sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((img) => img.url).filter((url): url is string => typeof url === "string" && url.length > 0));
       setCategories(catData.categories ?? catData ?? []);
-    }).catch((e) => setError(e.message))
-      .finally(() => { setLoading(false); setLoadingCats(false); });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+      setLoadingCats(false);
+    }
   }, [id]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount updates the form loading state.
+    void fetchProduct()
+  }, [fetchProduct]);
 
   const updateField = useCallback((field: string, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -166,7 +164,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             <p className="text-sm text-on-surface-variant">Edit informasi produk #{id}</p>
           </div>
         </div>
-        <Button variant="destructive" size="sm" type="button"><Icon name="delete" size={16} className="mr-2" />Hapus</Button>
+        <div className="flex items-center gap-2">
+          <AdminRefreshButton endpointPrefixes={[`/api/admin/products/${id}`, "/api/admin/categories"]} onRefresh={fetchProduct} loading={loading} />
+          <Button variant="destructive" size="sm" type="button"><Icon name="delete" size={16} className="mr-2" />Hapus</Button>
+        </div>
       </div>
 
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}

@@ -12,6 +12,7 @@ import { ImageUploader } from "@/components/admin/image-uploader";
 import { useToast } from "@/components/ui/use-toast";
 import { slugify } from "@/lib/utils";
 import Link from "next/link";
+import { AdminRefreshButton } from "../../admin-refresh";
 
 interface Category { id: string; name: string; }
 
@@ -29,13 +30,24 @@ export default function NewProductPage() {
   });
   const [tagInput, setTagInput] = useState("");
 
-  useEffect(() => {
-    fetch("/api/admin/categories")
-      .then((r) => r.ok ? r.json() : Promise.reject(r))
-      .then((d) => setCategories(d.categories ?? d ?? []))
-      .catch(() => {})
-      .finally(() => setLoadingCats(false));
+  const fetchCategories = useCallback(async () => {
+    setLoadingCats(true);
+    try {
+      const r = await fetch("/api/admin/categories");
+      if (!r.ok) throw new Error("Gagal memuat kategori");
+      const d = await r.json();
+      setCategories(d.categories ?? d ?? []);
+    } catch {
+      setCategories([]);
+    } finally {
+      setLoadingCats(false);
+    }
   }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount updates the category loading state.
+    void fetchCategories();
+  }, [fetchCategories]);
 
   const updateField = useCallback((field: string, value: string | boolean) => {
     setForm((prev) => {
@@ -113,12 +125,15 @@ export default function NewProductPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
-        <div>
-          <h1 className="text-2xl font-bold text-on-surface">Tambah Produk</h1>
-          <p className="text-sm text-on-surface-variant">Buat produk baru untuk toko Anda</p>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
+          <div>
+            <h1 className="text-2xl font-bold text-on-surface">Tambah Produk</h1>
+            <p className="text-sm text-on-surface-variant">Buat produk baru untuk toko Anda</p>
+          </div>
         </div>
+        <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={fetchCategories} loading={loadingCats} />
       </div>
 
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}

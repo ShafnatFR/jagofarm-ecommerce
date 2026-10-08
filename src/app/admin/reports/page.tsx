@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice } from "@/lib/format"
+import { AdminRefreshButton } from "../admin-refresh"
 
 type GroupBy = "day" | "month"
 type Preset = "today" | "7d" | "30d" | "month"
@@ -204,10 +205,13 @@ export default function AdminReportsPage() {
             Periode {from} s/d {to} ({groupBy === "day" ? "per hari" : "per bulan"})
           </p>
         </div>
-        <Button onClick={exportCsv} disabled={!from || !to}>
-          <Icon name="download" size={16} className="mr-2" />
-          Export CSV
-        </Button>
+        <div className="flex items-center gap-2">
+          <AdminRefreshButton endpointPrefixes={["/api/admin/reports"]} onRefresh={fetchReport} loading={loading} />
+          <Button onClick={exportCsv} disabled={!from || !to}>
+            <Icon name="download" size={16} className="mr-2" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
       <Card>

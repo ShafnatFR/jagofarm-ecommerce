@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { AdminRefreshProvider } from "./admin-refresh"
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
@@ -30,14 +31,24 @@ function installAdminDataCache() {
   if (typeof window === "undefined") return;
   const scope = window as Window & {
     [ADMIN_CACHE_KEY]?: AdminFetchCache;
-    __jagoAdminClearCache?: () => void;
+    __jagoAdminClearCache?: (endpointPrefixes?: string[]) => void;
   };
   if (scope[ADMIN_CACHE_KEY]) return;
 
   const cache: AdminFetchCache = new Map();
   const nativeFetch = window.fetch.bind(window);
   scope[ADMIN_CACHE_KEY] = cache;
-  scope.__jagoAdminClearCache = () => cache.clear();
+  scope.__jagoAdminClearCache = (endpointPrefixes) => {
+    if (!endpointPrefixes?.length) {
+      cache.clear();
+      return;
+    }
+    for (const key of cache.keys()) {
+      if (endpointPrefixes.some((prefix) => key === prefix || key.startsWith(`${prefix}?`))) {
+        cache.delete(key);
+      }
+    }
+  };
 
   window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
     const method = (init?.method ?? (input instanceof Request ? input.method : "GET")).toUpperCase();
@@ -266,18 +277,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              title="Refresh data admin"
-              className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low"
-              onClick={() => {
-                const scope = window as Window & { __jagoAdminClearCache?: () => void };
-                scope.__jagoAdminClearCache?.();
-                window.location.reload();
-              }}
-            >
-              <Icon name="refresh" size={20} />
-            </button>
             <button className="relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low">
               <Icon name="notifications" size={20} />
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
@@ -317,7 +316,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
           >
-            {children}
+            <AdminRefreshProvider>{children}</AdminRefreshProvider>
           </motion.div>
         </main>
       </div>

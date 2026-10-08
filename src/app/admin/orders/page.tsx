@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -262,7 +263,7 @@ export default function OrdersPage() {
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pesanan: {error}</p>
-          <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -273,9 +274,12 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-on-surface">Pesanan</h1>
-        <p className="text-sm text-on-surface-variant">{total} pesanan total</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-on-surface">Pesanan</h1>
+          <p className="text-sm text-on-surface-variant">{total} pesanan total</p>
+        </div>
+        <AdminRefreshButton endpointPrefixes={["/api/admin/orders"]} onRefresh={fetchData} loading={loading} />
       </div>
 
       <Card>

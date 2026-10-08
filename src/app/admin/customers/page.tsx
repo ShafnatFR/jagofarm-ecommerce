@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDate, formatDateTime } from "@/lib/utils"
+import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -160,7 +161,7 @@ export default function CustomersPage() {
         <div className="text-center">
           <Icon name="info" size={40} className="mx-auto text-red-400" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pelanggan: {error}</p>
-          <button onClick={() => location.reload()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -168,9 +169,12 @@ export default function CustomersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-on-surface">Pelanggan</h1>
-        <p className="text-sm text-on-surface-variant">{customers.length} pelanggan terdaftar</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-on-surface">Pelanggan</h1>
+          <p className="text-sm text-on-surface-variant">{customers.length} pelanggan terdaftar</p>
+        </div>
+        <AdminRefreshButton endpointPrefixes={["/api/admin/customers"]} onRefresh={fetchData} loading={loading} />
       </div>
 
       <Card>
