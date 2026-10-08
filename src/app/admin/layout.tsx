@@ -55,6 +55,10 @@ function installAdminDataCache() {
     const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
     const path = new URL(url, window.location.origin).pathname + new URL(url, window.location.origin).search;
     if (method !== "GET" || !path.startsWith("/api/admin/")) return nativeFetch(input, init);
+    if (init?.cache === "no-store") {
+      cache.delete(path);
+      return nativeFetch(input, init);
+    }
 
     const cached = cache.get(path);
     if (cached) {
