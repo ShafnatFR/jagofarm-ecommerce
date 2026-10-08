@@ -98,6 +98,22 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     }
   }
 
+  if (process.env.NODE_ENV !== "production" && process.env.CUSTOMER_E2E_BYPASS === "true") {
+    const localCustomer = await prisma.user.findFirst({
+      where: { role: "customer" },
+      orderBy: { createdAt: "asc" },
+    });
+    if (localCustomer) {
+      return {
+        id: localCustomer.id,
+        email: localCustomer.email,
+        name: localCustomer.name,
+        image: localCustomer.image,
+        role: "customer",
+      };
+    }
+  }
+
   const authUser = await fetchSupabaseUser();
   if (!authUser?.email) return null;
 
