@@ -22,6 +22,53 @@ const sidebarLinks = [
 type GuardState = "checking" | "authorized" | "denied"
 type AdminIdentity = { name: string | null; email: string | null; role: string }
 
+type AdminFetchCache = Map<string, Promise<unknown>>;
+
+const ADMIN_CACHE_KEY = "__jagofarm_admin_cache";
+
+function installAdminDataCache() {
+  if (typeof window === "undefined") return;
+  const scope = window as Window & {
+    [ADMIN_CACHE_KEY]?: AdminFetchCache;
+    __jagoAdminClearCache?: () => void;
+  };
+  if (scope[ADMIN_CACHE_KEY]) return;
+
+  const cache: AdminFetchCache = new Map();
+  const nativeFetch = window.fetch.bind(window);
+  scope[ADMIN_CACHE_KEY] = cache;
+  scope.__jagoAdminClearCache = () => cache.clear();
+
+  window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+    const method = (init?.method ?? (input instanceof Request ? input.method : "GET")).toUpperCase();
+    const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+    const path = new URL(url, window.location.origin).pathname + new URL(url, window.location.origin).search;
+    if (method !== "GET" || !path.startsWith("/api/admin/")) return nativeFetch(input, init);
+
+    const cached = cache.get(path);
+    if (cached) {
+      return cached.then((payload) => new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "Content-Type": "application/json", "X-Jago-Admin-Cache": "hit" },
+      }));
+    }
+
+    const request = nativeFetch(input, { ...init, cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return response.clone().json().catch(() => null);
+      });
+    cache.set(path, request);
+    return request.then((payload) => {
+      if (payload === null) return new Response(JSON.stringify({ error: "Gagal memuat data" }), { status: 500 });
+      return new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "Content-Type": "application/json", "X-Jago-Admin-Cache": "miss" },
+      });
+    });
+  }) as typeof window.fetch;
+}
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
@@ -34,6 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // Konten admin TIDAK dirender selama guardState === "checking" supaya
   // tidak ada flash konten sebelum verifikasi selesai.
   useEffect(() => {
+    installAdminDataCache();
     let cancelled = false
     // Halaman login membaca `callbackUrl`; `next` dipertahankan sebagai
     // parameter eksplisit tujuan setelah login.
@@ -76,6 +124,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
+
+  useEffect(() => {
+    if (guardState !== "authorized") return;
+    const endpoints = [
+      "/api/admin/stats",
+      "/api/admin/categories",
+      "/api/admin/products?page=1&limit=20",
+      "/api/admin/orders?page=1&limit=20",
+      "/api/admin/customers?page=1&limit=20",
+      "/api/admin/coupons",
+      "/api/admin/reviews?page=1&limit=20",
+      "/api/admin/reports?period=30",
+    ];
+    void Promise.allSettled(endpoints.map((endpoint) => fetch(endpoint)));
+  }, [guardState]);
 
   if (guardState === "checking") {
     return (
@@ -199,6 +262,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              title="Refresh data admin"
+              className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low"
+              onClick={() => {
+                const scope = window as Window & { __jagoAdminClearCache?: () => void };
+                scope.__jagoAdminClearCache?.();
+                window.location.reload();
+              }}
+            >
+              <Icon name="refresh" size={20} />
+            </button>
             <button className="relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low">
               <Icon name="notifications" size={20} />
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
