@@ -237,9 +237,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="hidden border-t border-white/10 p-3 lg:block">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="flex w-full items-center justify-center rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+            className={cn(
+              "flex w-full items-center justify-center rounded-lg p-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white",
+              collapsed ? "" : "font-medium"
+            )}
+            title={collapsed ? "Buka sidebar" : undefined}
           >
-            <Icon name="chevron_left" size={20} />
+            {collapsed ? <Icon name="chevron_right" size={20} /> : "Tutup sidebar"}
           </button>
         </div>
       </aside>
