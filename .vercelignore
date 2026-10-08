@@ -1,0 +1,8 @@
+.kilo
+.git
+node_modules
+.next
+.env
+.env.local
+pastes
+screenshots
