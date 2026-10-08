@@ -9,7 +9,8 @@ import { Icon } from "@/components/ui/icon";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const requestedDestination = searchParams.get("next") || searchParams.get("callbackUrl");
+  const callbackUrl = requestedDestination || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -44,7 +45,17 @@ function LoginForm() {
       }
       setLoading(false);
     } else {
-      router.push(callbackUrl);
+      let destination = callbackUrl;
+      if (!requestedDestination) {
+        try {
+          const profileResponse = await fetch("/api/user/profile", { cache: "no-store" });
+          const profilePayload = await profileResponse.json().catch(() => null) as { user?: { role?: string } } | null;
+          if (profilePayload?.user?.role === "admin") destination = "/admin";
+        } catch {
+          // Jika profile belum bisa dibaca, tetap gunakan destination default.
+        }
+      }
+      router.replace(destination);
       router.refresh();
     }
   };
