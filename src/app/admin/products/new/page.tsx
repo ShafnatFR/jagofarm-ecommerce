@@ -25,7 +25,7 @@ export default function NewProductPage() {
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "", slug: "", category: "", description: "", shortDescription: "",
-    basePrice: "", discountPrice: "", sku: "", weight: "", stock: "", featured: false, tags: [] as string[],
+    basePrice: "", discountPrice: "", sku: "", weight: "", length: "", width: "", height: "", stock: "", featured: false, tags: [] as string[],
   });
   const [tagInput, setTagInput] = useState("");
 
@@ -58,11 +58,15 @@ export default function NewProductPage() {
     const basePrice = Number(form.basePrice);
     const weightGram = Number(form.weight);
     const stock = Number(form.stock);
+    const lengthCm = Number(form.length);
+    const widthCm = Number(form.width);
+    const heightCm = Number(form.height);
 
     if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
     if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
     if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
     if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
+    if (![lengthCm, widthCm, heightCm].every((value) => Number.isFinite(value) && value > 0)) { setError("Dimensi paket wajib diisi dalam cm."); return; }
     if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
 
     setSaving(true);
@@ -76,6 +80,9 @@ export default function NewProductPage() {
         discountPrice: Number(form.discountPrice) > 0 ? Number(form.discountPrice) : null,
         sku: form.sku.trim(),
         weightGram: Math.trunc(weightGram),
+        lengthCm: Math.trunc(lengthCm),
+        widthCm: Math.trunc(widthCm),
+        heightCm: Math.trunc(heightCm),
         stock: Math.trunc(stock),
         isActive: true,
         isFeatured: form.featured,
@@ -159,6 +166,15 @@ export default function NewProductPage() {
                   <Input label="SKU" placeholder="JF-HID-NFT6" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
                   <Input label="Berat (gram)" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
                   <Input label="Stok" type="number" placeholder="24" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
+                </div>
+                <div className="mt-4">
+                  <p className="mb-2 text-sm font-medium">Dimensi Paket (cm)</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Input label="Panjang" type="number" placeholder="30" value={form.length} onChange={(e) => updateField("length", e.target.value)} required />
+                    <Input label="Lebar" type="number" placeholder="20" value={form.width} onChange={(e) => updateField("width", e.target.value)} required />
+                    <Input label="Tinggi" type="number" placeholder="15" value={form.height} onChange={(e) => updateField("height", e.target.value)} required />
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">Dipakai untuk menghitung berat volumetrik ongkir.</p>
                 </div>
               </CardContent>
             </Card>

@@ -357,6 +357,7 @@ export default function OrderDetailPage() {
     if (autoCheck && order) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reaksi sekali setelah order termuat; setState mencegah cek status berulang
       setAutoCheck(false);
+      // eslint-disable-next-line react-hooks/immutability -- one-shot payment status refresh
       void refreshStatus(true);
     }
   }, [autoCheck, order]);
