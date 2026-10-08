@@ -80,6 +80,24 @@ async function ensureCart(userId: string) {
  *   (never crash on the mismatch; a warning is logged instead).
  */
 export async function getCurrentUser(): Promise<AuthUser | null> {
+  // Local-only E2E mode: never active in production. It allows testing the
+  // admin UI against the real configured database without weakening deployment.
+  if (process.env.NODE_ENV !== "production" && process.env.ADMIN_E2E_BYPASS === "true") {
+    const localAdmin = await prisma.user.findFirst({
+      where: { role: "admin" },
+      orderBy: { createdAt: "asc" },
+    });
+    if (localAdmin) {
+      return {
+        id: localAdmin.id,
+        email: localAdmin.email,
+        name: localAdmin.name,
+        image: localAdmin.image,
+        role: "admin",
+      };
+    }
+  }
+
   const authUser = await fetchSupabaseUser();
   if (!authUser?.email) return null;
 

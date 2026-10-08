@@ -55,6 +55,14 @@ export default function CouponsPage() {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
 
+  const normalizeCoupons = (items: CouponApiItem[]): Coupon[] => items.map((c) => ({
+    id: c.id, code: c.code, type: (c.discountType || c.type || "percentage").toLowerCase(),
+    value: c.discountValue ?? c.value ?? 0, minOrder: c.minOrderValue ?? c.minOrder ?? 0,
+    maxDiscount: c.maxDiscount ?? null, usageLimit: c.usageLimit ?? 0,
+    usageCount: c.usedCount ?? c.usageCount ?? 0, startDate: c.startsAt || c.startDate || "",
+    endDate: c.expiresAt || c.endDate || "", status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate || "") < new Date() ? "EXPIRED" : "ACTIVE",
+  }))
+
   const fetchData = async () => {
     setLoading(true)
     setError(null)
@@ -62,13 +70,7 @@ export default function CouponsPage() {
       const r = await fetch("/api/admin/coupons")
       if (!r.ok) throw new Error(`HTTP ${r.status}`)
       const d = await r.json()
-      setCoupons((d.coupons || []).map((c: CouponApiItem) => ({
-        id: c.id, code: c.code, type: c.discountType || c.type || "percentage",
-        value: c.discountValue ?? c.value ?? 0, minOrder: c.minOrderValue ?? c.minOrder ?? 0,
-        maxDiscount: c.maxDiscount ?? null, usageLimit: c.usageLimit ?? 0,
-        usageCount: c.usedCount ?? c.usageCount ?? 0, startDate: c.startsAt || c.startDate || "",
-        endDate: c.expiresAt || c.endDate || "", status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate || "") < new Date() ? "EXPIRED" : "ACTIVE",
-      })))
+      setCoupons(normalizeCoupons(d.coupons || []))
     } catch (e) { setError(toMessage(e)) } finally { setLoading(false) }
   }
 
@@ -100,6 +102,8 @@ export default function CouponsPage() {
     try {
       const r = await fetch(`/api/admin/coupons/${id}`, { method: "DELETE" })
       if (!r.ok) throw new Error("Gagal menghapus")
+      const scope = window as Window & { __jagoAdminClearCache?: (prefixes?: string[]) => void }
+      scope.__jagoAdminClearCache?.(["/api/admin/coupons"])
       setCoupons((prev) => prev.filter((c) => c.id !== id))
     } catch (e) { alert(toMessage(e)) }
   }
@@ -125,8 +129,10 @@ export default function CouponsPage() {
       const method = editingCoupon ? "PATCH" : "POST"
       const r = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
       if (!r.ok) throw new Error("Gagal menyimpan")
+      const scope = window as Window & { __jagoAdminClearCache?: (prefixes?: string[]) => void }
+      scope.__jagoAdminClearCache?.(["/api/admin/coupons"])
       const fresh = await fetch("/api/admin/coupons").then((r) => r.json())
-      setCoupons(fresh.coupons || [])
+      setCoupons(normalizeCoupons(fresh.coupons || []))
       setDialogOpen(false)
     } catch (e) { alert(toMessage(e)) }
     finally { setSaving(false) }
@@ -203,8 +209,8 @@ export default function CouponsPage() {
                           <button onClick={() => handleCopy(coupon.code)} className="text-gray-400 hover:text-on-surface-variant"><Icon name="content_copy" size={12} /></button>
                         </div>
                       </td>
-                      <td className="px-4 py-3"><Badge variant="secondary">{coupon.type === "PERCENTAGE" ? "Persentase" : "Nominal"}</Badge></td>
-                      <td className="px-4 py-3 font-medium">{coupon.type === "PERCENTAGE" ? `${coupon.value}%` : formatPrice(coupon.value)}</td>
+                      <td className="px-4 py-3"><Badge variant="secondary">{coupon.type === "percentage" ? "Persentase" : "Nominal"}</Badge></td>
+                      <td className="px-4 py-3 font-medium">{coupon.type === "percentage" ? `${coupon.value}%` : formatPrice(coupon.value)}</td>
                       <td className="px-4 py-3 text-on-surface-variant">{formatPrice(coupon.minOrder)}</td>
                       <td className="px-4 py-3 text-center">
                         <span className={coupon.usageCount >= coupon.usageLimit ? "text-red-500 font-medium" : ""}>{coupon.usageCount}</span>
