@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
 
     const where: Prisma.ProductWhereInput = {
       isActive: true,
+      basePrice: { gt: 0 },
+      weightGram: { gt: 0 },
     };
 
     if (category) {

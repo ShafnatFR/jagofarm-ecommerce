@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
-      where: { isActive: true, isFeatured: true },
+      where: { isActive: true, isFeatured: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } },
       orderBy: { createdAt: "desc" },
       take: 8,
       include: {

@@ -137,7 +137,10 @@ export async function PATCH(
     const body = await request.json();
     const { images, ...rest } = (body ?? {}) as { images?: unknown } & Record<string, unknown>;
 
-    const existing = await prisma.product.findUnique({ where: { id }, select: { id: true } });
+    const existing = await prisma.product.findUnique({
+      where: { id },
+      select: { id: true, isActive: true, weightGram: true, lengthCm: true, widthCm: true, heightCm: true },
+    });
     if (!existing) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
@@ -145,6 +148,17 @@ export async function PATCH(
     // pickProductFields hanya mengembalikan field PATCHABLE_FIELDS (sudah
     // dikoersikan dari string form admin), jadi bentuknya cocok dengan Prisma.
     const updateData = pickProductFields(rest) as Prisma.ProductUpdateInput;
+
+    const effectiveActive = updateData.isActive === undefined ? existing.isActive : Boolean(updateData.isActive);
+    const effectiveWeight = updateData.weightGram === undefined ? existing.weightGram : Number(updateData.weightGram);
+    const effectiveDimensions = [
+      updateData.lengthCm === undefined ? existing.lengthCm : Number(updateData.lengthCm),
+      updateData.widthCm === undefined ? existing.widthCm : Number(updateData.widthCm),
+      updateData.heightCm === undefined ? existing.heightCm : Number(updateData.heightCm),
+    ];
+    if (effectiveActive && (effectiveWeight <= 0 || effectiveDimensions.some((value) => value === null || !Number.isFinite(value) || value <= 0))) {
+      return NextResponse.json({ error: "Produk aktif wajib memiliki berat dan dimensi paket lebih dari 0" }, { status: 400 });
+    }
 
     if (updateData.name) {
       // slugify() memanggil toString() — String() menjaga perilaku lama persis.
