@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 
@@ -9,6 +10,20 @@ function safeNext(value: string | null): string {
   if (!value) return "/";
   if (!value.startsWith("/") || value.startsWith("//")) return "/";
   return value;
+}
+
+async function resolvePostAuthDestination(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  next: string
+): Promise<string> {
+  if (next !== "/") return next;
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return next;
+  const dbUser = await prisma.user.findUnique({
+    where: { supabaseId: data.user.id },
+    select: { role: true },
+  });
+  return dbUser?.role === "admin" ? "/admin" : next;
 }
 
 /**
@@ -29,13 +44,13 @@ export async function GET(request: Request) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      return NextResponse.redirect(`${origin}${await resolvePostAuthDestination(supabase, next)}`);
     }
     console.error("Auth callback: code exchange failed:", error.message);
   } else if (tokenHash && type && EMAIL_OTP_TYPES.includes(type)) {
     const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      return NextResponse.redirect(`${origin}${await resolvePostAuthDestination(supabase, next)}`);
     }
     console.error("Auth callback: OTP verification failed:", error.message);
   } else if (providerError) {
