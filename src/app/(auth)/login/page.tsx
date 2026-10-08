@@ -47,16 +47,29 @@ function LoginForm() {
     } else {
       let destination = callbackUrl;
       if (!requestedDestination) {
-        try {
-          const profileResponse = await fetch("/api/user/profile", { cache: "no-store" });
-          const profilePayload = await profileResponse.json().catch(() => null) as { user?: { role?: string } } | null;
-          if (profilePayload?.user?.role === "admin") destination = "/admin";
-        } catch {
-          // Jika profile belum bisa dibaca, tetap gunakan destination default.
+        for (let attempt = 0; attempt < 4; attempt += 1) {
+          try {
+            // Supabase may finish writing the SSR cookie just after signIn returns.
+            // Retry profile lookup before falling back to the home page.
+            await supabase.auth.getUser();
+            const profileResponse = await fetch("/api/user/profile", {
+              cache: "no-store",
+              credentials: "same-origin",
+            });
+            const profilePayload = await profileResponse.json().catch(() => null) as { user?: { role?: string } } | null;
+            if (profilePayload?.user?.role === "admin") {
+              destination = "/admin";
+              break;
+            }
+            if (profileResponse.ok) break;
+          } catch {
+            // Retry once more while the auth cookie propagates.
+          }
+          await new Promise((resolve) => window.setTimeout(resolve, 250));
         }
       }
-      router.replace(destination);
-      router.refresh();
+      // Hard navigation guarantees the new SSR session is used by /admin.
+      window.location.replace(destination);
     }
   };
 
