@@ -141,7 +141,7 @@ export default async function AccountPage() {
               <Icon name="chevron_right" size={16} className="text-slate-400" />
             </Link>
             <Link
-              href="/api/auth/signout"
+              href="/auth/signout"
               className="flex items-center justify-between p-3 rounded-xl hover:bg-red-50 text-slate-600 hover:text-rose-600 font-medium text-sm transition-all mt-1"
             >
               <div className="flex items-center gap-3">
