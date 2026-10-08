@@ -83,12 +83,14 @@ export default function CouponsPage() {
 
   const openCreate = () => { setEditingCoupon(null); setForm(emptyForm); setDialogOpen(true) }
 
+  const toDateInput = (value: string) => value ? value.slice(0, 10) : ""
+
   const openEdit = (coupon: Coupon) => {
     setEditingCoupon(coupon)
     setForm({
-      code: coupon.code, type: coupon.type, value: String(coupon.value),
+      code: coupon.code, type: coupon.type.toLowerCase() === "fixed" ? "FIXED" : "PERCENTAGE", value: String(coupon.value),
       minOrder: String(coupon.minOrder), maxDiscount: coupon.maxDiscount ? String(coupon.maxDiscount) : "",
-      usageLimit: String(coupon.usageLimit), startDate: coupon.startDate, endDate: coupon.endDate,
+      usageLimit: String(coupon.usageLimit), startDate: toDateInput(coupon.startDate), endDate: toDateInput(coupon.endDate),
     })
     setDialogOpen(true)
   }
@@ -105,10 +107,19 @@ export default function CouponsPage() {
   const handleSave = async () => {
     setSaving(true)
     try {
+      if (!form.code.trim() || !form.value || !form.usageLimit || !form.startDate || !form.endDate) {
+        throw new Error("Lengkapi kode, nilai diskon, batas penggunaan, tanggal mulai, dan tanggal berakhir")
+      }
       const body = {
-        code: form.code, type: form.type, value: Number(form.value),
-        minOrder: Number(form.minOrder), maxDiscount: form.maxDiscount ? Number(form.maxDiscount) : null,
-        usageLimit: Number(form.usageLimit), startDate: form.startDate, endDate: form.endDate,
+        code: form.code.trim(),
+        discountType: form.type === "PERCENTAGE" ? "percentage" : "fixed",
+        discountValue: Number(form.value),
+        minOrderValue: form.minOrder ? Number(form.minOrder) : 0,
+        maxDiscount: form.maxDiscount ? Number(form.maxDiscount) : null,
+        usageLimit: Number(form.usageLimit),
+        startsAt: new Date(`${form.startDate}T00:00:00`).toISOString(),
+        expiresAt: new Date(`${form.endDate}T23:59:59`).toISOString(),
+        isActive: true,
       }
       const url = editingCoupon ? `/api/admin/coupons/${editingCoupon.id}` : "/api/admin/coupons"
       const method = editingCoupon ? "PATCH" : "POST"
