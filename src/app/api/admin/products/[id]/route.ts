@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
 import { slugify } from "@/lib/utils";
 
 /** Produk Prisma beserta relasi varian (selalu di-include oleh route ini). */
@@ -211,6 +212,7 @@ export async function PATCH(
       });
     });
 
+    revalidateTag("catalog", "max");
     return NextResponse.json({
       message: "Product updated",
       product: serializeProduct(product),
@@ -241,6 +243,7 @@ export async function DELETE(
       data: { isActive: false },
     });
 
+    revalidateTag("catalog", "max");
     return NextResponse.json({ message: "Product deactivated" });
   } catch (error) {
     console.error("Admin product DELETE error:", error);

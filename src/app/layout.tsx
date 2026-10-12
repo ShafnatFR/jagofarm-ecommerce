@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
+import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -58,9 +59,9 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/favicon.ico",
-        width: 256,
-        height: 256,
+        url: "/api/og",
+        width: 1200,
+        height: 630,
         alt: "JagoFarm",
       },
     ],
@@ -101,6 +102,22 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-surface selection:bg-secondary-fixed-dim selection:text-primary min-h-full flex flex-col">
+        {/* JSON-LD Organization — identitas toko untuk mesin pencari. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: SITE_CONFIG.name,
+              url: SITE_CONFIG.url,
+              email: SITE_CONFIG.email,
+              telephone: `+${SITE_CONFIG.whatsappIntl}`,
+              address: SITE_CONFIG.address,
+              sameAs: [SITE_CONFIG.social.instagram, SITE_CONFIG.social.linkedin].filter(Boolean),
+            }),
+          }}
+        />
         <Providers>
           {children}
           <Toaster />

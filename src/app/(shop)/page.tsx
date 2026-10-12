@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product/product-card";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getHomeHero } from "@/lib/site-settings";
+import { getHomeCatalog } from "@/lib/home-data";
 
 export const dynamic = "force-dynamic";
 
@@ -17,37 +17,9 @@ const CATEGORY_ICONS: Record<string, { icon: string; desc: string; badge?: strin
 };
 
 export default async function HomePage() {
-  const [categories, featuredProducts, heroProducts, productCount, categoryCount, hero] = await Promise.all([
-    prisma.category.findMany({ where: { parentId: null }, orderBy: { name: "asc" } }),
-    prisma.product.findMany({
-      // Sama dengan /api/products & /api/products/featured: produk tanpa harga atau
-      // berat tidak bisa dihitung ongkirnya, jadi jangan tampilkan di storefront.
-      where: { isActive: true, isFeatured: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } },
-      orderBy: { createdAt: "desc" },
-      take: 8,
-      include: {
-        images: { where: { isPrimary: true }, take: 1 },
-        category: { select: { id: true, name: true, slug: true } },
-        _count: { select: { reviews: { where: { isApproved: true } } } },
-      },
-    }),
-    prisma.$queryRaw<{id:string;name:string;slug:string;base_price:unknown;discount_price:unknown;image_url:string|null;category_name:string}[]>`
-      SELECT p.id, p.name, p.slug, p.base_price, p.discount_price,
-             pi.url as image_url, c.name as category_name
-      FROM products p
-      LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
-      LEFT JOIN categories c ON c.id = p.category_id
-      WHERE p.is_active = true
-        AND p.base_price > 0
-        AND p.weight_gram > 0
-      ORDER BY RANDOM() LIMIT 5
-    `,
-    // Angka untuk trust metrics — dihitung dari katalog supaya tidak lagi klaim manual.
-    prisma.product.count({ where: { isActive: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } } }),
-    prisma.category.count({ where: { parentId: null, isActive: true } }),
-    // Teks hero dari DB (admin → Pengaturan Situs); fallback default bila kosong.
-    getHomeHero(),
-  ]);
+  // Katalog dari cache 5 menit (lihat lib/home-data); hero dibaca segar dari DB.
+  const [{ categories, featuredProducts, heroProducts, productCount, categoryCount }, hero] =
+    await Promise.all([getHomeCatalog(), getHomeHero()]);
   return (
     <div className="w-full">
       {/* HERO SECTION */}

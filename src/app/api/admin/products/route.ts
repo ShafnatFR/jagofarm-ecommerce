@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
 import { slugify } from "@/lib/utils";
 import { z } from "zod";
 
@@ -133,6 +134,8 @@ export async function POST(request: NextRequest) {
       include: { images: { orderBy: { sortOrder: "asc" } }, variants: true },
     });
 
+    // Bersihkan cache katalog homepage supaya produk baru langsung tampil.
+    revalidateTag("catalog", "max");
     return NextResponse.json(
       { message: "Product created", product: { ...product, basePrice: Number(product.basePrice), discountPrice: product.discountPrice ? Number(product.discountPrice) : null } },
       { status: 201 }
