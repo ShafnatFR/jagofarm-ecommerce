@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export function Footer() {
   return (
@@ -13,20 +14,20 @@ export function Footer() {
                 <div className="w-9 h-9 rounded-xl bg-secondary-fixed-dim text-primary flex items-center justify-center shadow-sm">
                   <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>water_drop</span>
                 </div>
-                <span className="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">JagoFarm</span>
+                <span className="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">{SITE_CONFIG.name}</span>
               </Link>
               <p className="text-body-sm font-body-sm text-primary-fixed-dim max-w-sm leading-relaxed">
                 Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak bioflok, dan IoT smart farming berkualitas tinggi demi ketahanan pangan nasional.
               </p>
               {/* Social Links */}
               <div className="flex items-center gap-3 pt-2">
-                <a aria-label="Share" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href="#">
+                <a aria-label="Instagram" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href={SITE_CONFIG.social.instagram} rel="noopener noreferrer" target="_blank">
                   <span className="material-symbols-outlined text-[18px]">share</span>
                 </a>
-                <a aria-label="Website" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href="#">
+                <a aria-label="Website" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href={SITE_CONFIG.social.website} rel="noopener noreferrer" target="_blank">
                   <span className="material-symbols-outlined text-[18px]">language</span>
                 </a>
-                <a aria-label="Email" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href="mailto:hello@jagofarm.id">
+                <a aria-label="Email" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href={`mailto:${SITE_CONFIG.email}`}>
                   <span className="material-symbols-outlined text-[18px]">mail</span>
                 </a>
               </div>
@@ -63,20 +64,20 @@ export function Footer() {
               <ul className="space-y-3 text-body-sm font-body-sm text-primary-fixed-dim">
                 <li className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-[18px] text-secondary-fixed-dim shrink-0 mt-0.5">location_on</span>
-                  <span>Jl. Pertanian No. 123, Surabaya, Jawa Timur, Indonesia</span>
+                  <span>{SITE_CONFIG.address}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <span className="material-symbols-outlined text-[18px] text-secondary-fixed-dim shrink-0">call</span>
-                  <a className="hover:text-on-primary transition-colors" href="tel:+6281234567890">+62 812-3456-7890</a>
+                  <a className="hover:text-on-primary transition-colors" href={`tel:+${SITE_CONFIG.whatsappIntl}`}>{SITE_CONFIG.phoneDisplay}</a>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <span className="material-symbols-outlined text-[18px] text-secondary-fixed-dim shrink-0">mail</span>
-                  <a className="hover:text-on-primary transition-colors" href="mailto:hello@jagofarm.id">hello@jagofarm.id</a>
+                  <a className="hover:text-on-primary transition-colors" href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a>
                 </li>
                 <li className="pt-2">
                   <div className="p-3 bg-white/5 border border-white/10 rounded-xl">
                     <p className="text-[11px] text-primary-fixed-dim">Jam Operasional Layanan:</p>
-                    <p className="text-label-md font-label-md text-on-primary font-semibold">Senin - Sabtu: 08:00 - 17:00 WIB</p>
+                    <p className="text-label-md font-label-md text-on-primary font-semibold">{SITE_CONFIG.hours}</p>
                   </div>
                 </li>
               </ul>
@@ -85,7 +86,7 @@ export function Footer() {
           {/* Bottom Copyright Row */}
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-primary-fixed-dim gap-4">
             <p className="text-center sm:text-left">
-              © 2026 JagoFarm. All rights reserved.
+              © 2026 {SITE_CONFIG.name}. All rights reserved.
             </p>
             {/* Payment Partners Badges */}
             <div className="flex items-center gap-3 text-[11px] opacity-70">

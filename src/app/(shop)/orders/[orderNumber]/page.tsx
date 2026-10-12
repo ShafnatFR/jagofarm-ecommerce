@@ -73,6 +73,7 @@ interface OrderDetail {
   shippingService: string | null;
   subtotal: number;
   shippingCost: number;
+  insuranceFee?: number;
   discount: number;
   total: number;
   notes: string | null;
@@ -922,6 +923,12 @@ export default function OrderDetailPage() {
                 <span className="text-muted-foreground">Ongkir</span>
                 <span>{formatPrice(order.shippingCost)}</span>
               </div>
+              {(order.insuranceFee ?? 0) > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Asuransi Proteksi Barang</span>
+                  <span>{formatPrice(order.insuranceFee ?? 0)}</span>
+                </div>
+              )}
               {order.discount > 0 && (
                 <div className="flex justify-between text-sm text-green-600">
                   <span>Diskon</span>

@@ -1,10 +1,11 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/components/ui/icon";
+import { SITE_CONFIG } from "@/lib/constants";
 
 /**
  * Hanya izinkan path internal situs. Tanpa filter ini, `/login?callbackUrl=https://evil.com`
@@ -28,6 +29,23 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  // Jumlah produk diambil dari API publik supaya angka di layar bukan klaim manual.
+  const [productCount, setProductCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/products?limit=1")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { pagination?: { total?: number } } | null) => {
+        if (!cancelled && data?.pagination?.total) setProductCount(data.pagination.total);
+      })
+      .catch(() => {
+        /* biarkan "—" tampil bila API gagal */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const notice =
     searchParams.get("reset") === "true"
@@ -147,18 +165,18 @@ function LoginForm() {
           </div>
           <div className="flex items-center gap-8 pt-4 border-t border-white/10">
             <div>
-              <div className="text-2xl font-bold text-white tracking-tight">12.500+</div>
-              <div className="text-xs text-primary-fixed-dim/80">Petani & Pembudidaya</div>
+              <div className="text-2xl font-bold text-white tracking-tight">{productCount ? `${productCount}+` : "—"}</div>
+              <div className="text-xs text-primary-fixed-dim/80">Produk Siap Kirim</div>
             </div>
             <div className="h-8 w-px bg-white/15" />
             <div>
-              <div className="text-2xl font-bold text-white tracking-tight">99.4%</div>
-              <div className="text-xs text-primary-fixed-dim/80">Tingkat Keberhasilan Panen</div>
-            </div>
-            <div className="h-8 w-px bg-white/15" />
-            <div>
-              <div className="text-2xl font-bold text-white tracking-tight">34 Provinsi</div>
+              <div className="text-2xl font-bold text-white tracking-tight">Seluruh Indonesia</div>
               <div className="text-xs text-primary-fixed-dim/80">Jangkauan Distribusi</div>
+            </div>
+            <div className="h-8 w-px bg-white/15" />
+            <div>
+              <div className="text-2xl font-bold text-white tracking-tight">{SITE_CONFIG.hoursShort}</div>
+              <div className="text-xs text-primary-fixed-dim/80">Jam Layanan</div>
             </div>
           </div>
         </div>

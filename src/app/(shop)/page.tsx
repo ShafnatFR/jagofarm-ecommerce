@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product/product-card";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ const CATEGORY_ICONS: Record<string, { icon: string; desc: string; badge?: strin
 };
 
 export default async function HomePage() {
-  const [categories, featuredProducts, heroProducts] = await Promise.all([
+  const [categories, featuredProducts, heroProducts, productCount, categoryCount] = await Promise.all([
     prisma.category.findMany({ where: { parentId: null }, orderBy: { name: "asc" } }),
     prisma.product.findMany({
       // Sama dengan /api/products & /api/products/featured: produk tanpa harga atau
@@ -40,6 +41,9 @@ export default async function HomePage() {
         AND p.weight_gram > 0
       ORDER BY RANDOM() LIMIT 5
     `,
+    // Angka untuk trust metrics — dihitung dari katalog supaya tidak lagi klaim manual.
+    prisma.product.count({ where: { isActive: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } } }),
+    prisma.category.count({ where: { parentId: null, isActive: true } }),
   ]);
   return (
     <div className="w-full">
@@ -79,19 +83,19 @@ export default async function HomePage() {
                   <span>Konsultasi Gratis</span>
                 </Link>
               </div>
-              {/* Trust Metrics Bar */}
+              {/* Trust Metrics Bar — angka dihitung dari katalog, bukan klaim manual */}
               <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-6 w-full max-w-lg">
                 <div>
-                  <p className="text-headline-md font-headline-md font-extrabold text-secondary-fixed-dim">12.500+</p>
-                  <p className="text-body-sm font-body-sm text-primary-fixed-dim">Petani Mitra Aktif</p>
+                  <p className="text-headline-md font-headline-md font-extrabold text-secondary-fixed-dim">{productCount}+</p>
+                  <p className="text-body-sm font-body-sm text-primary-fixed-dim">Produk Siap Kirim</p>
                 </div>
                 <div>
-                  <p className="text-headline-md font-headline-md font-extrabold text-tertiary-fixed">99.4%</p>
-                  <p className="text-body-sm font-body-sm text-primary-fixed-dim">Tingkat Sukses Panen</p>
+                  <p className="text-headline-md font-headline-md font-extrabold text-tertiary-fixed">{categoryCount}</p>
+                  <p className="text-body-sm font-body-sm text-primary-fixed-dim">Kategori Budidaya</p>
                 </div>
                 <div>
-                  <p className="text-headline-md font-headline-md font-extrabold text-on-primary">24/7</p>
-                  <p className="text-body-sm font-body-sm text-primary-fixed-dim">Telemetry IoT Real-Time</p>
+                  <p className="text-headline-md font-headline-md font-extrabold text-on-primary">{SITE_CONFIG.hoursShort}</p>
+                  <p className="text-body-sm font-body-sm text-primary-fixed-dim">Jam Layanan</p>
                 </div>
               </div>
             </div>
@@ -324,7 +328,7 @@ export default async function HomePage() {
                 <span>Mulai Belanja</span>
                 <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
               </Link>
-              <a className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-on-primary border border-white/30 backdrop-blur-md font-headline-sm text-headline-sm px-6 py-3.5 rounded-full transition-all active:scale-95 font-semibold" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+              <a className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-on-primary border border-white/30 backdrop-blur-md font-headline-sm text-headline-sm px-6 py-3.5 rounded-full transition-all active:scale-95 font-semibold" href={`https://wa.me/${SITE_CONFIG.whatsappIntl}`} rel="noopener noreferrer" target="_blank">
                 <span className="material-symbols-outlined text-[20px] text-tertiary-fixed">chat</span>
                 <span>Chat via WhatsApp</span>
               </a>

@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/product/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductFilters } from "@/components/product/product-filters";
 import { useCategories } from "@/hooks/use-categories";
+import { SITE_CONFIG } from "@/lib/constants";
 
 interface ApiProduct {
   id: string; name: string; slug: string; basePrice: number;
@@ -321,7 +322,7 @@ function ProductsContent() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 z-10 w-full md:w-auto">
-                <a href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank"
+                <a href={`https://wa.me/${SITE_CONFIG.whatsappIntl}`} rel="noopener noreferrer" target="_blank"
                   className="px-5 py-3 rounded-xl bg-white text-primary font-bold text-xs hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2 shadow-md">
                   <Icon name="chat" size={16} className="text-primary" />
                   <span>Tanya Tim Ahli via WhatsApp</span>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { SITE_CONFIG } from "@/lib/constants";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Nama harus minimal 2 karakter"),
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
     try {
       const { sendEmailSafe } = await import("@/lib/email");
       await sendEmailSafe({
-        to: ["hello@jagofarm.id"],
+        to: [SITE_CONFIG.email],
         subject: `Contact Form: ${subject}`,
         replyTo: email,
         html: `

@@ -61,6 +61,7 @@ export async function GET(request: NextRequest) {
         subtotal: Number(o.subtotal),
         discount: Number(o.discount),
         shippingCost: Number(o.shippingCost),
+        insuranceFee: Number(o.insuranceFee),
         total: Number(o.total),
         items: o.items.map((i) => ({ ...i, price: Number(i.price), total: Number(i.total) })),
       })),

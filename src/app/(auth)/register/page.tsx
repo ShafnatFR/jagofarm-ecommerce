@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
@@ -26,6 +26,23 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  // Jumlah produk diambil dari API publik supaya angka di layar bukan klaim manual.
+  const [productCount, setProductCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/products?limit=1")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { pagination?: { total?: number } } | null) => {
+        if (!cancelled && data?.pagination?.total) setProductCount(data.pagination.total);
+      })
+      .catch(() => {
+        /* biarkan fallback tampil bila API gagal */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,12 +144,13 @@ export default function RegisterPage() {
 
             <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-emerald-200/90">
               <div className="flex items-center gap-2">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <span className="inline-block h-7 w-7 rounded-full bg-emerald-300 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">BP</span>
-                  <span className="inline-block h-7 w-7 rounded-full bg-teal-200 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">AH</span>
-                  <span className="inline-block h-7 w-7 rounded-full bg-primary-fixed/20 text-slate-800 font-bold flex items-center justify-center text-[10px] ring-2 ring-primary">RS</span>
-                </div>
-                <span>Bergabung bersama <strong className="text-white font-semibold">10.000+</strong> petani modern</span>
+                <Icon name="eco" size={16} className="text-emerald-300" />
+                {/* Angka diambil dari katalog supaya tidak klaim manual. */}
+                <span>
+                  {productCount !== null
+                    ? <>Belanja dari <strong className="text-white font-semibold">{productCount}+ produk</strong> siap kirim</>
+                    : <>Katalog lengkap, pengiriman ke seluruh Indonesia</>}
+                </span>
               </div>
             </div>
           </section>

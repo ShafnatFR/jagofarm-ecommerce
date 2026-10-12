@@ -249,6 +249,8 @@ model Order {
   shippingCourier  String?     @map("shipping_courier") @db.VarChar(20)
   shippingService  String?     @map("shipping_service") @db.VarChar(50)
   shippingCost     Decimal     @default(0) @map("shipping_cost") @db.Decimal(12, 2)
+  /// Biaya asuransi proteksi barang (pilihan saat checkout; nominal dari INSURANCE_FEE).
+  insuranceFee     Decimal     @default(0) @map("insurance_fee") @db.Decimal(12, 2)
   shippingEtd      String?     @map("shipping_etd") @db.VarChar(20)
   shippingQuoteSource String?  @map("shipping_quote_source") @db.VarChar(30)
   shippingQuoteFetchedAt DateTime? @map("shipping_quote_fetched_at")
@@ -348,7 +350,7 @@ model ConsultationSession {
   userId      String?  @map("user_id") @db.VarChar(36)
   user        User?    @relation(fields: [userId], references: [id])
   status      String   @default("active") @map("status") @db.VarChar(20)
-  expertName  String   @default("Dr. Ir. Hendra Wardana, M.Si") @map("expert_name") @db.VarChar(100)
+  expertName  String   @default("Tim Kami") @map("expert_name") @db.VarChar(100)
   sessionRef  String?  @unique @map("session_ref") @db.VarChar(20)
   metadata    Json?   @db.JsonB
   createdAt   DateTime @default(now()) @map("created_at")

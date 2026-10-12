@@ -52,6 +52,7 @@ interface OrderDetail {
   subtotal: number
   discount: number
   shippingCost: number
+  insuranceFee?: number
   total: number
   notes: string | null
   createdAt: string
@@ -329,6 +330,12 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     <span>Ongkos Kirim{order.shippingService ? ` (${order.shippingService})` : ""}</span>
                     <span>{formatPrice(order.shippingCost)}</span>
                   </div>
+                  {(order.insuranceFee ?? 0) > 0 && (
+                    <div className="flex justify-between text-on-surface-variant">
+                      <span>Asuransi Proteksi Barang</span>
+                      <span>{formatPrice(order.insuranceFee ?? 0)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between border-t pt-2 text-base font-bold text-[#1B4D3E]">
                     <span>Total</span><span>{formatPrice(order.total)}</span>
                   </div>

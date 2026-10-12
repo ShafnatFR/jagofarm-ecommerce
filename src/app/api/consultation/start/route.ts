@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { TEAM } from "@/lib/constants";
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,9 +37,10 @@ export async function POST(request: NextRequest) {
       data: {
         userId: user.id,
         sessionRef,
+        expertName: TEAM.LABEL,
         metadata: {
-          expert: "Dr. Ir. Hendra Wardana, M.Si",
-          expertSpecialty: "Bioflok & Vaname",
+          expert: TEAM.LABEL,
+          expertSpecialty: TEAM.SPECIALTY,
           startedAt: new Date().toISOString(),
         },
       },
@@ -54,7 +56,7 @@ export async function POST(request: NextRequest) {
       data: {
         sessionId: session.id,
         senderType: "system",
-        content: `Sesi konsultasi dengan ${(session.metadata as { expert?: string })?.expert || "Dr. Ir. Hendra Wardana, M.Si"} telah dimulai. Silakan ketik pertanyaan Anda.`,
+        content: `Sesi konsultasi dengan ${(session.metadata as { expert?: string })?.expert || TEAM.LABEL} telah dimulai. ${TEAM.INITIAL_MESSAGE}`,
       },
     });
 

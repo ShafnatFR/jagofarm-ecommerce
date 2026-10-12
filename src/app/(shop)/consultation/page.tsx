@@ -1,4 +1,5 @@
 import ConsultationChat from "./consultation-chat";
+import { TEAM } from "@/lib/constants";
 
 export const metadata = { title: "Konsultasi - JagoFarm" };
 
@@ -52,9 +53,9 @@ export default function ConsultationPage() {
                 <div className="relative shrink-0">
                   <div className="w-12 h-12 rounded-xl overflow-hidden border border-primary/20 shadow-sm">
                     <img
-                      alt="Dr. Ir. Hendra Wardana, M.Si"
+                      alt={TEAM.LABEL}
                       className="w-full h-full object-cover"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEvQPAm45DcLIBPjuyYR4fx0A9JGRuZXIk8MM8tSMDlGYNMrg7p9_WIRyuLuJfJWavGrNhh7GrwNKzAgh446u7OruoVK3nYHLsIoCNS2GLhCObhRxIknqpSN30y4PtVFWvMpUQYJPp79tWssG19c_YXK40aP6fUsOnb5XbXan77w9QVde1SNmtx2eCJjQAYwdrtyT1pqOOF9IfyHrNkpjP7Z0lCeIOZbZf253k0jULgUxPSWu7ntqyyw"
+                      src={TEAM.AVATAR}
                     />
                   </div>
                   <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
@@ -62,18 +63,18 @@ export default function ConsultationPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
                     <h4 className="text-xs font-bold text-green-900 truncate">
-                      Dr. Ir. Hendra Wardana
+                      {TEAM.LABEL}
                     </h4>
-                    <span className="text-[10px] text-green-800 font-bold">11:18</span>
+                    <span className="text-[10px] text-green-800 font-bold">Online</span>
                   </div>
                   <p className="text-[11px] text-green-800 font-semibold truncate flex items-center gap-1">
                     <span className="material-symbols-outlined text-xs text-green-800" data-icon="verified">
                       verified
                     </span>
-                    Spesialis Bioflok &amp; Vaname
+                    {TEAM.SPECIALTY}
                   </p>
                   <p className="text-[11px] text-gray-700 truncate mt-1">
-                    <span className="font-medium text-green-800">Dr. Hendra:</span>
+                    <span className="font-medium text-green-800">{TEAM.LABEL}:</span>
                     &quot;Segera naikkan aerasi kincir &amp;...&quot;
                   </p>
                 </div>

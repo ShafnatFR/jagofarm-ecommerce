@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { SITE_CONFIG } from "@/lib/constants";
 
 interface TrackingEvent {
   time: string;
@@ -212,7 +213,7 @@ export default function TrackingPage() {
               <span className="material-symbols-outlined text-[32px] text-primary mb-2">support_agent</span>
               <h3 className="text-headline-sm font-headline-sm text-on-surface">Butuh Bantuan?</h3>
               <p className="text-body-sm font-body-sm text-on-surface-variant mt-1 mb-4">Hubungi kami jika ada kendala</p>
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
+              <a href={`https://wa.me/${SITE_CONFIG.whatsappIntl}`} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-label-lg font-label-lg px-5 py-2.5 rounded-full transition-all active:scale-95">
                 <span className="material-symbols-outlined text-[18px]">chat</span>
                 WhatsApp

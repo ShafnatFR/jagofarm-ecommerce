@@ -102,6 +102,7 @@ function serializeOrder(order: LoadedOrder) {
     subtotal: Number(order.subtotal),
     discount: Number(order.discount),
     shippingCost: Number(order.shippingCost),
+    insuranceFee: Number(order.insuranceFee),
     total: Number(order.total),
     items: order.items.map((item) => ({
       ...item,

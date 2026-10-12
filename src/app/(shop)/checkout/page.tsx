@@ -8,6 +8,7 @@ import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
+import { INSURANCE_FEE } from "@/lib/constants";
 import { useToast } from "@/components/ui/use-toast";
 
 interface Address {
@@ -159,6 +160,7 @@ export default function CheckoutPage() {
           shippingCourier: option.courier,
           shippingService: option.service,
           shippingCost: Number(option.cost) || 0,
+          insurance: insuranceChecked,
           shippingEtd: option.etd || undefined,
           paymentMethod: "mayar",
           couponCode: serverCart?.coupon && !serverCart.couponError ? serverCart.coupon.code : "",
@@ -254,7 +256,7 @@ export default function CheckoutPage() {
   const subtotal = serverCart ? serverCart.subtotal : totalPrice();
   const discount = serverCart ? serverCart.discount : 0;
   const shippingCost = selectedOption?.cost ?? 0;
-  const insuranceCost = insuranceChecked ? 10000 : 0;
+  const insuranceCost = insuranceChecked ? INSURANCE_FEE : 0;
   const total = Math.max(0, subtotal - discount) + shippingCost + insuranceCost;
   const addr = addresses.find((a) => a.id === selectedAddress);
   const canSubmit = Boolean(selectedAddress) && Boolean(selectedOption) && !submitting;
@@ -471,7 +473,7 @@ export default function CheckoutPage() {
                     className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
                   <span className="text-xs text-foreground">
-                    <span className="font-bold">Asuransi Kerusakan &amp; Proteksi Barang (Rp 10.000)</span>
+                    <span className="font-bold">Asuransi Kerusakan &amp; Proteksi Barang ({formatPrice(INSURANCE_FEE)})</span>
                     <span className="mt-0.5 block leading-normal text-muted-foreground">
                       Garansi 100% penggantian barang baru atau pengembalian dana jika barang rusak dalam perjalanan.
                     </span>

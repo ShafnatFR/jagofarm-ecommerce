@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, FormEvent, useRef } from "react";
+import { TEAM } from "@/lib/constants";
 
 interface Message {
   id: string;
@@ -75,7 +76,7 @@ export default function ConsultationChat() {
         sessionId: data.sessionId,
         sessionRef: data.sessionRef,
         status: data.status,
-        expertName: "Dr. Ir. Hendra Wardana, M.Si",
+        expertName: TEAM.LABEL,
       });
       setMessages(data.messages || []);
     } catch (err) {
@@ -153,7 +154,7 @@ export default function ConsultationChat() {
   };
 
   const getAvatar = () => {
-    return "https://lh3.googleusercontent.com/aida-public/AB6AXuBEvQPAm45DcLIBPjuyYR4fx0A9JGRuZXIk8MM8tSMDlGYNMrg7p9_WIRyuLuJfJWavGrNhh7GrwNKzAgh446u7OruoVK3nYHLsIoCNS2GLhCObhRxIknqpSN30y4PtVFWvMpUQYJPp79tWssG19c_YXK40aP6fUsOnb5XbXan77w9QVde1SNmtx2eCJjQAYwdrtyT1pqOOF9IfyHrNkpjP7Z0lCeIOZbZf253k0jULgUxPSWu7ntqyyw";
+    return TEAM.AVATAR;
   };
 
   if (loading && !session) {
@@ -175,7 +176,7 @@ export default function ConsultationChat() {
           <div className="relative shrink-0">
             <div className="w-12 h-12 rounded-xl overflow-hidden border border-green-700 shadow-sm">
               <img
-                alt="Dr. Ir. Hendra Wardana, M.Si"
+                alt={TEAM.LABEL}
                 className="w-full h-full object-cover"
                 src={getAvatar()}
               />
@@ -187,7 +188,7 @@ export default function ConsultationChat() {
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
               <h3 className="font-headline-sm text-sm sm:text-base font-bold text-green-900 truncate">
-                {session?.expertName || "Dr. Ir. Hendra Wardana, M.Si"}
+                {session?.expertName || TEAM.LABEL}
               </h3>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800 inline-flex items-center gap-0.5">
                 <span className="material-symbols-outlined text-[11px]" data-icon="verified">
@@ -273,7 +274,7 @@ export default function ConsultationChat() {
                 {!isUser && (
                   <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-green-700 shadow-xs mt-1">
                     <img
-                      alt="Dr. Hendra"
+                      alt={TEAM.LABEL}
                       className="w-full h-full object-cover"
                       src={getAvatar()}
                     />
@@ -298,7 +299,7 @@ export default function ConsultationChat() {
                       <span className="text-gray-500">Anda</span>
                     ) : (
                       <span className="text-green-800 font-semibold">
-                        Dr. Ir. Hendra Wardana, M.Si
+                        {TEAM.LABEL}
                       </span>
                     )}
                     <span className="text-gray-400 ml-1">
@@ -355,7 +356,7 @@ export default function ConsultationChat() {
             <span className="w-1.5 h-1.5 rounded-full bg-green-800 animate-bounce [animation-delay:0.2s]" />
             <span className="w-1.5 h-1.5 rounded-full bg-green-800 animate-bounce [animation-delay:0.4s]" />
             <span className="text-[11px] text-green-800 font-medium ml-1">
-              Dr. Hendra sedang mengetik...
+              {TEAM.LABEL} sedang mengetik...
             </span>
           </div>
         </div>
@@ -414,7 +415,7 @@ export default function ConsultationChat() {
             <input
               ref={inputRef}
               className="w-full pl-3.5 pr-10 py-2.5 bg-white rounded-xl text-body-md text-green-900 border border-green-200 focus:border-green-700 focus:ring-1 focus:ring-primary-container focus:outline-none placeholder:text-gray-500 text-sm"
-              placeholder="Ketik pertanyaan atau laporkan kondisi udang ke Dr. Hendra..."
+              placeholder="Ketik pertanyaan atau laporkan kondisi kolam Anda ke Tim Kami..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={sending}

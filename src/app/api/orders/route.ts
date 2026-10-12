@@ -7,7 +7,7 @@ import { orderCreatedEmail, toEmailOrder } from "@/lib/email-templates";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
 import { checkoutSchema } from "@/lib/validators";
 import { getShippingOptions, normalizeCouriers } from "@/lib/shipping";
-import { WAREHOUSE } from "@/lib/constants";
+import { WAREHOUSE, INSURANCE_FEE } from "@/lib/constants";
 import { calculateChargeableWeight, validateSelectedShippingOption } from "@/lib/shipping-quote";
 
 /** Error bisnis checkout (dibedakan dari error tak terduga -> 500). */
@@ -314,7 +314,8 @@ export async function POST(request: NextRequest) {
       couponWarning = "Kode kupon tidak ditemukan";
     }
 
-    const total = Math.max(0, subtotal - discount + shippingCost);
+    const insuranceFee = data.insurance ? INSURANCE_FEE : 0;
+    const total = Math.max(0, subtotal - discount + shippingCost + insuranceFee);
     const orderNumber = generateOrderNumber();
 
     // ── Simpan order + stok + kupon + kosongkan cart dalam satu transaksi ──
@@ -347,6 +348,7 @@ export async function POST(request: NextRequest) {
           } as unknown as Prisma.InputJsonValue,
           subtotal,
           discount,
+          insuranceFee,
           total,
           notes,
           couponId,

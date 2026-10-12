@@ -5,19 +5,25 @@ export const SITE_CONFIG = {
   tagline: "Pertanian Modern, Hasil Melimpah",
   description:
     "JagoFarm — marketplace pertanian terlengkap. Pupuk, bibit, alat pertanian, dan kebutuhan tani lainnya dengan harga terjangkau dan pengiriman cepat ke seluruh Indonesia.",
-  url: process.env.NEXT_PUBLIC_APP_URL ?? "https://jagofarm.id",
+  url: process.env.NEXT_PUBLIC_APP_URL ?? "https://jagofarm.dev/",
   ogImage: "/images/og-image.jpg",
-  email: "hello@jagofarm.id",
-  phone: "+62 812-3456-7890",
-  phoneDisplay: "0812-3456-7890",
-  whatsapp: "6281234567890",
-  address: "Jl. Pertanian No. 123, Bandung, Jawa Barat 40123",
+  email: "jagofarm.corporation@gmail.com",
+  /** Nomor lokal (08…) untuk ditampilkan, format internasional (62…) untuk tautan wa.me. */
+  whatsapp: "085215376975",
+  whatsappIntl: "6285215376975",
+  phoneDisplay: "0852-1537-6975",
+  address:
+    "Gedung Selaru Fakultas Ilmu Terapan Lt.4 CoWORK labz, Telkom University, Sukapura, Kec. Dayeuhkolot, Kabupaten Bandung, Jawa Barat 40257",
+  mapsEmbedUrl:
+    "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d416.2767131105861!2d107.63251354371226!3d-6.972252507120447!3m2!1i1024!2i768!4f13.1m3!3m2!1sid!2sid!4v1791785731752!5e0!3m2!1sid!2sid",
+  hours: "Senin - Jumat: 08:00 - 17:00 WIB",
+  /** Versi pendek untuk badge/jam layanan. */
+  hoursShort: "08.00 - 17.00",
   social: {
-    instagram: "https://instagram.com/jagofarm.id",
-    facebook: "https://facebook.com/jagofarm.id",
-    tiktok: "https://tiktok.com/@jagofarm.id",
-    youtube: "https://youtube.com/@jagofarm.id",
-    twitter: "https://x.com/jagofarm.id",
+    website: "https://jagofarm.dev/",
+    linkedin: "https://www.linkedin.com/company/jagofarm",
+    instagram: "https://www.instagram.com/jagofarmstartup",
+    email: "mailto:jagofarm.corporation@gmail.com",
   },
 } as const;
 
@@ -201,11 +207,29 @@ export const COUPON_DISCOUNT_TYPE_LABELS: Record<string, string> = {
 };
 
 // ── Warehouse ─────────────────────────────────────────
-
+// Gudang & alamat sama dengan lokasi toko (Gedung Selaru, Telkom University).
 export const WAREHOUSE = {
   CITY_ID: process.env.WAREHOUSE_CITY_ID ?? "5099", // Sukapura, Dayeuhkolot, Bandung (RajaOngkir V2)
-  NAME: "Gudang JagoFarm",
-  ADDRESS: "Jl. Pertanian No. 123, Bandung, Jawa Barat 40123",
+  NAME: "Gudang & Studio JagoFarm",
+  ADDRESS: SITE_CONFIG.address,
+} as const;
+
+// ── Asuransi pengiriman ────────────────────────────────
+// Biaya proteksi barang saat checkout. Server yang menentukan nominal final
+// (client hanya mengirim keputusan aktif/tidak), supaya total selalu konsisten.
+export const INSURANCE_FEE = 10_000;
+
+// ── Tim ─────────────────────────────────────────────────
+// Nama pribadi tidak disimpan di sini: yang tampil selalu "Tim Kami" supaya
+// toko tidak menampilkan nama beserta gelar orang yang bukan bagian dari tim.
+export const TEAM = {
+  LABEL: "Tim Kami",
+  ROLE: "Tim Agronom JagoFarm",
+  SPECIALTY: "Bioflok, Vaname & Budidaya Modern",
+  /** Aset lokal — tidak bergantung pada URL eksternal yang bisa mati. */
+  AVATAR: "/images/team-avatar.svg",
+  INITIAL_MESSAGE:
+    "Halo, kami Tim JagoFarm. Silakan ceritakan kebutuhan Anda - luas lahan, ukuran kolam, atau sistem yang sedang disiapkan. Kami bantu rekomendasikan paket yang paling pas.",
 } as const;
 
 // ── File Upload ───────────────────────────────────────

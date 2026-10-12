@@ -100,6 +100,9 @@ export const checkoutSchema = z.object({
     .number()
     .min(0, "Biaya pengiriman tidak valid")
     .max(100_000_000, "Biaya pengiriman tidak wajar"),
+  // Keputusan asuransi dari client. Nominal TIDAK dipercaya dari client:
+  // server selalu memakai INSURANCE_FEE dari constants.
+  insurance: z.boolean().optional().default(false),
   shippingEtd: z
     .string()
     .max(20, "Estimasi pengiriman maksimal 20 karakter")

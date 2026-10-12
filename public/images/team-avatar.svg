@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Tim Kami">
+  <rect width="64" height="64" rx="14" fill="#166534" />
+  <circle cx="32" cy="25" r="10" fill="#bbf7d0" />
+  <path d="M12 56c0-11 9-18 20-18s20 7 20 18z" fill="#bbf7d0" />
+  <path d="M32 12c4 3 6 7 6 11h-4c0-3-1-6-2-8z" fill="#86efac" />
+</svg>
