@@ -17,6 +17,7 @@ const sidebarLinks = [
   { href: "/admin/customers", label: "Pelanggan", icon: "people" },
   { href: "/admin/coupons", label: "Kupon", icon: "label" },
   { href: "/admin/reviews", label: "Ulasan", icon: "star" },
+  { href: "/admin/consultation", label: "Konsultasi", icon: "forum" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart" },
 ]
 

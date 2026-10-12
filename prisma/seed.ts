@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
+import { seedContentPages } from "./content-pages-seed";
 
 const prisma = new PrismaClient();
 
@@ -1429,6 +1430,19 @@ async function main() {
     },
   });
   console.log("Coupons created");
+
+  // Seed content pages (faq, about, how-to-order, dll) — datanya di prisma/content-pages-seed.ts
+  // supaya bisa di-seed ulang lewat `npm run cms:seed` tanpa menjalankan seed penuh
+  // (seed penuh menimpa harga/stok produk, tidak aman untuk katalog yang sudah berisi).
+  for (const page of seedContentPages) {
+    await prisma.contentPage.upsert({
+      where: { slug: page.slug },
+      update: {},
+      create: page,
+    });
+  }
+  console.log("Content pages created:", seedContentPages.length);
+
   console.log(
     `Seeding complete! ${summary.categories} kategori, ${summary.products} produk, ${summary.variants} varian, ${summary.images} gambar.`
   );
