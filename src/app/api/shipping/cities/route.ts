@@ -62,7 +62,11 @@ export async function GET(request: NextRequest) {
       message:
         provinceParam && !provinceId
           ? `Provinsi "${provinceParam}" tidak ditemukan`
-          : undefined,
+          : !provinceParam && !searchQuery
+            ? "Sertakan province (id atau nama) atau q untuk mencari kota"
+            : cities.length === 0
+              ? "Kota tidak ditemukan"
+              : undefined,
     });
   } catch (error) {
     console.error("Cities error:", error);

@@ -356,6 +356,14 @@ export async function getCities(
   const cached = citiesByProvinceCache.get(cacheKey);
   if (cached) return cached;
 
+  // RajaOngkir HANYA bisa mencari lewat kata kunci; tanpa provinsi maupun
+  // kata kunci permintaannya ditolak upstream dan sebelumnya berakhir jadi 500.
+  // Kembalikan daftar kosong supaya pemanggil tidak ikut gagal.
+  if (!provinceId && !searchTerm?.trim()) {
+    citiesByProvinceCache.set(cacheKey, []);
+    return [];
+  }
+
   try {
     const province = provinceId ? await resolveProvince(provinceId) : null;
     const query = searchTerm?.trim() || province?.province || "";
