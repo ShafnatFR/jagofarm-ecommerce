@@ -1,0 +1,38 @@
+name: Audit Dimensi Produk
+
+# Audit mingguan: produk aktif tanpa dimensi kemasan membuat berat volumetrik
+# dihitung 0 dan ongkir tidak akurat. Job ini hanya MENGECEK (dry-run) dan
+# melaporkan — perubahan tetap manual lewat `npm run dims:apply`.
+#
+# Butuh GitHub secret `DATABASE_URL` (koneksi langsung pooler Supabase,
+# port 5432) supaya bisa membaca katalog produksi.
+
+on:
+  schedule:
+    - cron: "0 2 * * 1" # Senin 02.00 UTC (09.00 WIB)
+  workflow_dispatch: {}
+
+jobs:
+  audit:
+    name: Cek produk tanpa dimensi
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Audit dimensi (dry-run)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx tsx scripts/apply-dimensions.ts --dry-run

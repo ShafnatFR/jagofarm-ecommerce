@@ -18,6 +18,8 @@
  *  - EMAIL_DISABLED  : "true" => matikan pengiriman (berguna di CI/dev).
  */
 
+import { SITE_CONFIG } from "@/lib/constants";
+
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
 
 /** Pengirim default bila EMAIL_FROM tidak diisi. */
@@ -218,7 +220,52 @@ export async function sendEmail(
 /**
  * Pembungkus aman untuk call site: tidak pernah throw, selalu mencatat error.
  * Hasilnya boleh diabaikan — kegagalan email tidak boleh mengubah respons API.
+ *
+ * Bila pengiriman gagal, notifikasi email dikirim ke admin (env EMAIL_ALERT_TO,
+ * fallback EMAIL_FROM) supaya kegagalan ke pelanggan (mis. order lunas tapi
+ * email tidak terkirim) tidak senyap. Notifikasi memakai jalur fetch langsung
+ * (bukan sendEmailSafe) sehingga tidak berpotensi rekursi.
  */
+async function notifyEmailFailure(
+  params: SendEmailParams,
+  error: string
+): Promise<void> {
+  const apiKey = (process.env.RESEND_API_KEY ?? "").trim();
+  if (!apiKey) return; // Tanpa Resend, memang tidak ada yang bisa dikirim.
+
+  const alertTo = (process.env.EMAIL_ALERT_TO ?? "").trim() || SITE_CONFIG.email;
+  const subject = `[JagoFarm] Email gagal: ${params.subject}`;
+  const html = `
+    <p>Email ke pelanggan gagal dikirim.</p>
+    <ul>
+      <li><strong>Penerima:</strong> ${Array.isArray(params.to) ? params.to.join(", ") : params.to}</li>
+      <li><strong>Subjek:</strong> ${params.subject}</li>
+      <li><strong>Error:</strong> ${error}</li>
+      <li><strong>Waktu:</strong> ${new Date().toISOString()}</li>
+    </ul>
+    <p>Periksa pengiriman manual ke pelanggan bila ini menyangkut pesanan yang sudah lunas.</p>`;
+
+  try {
+    await fetch(RESEND_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: process.env.EMAIL_FROM?.trim() || DEFAULT_EMAIL_FROM,
+        to: [alertTo],
+        subject,
+        html,
+      }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch {
+    // Notifikasi gagal juga? Cukup catat — jangan loop, jangan throw.
+    console.error("[email] Notifikasi kegagalan email ke admin juga tidak terkirim.");
+  }
+}
+
 export async function sendEmailSafe(
   params: SendEmailParams
 ): Promise<SendEmailResult> {
@@ -241,6 +288,7 @@ export async function sendEmailSafe(
       `[email] Gagal mengirim email "${params.subject}":`,
       result.error
     );
+    await notifyEmailFailure(params, result.error);
   }
 
   return result;
