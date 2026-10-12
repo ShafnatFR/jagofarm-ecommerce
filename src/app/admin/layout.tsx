@@ -23,9 +23,16 @@ const sidebarLinks = [
 type GuardState = "checking" | "authorized" | "denied"
 type AdminIdentity = { name: string | null; email: string | null; role: string }
 
-type AdminFetchCache = Map<string, Promise<unknown>>;
+type CachedAdminResponse = { response: Response; expiresAt: number }
 
-const ADMIN_CACHE_KEY = "__jagofarm_admin_cache";
+type AdminFetchCache = Map<string, CachedAdminResponse>
+
+const ADMIN_CACHE_KEY = "__jagofarm_admin_cache"
+
+/** Cache admin punya TTL supaya data tidak bisa basi selamanya walau tombol Refresh tidak dipakai. */
+const ADMIN_CACHE_TTL_MS = 60_000
+/** Batas jumlah entri supaya Map tidak tumbuh tanpa henti. */
+const ADMIN_CACHE_MAX_ENTRIES = 40
 
 function installAdminDataCache() {
   if (typeof window === "undefined") return;
@@ -50,10 +57,11 @@ function installAdminDataCache() {
     }
   };
 
-  window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+  window.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const method = (init?.method ?? (input instanceof Request ? input.method : "GET")).toUpperCase();
     const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
-    const path = new URL(url, window.location.origin).pathname + new URL(url, window.location.origin).search;
+    const parsed = new URL(url, window.location.origin);
+    const path = parsed.pathname + parsed.search;
     if (method !== "GET" || !path.startsWith("/api/admin/")) return nativeFetch(input, init);
     if (init?.cache === "no-store") {
       cache.delete(path);
@@ -61,26 +69,30 @@ function installAdminDataCache() {
     }
 
     const cached = cache.get(path);
-    if (cached) {
-      return cached.then((payload) => new Response(JSON.stringify(payload), {
-        status: 200,
-        headers: { "Content-Type": "application/json", "X-Jago-Admin-Cache": "hit" },
-      }));
-    }
+    if (cached && cached.expiresAt > Date.now()) return cached.response.clone();
 
-    const request = nativeFetch(input, { ...init, cache: "no-store" })
-      .then(async (response) => {
-        if (!response.ok) return null;
-        return response.clone().json().catch(() => null);
-      });
-    cache.set(path, request);
-    return request.then((payload) => {
-      if (payload === null) return new Response(JSON.stringify({ error: "Gagal memuat data" }), { status: 500 });
-      return new Response(JSON.stringify(payload), {
-        status: 200,
-        headers: { "Content-Type": "application/json", "X-Jago-Admin-Cache": "miss" },
-      });
-    });
+    try {
+      const response = await nativeFetch(input, { ...init, cache: "no-store" });
+      // Respons error TIDAK dicache: status 401/403 harus tetap sampai ke pemanggil
+      // supaya guard admin bisa mengarahkan ke login, bukan jadi "Gagal memuat data".
+      if (!response.ok) {
+        cache.delete(path);
+        return response;
+      }
+
+      const stored = response.clone();
+      if (cache.size >= ADMIN_CACHE_MAX_ENTRIES) {
+        for (const [key, entry] of cache) {
+          if (entry.expiresAt <= Date.now()) cache.delete(key);
+        }
+        if (cache.size >= ADMIN_CACHE_MAX_ENTRIES) cache.delete(cache.keys().next().value as string);
+      }
+      cache.set(path, { response: stored, expiresAt: Date.now() + ADMIN_CACHE_TTL_MS });
+      return response;
+    } catch (error) {
+      cache.delete(path);
+      throw error;
+    }
   }) as typeof window.fetch;
 }
 

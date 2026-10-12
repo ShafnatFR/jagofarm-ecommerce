@@ -18,7 +18,9 @@ export default async function HomePage() {
   const [categories, featuredProducts, heroProducts] = await Promise.all([
     prisma.category.findMany({ where: { parentId: null }, orderBy: { name: "asc" } }),
     prisma.product.findMany({
-      where: { isActive: true, isFeatured: true },
+      // Sama dengan /api/products & /api/products/featured: produk tanpa harga atau
+      // berat tidak bisa dihitung ongkirnya, jadi jangan tampilkan di storefront.
+      where: { isActive: true, isFeatured: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } },
       orderBy: { createdAt: "desc" },
       take: 8,
       include: {
@@ -34,6 +36,8 @@ export default async function HomePage() {
       LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
       LEFT JOIN categories c ON c.id = p.category_id
       WHERE p.is_active = true
+        AND p.base_price > 0
+        AND p.weight_gram > 0
       ORDER BY RANDOM() LIMIT 5
     `,
   ]);

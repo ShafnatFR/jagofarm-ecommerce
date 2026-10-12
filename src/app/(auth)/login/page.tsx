@@ -6,11 +6,23 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/components/ui/icon";
 
+/**
+ * Hanya izinkan path internal situs. Tanpa filter ini, `/login?callbackUrl=https://evil.com`
+ * akan mengarahkan user ke domain lain tepat setelah login berhasil (open redirect).
+ * `//host` dan `/\host` ditolak karena browser memperlakukannya sebagai protocol-relative URL.
+ */
+function safeDestination(value: string | null): string {
+  if (!value) return "/";
+  if (!value.startsWith("/")) return "/";
+  if (value.startsWith("//") || value.startsWith("/\\")) return "/";
+  return value;
+}
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const requestedDestination = searchParams.get("next") || searchParams.get("callbackUrl");
-  const callbackUrl = requestedDestination || "/";
+  const rawDestination = searchParams.get("next") || searchParams.get("callbackUrl");
+  const callbackUrl = safeDestination(rawDestination);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -46,7 +58,7 @@ function LoginForm() {
       setLoading(false);
     } else {
       let destination = callbackUrl;
-      if (!requestedDestination) {
+      if (!rawDestination) {
         for (let attempt = 0; attempt < 4; attempt += 1) {
           try {
             // Supabase may finish writing the SSR cookie just after signIn returns.

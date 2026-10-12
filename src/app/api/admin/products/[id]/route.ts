@@ -149,15 +149,40 @@ export async function PATCH(
     // dikoersikan dari string form admin), jadi bentuknya cocok dengan Prisma.
     const updateData = pickProductFields(rest) as Prisma.ProductUpdateInput;
 
+    // Validasi berat & dimensi paket.
+    // Aturannya dua, supaya produk lama yang datanya belum lengkap tetap bisa
+    // diedit tanpa memaksa admin mengarang dimensi:
+    //   1. Nilai yang DIKIRIM admin harus valid (tolak 0/negatif/NaN).
+    //   2. Produk tidak boleh diaktifkan kalau data kirimnya belum lengkap.
+    const explicitWeight = updateData.weightGram === undefined ? undefined : Number(updateData.weightGram);
+    const hasExplicitDimension =
+      updateData.lengthCm !== undefined || updateData.widthCm !== undefined || updateData.heightCm !== undefined;
     const effectiveActive = updateData.isActive === undefined ? existing.isActive : Boolean(updateData.isActive);
-    const effectiveWeight = updateData.weightGram === undefined ? existing.weightGram : Number(updateData.weightGram);
+    const effectiveWeight = explicitWeight ?? existing.weightGram;
     const effectiveDimensions = [
       updateData.lengthCm === undefined ? existing.lengthCm : Number(updateData.lengthCm),
       updateData.widthCm === undefined ? existing.widthCm : Number(updateData.widthCm),
       updateData.heightCm === undefined ? existing.heightCm : Number(updateData.heightCm),
     ];
-    if (effectiveActive && (effectiveWeight <= 0 || effectiveDimensions.some((value) => value === null || !Number.isFinite(value) || value <= 0))) {
-      return NextResponse.json({ error: "Produk aktif wajib memiliki berat dan dimensi paket lebih dari 0" }, { status: 400 });
+
+    const invalidExplicitValue =
+      (explicitWeight !== undefined && (!Number.isFinite(explicitWeight) || explicitWeight <= 0)) ||
+      (hasExplicitDimension &&
+        effectiveDimensions.some((value) => value === null || !Number.isFinite(value) || value <= 0));
+
+    if (invalidExplicitValue) {
+      return NextResponse.json({ error: "Berat dan dimensi paket harus lebih dari 0" }, { status: 400 });
+    }
+
+    const shippingComplete =
+      effectiveWeight > 0 &&
+      effectiveDimensions.every((value) => value !== null && Number.isFinite(value) && value > 0);
+
+    if (effectiveActive && !existing.isActive && !shippingComplete) {
+      return NextResponse.json(
+        { error: "Produk tidak bisa diaktifkan tanpa berat dan dimensi paket lebih dari 0" },
+        { status: 400 }
+      );
     }
 
     if (updateData.name) {
@@ -186,7 +211,12 @@ export async function PATCH(
       });
     });
 
-    return NextResponse.json({ message: "Product updated", product: serializeProduct(product) });
+    return NextResponse.json({
+      message: "Product updated",
+      product: serializeProduct(product),
+      // Data pengiriman produk lama masih kosong; admin bisa mengisinya kapan saja.
+      shippingIncomplete: !shippingComplete,
+    });
   } catch (error) {
     console.error("Admin product PATCH error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
