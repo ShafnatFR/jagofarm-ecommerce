@@ -14,7 +14,10 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "npx tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "admin:promote": "npx tsx scripts/promote-admin.ts"
+    "admin:promote": "npx tsx scripts/promote-admin.ts",
+    "dims:export": "npx tsx scripts/export-dimensions.ts",
+    "dims:check": "npx tsx scripts/apply-dimensions.ts --dry-run",
+    "dims:apply": "npx tsx scripts/apply-dimensions.ts --apply"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
