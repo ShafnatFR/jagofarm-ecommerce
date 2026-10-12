@@ -389,3 +389,13 @@ model ContentPage {
 
   @@map("content_pages")
 }
+
+/// Pengaturan tampilan yang bisa diedit admin tanpa deploy (key-value JSON).
+/// Contoh key: "home_hero" (eyebrow/headline/subtitle/CTA halaman utama).
+model SiteSetting {
+  key       String   @id @db.VarChar(50)
+  value     Json
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}

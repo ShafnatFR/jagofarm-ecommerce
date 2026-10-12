@@ -19,6 +19,7 @@ const sidebarLinks = [
   { href: "/admin/reviews", label: "Ulasan", icon: "star" },
   { href: "/admin/consultation", label: "Konsultasi", icon: "forum" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart" },
+  { href: "/admin/site-settings", label: "Pengaturan", icon: "settings" },
 ]
 
 type GuardState = "checking" | "authorized" | "denied"

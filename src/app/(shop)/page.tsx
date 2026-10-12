@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product/product-card";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 import { SITE_CONFIG } from "@/lib/constants";
+import { getHomeHero } from "@/lib/site-settings";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ const CATEGORY_ICONS: Record<string, { icon: string; desc: string; badge?: strin
 };
 
 export default async function HomePage() {
-  const [categories, featuredProducts, heroProducts, productCount, categoryCount] = await Promise.all([
+  const [categories, featuredProducts, heroProducts, productCount, categoryCount, hero] = await Promise.all([
     prisma.category.findMany({ where: { parentId: null }, orderBy: { name: "asc" } }),
     prisma.product.findMany({
       // Sama dengan /api/products & /api/products/featured: produk tanpa harga atau
@@ -44,6 +45,8 @@ export default async function HomePage() {
     // Angka untuk trust metrics — dihitung dari katalog supaya tidak lagi klaim manual.
     prisma.product.count({ where: { isActive: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } } }),
     prisma.category.count({ where: { parentId: null, isActive: true } }),
+    // Teks hero dari DB (admin → Pengaturan Situs); fallback default bila kosong.
+    getHomeHero(),
   ]);
   return (
     <div className="w-full">
@@ -59,28 +62,28 @@ export default async function HomePage() {
               {/* Eyebrow Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest/10 backdrop-blur-md border border-white/20 text-secondary-fixed-dim text-label-md font-label-md">
                 <span className="material-symbols-outlined text-[16px] text-secondary-fixed-dim" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
-                <span>Set Tambak Siap Pakai &amp; IoT Terintegrasi</span>
+                <span>{hero.eyebrow}</span>
               </div>
               {/* Main Headline */}
               <div className="space-y-1">
                 <h1 className="text-display-hero-mobile md:text-display-hero font-display-hero tracking-tight text-on-primary">
-                  Budi Daya Tambak <br className="hidden sm:inline"/>
-                  <span className="text-secondary-fixed-dim underline decoration-secondary-fixed-dim/40 decoration-4 underline-offset-8">Lebih Terukur</span>
+                  {hero.headline}{" "}
+                  <span className="text-secondary-fixed-dim underline decoration-secondary-fixed-dim/40 decoration-4 underline-offset-8">{hero.headlineHighlight}</span>
                 </h1>
               </div>
               {/* Subtitle */}
               <p className="text-body-lg font-body-lg text-primary-fixed max-w-xl leading-relaxed">
-                Set tambak lengkap — dari pompa, aerator, hingga sensor pintar kualitas air — untuk hasil panen yang lebih stabil dan menguntungkan sepanjang musim.
+                {hero.subtitle}
               </p>
               {/* CTA Actions */}
               <div className="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
-                <Link className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-secondary-fixed-dim hover:bg-secondary text-primary font-headline-sm text-headline-sm px-6 py-3.5 rounded-full shadow-lg transition-all duration-200 hover:shadow-secondary-container/20 active:scale-95 font-bold" href="#produk">
-                  <span>Lihat Set Tambak</span>
+                <Link className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-secondary-fixed-dim hover:bg-secondary text-primary font-headline-sm text-headline-sm px-6 py-3.5 rounded-full shadow-lg transition-all duration-200 hover:shadow-secondary-container/20 active:scale-95 font-bold" href={hero.primaryCtaHref}>
+                  <span>{hero.primaryCtaLabel}</span>
                   <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                 </Link>
-                <Link className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-on-primary border border-white/30 backdrop-blur-md font-headline-sm text-headline-sm px-6 py-3.5 rounded-full transition-all duration-200 active:scale-95 font-semibold" href="/contact">
+                <Link className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-on-primary border border-white/30 backdrop-blur-md font-headline-sm text-headline-sm px-6 py-3.5 rounded-full transition-all duration-200 active:scale-95 font-semibold" href={hero.secondaryCtaHref}>
                   <span className="material-symbols-outlined text-[20px]">headset_mic</span>
-                  <span>Konsultasi Gratis</span>
+                  <span>{hero.secondaryCtaLabel}</span>
                 </Link>
               </div>
               {/* Trust Metrics Bar — angka dihitung dari katalog, bukan klaim manual */}

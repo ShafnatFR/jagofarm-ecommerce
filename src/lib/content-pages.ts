@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminUser } from "@/lib/auth";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export interface ContentPageRow {
   id: string;
@@ -72,7 +73,7 @@ export async function createContentPage(input: CreateContentPageInput) {
       title,
       seoTitle: seoTitle || null,
       seoDesc: seoDesc || null,
-      contentHtml,
+      contentHtml: sanitizeHtml(contentHtml),
       isActive,
     },
   });
@@ -106,7 +107,7 @@ export async function updateContentPage(input: UpdateContentPageInput) {
       ...(title !== undefined ? { title } : {}),
       ...(seoTitle !== undefined ? { seoTitle: seoTitle || null } : {}),
       ...(seoDesc !== undefined ? { seoDesc: seoDesc || null } : {}),
-      ...(contentHtml !== undefined ? { contentHtml } : {}),
+      ...(contentHtml !== undefined ? { contentHtml: sanitizeHtml(contentHtml) } : {}),
       ...(isActive !== undefined ? { isActive } : {}),
     },
   });
