@@ -1,7 +1,13 @@
 import { ImageResponse } from "next/og";
 import { SITE_CONFIG } from "@/lib/constants";
 
-export const runtime = "edge";
+/**
+ * Runtime Node.js (bukan edge): bundel ImageResponse + font melebihi batas
+ * 1 MB untuk Edge Function di plan Vercel saat ini (error: "Edge Function
+ * api/og size is 1.06 MB and your plan size limit is 1 MB"). Runtime Node.js
+ * tidak terkena batas ukuran edge tersebut, fungsionalitas OG image tetap sama.
+ */
+export const runtime = "nodejs";
 
 /**
  * Preview dinamis untuk WhatsApp/social (OG image 1200x630).
