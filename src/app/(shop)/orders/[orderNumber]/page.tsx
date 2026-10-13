@@ -752,6 +752,15 @@ export default function OrderDetailPage() {
             </Link>
           )}
           <Badge className={statusColors[order.status]}>{order.status}</Badge>
+          <a
+            href={`/api/orders/${order.orderNumber}/invoice`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-colors"
+          >
+            <Icon name="download" size={16} />
+            Invoice
+          </a>
         </div>
       </div>
 

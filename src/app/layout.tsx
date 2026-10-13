@@ -94,8 +94,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${jakarta.variable} h-full antialiased`}>
+    <html lang="id" className={`${jakarta.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
+        {/* Anti-kedip mode gelap (A15): terapkan tema sebelum paint pertama. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+          }}
+        />
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- font ikon Material Symbols dimuat sekali di root layout (App Router), bukan per-halaman */}
         <link
           rel="stylesheet"
