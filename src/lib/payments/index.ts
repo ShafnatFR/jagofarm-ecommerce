@@ -12,6 +12,9 @@ import { NextRequest, NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 import { sendEmailSafe } from "@/lib/email";
 import { paymentReceivedEmail, toEmailOrder } from "@/lib/email-templates";
+import { sendWhatsAppSafe } from "@/lib/whatsapp";
+import { addPointsSafe, pointsForAmount } from "@/lib/loyalty";
+import { formatPrice } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import {
   extractMayarWebhookSecret,
@@ -301,6 +304,30 @@ async function handleMayarWebhook(request: NextRequest): Promise<NextResponse> {
       console.warn(
         `[payments/webhook/mayar] Email pembayaran ${order.orderNumber} dilewati: user tidak memiliki alamat email.`
       );
+    }
+
+    // ── WhatsApp "pembayaran diterima" (best-effort, no-op bila belum dikonfigurasi) ──
+    const waNumber = order.shippingAddress?.phone?.trim();
+    if (waNumber) {
+      await sendWhatsAppSafe({
+        to: waNumber,
+        message:
+          `Pembayaran pesanan ${order.orderNumber} sudah kami terima. 🎉\n\n` +
+          `Total: ${formatPrice(orderTotal)}\n` +
+          `Pesanan akan segera kami proses. Terima kasih!`,
+      });
+    }
+
+    // ── Poin loyalitas dari belanja (best-effort) ──
+    const earned = pointsForAmount(orderTotal);
+    if (earned > 0) {
+      await addPointsSafe({
+        userId: order.userId,
+        amount: earned,
+        type: "earn",
+        note: `Poin belanja ${order.orderNumber}`,
+        orderId: order.id,
+      });
     }
   }
 

@@ -4,6 +4,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendEmailSafe } from "@/lib/email";
 import { orderCreatedEmail, toEmailOrder } from "@/lib/email-templates";
+import { sendWhatsAppSafe } from "@/lib/whatsapp";
+import { notifyAdminSafe } from "@/lib/notifications";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
 import { checkoutSchema } from "@/lib/validators";
 import { getShippingOptions, normalizeCouriers } from "@/lib/shipping";
@@ -438,6 +440,30 @@ export async function POST(request: NextRequest) {
           `[orders] Email pesanan ${order.orderNumber} dilewati: user tidak memiliki alamat email.`
         );
       }
+
+      // ── Notifikasi WhatsApp "pesanan dibuat" (best-effort, no-op bila belum dikonfigurasi) ──
+      const waNumber = fullOrder.shippingAddress?.phone?.trim();
+      if (waNumber) {
+        const totalText = formatPrice(Number(fullOrder.total));
+        await sendWhatsAppSafe({
+          to: waNumber,
+          message:
+            `Halo ${session.user.name ?? "Pelanggan"}, pesanan Anda di JagoFarm sudah kami terima.\n\n` +
+            `No. Pesanan: ${fullOrder.orderNumber}\n` +
+            `Total: ${totalText}\n\n` +
+            `Selesaikan pembayaran agar pesanan segera diproses. Terima kasih!`,
+        });
+      }
+
+      // ── Notifikasi in-app untuk admin (bell) ──
+      await notifyAdminSafe({
+        type: "order",
+        title: `Pesanan baru ${fullOrder.orderNumber}`,
+        body: `${session.user.name ?? session.user.email ?? "Pelanggan"} • ${formatPrice(
+          Number(fullOrder.total)
+        )}`,
+        href: `/admin/orders`,
+      });
     }
 
     return NextResponse.json(
