@@ -103,7 +103,7 @@ export default async function ContactPage() {
                     <h3 className="text-sm font-semibold text-slate-900">WhatsApp</h3>
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green-800 bg-green-50 px-2 py-0.5 rounded-full border border-emerald-200">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                      Respon Cepat
+                      {content.contactResponseBadge}
                     </span>
                   </div>
                   <p className="text-sm font-semibold text-slate-800">

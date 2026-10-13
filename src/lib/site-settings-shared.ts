@@ -286,6 +286,7 @@ export interface SiteContent {
 
   // Halaman kontak
   contactSubtitle: string;
+  contactResponseBadge: string;
   contactFaqTitle: string;
   contactFaqSubtitle: string;
   contactFaq1Title: string;
@@ -340,6 +341,7 @@ export const SITE_CONTENT_DEFAULT: SiteContent = {
 
   contactSubtitle:
     "Ada pertanyaan? Kami senang bisa membantu Anda memulai dan mengembangkan ekosistem agrikultur masa depan.",
+  contactResponseBadge: "Respon Cepat",
   contactFaqTitle: "Pertanyaan yang Sering Diajukan",
   contactFaqSubtitle:
     "Dapatkan jawaban instan seputar operasional dan pengiriman JagoFarm.",
@@ -391,6 +393,7 @@ const SITE_CONTENT_FIELDS: (keyof SiteContent)[] = [
   "homeCtaPoint1",
   "homeCtaPoint2",
   "contactSubtitle",
+  "contactResponseBadge",
   "contactFaqTitle",
   "contactFaqSubtitle",
   "contactFaq1Title",

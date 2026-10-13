@@ -500,6 +500,7 @@ const CONTENT_GROUPS: {
     title: "Halaman Kontak",
     fields: [
       { key: "contactSubtitle", label: "Subjudul hero", multiline: true },
+      { key: "contactResponseBadge", label: "Badge respon WhatsApp" },
       { key: "contactFaqTitle", label: "FAQ — Judul seksi" },
       { key: "contactFaqSubtitle", label: "FAQ — Subjudul seksi" },
       { key: "contactFaq1Title", label: "FAQ 1 — Judul" },
