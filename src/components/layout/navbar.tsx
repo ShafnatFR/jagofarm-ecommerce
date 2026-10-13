@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useCategories } from "@/hooks/use-categories";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { useCartStore } from "@/lib/cart-store";
@@ -172,6 +173,8 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
             <button aria-label="Search" className="md:hidden p-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" onClick={() => router.push("/products")}>
               <span className="material-symbols-outlined text-[24px]">search</span>
             </button>
+            {/* Mode gelap */}
+            <ThemeToggle className="hidden sm:inline-flex" />
             {/* Wishlist */}
             <Link href="/wishlist" aria-label="Favorit" className="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-black transition-colors relative">
               <span className="material-symbols-outlined text-[22px]">favorite</span>

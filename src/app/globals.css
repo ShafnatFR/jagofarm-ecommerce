@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Dark mode berbasis kelas `.dark` pada <html> (Tailwind v4). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   /* Simplified Green and White Theme */
   --color-background: #ffffff;
@@ -168,6 +171,81 @@ body {
   font-family: var(--font-plus-jakarta), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ── Mode gelap (A15) ─────────────────────────────────────────────────────
+   Utilitas Tailwind v4 di atas memakai var(--color-*), jadi cukup menimpa
+   variabelnya di bawah `.dark`. Palet dipertahankan hijau–gelap. */
+.dark {
+  --color-background: #0b1120;
+  --color-surface: #0f172a;
+  --color-surface-bright: #0f172a;
+  --color-surface-container-lowest: #0b1120;
+  --color-surface-container-low: #111c33;
+  --color-surface-container: #16223d;
+  --color-surface-container-high: #1c2a49;
+  --color-surface-container-highest: #233254;
+  --color-surface-variant: #1c2a49;
+  --color-surface-dim: #0b1120;
+
+  --color-on-background: #e2e8f0;
+  --color-on-surface: #e2e8f0;
+  --color-on-surface-variant: #94a3b8;
+  --color-inverse-on-surface: #0b1120;
+
+  --color-primary: #34d399;
+  --color-on-primary: #052e1b;
+  --color-primary-container: #10b981;
+  --color-on-primary-container: #052e1b;
+  --color-primary-fixed: #10b981;
+  --color-primary-fixed-dim: #059669;
+
+  --color-secondary: #16223d;
+  --color-on-secondary: #e2e8f0;
+  --color-secondary-container: #1c2a49;
+  --color-on-secondary-container: #e2e8f0;
+  --color-secondary-fixed: #1c2a49;
+  --color-secondary-fixed-dim: #233254;
+
+  --color-tertiary: #16223d;
+  --color-on-tertiary: #e2e8f0;
+  --color-tertiary-container: #1c2a49;
+  --color-on-tertiary-container: #e2e8f0;
+
+  --color-error: #f87171;
+  --color-on-error: #450a0a;
+  --color-error-container: #7f1d1d;
+  --color-on-error-container: #fee2e2;
+
+  --color-outline: #334155;
+  --color-outline-variant: #334155;
+
+  --color-foreground: #e2e8f0;
+  --color-primary-foreground: #052e1b;
+  --color-secondary-foreground: #e2e8f0;
+  --color-accent: #10b981;
+  --color-accent-foreground: #052e1b;
+  --color-muted: #16223d;
+  --color-muted-foreground: #94a3b8;
+  --color-card: #0f172a;
+  --color-card-foreground: #e2e8f0;
+  --color-border: #334155;
+  --color-input: #334155;
+  --color-ring: #34d399;
+  --color-destructive: #f87171;
+  --color-destructive-foreground: #450a0a;
+}
+
+/* Beberapa halaman memakai warna Tailwind literal (slate/white). Petakan
+   yang paling umum agar tidak menyilaukan di mode gelap. */
+.dark .bg-white { background-color: #0f172a; }
+.dark .bg-slate-50,
+.dark .bg-slate-50\/70 { background-color: #111c33; }
+.dark .text-slate-900,
+.dark .text-slate-800 { color: #e2e8f0; }
+.dark .text-slate-600,
+.dark .text-slate-500 { color: #94a3b8; }
+.dark .border-slate-200,
+.dark .border-slate-100 { border-color: #334155; }
 
 html {
   scroll-behavior: smooth;
