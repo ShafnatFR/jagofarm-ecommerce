@@ -2,17 +2,31 @@
  * E2E alur pembayaran Mayar (lokal, tanpa API key asli):
  *   cart -> order -> create payment -> simulasi bayar -> webhook -> order lunas
  *
+ * AUTENTIKASI (bypass sudah dihapus — script ini login sungguhan):
+ *   Script memakai endpoint token Supabase (grant_type=password) dengan
+ *   kredensial uji dari env E2E_EMAIL / E2E_PASSWORD, lalu membentuk cookie
+ *   sesi `sb-<project-ref>-auth-token` (format @supabase/ssr cookie-based auth)
+ *   dan mengirimnya di header Cookie setiap request ke dev server. Tidak ada
+ *   jalur bypass di aplikasi: kalau env kredensial salah, permintaan ditolak 401.
+ *   Header Authorization: Bearer TIDAK dipakai karena route API membaca sesi
+ *   dari cookie Supabase (src/lib/supabase/server.ts), bukan dari header.
+ *
  * Prasyarat (di terminal terpisah / background):
  *   1. node scripts/mock-mayar-server.mjs 4599  (MAYAR_API_KEY=e2e-stub-key)
  *   2. dev server port 3100 dengan env:
- *      CUSTOMER_E2E_BYPASS=true MAYAR_BASE_URL=http://127.0.0.1:4599/hl/v2
+ *      MAYAR_BASE_URL=http://127.0.0.1:4599/hl/v2
  *      MAYAR_API_KEY=e2e-stub-key MAYAR_WEBHOOK_SECRET=e2e-secret
  *      RAJAONGKIR_API_KEY=(kosong -> ongkir mock) EMAIL_DISABLED=true
+ *      NEXT_PUBLIC_SUPABASE_URL & NEXT_PUBLIC_SUPABASE_ANON_KEY (dari .env)
+ *   3. kredensial login uji — bisa lewat shell atau .env/.env.local:
+ *      E2E_EMAIL=pelanggan@contoh.id E2E_PASSWORD=rahasia
+ *      akun harus sudah terdaftar di Supabase Auth (dan punya baris users;
+ *      baris itu dibuat otomatis saat request pertama yang terautentikasi).
  *
  * Jalankan: npx tsx scripts/e2e-mayar-flow.ts
  *
  * Skenario sengaja mencakup kasus NEGATIF: nominal dibuat tidak cocok
- * -> webhook tidak boleh melunaskan order. Setelah itu baru lunas.
+ * -> webhook tidak boleh melunasi order. Setelah itu baru lunas.
  * Semua jejak (order, stok, cart) dibersihkan/dikembalikan di akhir.
  */
 import { PrismaClient } from "@prisma/client";
@@ -21,6 +35,9 @@ const BASE = "http://127.0.0.1:3100";
 const MOCK = "http://127.0.0.1:4599";
 const WEBHOOK_SECRET = "e2e-secret";
 
+/** Batas potongan cookie @supabase/ssr (utils/chunker.ts). */
+const MAX_CHUNK_SIZE = 3180;
+
 const prisma = new PrismaClient();
 
 function fail(message: string): never {
@@ -28,17 +45,154 @@ function fail(message: string): never {
   throw new Error(message);
 }
 
+/** Baca .env lalu .env.local (nilai dari shell tetap menang). */
+async function loadEnvFiles() {
+  const { readFileSync } = await import("node:fs");
+  const { resolve } = await import("node:path");
+  const inherited = new Set(Object.keys(process.env));
+  for (const name of [".env", ".env.local"]) {
+    try {
+      const content = readFileSync(resolve(process.cwd(), name), "utf8");
+      for (const line of content.split(/\r?\n/)) {
+        const match = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/.exec(line);
+        if (!match || inherited.has(match[1])) continue;
+        const [, key, rawValue] = match;
+        process.env[key] = rawValue.replace(/^['"]|['"]$/g, "");
+      }
+    } catch {
+      // File opsional — andalkan process.env.
+    }
+  }
+}
+
+function readEnv(key: string): string {
+  return (process.env[key] ?? "").trim();
+}
+
+/** base64url tanpa padding (alfabet yang sama dengan @supabase/ssr). */
+function toBase64Url(value: string): string {
+  return Buffer.from(value, "utf8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+interface SessionCookie {
+  name: string;
+  value: string;
+}
+
+/**
+ * Bentuk cookie yang ditulis @supabase/ssr untuk Supabase Auth:
+ *   `sb-<project-ref>-auth-token` = "base64-" + base64url(JSON session),
+ * dipecah jadi `<name>.0`, `<name>.1`, … kalau lebih panjang dari satu cookie.
+ */
+function buildSessionCookies(session: unknown): SessionCookie[] {
+  const supabaseUrl = readEnv("NEXT_PUBLIC_SUPABASE_URL");
+  const projectRef = new URL(supabaseUrl).hostname.split(".")[0];
+  const name = `sb-${projectRef}-auth-token`;
+  const encoded = `base64-${toBase64Url(JSON.stringify(session))}`;
+  if (encoded.length <= MAX_CHUNK_SIZE) return [{ name, value: encoded }];
+  const cookies: SessionCookie[] = [];
+  for (let offset = 0; offset < encoded.length; offset += MAX_CHUNK_SIZE) {
+    cookies.push({ name: `${name}.${cookies.length}`, value: encoded.slice(offset, offset + MAX_CHUNK_SIZE) });
+  }
+  return cookies;
+}
+
+interface E2eSession {
+  email: string;
+  supabaseUserId: string;
+  cookieHeader: string;
+}
+
+/**
+ * Login Supabase asli lewat endpoint token (grant_type=password).
+ *
+ * Header `apikey` wajib; responsnya adalah objek session yang persis disimpan
+ * browser di cookie — jadi session yang sama bisa disusun ulang untuk script.
+ */
+async function signIn(): Promise<E2eSession> {
+  await loadEnvFiles();
+
+  const email = readEnv("E2E_EMAIL");
+  const password = process.env.E2E_PASSWORD ?? "";
+  const supabaseUrl = readEnv("NEXT_PUBLIC_SUPABASE_URL").replace(/\/+$/, "");
+  const anonKey = readEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+
+  const missing = [
+    !email && "E2E_EMAIL",
+    !password && "E2E_PASSWORD",
+    !supabaseUrl && "NEXT_PUBLIC_SUPABASE_URL",
+    !anonKey && "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  ].filter(Boolean) as string[];
+  if (missing.length > 0) {
+    fail(`env belum lengkap: ${missing.join(", ")} (lihat docblock script).`);
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+      method: "POST",
+      headers: { apikey: anonKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+  } catch (error) {
+    fail(`tidak bisa menghubungi Supabase (${supabaseUrl}): ${error instanceof Error ? error.message : String(error)}`);
+  }
+
+  const payload = (await response.json().catch(() => null)) as null | Record<string, unknown>;
+  if (!response.ok || !payload?.access_token) {
+    const hint = payload && typeof payload.error_description === "string" ? payload.error_description : JSON.stringify(payload);
+    fail(`login Supabase gagal (HTTP ${response.status}) untuk ${email}: ${hint}`);
+  }
+
+  const supabaseUserId = typeof payload.user === "object" && payload.user
+    ? String((payload.user as { id?: unknown }).id ?? "")
+    : "";
+
+  return {
+    email,
+    supabaseUserId,
+    cookieHeader: buildSessionCookies(payload).map((c) => `${c.name}=${c.value}`).join("; "),
+  };
+}
+
+let cookieHeader = "";
+
 async function api(path: string, init?: RequestInit) {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookieHeader,
+      ...(init?.headers ?? {}),
+    },
   });
   const body = await res.json().catch(() => null);
   return { status: res.status, body };
 }
 
 async function main() {
-  // ── 0. Pilih produk valid & snapshot stok + cart customer ──
+  // ── 0. Login sungguhan → cookie sesi Supabase untuk semua request berikutnya ──
+  const session = await signIn();
+  cookieHeader = session.cookieHeader;
+
+  const profile = await api("/api/user/profile");
+  const profileEmail = (profile.body?.user?.email ?? profile.body?.email) as string | undefined;
+  if (profile.status !== 200 || !profileEmail) {
+    fail(
+      `autentikasi ditolak dev server: HTTP ${profile.status} ${JSON.stringify(profile.body).slice(0, 300)}` +
+        " (E2E_EMAIL/E2E_PASSWORD benar? dev server memakai NEXT_PUBLIC_SUPABASE_URL yang sama?)"
+    );
+  }
+  if (profileEmail.toLowerCase() !== session.email.toLowerCase()) {
+    fail(`sesi tidak sesuai: server melihat ${profileEmail}, login sebagai ${session.email}`);
+  }
+  console.log(`0. login OK (${profileEmail})`);
+
+  // ── Persiapan: pilih produk valid & snapshot stok + cart customer ──
   const products = await prisma.product.findMany({
     where: { isActive: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } },
     take: 1,
@@ -48,11 +202,16 @@ async function main() {
   if (!product) fail("tidak ada produk valid di katalog");
 
   const customer = await prisma.user.findFirst({
-    where: { role: "customer" },
+    where: {
+      OR: [
+        session.supabaseUserId ? { supabaseId: session.supabaseUserId } : undefined,
+        { email: session.email.toLowerCase() },
+      ].filter(Boolean) as { supabaseId?: string; email: string }[],
+    },
     orderBy: { createdAt: "asc" },
     select: { id: true },
   });
-  if (!customer) fail("tidak ada user customer di DB");
+  if (!customer) fail(`tidak ada baris users untuk ${session.email}`);
 
   const cartSnapshot = await prisma.cartItem.findMany({
     where: { cart: { userId: customer.id } },
