@@ -154,7 +154,7 @@ export default async function HomePage() {
               </div>
               <div>
                 <h4 className="text-headline-sm font-headline-sm text-on-surface">Pembayaran Aman</h4>
-                <p className="text-body-sm font-body-sm text-on-surface-variant">Midtrans, VA &amp; cicilan 0%</p>
+                <p className="text-body-sm font-body-sm text-on-surface-variant">QRIS, VA &amp; E-Wallet</p>
               </div>
             </div>
           </div>
