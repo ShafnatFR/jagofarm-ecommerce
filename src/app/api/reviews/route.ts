@@ -227,6 +227,19 @@ export async function POST(request: NextRequest) {
       include: { user: { select: { id: true, name: true, image: true } } },
     });
 
+    // Notifikasi in-app untuk admin (bell) — best-effort.
+    try {
+      const { notifyAdminSafe } = await import("@/lib/notifications");
+      await notifyAdminSafe({
+        type: "review",
+        title: `Ulasan baru (${rating}★)`,
+        body: comment ? comment.slice(0, 120) : `Dari ${review.user?.name ?? "pelanggan"}`,
+        href: "/admin/reviews",
+      });
+    } catch {
+      /* abaikan */
+    }
+
     return NextResponse.json(
       {
         message: "Ulasan berhasil dikirim dan sudah tayang.",

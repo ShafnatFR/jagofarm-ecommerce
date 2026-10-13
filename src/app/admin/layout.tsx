@@ -8,6 +8,7 @@ import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { AdminRefreshProvider } from "./admin-refresh"
+import { NotificationBell } from "@/components/admin/notification-bell"
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
@@ -326,10 +327,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low">
-              <Icon name="notifications" size={20} />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-            </button>
+            <NotificationBell />
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1B4D3E] text-white">
                 <Icon name="person" size={16} />

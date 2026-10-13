@@ -124,6 +124,19 @@ ${message}
       console.error("[Contact API] Gagal mengirim email notifikasi:", emailError);
     }
 
+    // 3) Notifikasi in-app untuk admin (bell) — best-effort.
+    try {
+      const { notifyAdminSafe } = await import("@/lib/notifications");
+      await notifyAdminSafe({
+        type: "contact",
+        title: `Pesan kontak baru: ${subject}`,
+        body: `${name} (${email})`,
+        href: "/admin/contact",
+      });
+    } catch {
+      /* abaikan */
+    }
+
     return NextResponse.json(
       {
         success: true,
