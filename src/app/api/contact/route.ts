@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { SITE_CONFIG } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Nama harus minimal 2 karakter"),
@@ -9,6 +10,13 @@ const contactSchema = z.object({
   subject: z.string().min(3, "Subjek harus minimal 3 karakter"),
   message: z.string().min(20, "Pesan harus minimal 20 karakter"),
 });
+
+/** Ambil IP pengirim dari header proxy (best-effort, untuk deteksi spam). */
+function getClientIp(request: NextRequest): string | null {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0]?.trim() || null;
+  return request.headers.get("x-real-ip");
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,21 +36,46 @@ export async function POST(request: NextRequest) {
 
     const { name, email, topic, subject, message } = result.data;
 
-    // Log ke console
+    // 1) Simpan pesan ke database DULU — tanpa baris ini pesan hilang
+    //    (sebelumnya hanya di console.log). Kegagalan tulis = 500 sungguhan,
+    //    BUKAN sukses palsu.
+    let contactMessage;
+    try {
+      contactMessage = await prisma.contactMessage.create({
+        data: {
+          name,
+          email,
+          topic,
+          subject,
+          message,
+          ipAddress: getClientIp(request),
+        },
+      });
+    } catch (dbError) {
+      console.error("[Contact API] Gagal menyimpan pesan ke database:", dbError);
+      return NextResponse.json(
+        {
+          error:
+            "Pesan gagal disimpan. Silakan coba lagi atau hubungi kami melalui email/telepon.",
+        },
+        { status: 500 }
+      );
+    }
+
     console.log(
-      `[Contact Form] Baru:\n` +
+      `[Contact Form] Baru (id: ${contactMessage.id}):\n` +
       `  Nama: ${name}\n` +
       `  Email: ${email}\n` +
       `  Topik: ${topic}\n` +
       `  Subjek: ${subject}\n` +
-      `  Pesan: ${message}\n` +
-      `  Waktu: ${new Date().toISOString()}`
+      `  Waktu: ${contactMessage.createdAt.toISOString()}`
     );
 
-    // Kirim notifikasi email ke tim (bila dikonfigurasi)
+    // 2) Kirim notifikasi email ke tim (best-effort; statusnya dicatat di baris
+    //    yang sudah tersimpan supaya admin tahu email terkirim atau tidak).
     try {
       const { sendEmailSafe } = await import("@/lib/email");
-      await sendEmailSafe({
+      const emailResult = await sendEmailSafe({
         to: [SITE_CONFIG.email],
         subject: `Contact Form: ${subject}`,
         replyTo: email,
@@ -70,8 +103,24 @@ ${message}
 
 --- dikirim via JagoFarm E-commerce • ${new Date().toLocaleString("id-ID")} ---`,
       });
+
+      // Pelacakan status email juga best-effort: jangan sampai menggagalkan respons sukses.
+      try {
+        await prisma.contactMessage.update({
+          where: { id: contactMessage.id },
+          data: {
+            emailSent: emailResult.status === "sent",
+            emailError:
+              emailResult.status === "failed"
+                ? emailResult.error.slice(0, 1000)
+                : null,
+          },
+        });
+      } catch (trackError) {
+        console.error("[Contact API] Gagal memperbarui status email pesan:", trackError);
+      }
     } catch (emailError) {
-      // Email gagal tidak boleh mengganggu respons sukses ke user
+      // Email gagal tidak boleh mengganggu respons sukses ke user — pesan sudah tersimpan.
       console.error("[Contact API] Gagal mengirim email notifikasi:", emailError);
     }
 

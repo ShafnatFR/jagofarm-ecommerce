@@ -24,7 +24,14 @@ export interface LiveShippingOption {
 const positive = (value: number | null | undefined): number =>
   Number.isFinite(value) && Number(value) > 0 ? Number(value) : 0;
 
-/** Calculates shipment weights without depending on Prisma, fetch, or Next.js. */
+/**
+ * Calculates shipment weights without depending on Prisma, fetch, or Next.js.
+ *
+ * `divisor` sengaja jadi parameter supaya modul ini tetap pure: pemanggil di
+ * server (mis. /api/shipping/cost) menyuntikkan pembagi dari pengaturan admin
+ * (getShippingSettings), dan bila tidak diberikan jatuh kembali ke
+ * SHIPPING_VOLUMETRIC_DIVISOR seperti sebelumnya.
+ */
 export function calculateChargeableWeight(
   items: ShippingQuoteItem[],
   divisor = Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000)

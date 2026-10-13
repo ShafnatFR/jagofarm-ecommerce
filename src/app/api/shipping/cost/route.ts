@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { WAREHOUSE } from "@/lib/constants";
 import {
   getShippingOptions,
   isUuid,
   normalizeCouriers,
   type ShippingOptionResult,
 } from "@/lib/shipping";
+import { getShippingSettings } from "@/lib/site-settings";
 import { calculateChargeableWeight, type ShippingQuoteItem } from "@/lib/shipping-quote";
 
 /** Ambil nama kota dari alamat milik user (kalau yang dikirim ternyata UUID alamat). */
@@ -34,6 +34,29 @@ function readString(value: unknown): string {
   return "";
 }
 
+/** True kalau klien mengirim daftar kurir sendiri (string "jne:pos" atau array). */
+function hasCourierRequest(value: unknown): boolean {
+  if (typeof value === "string") return value.trim().length > 0;
+  if (Array.isArray(value)) {
+    return value.some((code) => typeof code === "string" && code.trim().length > 0);
+  }
+  return false;
+}
+
+/**
+ * Kurir yang dipakai untuk quote. Kalau klien mengirim kurir sendiri, daftar
+ * itu tetap dihormati (dibatasi kurir yang didukung) seperti sebelumnya;
+ * kalau tidak, dipakai daftar kurir aktif dari pengaturan admin. Tanpa baris
+ * "shipping_settings" di DB, daftar aktif = daftar bawaan sehingga perilaku
+ * endpoint identik dengan versi sebelum pengaturan tersedia.
+ */
+function resolveCouriers(requested: unknown, enabledCouriers: string[]): string[] {
+  if (!hasCourierRequest(requested)) return enabledCouriers;
+  const allowed = normalizeCouriers(requested);
+  const filtered = allowed.filter((code) => enabledCouriers.includes(code));
+  return filtered.length > 0 ? filtered : enabledCouriers;
+}
+
 export async function POST(request: NextRequest) {
   try {
     let body: Record<string, unknown>;
@@ -54,7 +77,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const couriers = normalizeCouriers(body.courier);
+    // Pengaturan pengiriman (DB) lebih dulu; default = nilai env/konstanta.
+    const shippingSettings = await getShippingSettings();
+    const couriers = resolveCouriers(body.courier, shippingSettings.couriers);
 
     let destinationCity = readString(body.destinationCity);
     const destinationCityId = readString(body.destinationCityId);
@@ -130,13 +155,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const divisor = Number(process.env.SHIPPING_VOLUMETRIC_DIVISOR ?? 5000);
+    const divisor = shippingSettings.volumetricDivisor;
     const weightQuote = dimensions.length > 0
       ? calculateChargeableWeight(dimensions, divisor)
       : { actualWeightGram: Math.round(weight), volumetricWeightGram: 0, chargeableWeightGram: Math.round(weight), divisor };
 
     const { options, source, destination } = await getShippingOptions(
-      WAREHOUSE.CITY_ID,
+      shippingSettings.warehouseCityId,
       {
         destinationCity: destinationCity || null,
         destinationCityId: readString(body.destinationCityId) || destinationCityId || null,

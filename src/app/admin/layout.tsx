@@ -18,6 +18,7 @@ const sidebarLinks = [
   { href: "/admin/coupons", label: "Kupon", icon: "label" },
   { href: "/admin/reviews", label: "Ulasan", icon: "star" },
   { href: "/admin/consultation", label: "Konsultasi", icon: "forum" },
+  { href: "/admin/contact", label: "Pesan", icon: "mail" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart" },
   { href: "/admin/site-settings", label: "Pengaturan", icon: "settings" },
 ]
@@ -105,6 +106,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [mobileOpen, setMobileOpen] = useState(false)
   const [guardState, setGuardState] = useState<GuardState>("checking")
   const [admin, setAdmin] = useState<AdminIdentity | null>(null)
+  const [unreadCount, setUnreadCount] = useState(0)
 
   // Guard nyata: hanya admin yang boleh melihat isi /admin/*.
   // Konten admin TIDAK dirender selama guardState === "checking" supaya
@@ -153,6 +155,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
+
+  useEffect(() => {
+    if (guardState !== "authorized") return;
+    // Badge "pesan belum dibaca" — best-effort, hanya tampil setelah guard lolos.
+    // Kegagalan fetch diabaikan supaya tidak mengganggu guard flow maupun halaman.
+    let cancelled = false;
+    fetch("/api/admin/contact?status=unread&limit=1", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((payload: { summary?: { unread?: number } } | null) => {
+        if (!cancelled && typeof payload?.summary?.unread === "number") {
+          setUnreadCount(payload.summary.unread);
+        }
+      })
+      .catch(() => {
+        // badge informatif saja
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [guardState]);
 
   useEffect(() => {
     if (guardState !== "authorized") return;
@@ -256,7 +278,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 )}
               >
                 <Icon name={link.icon} size={20} />
-                {!collapsed && <span>{link.label}</span>}
+                {!collapsed && (
+                  <>
+                    <span>{link.label}</span>
+                    {link.href === "/admin/contact" && unreadCount > 0 && (
+                      <span className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </>
+                )}
               </Link>
             )
           })}

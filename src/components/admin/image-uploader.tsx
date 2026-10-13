@@ -4,19 +4,20 @@ import { useCallback, useRef, useState } from "react";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { UPLOAD } from "@/lib/constants";
 
-/** Batas ukuran file: 5 MB (samakan dengan validasi di API /api/admin/upload) */
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
-
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
-const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "avif"];
+// Batas ukuran & allowlist gambar diambil dari sumber tunggal @/lib/constants
+// (UPLOAD) supaya selalu sinkron dengan validasi di endpoint /api/admin/upload.
+const MAX_FILE_SIZE = UPLOAD.MAX_FILE_SIZE;
+const ALLOWED_TYPES: readonly string[] = UPLOAD.ACCEPTED_IMAGE_TYPES;
+const ALLOWED_EXTENSIONS: readonly string[] = UPLOAD.ACCEPTED_IMAGE_EXTENSIONS;
 
 export interface ImageUploaderProps {
   /** Daftar URL gambar yang sudah tersimpan (gambar pertama = utama) */
   value: string[];
   /** Callback saat daftar URL berubah */
   onChange: (urls: string[]) => void;
-  /** Jumlah maksimal gambar, default 6 */
+  /** Jumlah maksimal gambar, default UPLOAD.MAX_IMAGES_PER_PRODUCT */
   max?: number;
   /** Nonaktifkan interaksi (mis. saat form sedang disimpan) */
   disabled?: boolean;
@@ -44,7 +45,7 @@ function validateFile(file: File): string | null {
 export function ImageUploader({
   value,
   onChange,
-  max = 6,
+  max = UPLOAD.MAX_IMAGES_PER_PRODUCT,
   disabled = false,
   folder,
   className,

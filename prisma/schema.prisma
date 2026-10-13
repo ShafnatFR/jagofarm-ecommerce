@@ -44,8 +44,6 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts   Account[]
-  sessions   Session[]
   addresses  Address[]
   orders     Order[]
   cart       Cart?
@@ -54,45 +52,6 @@ model User {
   consultationSessions ConsultationSession[]
 
   @@map("users")
-}
-
-model Account {
-  id                String  @id @default(uuid())
-  userId            String  @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
-}
-
-model Session {
-  id           String   @id @default(uuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("nextauth_sessions")
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-  @@map("verification_tokens")
 }
 
 model Category {
@@ -388,6 +347,28 @@ model ContentPage {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("content_pages")
+}
+
+/// Pesan dari contact form publik — ditampilkan di kotak masuk admin (/admin/contact).
+model ContactMessage {
+  id         String    @id @default(uuid())
+  name       String    @db.VarChar(100)
+  email      String    @db.VarChar(255)
+  phone      String?   @db.VarChar(20)
+  topic      String    @db.VarChar(30)
+  subject    String    @db.VarChar(255)
+  message    String    @db.Text
+  /// "unread" | "read"
+  status     String    @default("unread") @db.VarChar(20)
+  /// Status notifikasi email internal (best-effort, tidak memblokir penyimpanan).
+  emailSent  Boolean   @default(false) @map("email_sent")
+  emailError String?   @map("email_error") @db.Text
+  ipAddress  String?   @map("ip_address") @db.VarChar(45)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  readAt     DateTime? @map("read_at")
+
+  @@index([status, createdAt])
+  @@map("contact_messages")
 }
 
 /// Pengaturan tampilan yang bisa diedit admin tanpa deploy (key-value JSON).

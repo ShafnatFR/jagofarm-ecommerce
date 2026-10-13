@@ -7,7 +7,8 @@ import { orderCreatedEmail, toEmailOrder } from "@/lib/email-templates";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
 import { checkoutSchema } from "@/lib/validators";
 import { getShippingOptions, normalizeCouriers } from "@/lib/shipping";
-import { WAREHOUSE, INSURANCE_FEE } from "@/lib/constants";
+import { INSURANCE_FEE } from "@/lib/constants";
+import { getShippingSettings } from "@/lib/site-settings";
 import { calculateChargeableWeight, validateSelectedShippingOption } from "@/lib/shipping-quote";
 
 /** Error bisnis checkout (dibedakan dari error tak terduga -> 500). */
@@ -202,6 +203,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Pengaturan pengiriman (DB) lebih dulu; tanpa baris "shipping_settings"
+    // nilainya sama dengan WAREHOUSE.CITY_ID & SHIPPING_VOLUMETRIC_DIVISOR,
+    // jadi total order tidak berubah sampai admin mengedit pengaturan.
+    const shippingSettings = await getShippingSettings();
+
     const weightQuote = calculateChargeableWeight(
       cart.items.map((item) => ({
         quantity: item.quantity,
@@ -209,7 +215,8 @@ export async function POST(request: NextRequest) {
         lengthCm: item.product.lengthCm,
         widthCm: item.product.widthCm,
         heightCm: item.product.heightCm,
-      }))
+      })),
+      shippingSettings.volumetricDivisor
     );
 
     const requestedCouriers = normalizeCouriers(data.shippingCourier);
@@ -220,7 +227,7 @@ export async function POST(request: NextRequest) {
     let shippingQuote: Awaited<ReturnType<typeof getShippingOptions>>;
     try {
       shippingQuote = await getShippingOptions(
-        WAREHOUSE.CITY_ID,
+        shippingSettings.warehouseCityId,
         {
           destinationCity: address.city,
           destinationCityId: address.cityId,
@@ -334,7 +341,7 @@ export async function POST(request: NextRequest) {
           shippingEtd,
           shippingQuoteSource: shippingQuote.source,
           shippingQuoteFetchedAt: new Date(),
-          shippingOriginCityId: WAREHOUSE.CITY_ID,
+          shippingOriginCityId: shippingSettings.warehouseCityId,
           shippingDestinationCityId: address.cityId,
           shippingDestinationDistrictId: address.districtId,
           shippingActualWeightGram: weightQuote.actualWeightGram,

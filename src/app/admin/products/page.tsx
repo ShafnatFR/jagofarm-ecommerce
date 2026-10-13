@@ -26,7 +26,7 @@ interface Product {
   id: string; name: string; slug: string; category: string; price: number
   discountPrice: number | null; stock: number; image: string; featured: boolean
 }
-interface Category { id: string; name: string }
+interface Category { id: string; name: string; slug: string }
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
@@ -125,7 +125,7 @@ export default function ProductsPage() {
             <SelectTrigger className="w-full sm:w-48"><SelectValue placeholder="Kategori" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Semua</SelectItem>
-              {categories.map((c) => <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>)}
+              {categories.map((c) => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
         </CardContent>

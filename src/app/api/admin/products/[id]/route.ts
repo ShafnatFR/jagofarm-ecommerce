@@ -92,6 +92,89 @@ function normalizeImages(images: unknown) {
     }));
 }
 
+/** Hasil normalisasi varian: baris siap create + pesan error 400 (null = valid). */
+interface VariantSync {
+  rows: Prisma.ProductVariantCreateWithoutProductInput[];
+  error: string | null;
+}
+
+/** Koersi angka dari form admin (boleh string); kosong = 0, tak valid = null. */
+function coerceNumber(value: unknown): number | null {
+  if (value === undefined || value === null) return 0;
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return 0;
+    const num = Number(trimmed);
+    return Number.isFinite(num) ? num : null;
+  }
+  return null;
+}
+
+/**
+ * Normalisasi daftar varian pengganti (deleteMany + create).
+ * Baris yang belum diisi diabaikan; nama & SKU wajib, angka dikoersi dari
+ * string form admin, dan SKU harus unik dalam satu produk (case-insensitive)
+ * — aturan yang sama dengan form produk.
+ */
+function normalizeVariants(variants: unknown): VariantSync | undefined {
+  if (!Array.isArray(variants)) return undefined;
+
+  const rows: Prisma.ProductVariantCreateWithoutProductInput[] = [];
+  const skuKeys = new Set<string>();
+
+  for (const [index, raw] of variants.entries()) {
+    const label = `Varian #${index + 1}`;
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+      return { rows: [], error: `${label}: data varian tidak valid` };
+    }
+
+    const source = raw as Record<string, unknown>;
+    const name = typeof source.name === "string" ? source.name.trim() : "";
+    const sku = typeof source.sku === "string" ? source.sku.trim() : "";
+
+    // Baris yang belum diisi sama sekali diabaikan (sama seperti form admin).
+    if (!name && !sku) continue;
+
+    if (!name) return { rows: [], error: `${label}: nama varian wajib diisi.` };
+    if (sku.length < 2) {
+      return { rows: [], error: `${label}: SKU varian wajib diisi minimal 2 karakter.` };
+    }
+
+    const priceModifier = coerceNumber(source.priceModifier);
+    if (priceModifier === null) {
+      return { rows: [], error: `${label}: selisih harga harus berupa angka.` };
+    }
+
+    const stock = coerceNumber(source.stock);
+    if (stock === null || !Number.isInteger(stock) || stock < 0) {
+      return { rows: [], error: `${label}: stok harus bilangan bulat dan tidak boleh negatif.` };
+    }
+
+    const skuKey = sku.toUpperCase();
+    if (skuKeys.has(skuKey)) {
+      return {
+        rows: [],
+        error: `${label}: SKU varian duplikat (${sku}). Setiap varian membutuhkan SKU unik.`,
+      };
+    }
+    skuKeys.add(skuKey);
+
+    rows.push({
+      name,
+      sku,
+      priceModifier,
+      stock: Math.trunc(stock),
+      // attributes opsional; hanya dikalim bila bentukan JSON yang valid.
+      ...(source.attributes && typeof source.attributes === "object" && !Array.isArray(source.attributes)
+        ? { attributes: source.attributes as Prisma.InputJsonValue }
+        : {}),
+    });
+  }
+
+  return { rows, error: null };
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -136,7 +219,10 @@ export async function PATCH(
 
     const { id } = await params;
     const body = await request.json();
-    const { images, ...rest } = (body ?? {}) as { images?: unknown } & Record<string, unknown>;
+    const { images, variants, ...rest } = (body ?? {}) as {
+      images?: unknown;
+      variants?: unknown;
+    } & Record<string, unknown>;
 
     const existing = await prisma.product.findUnique({
       where: { id },
@@ -193,10 +279,37 @@ export async function PATCH(
 
     // Sinkronisasi gambar: daftar terkirim menggantikan gambar lama (pertama = primary)
     const normalizedImages = normalizeImages(images);
+    // Sinkronisasi varian: daftar terkirim menggantikan varian lama. Daftar
+    // kosong = produk tanpa varian; tanpa key `variants` varian lama dipertahankan.
+    const variantSync = normalizeVariants(variants);
+    if (variantSync?.error) {
+      return NextResponse.json({ error: variantSync.error }, { status: 400 });
+    }
+
+    // SKU varian unik global di DB. Kalau sudah dipakai varian produk lain,
+    // Prisma menolak dengan P2002 (yang jadi 500) — jadi dicek lebih dulu.
+    if (variantSync && variantSync.rows.length > 0) {
+      const taken = await prisma.productVariant.findFirst({
+        where: {
+          sku: { in: variantSync.rows.map((row) => String(row.sku)), mode: "insensitive" },
+          productId: { not: id },
+        },
+        select: { sku: true },
+      });
+      if (taken) {
+        return NextResponse.json(
+          { error: `SKU ${taken.sku} sudah dipakai varian produk lain` },
+          { status: 400 }
+        );
+      }
+    }
 
     const product = await prisma.$transaction(async (tx) => {
       if (normalizedImages) {
         await tx.productImage.deleteMany({ where: { productId: id } });
+      }
+      if (variantSync) {
+        await tx.productVariant.deleteMany({ where: { productId: id } });
       }
 
       return tx.product.update({
@@ -204,6 +317,7 @@ export async function PATCH(
         data: {
           ...updateData,
           ...(normalizedImages ? { images: { create: normalizedImages } } : {}),
+          ...(variantSync ? { variants: { create: variantSync.rows } } : {}),
         },
         include: {
           images: { orderBy: { sortOrder: "asc" } },

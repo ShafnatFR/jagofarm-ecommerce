@@ -33,7 +33,7 @@ interface CouponApiItem {
 interface Coupon {
   id: string; code: string; type: string; value: number; minOrder: number
   maxDiscount: number | null; usageLimit: number; usageCount: number
-  startDate: string; endDate: string; status: string
+  startDate: string; endDate: string; status: string; isActive: boolean
 }
 
 const statusConfig: Record<string, { label: string; variant: "default" | "success" | "warning" | "destructive" | "secondary" }> = {
@@ -61,6 +61,7 @@ export default function CouponsPage() {
     maxDiscount: c.maxDiscount ?? null, usageLimit: c.usageLimit ?? 0,
     usageCount: c.usedCount ?? c.usageCount ?? 0, startDate: c.startsAt || c.startDate || "",
     endDate: c.expiresAt || c.endDate || "", status: !c.isActive ? "DISABLED" : new Date(c.expiresAt || c.endDate || "") < new Date() ? "EXPIRED" : "ACTIVE",
+    isActive: c.isActive ?? false,
   }))
 
   const fetchData = async () => {
@@ -123,7 +124,8 @@ export default function CouponsPage() {
         usageLimit: Number(form.usageLimit),
         startsAt: new Date(`${form.startDate}T00:00:00`).toISOString(),
         expiresAt: new Date(`${form.endDate}T23:59:59`).toISOString(),
-        isActive: true,
+        // Pertahankan status aktif saat mengedit; kupon baru default aktif.
+        isActive: editingCoupon ? editingCoupon.isActive : true,
       }
       const url = editingCoupon ? `/api/admin/coupons/${editingCoupon.id}` : "/api/admin/coupons"
       const method = editingCoupon ? "PATCH" : "POST"
