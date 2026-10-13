@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type AddressFormValues = {
   label: string;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function AddressForm({ initialValues, existingCount }: Props) {
+  const router = useRouter();
   const [values, setValues] = useState<AddressFormValues>({
     label: initialValues.label ?? "Rumah",
     recipientName: initialValues.recipientName ?? "",
@@ -96,7 +98,7 @@ export function AddressForm({ initialValues, existingCount }: Props) {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(typeof data.error === "string" ? data.error : "Alamat gagal disimpan.");
-      window.location.assign("/account/addresses");
+      router.push("/account/addresses");
     } catch (caught) {
       setSaving(false);
       setError(caught instanceof Error ? caught.message : "Alamat gagal disimpan.");

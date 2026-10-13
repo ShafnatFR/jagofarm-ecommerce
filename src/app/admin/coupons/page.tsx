@@ -78,6 +78,7 @@ export default function CouponsPage() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount updates the page loading state.
     void fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fetchData dibuat ulang tiap render; sengaja fetch sekali saat mount.
   }, [])
 
   const filtered = coupons.filter((c) => c.code.toLowerCase().includes(search.toLowerCase()))

@@ -6,11 +6,13 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { motion } from "framer-motion";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn, formatDate, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewForm } from "@/components/product/review-form";
+import { useToast } from "@/components/ui/use-toast";
 import { useCartStore } from "@/lib/cart-store";
+import { createClient } from "@/lib/supabase/client";
 import { SITE_CONFIG, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 import { useSiteContent } from "@/hooks/use-site-content";
 
@@ -49,6 +51,21 @@ interface RelatedProduct {
   weightGram?: number;
 }
 
+/** Satu tanya jawab produk (dari /api/products/questions). */
+interface ProductQuestion {
+  id: string;
+  askerName: string;
+  question: string;
+  answer: string | null;
+  answeredAt: string | null;
+  createdAt: string;
+}
+
+/** Panjang minimum pertanyaan — selaras dengan validasi zod di backend. */
+const MIN_QUESTION_LENGTH = 10;
+/** Panjang maksimum pertanyaan — selaras dengan validasi zod di backend. */
+const MAX_QUESTION_LENGTH = 1000;
+
 /* ------------------------------------------------------------------ */
 /*  Page Component                                                     */
 /* ------------------------------------------------------------------ */
@@ -86,6 +103,19 @@ export default function ProductDetailPage({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [relatedAddedId, setRelatedAddedId] = useState<string | null>(null);
 
+  /* ---------- State: Tab Tanya Jawab (Q&A produk) ---------- */
+  const [questions, setQuestions] = useState<ProductQuestion[]>([]);
+  const [questionsLoading, setQuestionsLoading] = useState(true);
+  const [questionsError, setQuestionsError] = useState<string | null>(null);
+  const [questionText, setQuestionText] = useState("");
+  const [questionSubmitting, setQuestionSubmitting] = useState(false);
+  const [questionError, setQuestionError] = useState<string | null>(null);
+  const [questionSubmitted, setQuestionSubmitted] = useState(false);
+  /** null = belum diketahui (masih dicek). */
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  const { toast } = useToast();
+
   /** Muat ulasan + ringkasan rating; dipakai saat halaman dibuka dan setelah kirim ulasan. */
   async function loadReviews(productId: string) {
     try {
@@ -98,6 +128,25 @@ export default function ProductDetailPage({
       setReviewSummary(data.summary ?? null);
     } catch {
       /* ulasan opsional: kegagalan muat tidak boleh menggagalkan halaman */
+    }
+  }
+
+  /** Muat daftar tanya jawab produk (hanya yang sudah dijawab & dipublikasikan). */
+  async function loadQuestions(productId: string) {
+    setQuestionsLoading(true);
+    setQuestionsError(null);
+    try {
+      const res = await fetch(
+        `/api/products/questions?productId=${encodeURIComponent(productId)}`,
+        { cache: "no-store" }
+      );
+      if (!res.ok) throw new Error("Gagal memuat tanya jawab.");
+      const data = await res.json();
+      setQuestions(Array.isArray(data.questions) ? data.questions : []);
+    } catch {
+      setQuestionsError("Tidak dapat memuat tanya jawab. Coba lagi nanti.");
+    } finally {
+      setQuestionsLoading(false);
     }
   }
 
@@ -147,6 +196,101 @@ export default function ProductDetailPage({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [lightboxOpen]);
+
+  /**
+   * Muat tanya jawab begitu produk siap — dipakai untuk isi tab dan jumlah
+   * di label tab, sama seperti ulasan.
+   */
+  useEffect(() => {
+    if (!product?.id) return;
+    let cancelled = false;
+    void (async () => {
+      if (cancelled) return;
+      await loadQuestions(product.id);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [product?.id]);
+
+  /** Cek status login (Supabase) untuk mengatur form tanya — hanya perlu sekali. */
+  useEffect(() => {
+    const supabase = createClient();
+    let mounted = true;
+    void supabase.auth.getUser().then(({ data }) => {
+      if (mounted) setIsLoggedIn(Boolean(data.user));
+    });
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (mounted) setIsLoggedIn(Boolean(session?.user));
+      }
+    );
+    return () => {
+      mounted = false;
+      authSubscription.subscription.unsubscribe();
+    };
+  }, []);
+
+  /** Kirim pertanyaan baru ke backend (perlu login). */
+  async function handleSubmitQuestion(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setQuestionError(null);
+
+    const trimmed = questionText.trim();
+    if (trimmed.length < MIN_QUESTION_LENGTH) {
+      setQuestionError(
+        `Pertanyaan minimal ${MIN_QUESTION_LENGTH} karakter agar tim kami bisa menjawab dengan tepat.`
+      );
+      return;
+    }
+
+    setQuestionSubmitting(true);
+    try {
+      const res = await fetch("/api/products/questions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: product?.id, question: trimmed }),
+      });
+
+      if (res.status === 401) {
+        setQuestionError("Masuk dulu untuk bertanya.");
+        setIsLoggedIn(false);
+        return;
+      }
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        const message =
+          data && typeof data.error === "string" && data.error.trim()
+            ? data.error
+            : "Pertanyaan gagal dikirim. Silakan coba lagi.";
+        setQuestionError(message);
+        toast({
+          variant: "destructive",
+          title: "Pertanyaan gagal dikirim",
+          description: message,
+        });
+        return;
+      }
+
+      setQuestionSubmitted(true);
+      setQuestionText("");
+      toast({
+        title: "Pertanyaan terkirim",
+        description: "Tim JagoFarm akan menjawab dan menayangkannya di sini.",
+      });
+    } catch {
+      const message =
+        "Tidak dapat menghubungi server. Periksa koneksi Anda lalu coba lagi.";
+      setQuestionError(message);
+      toast({
+        variant: "destructive",
+        title: "Pertanyaan gagal dikirim",
+        description: message,
+      });
+    } finally {
+      setQuestionSubmitting(false);
+    }
+  }
 
   /* ---------- Loading skeleton ---------- */
   if (loading) {
@@ -549,7 +693,11 @@ export default function ProductDetailPage({
             {[
               { id: "deskripsi" as const, label: "Deskripsi Produk", icon: "description" },
               { id: "ulasan" as const, label: `Ulasan Pembeli (${totalReviews})`, icon: "reviews" },
-              { id: "tanya" as const, label: "Tanya Jawab", icon: "forum" },
+              {
+                id: "tanya" as const,
+                label: questionsLoading ? "Tanya Jawab" : `Tanya Jawab (${questions.length})`,
+                icon: "forum",
+              },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -745,30 +893,262 @@ export default function ProductDetailPage({
 
           {/* === TAB: Tanya Jawab === */}
           {activeTab === "tanya" && (
-            <div className="text-center py-12">
-              <Icon name="forum" size={48} className="mx-auto text-outline-variant" />
-              <h3 className="mt-4 text-lg font-bold text-on-surface">Tanya Jawab</h3>
-              <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                Fitur tanya jawab produk belum tersedia. Sementara, Anda bisa bertanya langsung
-                {" "}{site.productConsultNote}
-              </p>
-              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link href="/consultation">
-                  <Button variant="secondary" className="rounded-full border-2 border-primary text-primary font-bold">
-                    <Icon name="chat" size={18} className="mr-2" />
-                    Konsultasi dengan Tim Ahli
-                  </Button>
-                </Link>
-                <a
-                  href={`https://wa.me/${SITE_CONFIG.whatsappIntl}?text=${encodeURIComponent(`Halo JagoFarm, saya ingin bertanya tentang produk ${product.name}.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button className="rounded-full bg-primary text-on-primary font-bold">
-                    <Icon name="call" size={18} className="mr-2" />
-                    Chat via WhatsApp
-                  </Button>
-                </a>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+              {/* ---------- LEFT: daftar tanya jawab ---------- */}
+              <div className="lg:col-span-7 space-y-5">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-lg font-bold text-on-surface flex items-center gap-2">
+                    <Icon name="forum" size={20} className="text-primary" />
+                    Pertanyaan Pembeli
+                  </h3>
+                  {!questionsLoading && questions.length > 0 && (
+                    <span className="text-xs font-bold text-primary bg-primary-fixed/20 px-2.5 py-1 rounded-full">
+                      {questions.length} terjawab
+                    </span>
+                  )}
+                </div>
+
+                {/* Loading */}
+                {questionsLoading && (
+                  <div className="space-y-4">
+                    {[0, 1, 2].map((i) => (
+                      <div
+                        key={i}
+                        className="rounded-2xl border border-outline-variant/60 bg-surface-container-lowest p-5 space-y-3"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                          <Skeleton className="h-3 w-28" />
+                        </div>
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-4 w-1/2" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Error */}
+                {!questionsLoading && questionsError && (
+                  <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 text-center">
+                    <Icon name="info" size={32} className="mx-auto text-destructive" />
+                    <p className="mt-2 text-sm text-on-surface-variant">{questionsError}</p>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="mt-4 rounded-full"
+                      onClick={() => product?.id && loadQuestions(product.id)}
+                    >
+                      <Icon name="refresh" size={16} className="mr-1.5" />
+                      Coba Lagi
+                    </Button>
+                  </div>
+                )}
+
+                {/* Empty */}
+                {!questionsLoading && !questionsError && questions.length === 0 && (
+                  <div className="text-center py-12 rounded-2xl border border-dashed border-outline-variant bg-surface-container-low/50">
+                    <Icon name="help" size={44} className="mx-auto text-outline-variant" />
+                    <h4 className="mt-3 text-base font-bold text-on-surface">
+                      Belum ada tanya jawab
+                    </h4>
+                    <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">
+                      Jadilah yang pertama bertanya tentang produk ini. Tim JagoFarm akan
+                      menjawab dan jawabannya tampil di sini.
+                    </p>
+                  </div>
+                )}
+
+                {/* List */}
+                {!questionsLoading && !questionsError && questions.length > 0 && (
+                  <div className="space-y-4">
+                    {questions.map((q) => (
+                      <div
+                        key={q.id}
+                        className="rounded-2xl border border-outline-variant/70 bg-surface-container-lowest p-5"
+                      >
+                        {/* Pertanyaan */}
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant font-bold text-sm flex items-center justify-center shrink-0">
+                            {q.askerName.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-sm font-bold text-on-surface">
+                                {q.askerName}
+                              </span>
+                              <span className="text-[11px] text-outline">
+                                {formatDate(q.createdAt)}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-sm text-on-surface-variant leading-relaxed">
+                              {q.question}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Jawaban admin */}
+                        {q.answer && (
+                          <div className="mt-3 ml-11 rounded-xl bg-primary-fixed/20 border border-primary-fixed-dim/50 p-3.5">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-full bg-primary text-secondary-fixed-dim flex items-center justify-center shrink-0">
+                                <Icon name="storefront" size={14} filled />
+                              </div>
+                              <span className="text-xs font-bold text-primary">
+                                Tim JagoFarm
+                              </span>
+                              <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-primary bg-surface-container-lowest/70 px-1.5 py-0.5 rounded">
+                                <Icon name="verified" size={12} filled className="text-primary" />
+                                Penjual
+                              </span>
+                              {q.answeredAt && (
+                                <span className="text-[11px] text-outline">
+                                  {formatDate(q.answeredAt)}
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-1.5 text-sm text-on-surface leading-relaxed">
+                              {q.answer}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ---------- RIGHT: form tanya + bantuan ---------- */}
+              <div className="lg:col-span-5 space-y-5">
+                <div className="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/60">
+                  <h3 className="text-base font-bold text-on-surface flex items-center gap-2">
+                    <Icon name="live_help" size={20} className="text-primary" />
+                    Punya Pertanyaan?
+                  </h3>
+                  <p className="mt-1 text-xs text-outline leading-relaxed">
+                    Tanyakan seputar spesifikasi, cara pakai, atau kecocokan produk. Tim
+                    JagoFarm akan menjawab dan jawabannya tayang di sini.
+                  </p>
+
+                  {/* Belum login */}
+                  {isLoggedIn === false && (
+                    <div className="mt-4 rounded-xl border border-primary-fixed-dim/60 bg-primary-fixed/20 p-4 text-center">
+                      <Icon name="lock" size={24} className="mx-auto text-primary" />
+                      <p className="mt-2 text-sm text-on-surface-variant">
+                        Masuk dulu untuk mengirim pertanyaan.
+                      </p>
+                      <Link
+                        href={`/login?next=${encodeURIComponent(`/products/${product.slug}`)}`}
+                        className="mt-3 inline-block"
+                      >
+                        <Button size="sm" className="rounded-full font-bold">
+                          <Icon name="login" size={16} className="mr-1.5" />
+                          Masuk
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+
+                  {/* Form (login / belum diketahui) */}
+                  {isLoggedIn !== false && (
+                    <form onSubmit={handleSubmitQuestion} className="mt-4 space-y-3">
+                      {questionSubmitted && (
+                        <div className="flex items-start gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-800">
+                          <Icon name="check_circle" size={16} className="mt-0.5 shrink-0" />
+                          <span>
+                            Pertanyaan terkirim. Jawaban akan tampil di halaman ini setelah
+                            dijawab tim kami.
+                          </span>
+                        </div>
+                      )}
+
+                      {questionError && (
+                        <div className="flex items-start gap-2 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+                          <Icon name="info" size={16} className="mt-0.5 shrink-0" />
+                          <span>{questionError}</span>
+                        </div>
+                      )}
+
+                      <label
+                        htmlFor="product-question"
+                        className="block text-sm font-medium text-on-surface"
+                      >
+                        Pertanyaan Anda
+                      </label>
+                      <textarea
+                        id="product-question"
+                        value={questionText}
+                        onChange={(e) => {
+                          setQuestionText(e.target.value);
+                          if (questionError) setQuestionError(null);
+                          if (questionSubmitted) setQuestionSubmitted(false);
+                        }}
+                        disabled={questionSubmitting}
+                        maxLength={MAX_QUESTION_LENGTH}
+                        placeholder={`Contoh: Apakah ${product.name} cocok untuk pemula?`}
+                        className="flex min-h-[110px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {questionText.trim().length}/{MAX_QUESTION_LENGTH} karakter
+                        {questionText.trim().length > 0 &&
+                          questionText.trim().length < MIN_QUESTION_LENGTH &&
+                          ` · minimal ${MIN_QUESTION_LENGTH} karakter`}
+                      </p>
+
+                      <Button
+                        type="submit"
+                        className="w-full rounded-full font-bold"
+                        disabled={questionSubmitting}
+                      >
+                        {questionSubmitting ? (
+                          <>
+                            <Icon
+                              name="progress_activity"
+                              size={16}
+                              className="mr-2 animate-spin"
+                            />
+                            Mengirim...
+                          </>
+                        ) : (
+                          <>
+                            <Icon name="send" size={16} className="mr-2" />
+                            Kirim Pertanyaan
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  )}
+                </div>
+
+                {/* Bantuan tambahan */}
+                <div className="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/70">
+                  <h4 className="text-sm font-bold text-on-surface">
+                    Butuh jawaban lebih cepat?
+                  </h4>
+                  <p className="mt-1 text-xs text-outline leading-relaxed">
+                    Hubungi tim kami {site.productConsultNote}
+                  </p>
+                  <div className="mt-4 flex flex-col gap-2.5">
+                    <Link href="/consultation">
+                      <Button
+                        variant="secondary"
+                        className="w-full rounded-full border-2 border-primary text-primary font-bold"
+                      >
+                        <Icon name="chat" size={18} className="mr-2" />
+                        Konsultasi dengan Tim Ahli
+                      </Button>
+                    </Link>
+                    <a
+                      href={`https://wa.me/${SITE_CONFIG.whatsappIntl}?text=${encodeURIComponent(`Halo JagoFarm, saya ingin bertanya tentang produk ${product.name}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button className="w-full rounded-full bg-primary text-on-primary font-bold">
+                        <Icon name="call" size={18} className="mr-2" />
+                        Chat via WhatsApp
+                      </Button>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           )}

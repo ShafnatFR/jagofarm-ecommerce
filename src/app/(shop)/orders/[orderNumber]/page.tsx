@@ -298,6 +298,7 @@ export default function OrderDetailPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- pola fetch-saat-mount detail pesanan; setState bagian alur pengambilan data
     setLoading(true);
     fetchOrder().finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fetchOrder dibuat ulang tiap render; muat ulang cukup saat orderNumber berubah.
   }, [orderNumber]);
 
   // Ringkasan cart server disiapkan lebih dulu supaya 'Beli Lagi' ikut tersinkron.
@@ -352,15 +353,16 @@ export default function OrderDetailPage() {
     window.history.replaceState({}, "", window.location.pathname);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- hasil pembacaan query Midtrans; setState sengaja memicu cek status sekali
     setAutoCheck(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- baca query Midtrans sekali saat mount; toast stabil.
   }, []);
 
   useEffect(() => {
     if (autoCheck && order) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reaksi sekali setelah order termuat; setState mencegah cek status berulang
       setAutoCheck(false);
-      // eslint-disable-next-line react-hooks/immutability -- one-shot payment status refresh
       void refreshStatus(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- refreshStatus dibuat ulang tiap render; dipicu sekali via autoCheck.
   }, [autoCheck, order]);
 
   async function refreshStatus(showToast = true) {
@@ -835,6 +837,15 @@ export default function OrderDetailPage() {
                             </span>
                           </>
                         )}
+                        {canReorder && (
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => handleReorderItem(item)}
+                          >
+                            <Icon name="shopping_cart" size={12} className="mr-1" /> Beli Lagi
+                          </Button>
+                        )}
                       </div>
                     </div>
                     <p className="font-semibold">{formatPrice(item.total)}</p>
@@ -1051,6 +1062,50 @@ export default function OrderDetailPage() {
                 <Icon name="cancel" size={16} className="mr-2" /> Batalkan Pesanan
               </Button>
             </div>
+          )}
+
+          {/* Aksi pembayaran & pembelian ulang */}
+          {(canPay || canReorder || isPending) && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Aksi Pesanan</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {canPay && (
+                  <Button
+                    className="w-full"
+                    onClick={() => void handlePay()}
+                    disabled={paying}
+                  >
+                    <Icon name="payments" size={16} className="mr-2" />
+                    {paying ? "Memproses…" : "Bayar Sekarang"}
+                  </Button>
+                )}
+
+                {isPending && (
+                  <Button
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => void refreshStatus()}
+                    disabled={refreshing}
+                  >
+                    <Icon name="refresh" size={16} className="mr-2" />
+                    {refreshing ? "Memeriksa…" : "Cek Status Pembayaran"}
+                  </Button>
+                )}
+
+                {canReorder && (
+                  <Button
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => handleReorderAll()}
+                  >
+                    <Icon name="shopping_cart" size={16} className="mr-2" />
+                    Beli Lagi
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>

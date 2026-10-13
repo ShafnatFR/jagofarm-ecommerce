@@ -96,6 +96,7 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${jakarta.variable} h-full antialiased`}>
       <head>
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- font ikon Material Symbols dimuat sekali di root layout (App Router), bukan per-halaman */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"

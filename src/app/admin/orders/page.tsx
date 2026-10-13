@@ -169,7 +169,13 @@ export default function OrdersPage() {
     const params = new URLSearchParams()
     if (search) params.set("search", search)
     if (statusFilter && statusFilter !== "all") params.set("status", statusFilter)
-    window.location.href = `/api/admin/orders/export?${params.toString()}`
+    // Unduhan file: buat tautan tersembunyi + klik (bukan navigasi halaman).
+    const a = document.createElement("a")
+    a.href = `/api/admin/orders/export?${params.toString()}`
+    a.rel = "noopener"
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
   }, [search, statusFilter])
 
   useEffect(() => {
