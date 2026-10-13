@@ -32,6 +32,22 @@ function effectivePrice(base: number, discount: number | null): number {
   return discount !== null && discount > 0 ? discount : base;
 }
 
+/** Produk terkait: kategori sama, aktif, bukan produk ini. */
+async function loadRelatedProducts(productId: string, categoryId: string) {
+  return prisma.product.findMany({
+    where: {
+      categoryId,
+      isActive: true,
+      id: { not: productId },
+    },
+    include: {
+      images: { orderBy: { sortOrder: "asc" }, take: 1 },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 4,
+  });
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await loadProduct(slug);
@@ -75,6 +91,31 @@ export default async function ProductPage({ params }: Props) {
     _avg: { rating: true },
     _count: true,
   });
+
+  // Produk terkait + jumlah terjual (data riil) — dijalankan paralel.
+  const [related, soldAggregate] = await Promise.all([
+    loadRelatedProducts(product.id, product.categoryId),
+    prisma.orderItem.aggregate({
+      where: {
+        productId: product.id,
+        order: { status: { notIn: ["cancelled", "expired"] } },
+      },
+      _sum: { quantity: true },
+    }),
+  ]);
+
+  /** Jumlah unit terjual dari order riil (cancel/expired tidak dihitung). */
+  const soldCount = Number(soldAggregate._sum.quantity ?? 0);
+
+  const relatedProducts = related.map((p) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    basePrice: Number(p.basePrice),
+    discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
+    image: p.images[0]?.url,
+    weightGram: p.weightGram,
+  }));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -139,7 +180,11 @@ export default async function ProductPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ProductDetailView initialProduct={initialProduct} />
+      <ProductDetailView
+        initialProduct={initialProduct}
+        relatedProducts={relatedProducts}
+        soldCount={soldCount}
+      />
     </>
   );
 }

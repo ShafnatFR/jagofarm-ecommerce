@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
+import { useCategories } from "@/hooks/use-categories";
 import { useCartStore } from "@/lib/cart-store";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
@@ -15,7 +16,10 @@ export function Navbar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const cartCount = useCartStore((s) => s.totalItems());
+  const { categories } = useCategories();
 
   useEffect(() => {
     const supabase = createClient();
@@ -36,6 +40,39 @@ export function Navbar() {
       authSubscription.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key.toLowerCase() !== "k" || (!event.metaKey && !event.ctrlKey)) return;
+
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      searchInputRef.current?.focus();
+      searchInputRef.current?.select();
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (!query) {
+      router.push("/products");
+      return;
+    }
+    router.push(`/products?search=${encodeURIComponent(query)}`);
+  }
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -85,9 +122,18 @@ export function Navbar() {
 
           {/* Search Bar on the Left / Center-Left */}
           <div className="flex-1 max-w-xl hidden md:block">
-            <form className="relative flex items-center" onSubmit={(e) => e.preventDefault()}>
+            <form className="relative flex items-center" onSubmit={handleSearch} role="search">
               <span className="material-symbols-outlined absolute left-3.5 text-black text-[20px] pointer-events-none">search</span>
-              <input className="w-full bg-white hover:bg-white border border-black focus:border-black focus:ring-1 focus:ring-black rounded-full pl-11 pr-24 py-2 text-body-md font-body-md text-black placeholder:text-black transition-colors outline-none" placeholder={SEARCH_PLACEHOLDER} type="text" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                name="search"
+                aria-label="Cari produk"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white hover:bg-white border border-black focus:border-black focus:ring-1 focus:ring-black rounded-full pl-11 pr-24 py-2 text-body-md font-body-md text-black placeholder:text-black transition-colors outline-none"
+                placeholder={SEARCH_PLACEHOLDER}
+              />
               <div className="absolute right-2 flex items-center gap-1">
                 <span className="text-[11px] bg-white border border-black rounded px-1.5 py-0.5 text-black">⌘K</span>
               </div>
@@ -100,13 +146,11 @@ export function Navbar() {
               Kategori
               <span className="material-symbols-outlined text-[16px]">expand_more</span>
             </Link>
-            <Link className="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-black dark:hover:text-inverse-primary transition-colors duration-150" href="/products?category=set-tambak">
-              Set Tambak
-            </Link>
-            <Link className="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-black dark:hover:text-inverse-primary transition-colors duration-150 flex items-center gap-1" href="/products?category=iot-smart-farming">
-              IoT &amp; Smart Farming
-              <span className="w-1.5 h-1.5 rounded-full bg-black"></span>
-            </Link>
+            {categories.slice(0, 3).map((cat) => (
+              <Link key={cat.id} className="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-black dark:hover:text-inverse-primary transition-colors duration-150" href={`/products?category=${cat.slug}`}>
+                {cat.name}
+              </Link>
+            ))}
             <Link className="text-on-surface-variant dark:text-surface-variant font-medium text-label-lg font-label-lg hover:text-black dark:hover:text-inverse-primary transition-colors duration-150 flex items-center gap-1" href="/consultation">
               Konsultasi
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse" />
@@ -116,13 +160,12 @@ export function Navbar() {
           {/* Trailing Icon Actions: shopping_cart, account_circle */}
           <div className="flex items-center gap-2 shrink-0">
             {/* Search Trigger for Mobile */}
-            <button aria-label="Search" className="md:hidden p-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" onClick={() => setMobileOpen(true)}>
+            <button aria-label="Search" className="md:hidden p-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" onClick={() => router.push("/products")}>
               <span className="material-symbols-outlined text-[24px]">search</span>
             </button>
             {/* Wishlist */}
             <Link href="/wishlist" aria-label="Favorit" className="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-black transition-colors relative">
               <span className="material-symbols-outlined text-[22px]">favorite</span>
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-black ring-2 ring-surface-container-lowest"></span>
             </Link>
             {/* Shopping Cart */}
             <Link href="/cart" aria-label="shopping_cart" className="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-black transition-colors relative transition-all duration-200 active:scale-95">

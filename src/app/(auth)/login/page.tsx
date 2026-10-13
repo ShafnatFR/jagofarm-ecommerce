@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/components/ui/icon";
-import { SITE_CONFIG } from "@/lib/constants";
+import { STORE_PROFILE_DEFAULT } from "@/lib/site-settings-shared";
 
 /**
  * Hanya izinkan path internal situs. Tanpa filter ini, `/login?callbackUrl=https://evil.com`
@@ -31,6 +31,8 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   // Jumlah produk diambil dari API publik supaya angka di layar bukan klaim manual.
   const [productCount, setProductCount] = useState<number | null>(null);
+  // Jam layanan dari profil toko (API publik); default tampil selama fetch berjalan.
+  const [hoursShort, setHoursShort] = useState(STORE_PROFILE_DEFAULT.hoursShort);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,6 +43,14 @@ function LoginForm() {
       })
       .catch(() => {
         /* biarkan "—" tampil bila API gagal */
+      });
+    fetch("/api/site-profile")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { profile?: { hoursShort?: string } } | null) => {
+        if (!cancelled && data?.profile?.hoursShort) setHoursShort(data.profile.hoursShort);
+      })
+      .catch(() => {
+        /* biarkan jam layanan default tampil bila API gagal */
       });
     return () => {
       cancelled = true;
@@ -175,17 +185,17 @@ function LoginForm() {
             </div>
             <div className="h-8 w-px bg-white/15" />
             <div>
-              <div className="text-2xl font-bold text-white tracking-tight">{SITE_CONFIG.hoursShort}</div>
+              <div className="text-2xl font-bold text-white tracking-tight">{hoursShort}</div>
               <div className="text-xs text-primary-fixed-dim/80">Jam Layanan</div>
             </div>
           </div>
         </div>
 
         <div className="relative z-10 text-xs text-white/50 flex items-center justify-between">
-          <p>&copy; 2025 JagoFarm Agro Nusantara. Hak Cipta Dilindungi.</p>
+          <p>&copy; {new Date().getFullYear()} JagoFarm Agro Nusantara. Hak Cipta Dilindungi.</p>
           <div className="flex gap-4">
-            <a className="hover:text-white transition-colors" href="#">Privasi</a>
-            <a className="hover:text-white transition-colors" href="#">Ketentuan</a>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privasi</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Ketentuan</Link>
           </div>
         </div>
       </section>
@@ -291,11 +301,7 @@ function LoginForm() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center text-xs text-slate-600 cursor-pointer select-none">
-                  <input type="checkbox" className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" />
-                  <span className="ml-2">Ingat saya</span>
-                </label>
+              <div className="flex justify-end pt-1">
                 <Link href="/forgot-password" className="text-xs font-semibold text-primary hover:underline">
                   Lupa password?
                 </Link>

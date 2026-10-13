@@ -25,6 +25,9 @@ export const getHomeCatalog = unstable_cache(
           include: {
             images: { where: { isPrimary: true }, take: 1 },
             category: { select: { id: true, name: true, slug: true } },
+            // Hanya kolom rating yang diambil supaya kartu produk bisa
+            // menampilkan rata-rata bintang; jadi 8 produk x sedikit baris saja.
+            reviews: { where: { isApproved: true }, select: { rating: true } },
             _count: { select: { reviews: { where: { isApproved: true } } } },
           },
         }),

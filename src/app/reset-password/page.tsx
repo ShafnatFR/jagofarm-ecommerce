@@ -18,6 +18,7 @@ export default function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     const supabase = createClient();
@@ -44,6 +45,16 @@ export default function ResetPasswordPage() {
     return () => { active = false; if (retryTimer) clearTimeout(retryTimer); listener.subscription.unsubscribe(); };
   }, []);
 
+  useEffect(() => {
+    if (status !== "done") return;
+    if (countdown <= 0) {
+      router.push("/login?reset=true");
+      return;
+    }
+    const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [status, countdown, router]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -58,8 +69,8 @@ export default function ResetPasswordPage() {
 
     setStatus("done");
     setLoading(false);
+    setCountdown(3);
     try { await supabase.auth.signOut(); } catch { /* ignore */ }
-    setTimeout(() => router.push("/login?reset=true"), 2500);
   }
 
   return (
@@ -97,7 +108,7 @@ export default function ResetPasswordPage() {
           {status === "done" && (
             <div className="text-center space-y-4">
               <div className="flex justify-center"><Icon name="check_circle" size={64} className="text-primary" /></div>
-              <p className="text-sm text-on-surface-variant">Password berhasil diperbarui. Mengarahkan Anda ke halaman masuk...</p>
+              <p className="text-sm text-on-surface-variant">Password berhasil diperbarui. Mengarahkan Anda ke halaman masuk dalam {countdown}...</p>
               <Link href="/login?reset=true"><Button variant="secondary" className="w-full">Masuk sekarang</Button></Link>
             </div>
           )}

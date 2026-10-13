@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useCartStore } from "@/lib/cart-store";
+import { useCartStore, type CartItem } from "@/lib/cart-store";
 import { useToast } from "@/components/ui/use-toast";
 
 /** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */
@@ -37,10 +38,14 @@ export default function CartPage() {
     isLoggedIn,
   } = useCartStore();
   const { toast } = useToast();
+  const router = useRouter();
 
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
-  const [selectAll, setSelectAll] = useState(true);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [deleting, setDeleting] = useState(false);
+  const [moving, setMoving] = useState(false);
+  const selectAllRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     void hydrate();
@@ -97,6 +102,112 @@ export default function CartPage() {
     } finally {
       setCouponLoading(false);
     }
+  }
+
+  const selectedItems = items.filter((item) => selectedIds.includes(item.id));
+  const selectedCount = selectedItems.length;
+  const allSelected = items.length > 0 && selectedCount === items.length;
+  const someSelected = selectedCount > 0 && selectedCount < items.length;
+
+  useEffect(() => {
+    if (selectAllRef.current) selectAllRef.current.indeterminate = someSelected;
+  }, [someSelected]);
+
+  function toggleSelectItem(id: string, checked: boolean) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (checked) next.add(id);
+      else next.delete(id);
+      return Array.from(next);
+    });
+  }
+
+  function toggleSelectAll(checked: boolean) {
+    setSelectedIds(checked ? items.map((item) => item.id) : []);
+  }
+
+  async function deleteSelected() {
+    if (selectedItems.length === 0 || deleting || moving) return;
+    setDeleting(true);
+    const count = selectedItems.length;
+    try {
+      for (const item of selectedItems) {
+        removeItem(item.id);
+      }
+      setSelectedIds([]);
+      toast({ title: "Item dihapus", description: `${count} item dihapus dari keranjang.` });
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  async function moveToWishlist(targets: CartItem[]) {
+    if (targets.length === 0 || moving || deleting) return;
+    setMoving(true);
+
+    let added = 0;
+    let already = 0;
+    let failed = 0;
+    let unauthorized = false;
+    const removedIds: string[] = [];
+
+    for (const item of targets) {
+      let keep = false;
+      try {
+        const res = await fetch("/api/wishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId: item.productId }),
+        });
+        if (res.status === 201) {
+          keep = true;
+          added += 1;
+        } else if (res.status === 409) {
+          keep = true;
+          already += 1;
+        } else if (res.status === 401) {
+          unauthorized = true;
+          failed += 1;
+          break;
+        } else {
+          failed += 1;
+        }
+      } catch {
+        failed += 1;
+      }
+      if (keep) removedIds.push(item.id);
+    }
+
+    for (const id of removedIds) {
+      removeItem(id);
+    }
+    if (removedIds.length > 0) {
+      setSelectedIds((prev) => prev.filter((id) => !removedIds.includes(id)));
+    }
+
+    if (unauthorized) {
+      toast({ title: "Login diperlukan", description: "Silakan login untuk memindahkan item ke wishlist." });
+      router.push("/login?next=%2Fcart");
+      setMoving(false);
+      return;
+    }
+
+    const parts: string[] = [];
+    if (added > 0) parts.push(`${added} item dipindahkan`);
+    if (already > 0) parts.push(`${already} sudah ada di wishlist`);
+    if (failed > 0) parts.push(`${failed} gagal dipindahkan`);
+
+    if (added > 0 || already > 0) {
+      toast({ title: "Dipindahkan ke Wishlist", description: `${parts.join(", ")}.` });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Gagal memindahkan ke Wishlist",
+        description: "Periksa koneksi internet Anda lalu coba lagi.",
+      });
+    }
+
+    setMoving(false);
   }
 
   if (items.length === 0) {
@@ -193,20 +304,42 @@ export default function CartPage() {
         {/* Left Column */}
         <div className="space-y-4 lg:col-span-8">
           {/* Select All Header */}
-          <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs">
             <label className="flex cursor-pointer items-center gap-3">
               <input
+                ref={selectAllRef}
                 type="checkbox"
-                checked={selectAll}
-                onChange={(e) => setSelectAll(e.target.checked)}
+                checked={allSelected}
+                onChange={(e) => toggleSelectAll(e.target.checked)}
                 className="h-5 w-5 rounded border-border text-primary focus:ring-primary"
               />
-              <span className="text-sm font-bold">Pilih Semua ({totalItems()} Produk)</span>
+              <span className="text-sm font-bold">
+                Pilih Semua
+                {selectedCount > 0 && (
+                  <span className="ml-1 font-medium text-muted-foreground">({selectedCount} dipilih)</span>
+                )}
+              </span>
             </label>
-            <button className="flex items-center gap-1 text-xs font-semibold text-destructive transition hover:text-destructive/80">
-              <Icon name="delete" size={14} />
-              <span className="hidden sm:inline">Hapus Terpilih</span>
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => moveToWishlist(selectedItems)}
+                disabled={selectedCount === 0 || moving || deleting}
+                className="flex items-center gap-1 text-xs font-semibold text-primary transition hover:text-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Icon name="favorite" size={14} />
+                <span className="hidden sm:inline">{moving ? "Memindahkan..." : "Pindahkan ke Wishlist"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={deleteSelected}
+                disabled={selectedCount === 0 || deleting || moving}
+                className="flex items-center gap-1 text-xs font-semibold text-destructive transition hover:text-destructive/80 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Icon name="delete" size={14} />
+                <span className="hidden sm:inline">{deleting ? "Menghapus..." : "Hapus Terpilih"}</span>
+              </button>
+            </div>
           </div>
 
           {/* Product Cards */}
@@ -218,8 +351,9 @@ export default function CartPage() {
               <div className="flex items-start gap-3 sm:gap-4">
                 <input
                   type="checkbox"
-                  checked={selectAll}
-                  onChange={() => {}}
+                  checked={selectedIds.includes(item.id)}
+                  onChange={(e) => toggleSelectItem(item.id, e.target.checked)}
+                  aria-label={`Pilih ${item.name}`}
                   className="mt-2 h-5 w-5 shrink-0 rounded border-border text-primary focus:ring-primary"
                 />
                 {/* Product Image */}
@@ -259,9 +393,16 @@ export default function CartPage() {
                   {/* Footer Actions */}
                   <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
                     <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
-                      <button className="flex items-center gap-1 transition hover:text-primary">
+                      <button
+                        type="button"
+                        onClick={() => moveToWishlist([item])}
+                        disabled={moving}
+                        className="flex items-center gap-1 transition hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                      >
                         <Icon name="favorite" size={16} />
-                        <span className="hidden sm:inline">Pindahkan ke Wishlist</span>
+                        <span className="hidden sm:inline">
+                          {moving ? "Memindahkan..." : "Pindahkan ke Wishlist"}
+                        </span>
                       </button>
                       <button
                         onClick={() => removeItem(item.id)}
@@ -356,7 +497,7 @@ export default function CartPage() {
             <h2 className="border-b border-border pb-3 text-lg font-bold">Ringkasan Belanja</h2>
             <div className="space-y-3 border-b border-border py-4 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Total Harga ({totalItems()} barang)</span>
+                <span className="text-muted-foreground">Total Harga (semua {totalItems()} barang)</span>
                 <span className="font-semibold">{formatPrice(subtotal)}</span>
               </div>
               {discount > 0 && (

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ProductCard } from "@/components/product/product-card";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
+import { FeaturedProducts, type FeaturedProductItem } from "@/components/home/featured-products";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getHomeHero } from "@/lib/site-settings";
 import { getHomeCatalog } from "@/lib/home-data";
@@ -20,6 +20,30 @@ export default async function HomePage() {
   // Katalog dari cache 5 menit (lihat lib/home-data); hero dibaca segar dari DB.
   const [{ categories, featuredProducts, heroProducts, productCount, categoryCount }, hero] =
     await Promise.all([getHomeCatalog(), getHomeHero()]);
+
+  // Data untuk grid "Produk Unggulan" (chip filter butuh client state), jadi
+  // Decimal & relasi diserialisasi plus rata-rata rating dari review approved.
+  const featuredProductItems: FeaturedProductItem[] = featuredProducts.map((p) => {
+    const ratings = p.reviews ?? [];
+    const average =
+      ratings.length > 0
+        ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
+        : undefined;
+    return {
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      basePrice: Number(p.basePrice),
+      discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
+      image: p.images?.[0]?.url || "/placeholder-product.png",
+      categoryName: p.category.name,
+      categorySlug: p.category.slug,
+      isFeatured: p.isFeatured,
+      weightGram: p.weightGram ?? null,
+      rating: average,
+      reviewCount: p._count.reviews,
+    };
+  });
   return (
     <div className="w-full">
       {/* HERO SECTION */}
@@ -170,48 +194,11 @@ export default async function HomePage() {
       {/* SECTION: PRODUK UNGGULAN (PRODUCT GRID) */}
       <section className="py-12 bg-surface-container-low border-y border-outline-variant/60" id="produk">
         <div className="max-w-7xl mx-auto px-margin">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-            <div>
-              <span className="text-label-md font-label-md uppercase tracking-wider text-secondary font-bold">Produk Teruji</span>
-              <h2 className="text-headline-lg font-headline-lg text-on-surface mt-1">Produk Unggulan</h2>
-              <p className="text-body-md font-body-md text-on-surface-variant mt-1">Pilihan terbaik petani modern Indonesia dengan garansi resmi</p>
-            </div>
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
-              <button className="px-4 py-1.5 rounded-full bg-primary text-on-primary text-label-md font-label-md whitespace-nowrap shadow-sm">Semua</button>
-              <button className="px-4 py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant border border-outline-variant text-label-md font-label-md whitespace-nowrap transition-colors">IoT &amp; Smart Sensor</button>
-              <button className="px-4 py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant border border-outline-variant text-label-md font-label-md whitespace-nowrap transition-colors">Set Kolam Tambak</button>
-              <button className="px-4 py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant border border-outline-variant text-label-md font-label-md whitespace-nowrap transition-colors">Hidroponik &amp; Nutrisi</button>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((p, i) => (
-              <ProductCard
-                key={p.id}
-                index={i}
-                product={{
-                  id: p.id,
-                  name: p.name,
-                  slug: p.slug,
-                  price: Number(p.basePrice),
-                  discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
-                  image: p.images?.[0]?.url || "/placeholder-product.png",
-                  category: p.category.name,
-                  isFeatured: p.isFeatured,
-                  weightGram: p.weightGram ?? undefined,
-                  rating: undefined,
-                  reviewCount: p._count.reviews,
-                }}
-              />
-            ))}
-            {featuredProducts.length === 0 && (
-              <p className="col-span-full text-center text-on-surface-variant py-8">Belum ada produk unggulan.</p>
-            )}
-          </div>
-          
+          <FeaturedProducts products={featuredProductItems} />
+
           <div className="mt-10 text-center">
             <Link className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-surface-container-lowest hover:bg-primary hover:text-on-primary text-primary border border-primary font-headline-sm text-headline-sm transition-all duration-200 shadow-sm active:scale-95" href="/products">
-              <span>Buka Katalog Lengkap (120+ Produk)</span>
+              <span>Buka Katalog Lengkap ({productCount}+ Produk)</span>
               <span className="material-symbols-outlined text-[20px]">tune</span>
             </Link>
           </div>

@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/hooks/use-categories";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 interface MobileNavProps {
   open: boolean;
@@ -12,6 +15,40 @@ interface MobileNavProps {
 
 export function MobileNav({ open, onClose }: MobileNavProps) {
   const { categories, loading } = useCategories();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    let mounted = true;
+
+    void supabase.auth.getUser().then(({ data }) => {
+      if (mounted) setUser(data.user);
+    });
+
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (mounted) setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      mounted = false;
+      authSubscription.subscription.unsubscribe();
+    };
+  }, []);
+
+  const accountLinks = user
+    ? [
+        { href: "/account", label: "Akun", icon: "account_circle" },
+        { href: "/orders", label: "Pesanan Saya", icon: "receipt_long" },
+        { href: "/wishlist", label: "Wishlist Saya", icon: "favorite" },
+      ]
+    : [
+        { href: "/login", label: "Masuk", icon: "login" },
+        { href: "/register", label: "Daftar", icon: "person_add" },
+        { href: "/orders", label: "Pesanan Saya", icon: "receipt_long" },
+        { href: "/wishlist", label: "Wishlist Saya", icon: "favorite" },
+      ];
 
   if (!open) return null;
 
@@ -67,18 +104,20 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
           <div className="mt-4 border-t border-border pt-4">
             <p className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Akun</p>
             <div className="mt-2 space-y-1">
-              {[
-                { href: "/login", label: "Masuk", icon: "login" },
-                { href: "/register", label: "Daftar", icon: "person_add" },
-                { href: "/orders", label: "Pesanan Saya", icon: "receipt_long" },
-                { href: "/wishlist", label: "Wishlist Saya", icon: "favorite" },
-              ].map((item) => (
+              {accountLinks.map((item) => (
                 <Link key={item.href} href={item.href} onClick={onClose}
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary">
                   <Icon name={item.icon} size={18} className="text-muted-foreground" />
                   {item.label}
                 </Link>
               ))}
+              {user && (
+                <a href="/auth/signout"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary">
+                  <Icon name="logout" size={18} className="text-muted-foreground" />
+                  Keluar
+                </a>
+              )}
             </div>
           </div>
         </nav>

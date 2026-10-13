@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewForm } from "@/components/product/review-form";
 import { useCartStore } from "@/lib/cart-store";
+import { SITE_CONFIG, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -36,6 +37,17 @@ interface ReviewSummary {
   distribution: Record<string, number>;
 }
 
+/** Produk terkait (dari server page, sudah terserialisasi). */
+interface RelatedProduct {
+  id: string;
+  name: string;
+  slug: string;
+  basePrice: number;
+  discountPrice?: number | null;
+  image?: string;
+  weightGram?: number;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Page Component                                                     */
 /* ------------------------------------------------------------------ */
@@ -43,9 +55,17 @@ interface ReviewSummary {
 interface Props {
   /** Data awal dari server page — menghindari fetch pertama + skeleton. */
   initialProduct?: ApiProduct | null;
+  /** Produk terkait (kategori sama) dari server page. */
+  relatedProducts?: RelatedProduct[];
+  /** Jumlah unit terjual riil dari order (cancel/expired tidak dihitung). */
+  soldCount?: number;
 }
 
-export default function ProductDetailPage({ initialProduct = null }: Props) {
+export default function ProductDetailPage({
+  initialProduct = null,
+  relatedProducts = [],
+  soldCount,
+}: Props) {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
@@ -61,6 +81,8 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [reviewSummary, setReviewSummary] = useState<ReviewSummary | null>(null);
   const [activeTab, setActiveTab] = useState<"deskripsi" | "ulasan" | "tanya">("deskripsi");
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [relatedAddedId, setRelatedAddedId] = useState<string | null>(null);
 
   /** Muat ulasan + ringkasan rating; dipakai saat halaman dibuka dan setelah kirim ulasan. */
   async function loadReviews(productId: string) {
@@ -113,6 +135,16 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
+  /** Lightbox: tutup dengan Escape. */
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setLightboxOpen(false);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [lightboxOpen]);
 
   /* ---------- Loading skeleton ---------- */
   if (loading) {
@@ -188,6 +220,22 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
     router.push("/checkout");
   }
 
+  /** Tambah produk terkait ke keranjang — mekanisme sama dengan add-to-cart utama. */
+  function handleAddRelatedToCart(item: RelatedProduct) {
+    addItem({
+      id: item.id,
+      productId: item.id,
+      name: item.name,
+      price: item.discountPrice ?? item.basePrice,
+      quantity: 1,
+      image: item.image,
+      weightGram: item.weightGram ?? 0,
+      slug: item.slug,
+    });
+    setRelatedAddedId(item.id);
+    setTimeout(() => setRelatedAddedId(null), 2000);
+  }
+
   /* ---------- Star rating helpers ---------- */
   const avgRating = reviewSummary?.averageRating ?? 0;
   const totalReviews = reviewSummary?.totalReviews ?? reviews.length;
@@ -255,6 +303,7 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
                 )}
                 {/* Zoom button */}
                 <button
+                  onClick={() => setLightboxOpen(true)}
                   className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary hover:bg-primary hover:text-on-primary flex items-center justify-center transition-colors shadow-md"
                   aria-label="Perbesar Foto"
                 >
@@ -337,9 +386,11 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
                   </div>
                 )}
                 <span className="text-outline-variant hidden sm:inline">•</span>
-                <span className="text-on-surface-variant font-medium text-xs sm:text-sm">
-                  Terjual <strong className="text-on-surface">140+ paket</strong>
-                </span>
+                {soldCount != null && soldCount > 0 && (
+                  <span className="text-on-surface-variant font-medium text-xs sm:text-sm">
+                    Terjual <strong className="text-on-surface">{soldCount} paket</strong>
+                  </span>
+                )}
               </div>
             </div>
 
@@ -469,7 +520,9 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-on-surface">Gratis Ongkir</p>
-                  <p className="text-[11px] text-outline mt-0.5 leading-snug">Untuk pembelian minimum Rp 500.000</p>
+                  <p className="text-[11px] text-outline mt-0.5 leading-snug">
+                    Untuk pembelian minimum {formatPrice(FREE_SHIPPING_THRESHOLD)}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/70">
@@ -694,8 +747,27 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
               <Icon name="forum" size={48} className="mx-auto text-outline-variant" />
               <h3 className="mt-4 text-lg font-bold text-on-surface">Tanya Jawab</h3>
               <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                Fitur tanya jawab akan segera hadir. Sementara, silakan hubungi kami via WhatsApp untuk pertanyaan seputar produk ini.
+                Fitur tanya jawab produk belum tersedia. Sementara, Anda bisa bertanya langsung
+                kepada tim agronom kami atau menghubungi kami via WhatsApp.
               </p>
+              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link href="/consultation">
+                  <Button variant="secondary" className="rounded-full border-2 border-primary text-primary font-bold">
+                    <Icon name="chat" size={18} className="mr-2" />
+                    Konsultasi dengan Tim Ahli
+                  </Button>
+                </Link>
+                <a
+                  href={`https://wa.me/${SITE_CONFIG.whatsappIntl}?text=${encodeURIComponent(`Halo JagoFarm, saya ingin bertanya tentang produk ${product.name}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="rounded-full bg-primary text-on-primary font-bold">
+                    <Icon name="call" size={18} className="mr-2" />
+                    Chat via WhatsApp
+                  </Button>
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -719,28 +791,124 @@ export default function ProductDetailPage({ initialProduct = null }: Props) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-md group"
-              >
-                <div className="w-full aspect-square rounded-xl bg-surface-container-low flex items-center justify-center mb-3">
-                  <Icon name="inventory_2" size={44} className="text-outline-variant" />
-                </div>
-                <span className="text-[10px] uppercase font-bold text-outline">Kategori</span>
-                <h3 className="text-sm font-bold text-on-surface line-clamp-2 mt-1 group-hover:text-primary">
-                  Produk Terkait {i}
-                </h3>
-                <div className="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
-                  <span className="text-sm font-bold text-primary">-</span>
-                  <button className="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors">
-                    <Icon name="add_shopping_cart" size={16} />
-                  </button>
-                </div>
-              </div>
-            ))}
+            {relatedProducts.length === 0 ? (
+              <p className="col-span-full text-center text-sm text-muted-foreground py-8">
+                Belum ada produk lain di kategori ini.
+              </p>
+            ) : (
+              relatedProducts.map((item) => {
+                const added = relatedAddedId === item.id;
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-4 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-md group"
+                  >
+                    <Link href={`/products/${item.slug}`} className="flex flex-col flex-1">
+                      <div className="relative w-full aspect-square rounded-xl bg-surface-container-low flex items-center justify-center mb-3 overflow-hidden">
+                        {item.image ? (
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 50vw, 25vw"
+                          />
+                        ) : (
+                          <Icon name="inventory_2" size={44} className="text-outline-variant" />
+                        )}
+                      </div>
+                      <span className="text-[10px] uppercase font-bold text-outline">
+                        {product.category.name}
+                      </span>
+                      <h3 className="text-sm font-bold text-on-surface line-clamp-2 mt-1 group-hover:text-primary">
+                        {item.name}
+                      </h3>
+                    </Link>
+                    <div className="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+                      <span className="text-sm font-bold text-primary">
+                        {formatPrice(item.discountPrice ?? item.basePrice)}
+                      </span>
+                      <button
+                        onClick={() => handleAddRelatedToCart(item)}
+                        className="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-fixed-dim text-on-primary hover:text-primary flex items-center justify-center transition-colors"
+                        aria-label={`Tambah ${item.name} ke keranjang`}
+                        title={added ? "Ditambahkan" : "Tambah ke keranjang"}
+                      >
+                        <Icon name={added ? "check" : "add_shopping_cart"} size={16} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </section>
+
+        {/* ---------- LIGHTBOX / IMAGE VIEWER ---------- */}
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+            onClick={() => setLightboxOpen(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Pratinjau foto produk"
+          >
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-colors"
+              aria-label="Tutup pratinjau"
+            >
+              <Icon name="close" size={24} />
+            </button>
+
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage((i) => (i - 1 + images.length) % images.length);
+                  }}
+                  className="absolute left-4 w-11 h-11 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-colors"
+                  aria-label="Foto sebelumnya"
+                >
+                  <Icon name="chevron_left" size={28} />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage((i) => (i + 1) % images.length);
+                  }}
+                  className="absolute right-4 w-11 h-11 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-colors"
+                  aria-label="Foto berikutnya"
+                >
+                  <Icon name="chevron_right" size={28} />
+                </button>
+              </>
+            )}
+
+            <div
+              className="relative w-full max-w-3xl aspect-square"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={images[selectedImage]?.url}
+                alt={images[selectedImage]?.altText ?? product.name}
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 768px"
+                priority
+              />
+            </div>
+
+            {images.length > 1 && (
+              <span className="absolute bottom-5 text-xs text-white/80">
+                {selectedImage + 1} / {images.length}
+              </span>
+            )}
+          </motion.div>
+        )}
       </main>
     </div>
   );

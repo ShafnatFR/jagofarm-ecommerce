@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect, FormEvent, useRef } from "react";
+import { useState, useEffect, useCallback, FormEvent, useRef } from "react";
+import Link from "next/link";
+import { create } from "zustand";
 import { TEAM } from "@/lib/constants";
 
 interface Message {
@@ -18,6 +20,55 @@ interface Session {
   expertName: string;
 }
 
+interface ConsultationSessionSummary {
+  id: string;
+  sessionRef: string | null;
+  status: string;
+  expertName: string;
+  messageCount: number;
+  lastMessage: {
+    content: string;
+    senderType: string;
+    createdAt: string;
+  } | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Id sesi yang sedang dibuka di area chat.
+ *
+ * ConsultationSidebar dan ConsultationChat dirender bersamaan oleh halaman,
+ * jadi pilihan sesi disimpan di luar React (zustand, seperti cart-store):
+ * klik baris sidebar langsung terbaca oleh area chat, dan sebaliknya sesi
+ * yang sedang tampil tersorot di sidebar. `getState()` dipakai untuk membaca
+ * pilihan terbaru di dalam async/interval tanpa membuat closure basi.
+ */
+const useConsultationSelection = create<{
+  selectedSessionId: string | null;
+  selectSession: (id: string | null) => void;
+}>((set) => ({
+  selectedSessionId: null,
+  selectSession: (selectedSessionId) => set({ selectedSessionId }),
+}));
+
+const formatRelative = (iso: string) => {
+  const d = new Date(iso);
+  const minutes = Math.floor((Date.now() - d.getTime()) / 60000);
+  if (minutes < 1) return "Baru saja";
+  if (minutes < 60) return `${minutes} mnt lalu`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} jam lalu`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days} hari lalu`;
+  return d.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+};
+
+const getInitials = (name: string) => {
+  const parts = name.trim().split(/\s+/).filter(Boolean).slice(0, 2);
+  return parts.map((p) => p[0]?.toUpperCase() ?? "").join("") || "?";
+};
+
 export default function ConsultationChat() {
   const [session, setSession] = useState<Session | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -27,22 +78,33 @@ export default function ConsultationChat() {
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  /** Sesi yang sudah dimuat lewat pilihan sidebar (mencegah fetch ganda). */
+  const loadedSessionIdRef = useRef<string | null>(null);
+
+  const selectedSessionId = useConsultationSelection((s) => s.selectedSessionId);
+  const selectSession = useConsultationSelection((s) => s.selectSession);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const loadSession = async () => {
-    if (!session) return;
+    // Sesi yang terbuka diambil dari pilihan sidebar supaya interval/async yang
+    // masih berjalan tidak lagi memuat sesi lama setelah user pindah baris.
+    const openSessionId = useConsultationSelection.getState().selectedSessionId;
+    if (!openSessionId) return;
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/consultation/${session.sessionId}`);
+      const res = await fetch(`/api/consultation/${openSessionId}`);
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
         throw new Error((data?.error ?? "Gagal memuat sesi").toString());
       }
+
+      // Respons yang datang setelah user pindah sesi dibuang (basi).
+      if (useConsultationSelection.getState().selectedSessionId !== openSessionId) return;
 
       setSession((prev) =>
         prev
@@ -79,12 +141,64 @@ export default function ConsultationChat() {
         expertName: TEAM.LABEL,
       });
       setMessages(data.messages || []);
+      // Sesuikan pilihan sidebar dengan sesi yang baru dibuka (sesi aktif
+      // terbaru saat halaman dibuka tanpa pilihan dari sidebar).
+      loadedSessionIdRef.current = data.sessionId;
+      selectSession(data.sessionId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal memulai sesi");
     } finally {
       setLoading(false);
     }
   };
+
+  // Klik baris sidebar: muat sesi itu (aktif maupun riwayat) ke area chat.
+  useEffect(() => {
+    if (!selectedSessionId || loadedSessionIdRef.current === selectedSessionId) return;
+    loadedSessionIdRef.current = selectedSessionId;
+
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    void (async () => {
+      try {
+        const res = await fetch(`/api/consultation/${selectedSessionId}`);
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          throw new Error((data?.error ?? "Gagal memuat sesi").toString());
+        }
+
+        // Respons bisa tiba setelah user memilih sesi lain -> buang yang basi.
+        if (
+          cancelled ||
+          useConsultationSelection.getState().selectedSessionId !== selectedSessionId
+        ) {
+          return;
+        }
+
+        setSession({
+          sessionId: data.sessionId,
+          sessionRef: data.sessionRef,
+          status: data.status,
+          expertName: data.expertName || TEAM.LABEL,
+        });
+        setMessages(Array.isArray(data.messages) ? data.messages : []);
+      } catch (err) {
+        if (cancelled) return;
+        setError(err instanceof Error ? err.message : "Gagal memuat sesi");
+        // Sesi gagal dimuat; klik berikutnya pada baris yang sama boleh mencoba lagi.
+        loadedSessionIdRef.current = null;
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedSessionId]);
 
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
@@ -126,12 +240,18 @@ export default function ConsultationChat() {
 
   useEffect(() => {
     if (session) return;
+    // Sidebar sudah memilih sesi (mis. user kembali ke halaman) — sesi itulah
+    // yang dimuat lewat effect di atas, jangan buka/buat sesi aktif baru.
+    if (useConsultationSelection.getState().selectedSessionId) return;
     // Ditunda satu tick: startSession() memanggil setState di baris pertamanya,
     // dan setState sinkron di dalam effect memicu cascading render.
     const timer = setTimeout(() => void startSession(), 0);
     return () => clearTimeout(timer);
   }, []);
 
+  // Polling 5 detik mengikuti sesi yang sedang terbuka (aktif atau riwayat):
+  // endpoint GET menerima keduanya, jadi tidak perlu percabangan khusus dan
+  // balasan pakar tetap terlihat saat user sedang melihat sesi lama.
   useEffect(() => {
     if (session) {
       const interval = setInterval(() => {
@@ -168,6 +288,8 @@ export default function ConsultationChat() {
     );
   }
 
+  const isActive = session?.status === "active";
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -181,55 +303,28 @@ export default function ConsultationChat() {
                 src={getAvatar()}
               />
             </div>
-            <span
-              className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"
-            />
+            {isActive && (
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
+            )}
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <h3 className="font-headline-sm text-sm sm:text-base font-bold text-green-900 truncate">
-                {session?.expertName || TEAM.LABEL}
-              </h3>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800 inline-flex items-center gap-0.5">
-                <span className="material-symbols-outlined text-[11px]" data-icon="verified">
-                  verified
-                </span>
-                Lab IPB
-              </span>
-            </div>
-            <p className="text-xs text-gray-500 truncate flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-green-700 font-semibold">Aktif Sekarang</span>
-              <span>• Sesi Video Siap</span>
+            <h3 className="font-headline-sm text-sm sm:text-base font-bold text-green-900 truncate">
+              {session?.expertName || TEAM.LABEL}
+            </h3>
+            <p className="text-xs text-gray-500 truncate flex items-center gap-1.5 flex-wrap">
+              {isActive ? (
+                <>
+                  <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
+                  <span className="text-green-700 font-semibold">Aktif Sekarang</span>
+                </>
+              ) : (
+                <span className="text-gray-500">Sesi tidak aktif</span>
+              )}
+              {session?.sessionRef && (
+                <span className="truncate">• {session.sessionRef}</span>
+              )}
             </p>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            className="px-3 py-1.5 rounded-xl bg-green-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm hover:brightness-110 active:scale-95 transition-all"
-            title="Beralih ke Video Call Google Meet"
-          >
-            <span className="material-symbols-outlined text-base" data-icon="video_camera_front">
-              video_camera_front
-            </span>
-            <span className="hidden sm:inline">Mulai Video</span>
-          </button>
-          <button
-            className="p-2 rounded-xl border border-green-200 text-green-800 hover:bg-green-50 transition-colors"
-            title="Unduh Resep SOP Diagnosa Sementara"
-          >
-            <span className="material-symbols-outlined text-lg" data-icon="download">
-              download
-            </span>
-          </button>
-          <button
-            className="p-2 rounded-xl border border-green-200 text-gray-500 hover:text-green-900 hover:bg-green-50 transition-colors lg:hidden"
-            title="Data Tambak"
-          >
-            <span className="material-symbols-outlined text-lg" data-icon="info">
-              info
-            </span>
-          </button>
         </div>
       </div>
 
@@ -337,54 +432,16 @@ export default function ConsultationChat() {
 
                 {/* Avatar user (right side) */}
                 {isUser && (
-                  <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-green-700 shadow-xs mt-1">
-                    <img
-                      alt="Anda"
-                      className="w-full h-full object-cover"
-                      src="https://via.placeholder.com/32"
-                    />
+                  <div
+                    className="w-8 h-8 rounded-full bg-green-50 text-green-800 flex items-center justify-center font-bold text-xs border border-green-200 shrink-0 mt-1"
+                    aria-hidden
+                  >
+                    A
                   </div>
                 )}
               </div>
             );
           })}
-
-        {/* Typing indicator (statis untuk demo - di real app pakai realtime) */}
-        <div className="flex items-center gap-2 text-xs text-gray-500 pl-11">
-          <div className="flex items-center gap-1 bg-green-50 px-2.5 py-1 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-800 animate-bounce" />
-            <span className="w-1.5 h-1.5 rounded-full bg-green-800 animate-bounce [animation-delay:0.2s]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-green-800 animate-bounce [animation-delay:0.4s]" />
-            <span className="text-[11px] text-green-800 font-medium ml-1">
-              {TEAM.LABEL} sedang mengetik...
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Input area */}
-      <div className="px-4 py-2 bg-white border-t border-green-200/60 flex items-center gap-2 overflow-x-auto text-xs no-scrollbar flex-shrink-0">
-        <span className="text-gray-500 text-[11px] font-semibold shrink-0">
-          Shortcut:
-        </span>
-        <button className="px-2.5 py-1 rounded-full bg-white border border-green-200 hover:border-primary text-green-900 whitespace-nowrap font-medium flex items-center gap-1 transition-colors shrink-0">
-          <span className="material-symbols-outlined text-sm text-green-800" data-icon="speed">
-            speed
-          </span>
-          Update DO/pH Terkini
-        </button>
-        <button className="px-2.5 py-1 rounded-full bg-white border border-green-200 hover:border-primary text-green-900 whitespace-nowrap font-medium flex items-center gap-1 transition-colors shrink-0">
-          <span className="material-symbols-outlined text-sm text-emerald-600" data-icon="add_photo_alternate">
-            add_photo_alternate
-          </span>
-          Kirim Foto Kolam
-        </button>
-        <button className="px-2.5 py-1 rounded-full bg-white border border-green-200 hover:border-primary text-green-900 whitespace-nowrap font-medium flex items-center gap-1 transition-colors shrink-0">
-          <span className="material-symbols-outlined text-sm text-amber-600" data-icon="picture_as_pdf">
-            picture_as_pdf
-          </span>
-          Minta Resep SOP PDF
-        </button>
       </div>
 
       {/* Chat input */}
@@ -393,24 +450,6 @@ export default function ConsultationChat() {
           onSubmit={sendMessage}
           className="flex items-center gap-2"
         >
-          <button
-            type="button"
-            className="p-2.5 rounded-xl border border-green-200 hover:bg-green-50 text-gray-500 hover:text-green-800 transition-colors shrink-0"
-            title="Lampirkan Dokumen atau Foto"
-          >
-            <span className="material-symbols-outlined text-xl" data-icon="attach_file">
-              attach_file
-            </span>
-          </button>
-          <button
-            type="button"
-            className="p-2.5 rounded-xl border border-green-200 hover:bg-green-50 text-gray-500 hover:text-green-800 transition-colors shrink-0 hidden sm:block"
-            title="Input Parameter Air Tambak"
-          >
-            <span className="material-symbols-outlined text-xl" data-icon="tune">
-              tune
-            </span>
-          </button>
           <div className="flex-1 relative">
             <input
               ref={inputRef}
@@ -420,15 +459,6 @@ export default function ConsultationChat() {
               onChange={(e) => setInput(e.target.value)}
               disabled={sending}
             />
-            <button
-              type="button"
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-900"
-              title="Sisipkan Emoji"
-            >
-              <span className="material-symbols-outlined text-lg" data-icon="sentiment_satisfied">
-                sentiment_satisfied
-              </span>
-            </button>
           </div>
           <button
             type="submit"
@@ -447,6 +477,222 @@ export default function ConsultationChat() {
 
       {/* Auto-scroll anchor */}
       <div ref={messagesEndRef} />
+    </div>
+  );
+}
+
+export function ConsultationSidebar() {
+  const [sessions, setSessions] = useState<ConsultationSessionSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [tab, setTab] = useState<"active" | "history">("active");
+
+  const selectedSessionId = useConsultationSelection((s) => s.selectedSessionId);
+  const selectSession = useConsultationSelection((s) => s.selectSession);
+
+  const loadSessions = useCallback(async () => {
+    setError(null);
+    try {
+      const res = await fetch("/api/consultation");
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(
+          (data?.error ?? "Gagal memuat daftar konsultasi").toString()
+        );
+      }
+
+      setSessions(Array.isArray(data.sessions) ? data.sessions : []);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Gagal memuat daftar konsultasi"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Ditunda satu tick: loadSessions() memanggil setState di baris pertamanya,
+    // dan setState sinkron di dalam effect memicu cascading render.
+    const timer = setTimeout(() => {
+      void loadSessions();
+    }, 0);
+    const interval = setInterval(() => {
+      void loadSessions();
+    }, 15000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, [loadSessions]);
+
+  const activeSessions = sessions.filter((s) => s.status === "active");
+  const historySessions = sessions.filter((s) => s.status !== "active");
+  const visible = tab === "active" ? activeSessions : historySessions;
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="p-3.5 border-b border-surface-container flex-shrink-0">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="font-headline-sm text-sm text-green-800 font-bold flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-green-800 text-lg" data-icon="forum">
+              forum
+            </span>
+            Konsultasi Pakar
+          </h2>
+          <span className="px-2 py-0.5 rounded-full text-[10px] bg-green-800 text-green-100 font-bold">
+            {activeSessions.length} Aktif
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 p-1 bg-green-50 rounded-xl text-xs font-semibold text-center">
+          <button
+            type="button"
+            onClick={() => setTab("active")}
+            className={`py-1.5 px-2 rounded-lg transition-colors ${
+              tab === "active"
+                ? "bg-white text-green-800 shadow-sm"
+                : "text-gray-500 hover:text-green-900"
+            }`}
+          >
+            Sesi Aktif
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab("history")}
+            className={`py-1.5 px-2 rounded-lg transition-colors ${
+              tab === "history"
+                ? "bg-white text-green-800 shadow-sm"
+                : "text-gray-500 hover:text-green-900"
+            }`}
+          >
+            Riwayat ({historySessions.length})
+          </button>
+        </div>
+      </div>
+
+      {/* Daftar sesi konsultasi */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-surface-container">
+        {error ? (
+          <div className="p-4 text-center">
+            <p className="text-xs text-red-600 mb-2">{error}</p>
+            <button
+              type="button"
+              onClick={() => void loadSessions()}
+              className="text-xs font-bold text-green-800 hover:underline"
+            >
+              Coba lagi
+            </button>
+          </div>
+        ) : loading ? (
+          [0, 1, 2].map((i) => (
+            <div key={i} className="p-3.5 animate-pulse">
+              <div className="flex gap-3">
+                <div className="w-11 h-11 rounded-xl bg-green-100 shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 bg-green-100 rounded w-2/3" />
+                  <div className="h-2.5 bg-green-100/70 rounded w-full" />
+                </div>
+              </div>
+            </div>
+          ))
+        ) : visible.length === 0 ? (
+          <div className="p-6 text-center text-xs text-gray-500">
+            {tab === "active"
+              ? "Belum ada sesi aktif. Mulai dari kotak chat di samping."
+              : "Belum ada riwayat konsultasi."}
+          </div>
+        ) : (
+          visible.map((s) => {
+            const isActive = s.status === "active";
+            const last = s.lastMessage;
+            const isSelected = selectedSessionId === s.id;
+            const prefix =
+              last?.senderType === "user"
+                ? "Anda: "
+                : last?.senderType === "expert"
+                  ? `${s.expertName}: `
+                  : "";
+            return (
+              <div
+                key={s.id}
+                role="button"
+                tabIndex={0}
+                aria-current={isSelected ? "true" : undefined}
+                onClick={() => selectSession(s.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    selectSession(s.id);
+                  }
+                }}
+                className={`p-3.5 cursor-pointer transition-colors ${
+                  isSelected ? "bg-green-50 ring-1 ring-inset ring-green-300" : "hover:bg-green-50"
+                }`}
+              >
+                <div className="flex gap-3">
+                  <div className="relative shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center text-green-800 font-bold text-sm">
+                      {getInitials(s.expertName)}
+                    </div>
+                    <span
+                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 border-2 border-white rounded-full ${
+                        isActive ? "bg-green-500" : "bg-outline-variant"
+                      }`}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <h4 className="text-xs font-bold text-green-900 truncate">
+                        {s.expertName}
+                      </h4>
+                      <span className="text-[10px] text-gray-500 shrink-0 ml-2">
+                        {formatRelative(s.updatedAt)}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-green-800 font-semibold truncate flex items-center gap-1">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          isActive ? "bg-emerald-600" : "bg-gray-400"
+                        }`}
+                      />
+                      {isActive ? "Aktif" : "Nonaktif"}
+                      {s.sessionRef ? ` • ${s.sessionRef}` : ""}
+                    </p>
+                    <p className="text-[11px] text-gray-700 truncate mt-1">
+                      {last ? (
+                        <>
+                          {prefix && (
+                            <span className="font-medium text-green-800">
+                              {prefix}
+                            </span>
+                          )}
+                          {last.content}
+                        </>
+                      ) : (
+                        <span className="text-gray-400">Belum ada pesan</span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      <div className="p-3 bg-green-50 border-t border-green-200 text-[11px] flex items-center justify-between flex-shrink-0">
+        <span className="text-gray-500 flex items-center gap-1">
+          <span className="material-symbols-outlined text-sm text-green-800" data-icon="lock">
+            lock
+          </span>
+          Sesi Anda tersimpan aman
+        </span>
+        <Link href="/faq" className="text-green-800 font-bold hover:underline">
+          Bantuan
+        </Link>
+      </div>
     </div>
   );
 }

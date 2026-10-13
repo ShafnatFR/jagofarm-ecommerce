@@ -8,12 +8,14 @@ export default function SecurityPage() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError("");
     if (newPassword !== confirmPassword) {
       toast({ title: "Password tidak cocok", description: "Konfirmasi password harus sama", variant: "destructive" });
       return;
@@ -22,17 +24,51 @@ export default function SecurityPage() {
       toast({ title: "Password terlalu pendek", description: "Minimal 6 karakter", variant: "destructive" });
       return;
     }
+    if (!currentPassword) {
+      setFormError("Masukkan password saat ini untuk diverifikasi.");
+      return;
+    }
     setLoading(true);
     try {
       const supabase = createClient();
+
+      // (1) Verifikasi password saat ini lebih dulu — email diambil dari sesi aktif.
+      // Password baru TIDAK diubah sampai password saat ini terbukti benar.
+      const { data: userData } = await supabase.auth.getUser();
+      const email = userData?.user?.email;
+      if (!email) {
+        setFormError("Sesi login tidak ditemukan. Silakan masuk kembali.");
+        return;
+      }
+
+      const { error: verifyError } = await supabase.auth.signInWithPassword({
+        email,
+        password: currentPassword,
+      });
+      if (verifyError) {
+        if (verifyError.code === "email_not_confirmed" || /confirm/i.test(verifyError.message)) {
+          setFormError("Email belum dikonfirmasi. Cek inbox Anda dan coba lagi.");
+        } else {
+          setFormError("Password saat ini salah. Periksa kembali lalu coba lagi.");
+        }
+        return;
+      }
+
+      // (2) Setelah terverifikasi, baru ubah password.
       const { error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) throw error;
+
       toast({ title: "Password berhasil diubah" });
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err: unknown) {
-      toast({ title: "Gagal mengubah password", description: err instanceof Error ? err.message : "Terjadi kesalahan", variant: "destructive" });
+      const message = err instanceof Error && err.message ? err.message : "Terjadi kesalahan";
+      if (/session|jwt|refresh token|expired/i.test(message)) {
+        setFormError("Sesi login Anda sudah berakhir. Silakan masuk kembali lalu coba lagi.");
+      } else {
+        toast({ title: "Gagal mengubah password", description: message, variant: "destructive" });
+      }
     } finally {
       setLoading(false);
     }
@@ -67,6 +103,12 @@ export default function SecurityPage() {
           </div>
 
           <form onSubmit={handleChangePassword} className="space-y-4">
+            {formError && (
+              <div role="alert" className="flex items-start gap-2 rounded-xl bg-error-container/30 text-error p-3 text-body-sm font-body-sm">
+                <span className="material-symbols-outlined text-[18px] shrink-0">error</span>
+                <span>{formError}</span>
+              </div>
+            )}
             <div>
               <label className="text-label-md font-label-md text-on-surface mb-1.5 block">Password Saat Ini</label>
               <div className="relative">

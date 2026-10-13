@@ -1,11 +1,12 @@
 import ContactForm from "./contact-form";
-import { SITE_CONFIG } from "@/lib/constants";
+import { getStoreProfile } from "@/lib/site-settings";
 
 export const metadata = { title: "Hubungi Kami - JagoFarm" };
 
-const MAPS_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE_CONFIG.address)}`;
+export default async function ContactPage() {
+  const profile = await getStoreProfile();
+  const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.address)}`;
 
-export default function ContactPage() {
   return (
     <div>
       {/* HERO SECTION */}
@@ -45,10 +46,10 @@ export default function ContactPage() {
                     <h3 className="text-sm font-semibold text-slate-900">Alamat</h3>
                     <span className="text-[11px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">Kantor Utama</span>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">{SITE_CONFIG.address}</p>
+                  <p className="text-sm text-slate-600 leading-relaxed">{profile.address}</p>
                   <a
                     className="inline-flex items-center gap-1 text-xs font-semibold text-brand-700 hover:text-brand-900 pt-1"
-                    href={MAPS_SEARCH_URL}
+                    href={mapsSearchUrl}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -68,9 +69,9 @@ export default function ContactPage() {
                 <div className="space-y-1">
                   <h3 className="text-sm font-semibold text-slate-900">Telepon</h3>
                   <p className="text-sm font-medium text-slate-700">
-                    <a className="hover:text-brand-800 transition" href={`tel:+${SITE_CONFIG.whatsappIntl}`}>{SITE_CONFIG.phoneDisplay}</a>
+                    <a className="hover:text-brand-800 transition" href={`tel:+${profile.whatsapp}`}>{profile.phone}</a>
                   </p>
-                  <p className="text-xs text-slate-500">{SITE_CONFIG.hours}</p>
+                  <p className="text-xs text-slate-500">{profile.hours}</p>
                 </div>
               </div>
 
@@ -84,7 +85,7 @@ export default function ContactPage() {
                 <div className="space-y-1">
                   <h3 className="text-sm font-semibold text-slate-900">Email</h3>
                   <p className="text-sm font-medium text-slate-700">
-                    <a className="hover:text-brand-800 transition" href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a>
+                    <a className="hover:text-brand-800 transition" href={`mailto:${profile.email}`}>{profile.email}</a>
                   </p>
                   <p className="text-xs text-slate-500">Estimasi balasan: ~2 jam kerja</p>
                 </div>
@@ -106,14 +107,14 @@ export default function ContactPage() {
                     </span>
                   </div>
                   <p className="text-sm font-semibold text-slate-800">
-                    <a className="hover:text-emerald-600 transition" href={`https://wa.me/${SITE_CONFIG.whatsappIntl}`} rel="noopener noreferrer" target="_blank">{SITE_CONFIG.phoneDisplay}</a>
+                    <a className="hover:text-emerald-600 transition" href={`https://wa.me/${profile.whatsapp}`} rel="noopener noreferrer" target="_blank">{profile.phone}</a>
                   </p>
-                  <p className="text-xs text-slate-500">{SITE_CONFIG.hours}</p>
+                  <p className="text-xs text-slate-500">{profile.hours}</p>
                 </div>
               </div>
             </div>
 
-            {/* Peta lokasi — iframe embed nyata dari SITE_CONFIG.mapsEmbedUrl */}
+            {/* Peta lokasi — iframe embed nyata dari profile.mapsUrl */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm overflow-hidden" id="lokasi-peta">
               <div className="flex items-center justify-between mb-3.5">
                 <div className="flex items-center gap-2">
@@ -124,7 +125,7 @@ export default function ContactPage() {
               </div>
               <div className="relative w-full h-56 rounded-xl overflow-hidden border border-slate-200">
                 <iframe
-                  src={SITE_CONFIG.mapsEmbedUrl}
+                  src={profile.mapsUrl}
                   className="absolute inset-0 w-full h-full border-0"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -132,10 +133,10 @@ export default function ContactPage() {
                 />
               </div>
               <div className="flex items-start justify-between mt-3 gap-3">
-                <p className="text-xs text-slate-500">{SITE_CONFIG.address}</p>
+                <p className="text-xs text-slate-500">{profile.address}</p>
                 <a
                   className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 text-slate-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 transition duration-150 shrink-0"
-                  href={MAPS_SEARCH_URL}
+                  href={mapsSearchUrl}
                   rel="noopener noreferrer"
                   target="_blank"
                 >

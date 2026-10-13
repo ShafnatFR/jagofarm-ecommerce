@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCategories } from "@/hooks/use-categories";
+import { PRODUCT_SORT_OPTIONS } from "@/lib/constants";
 
 const priceRanges = [
   { label: "Di bawah Rp 100rb", min: 0, max: 100000 },
@@ -13,13 +14,6 @@ const priceRanges = [
   { label: "Rp 500rb – 1jt", min: 500000, max: 1000000 },
   { label: "Rp 1jt – 5jt", min: 1000000, max: 5000000 },
   { label: "Di atas Rp 5jt", min: 5000000, max: 0 },
-];
-
-const sortOptions = [
-  { value: "newest", label: "Terbaru" },
-  { value: "price-asc", label: "Harga: Rendah → Tinggi" },
-  { value: "price-desc", label: "Harga: Tinggi → Rendah" },
-  { value: "popular", label: "Paling Populer" },
 ];
 
 interface ProductFiltersProps {
@@ -35,6 +29,8 @@ export function ProductFilters({ className }: ProductFiltersProps) {
   const activeCategory = searchParams.get("category") || "";
   const activeSort = searchParams.get("sort") || "newest";
   const activeSearch = searchParams.get("search")?.trim() || "";
+  const activeMinPrice = Number(searchParams.get("min_price")) || 0;
+  const activeMaxPrice = Number(searchParams.get("max_price")) || 0;
   const [searchInput, setSearchInput] = useState(activeSearch);
 
   // Sinkronkan input dengan URL (mis. saat pencarian dihapus dari header).
@@ -54,12 +50,29 @@ export function ProductFilters({ className }: ProductFiltersProps) {
     router.push(`/products?${params.toString()}`);
   }
 
+  // Tulis rentang harga sebagai param API: min_price & max_price.
+  // Batas bernilai 0 artinya tak terbatas pada sisi tersebut (diabaikan API).
+  function updatePriceRange(min: number, max: number) {
+    const params = new URLSearchParams(searchParams.toString());
+    const isActive = activeMinPrice === min && activeMaxPrice === max;
+    params.delete("min_price");
+    params.delete("max_price");
+    if (!isActive) {
+      if (min > 0) params.set("min_price", String(min));
+      if (max > 0) params.set("max_price", String(max));
+    }
+    params.delete("page"); // reset page on filter change
+    router.push(`/products?${params.toString()}`);
+  }
+
   function clearFilters() {
     setSearchInput("");
     router.push("/products");
   }
 
-  const hasActiveFilters = Boolean(activeCategory || activeSearch);
+  const hasActiveFilters = Boolean(
+    activeCategory || activeSearch || activeMinPrice > 0 || activeMaxPrice > 0
+  );
 
   const filterContent = (
     <div className="space-y-6">
@@ -118,7 +131,7 @@ export function ProductFilters({ className }: ProductFiltersProps) {
           onChange={(e) => updateParam("sort", e.target.value)}
           className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
         >
-          {sortOptions.map((opt) => (
+          {PRODUCT_SORT_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
             </option>
@@ -159,17 +172,24 @@ export function ProductFilters({ className }: ProductFiltersProps) {
       <div>
         <h3 className="mb-3 text-sm font-semibold text-foreground">Harga</h3>
         <div className="space-y-2">
-          {priceRanges.map((range, i) => (
-            <button
-              key={i}
-              onClick={() =>
-                updateParam("price", `${range.min}-${range.max}`)
-              }
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary text-left"
-            >
-              <span>{range.label}</span>
-            </button>
-          ))}
+          {priceRanges.map((range, i) => {
+            const isActive =
+              activeMinPrice === range.min && activeMaxPrice === range.max;
+            return (
+              <button
+                key={i}
+                onClick={() => updatePriceRange(range.min, range.max)}
+                className={cn(
+                  "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors text-left",
+                  isActive
+                    ? "bg-primary text-primary-foreground font-medium"
+                    : "hover:bg-secondary"
+                )}
+              >
+                <span>{range.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

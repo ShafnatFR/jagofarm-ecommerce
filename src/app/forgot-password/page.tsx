@@ -57,10 +57,10 @@ export default function ForgotPasswordPage() {
             <span className="text-[11px] font-medium text-primary tracking-wider uppercase mt-0.5">Agri & Aquaculture</span>
           </div>
         </Link>
-        <a className="text-xs sm:text-sm font-medium text-slate-600 hover:text-primary flex items-center gap-1.5 transition-colors" href="#">
+        <Link href="/faq" className="text-xs sm:text-sm font-medium text-slate-600 hover:text-primary flex items-center gap-1.5 transition-colors">
           <Icon name="help" size={16} className="text-primary" />
           <span>Bantuan Teknis</span>
-        </a>
+        </Link>
       </header>
 
       {/* Main Content */}
@@ -154,10 +154,10 @@ export default function ForgotPasswordPage() {
                 {/* Help section */}
                 <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-slate-500 text-center">
                   <span>Butuh bantuan akses akun?</span>
-                  <a className="font-medium text-primary hover:text-emerald-900 underline underline-offset-2 inline-flex items-center gap-1" href="#">
+                  <Link href="/contact" className="font-medium text-primary hover:text-emerald-900 underline underline-offset-2 inline-flex items-center gap-1">
                     <span>Hubungi CS JagoFarm</span>
                     <Icon name="open_in_new" size={12} />
-                  </a>
+                  </Link>
                 </div>
               </>
             )}
@@ -174,11 +174,11 @@ export default function ForgotPasswordPage() {
       {/* Footer */}
       <footer className="relative z-10 w-full py-6 px-4 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200/60 pt-4">
-          <p>&copy; 2025 JagoFarm Indonesia. Solusi Pertanian & Akuakultur Modern.</p>
+          <p>&copy; {new Date().getFullYear()} JagoFarm Indonesia. Solusi Pertanian & Akuakultur Modern.</p>
           <div className="flex items-center gap-5 text-slate-500">
-            <a className="hover:text-primary transition-colors" href="#">Syarat & Ketentuan</a>
+            <Link href="/terms" className="hover:text-primary transition-colors">Syarat & Ketentuan</Link>
             <span>&bull;</span>
-            <a className="hover:text-primary transition-colors" href="#">Kebijakan Privasi</a>
+            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Kebijakan Privasi</Link>
           </div>
         </div>
       </footer>

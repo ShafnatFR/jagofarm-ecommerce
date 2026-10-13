@@ -219,6 +219,10 @@ export const WAREHOUSE = {
 // (client hanya mengirim keputusan aktif/tidak), supaya total selalu konsisten.
 export const INSURANCE_FEE = 10_000;
 
+// ── Gratis Ongkir ──────────────────────────────────────
+/** Minimal subtotal (Rp) untuk mendapat gratis ongkir. Sumber tunggal untuk halaman produk & cart. */
+export const FREE_SHIPPING_THRESHOLD = 200_000;
+
 // ── Tim ─────────────────────────────────────────────────
 // Nama pribadi tidak disimpan di sini: yang tampil selalu "Tim Kami" supaya
 // toko tidak menampilkan nama beserta gelar orang yang bukan bagian dari tim.
@@ -233,15 +237,21 @@ export const TEAM = {
 } as const;
 
 // ── File Upload ───────────────────────────────────────
-
+// Sumber tunggal batas & allowlist unggah gambar. Dipakai komponen
+// ImageUploader (atribut accept + validasi) maupun endpoint /api/admin/upload,
+// supaya aturan client dan server tidak pernah berbeda.
 export const UPLOAD = {
   MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+  /** Tipe MIME yang diterima (sama dengan allowlist /api/admin/upload). */
   ACCEPTED_IMAGE_TYPES: [
     "image/jpeg",
-    "image/jpg",
     "image/png",
     "image/webp",
+    "image/avif",
   ],
+  /** Ekstensi cadangan kalau browser tidak mengirim MIME type yang benar. */
+  ACCEPTED_IMAGE_EXTENSIONS: ["jpg", "jpeg", "png", "webp", "avif"],
+  /** Jumlah maksimal gambar per produk. */
   MAX_IMAGES_PER_PRODUCT: 8,
 } as const;
 

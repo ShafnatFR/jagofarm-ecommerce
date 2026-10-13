@@ -15,6 +15,8 @@ export default async function AccountLayout({ children }: { children: React.Reac
             {[
               { href: "/account", label: "Profil", icon: "person" },
               { href: "/account/addresses", label: "Alamat", icon: "location_on" },
+              { href: "/account/security", label: "Keamanan", icon: "shield" },
+              { href: "/account/transactions", label: "Transaksi", icon: "receipt_long" },
               { href: "/wishlist", label: "Wishlist", icon: "favorite" },
               { href: "/orders", label: "Pesanan", icon: "inventory_2" },
             ].map((item) => (

@@ -1,45 +1,196 @@
-import { getCurrentUser } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
 import { ProfileForm } from "@/components/account/profile-form";
+import { useToast } from "@/components/ui/use-toast";
+import { UPLOAD } from "@/lib/constants";
 
-export default async function AccountPage() {
-  const user = await getCurrentUser();
+const ACCEPTED_TYPES = new Set(UPLOAD.ACCEPTED_IMAGE_TYPES.map((t) => t.toLowerCase()));
+const ACCEPTED_EXTENSIONS = new Set(["jpg", "jpeg", "png", "webp"]);
 
-  if (!user) {
-    redirect("/login");
+interface AccountUser {
+  id: string;
+  name: string | null;
+  email: string;
+  image: string | null;
+  phone: string | null;
+  role: string;
+  createdAt: string;
+  ordersCount: number;
+  addressesCount: number;
+}
+
+export default function AccountPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const [user, setUser] = useState<AccountUser | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [reloadNonce, setReloadNonce] = useState(0);
+
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      setLoadError(null);
+      try {
+        const [profileRes, addressesRes] = await Promise.all([
+          fetch("/api/user/profile", { cache: "no-store" }),
+          fetch("/api/user/addresses", { cache: "no-store" }),
+        ]);
+
+        if (profileRes.status === 401 || addressesRes.status === 401) {
+          router.replace("/login");
+          return;
+        }
+        if (!profileRes.ok || !addressesRes.ok) {
+          throw new Error(`Gagal memuat data akun (${profileRes.status || addressesRes.status}).`);
+        }
+
+        const profilePayload = await profileRes.json();
+        const addressesPayload = await addressesRes.json();
+
+        const profile = profilePayload?.user;
+        if (!profile) throw new Error("Respons profil tidak valid.");
+
+        if (!cancelled) {
+          setUser({
+            id: profile.id,
+            name: profile.name ?? null,
+            email: profile.email,
+            image: profile.image ?? null,
+            phone: profile.phone ?? null,
+            role: profile.role ?? "customer",
+            createdAt: profile.createdAt,
+            ordersCount: profile._count?.orders ?? 0,
+            addressesCount: Array.isArray(addressesPayload?.addresses)
+              ? addressesPayload.addresses.length
+              : 0,
+          });
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setLoadError(error instanceof Error && error.message ? error.message : "Gagal memuat data akun.");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, [router, reloadNonce]);
+
+  const openPicker = () => {
+    if (!uploading) fileInputRef.current?.click();
+  };
+
+  async function handleAvatarChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    // Reset agar file yang sama bisa dipilih ulang.
+    event.target.value = "";
+    if (!file) return;
+
+    const type = file.type?.toLowerCase?.() ?? "";
+    const ext = (file.name.split(".").pop() || "").toLowerCase();
+
+    if (!ACCEPTED_TYPES.has(type) && !ACCEPTED_EXTENSIONS.has(ext)) {
+      toast({
+        title: "Format tidak didukung",
+        description: "Gunakan gambar JPEG, PNG, atau WebP.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (file.size > UPLOAD.MAX_FILE_SIZE) {
+      toast({
+        title: "Ukuran terlalu besar",
+        description: `Maksimal ${(UPLOAD.MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)} MB.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const res = await fetch("/api/user/avatar", { method: "POST", body });
+      const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
+      if (!res.ok || !data?.url) {
+        throw new Error(data?.error || `Gagal mengunggah foto (HTTP ${res.status}).`);
+      }
+      setUser((current) => (current ? { ...current, image: data.url as string } : current));
+      router.refresh();
+      toast({ title: "Foto profil diperbarui" });
+    } catch (error) {
+      toast({
+        title: "Gagal mengunggah foto",
+        description: error instanceof Error && error.message ? error.message : "Terjadi kesalahan",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
   }
 
-  const dbUser = await prisma.user.findUnique({
-    where: { id: user.id },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image: true,
-      phone: true,
-      role: true,
-      createdAt: true,
-      _count: {
-        select: { orders: true, addresses: true },
-      },
-    },
-  });
-
-  if (!dbUser) {
-    redirect("/login");
-  }
-
-  const formatDate = (date: Date) => {
+  const formatDate = (date: string | Date) => {
     return new Date(date).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
     });
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+        <div className="mb-8 space-y-2">
+          <div className="h-4 w-48 bg-surface-container rounded animate-pulse" />
+          <div className="h-8 w-64 bg-surface-container rounded animate-pulse" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-4">
+            <div className="h-72 bg-white rounded-2xl border border-outline-variant/80 shadow-md animate-pulse" />
+          </div>
+          <div className="lg:col-span-8">
+            <div className="h-96 bg-white rounded-2xl border border-outline-variant/80 shadow-md animate-pulse" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <Icon name="info" size={48} className="mx-auto text-error" />
+        <h1 className="mt-4 text-2xl font-bold text-slate-900">Gagal Memuat Akun</h1>
+        <p className="mt-2 text-slate-500">{loadError}</p>
+        <button
+          type="button"
+          onClick={() => setReloadNonce((n) => n + 1)}
+          className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white text-sm font-semibold shadow-md shadow-primary/20 transition-all"
+        >
+          <Icon name="refresh" size={16} />
+          Coba Lagi
+        </button>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
@@ -66,39 +217,50 @@ export default async function AccountPage() {
             <div className="absolute -top-12 -right-12 w-36 h-36 bg-primary-fixed/20 rounded-full blur-2xl pointer-events-none" />
             {/* Avatar */}
             <div className="relative mx-auto w-28 h-28 mb-5">
-              {dbUser.image ? (
+              {user.image ? (
                 <Image
-                  src={dbUser.image}
-                  alt={dbUser.name || "Profile"}
+                  src={user.image}
+                  alt={user.name || "Profile"}
                   width={112}
                   height={112}
                   className="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
                 />
               ) : (
                 <div className="w-full h-full rounded-full bg-gradient-to-br from-primary-fixed/30 via-tertiary-fixed/20 to-outline-variant flex items-center justify-center text-4xl font-extrabold text-primary border-4 border-white shadow-md">
-                  {dbUser.name?.[0]?.toUpperCase() || dbUser.email[0].toUpperCase()}
+                  {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
                 </div>
               )}
               <button
-                className="absolute bottom-1 right-1 p-2 bg-primary text-white rounded-full shadow hover:bg-primary/90 transition-all scale-95 hover:scale-105"
+                className="absolute bottom-1 right-1 p-2 bg-primary text-white rounded-full shadow hover:bg-primary/90 transition-all scale-95 hover:scale-105 disabled:opacity-60"
                 title="Ubah Foto Profil"
                 type="button"
+                aria-label="Ubah Foto Profil"
+                onClick={openPicker}
+                disabled={uploading}
               >
-                <Icon name="photo_camera" size={16} />
+                <Icon name={uploading ? "progress_activity" : "photo_camera"} size={16} className={uploading ? "animate-spin" : undefined} />
               </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept={UPLOAD.ACCEPTED_IMAGE_TYPES.join(",")}
+                className="hidden"
+                disabled={uploading}
+                onChange={handleAvatarChange}
+              />
             </div>
             {/* User Details */}
-            <h2 className="text-xl font-bold text-slate-800">{dbUser.name || "Tanpa Nama"}</h2>
-            <p className="text-sm text-slate-500 mt-0.5">{dbUser.email}</p>
+            <h2 className="text-xl font-bold text-slate-800">{user.name || "Tanpa Nama"}</h2>
+            <p className="text-sm text-slate-500 mt-0.5">{user.email}</p>
             <div className="mt-3.5 flex items-center justify-center gap-2">
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-primary-fixed/20 text-primary border border-outline-variant">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary mr-1.5" />
-                {dbUser.role === "admin" ? "Admin" : "Pelanggan"}
+                {user.role === "admin" ? "Admin" : "Pelanggan"}
               </span>
             </div>
             <div className="mt-6 pt-5 border-t border-outline-variant flex items-center justify-center gap-2 text-xs text-slate-400">
               <Icon name="calendar_today" size={16} />
-              <span>Bergabung sejak {formatDate(dbUser.createdAt)}</span>
+              <span>Bergabung sejak {formatDate(user.createdAt)}</span>
             </div>
           </div>
 
@@ -175,7 +337,7 @@ export default async function AccountPage() {
                   <Icon name="shopping_bag" size={24} />
                 </div>
                 <span className="block text-4xl font-extrabold text-slate-900 group-hover:text-primary transition-colors">
-                  {dbUser._count.orders}
+                  {user.ordersCount}
                 </span>
                 <span className="text-sm font-medium text-slate-500 mt-1 block">Pesanan</span>
               </div>
@@ -185,7 +347,7 @@ export default async function AccountPage() {
                   <Icon name="location_on" size={24} />
                 </div>
                 <span className="block text-4xl font-extrabold text-slate-900 group-hover:text-primary transition-colors">
-                  {dbUser._count.addresses}
+                  {user.addressesCount}
                 </span>
                 <span className="text-sm font-medium text-slate-500 mt-1 block">Alamat Tersimpan</span>
               </div>

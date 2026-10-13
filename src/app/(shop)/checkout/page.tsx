@@ -8,7 +8,7 @@ import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
-import { INSURANCE_FEE } from "@/lib/constants";
+import { INSURANCE_FEE, SITE_CONFIG } from "@/lib/constants";
 import { useToast } from "@/components/ui/use-toast";
 
 interface Address {
@@ -68,6 +68,8 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [insuranceChecked, setInsuranceChecked] = useState(true);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
 
   const fetchAddresses = useCallback(async () => {
     setLoadingAddr(true);
@@ -143,6 +145,50 @@ export default function CheckoutPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- quote ongkir disinkronkan ke alamat terpilih
     void fetchShipping(address);
   }, [selectedAddress, addresses, fetchShipping]);
+
+  async function applyCoupon() {
+    const code = couponCode.trim();
+    if (!code) return;
+    setCouponLoading(true);
+    try {
+      const res = await fetch("/api/cart/coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        toast({ variant: "destructive", title: "Kupon gagal dipakai", description: errorMessage(data?.error) });
+        return;
+      }
+      await hydrate();
+      setCouponCode("");
+      toast({ title: "Kupon diterapkan", description: `Kode ${data?.coupon?.code ?? code.toUpperCase()} berhasil dipakai.` });
+    } catch {
+      toast({ variant: "destructive", title: "Kupon gagal dipakai", description: "Periksa koneksi internet Anda." });
+    } finally {
+      setCouponLoading(false);
+    }
+  }
+
+  async function removeCoupon() {
+    setCouponLoading(true);
+    try {
+      const res = await fetch("/api/cart/coupon", { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        toast({ variant: "destructive", title: "Gagal menghapus kupon", description: errorMessage(data?.error) });
+        return;
+      }
+      await hydrate();
+      setCouponCode("");
+      toast({ title: "Kupon dihapus" });
+    } catch {
+      toast({ variant: "destructive", title: "Gagal menghapus kupon", description: "Periksa koneksi internet Anda." });
+    } finally {
+      setCouponLoading(false);
+    }
+  }
 
   async function submitOrder() {
     const option = shippingOptions[selectedShipping];
@@ -260,6 +306,10 @@ export default function CheckoutPage() {
   const total = Math.max(0, subtotal - discount) + shippingCost + insuranceCost;
   const addr = addresses.find((a) => a.id === selectedAddress);
   const canSubmit = Boolean(selectedAddress) && Boolean(selectedOption) && !submitting;
+  const appliedCoupon = serverCart?.coupon ?? null;
+  const couponError = serverCart?.couponError ?? null;
+  const waMessage = `Halo JagoFarm, saya butuh bantuan terkait pesanan saya di halaman checkout. Total tagihan saat ini: ${formatPrice(total)}.`;
+  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappIntl}?text=${encodeURIComponent(waMessage)}`;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -410,7 +460,7 @@ export default function CheckoutPage() {
               </div>
 
               <p className="mb-4 text-sm text-muted-foreground">
-                Ongkir ke {addr?.city ?? "-"} — {totalWeight() > 0 ? `${Math.round(totalWeight())}g` : "1kg (default)"}
+                Ongkir ke {addr?.city ?? "-"} — {totalWeight() > 0 ? `${Math.round(totalWeight())}g` : "Belum ada produk"}
               </p>
 
               {loadingShip ? (
@@ -498,7 +548,7 @@ export default function CheckoutPage() {
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Icon name="credit_card" size={16} />
                   </div>
-                  <h2 className="text-base font-bold tracking-tight">Pilih Metode Pembayaran</h2>
+                  <h2 className="text-base font-bold tracking-tight">Metode Pembayaran</h2>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <Icon name="verified_user" size={14} className="text-primary" />
@@ -514,7 +564,7 @@ export default function CheckoutPage() {
                   <div>
                     <p className="text-sm font-bold">{MAYAR_PAYMENT_LABEL}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Pilihan QRIS, virtual account, e-wallet, dan channel lain tersedia di halaman pembayaran Mayar.
+                      Semua pesanan diproses melalui Mayar; tidak perlu memilih metode lain. Pilihan QRIS, virtual account, e-wallet, dan channel lain tersedia di halaman pembayaran Mayar.
                     </p>
                   </div>
                 </div>
@@ -546,25 +596,50 @@ export default function CheckoutPage() {
             {/* Coupon */}
             <div className="mb-5 mt-4">
               <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider">Kupon / Voucher Diskon</label>
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    placeholder="Masukkan kode"
-                    className="w-full rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-foreground outline-none focus:ring-1 focus:ring-primary"
-                  />
-                  {serverCart?.coupon && !serverCart.couponError && (
-                    <div className="absolute right-2.5 top-3 text-primary">
-                      <Icon name="check_circle" size={14} />
+              {appliedCoupon ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between rounded-lg border border-primary/30 bg-primary/5 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">Terpakai</span>
+                      <span className="font-mono text-xs font-bold uppercase tracking-wider text-primary">{appliedCoupon.code}</span>
                     </div>
+                    <Button variant="ghost" size="sm" onClick={removeCoupon} disabled={couponLoading}>
+                      {couponLoading ? "Menghapus..." : "Hapus"}
+                    </Button>
+                  </div>
+                  {discount > 0 && (
+                    <p className="flex items-center gap-1 text-[11px] font-semibold text-primary">
+                      <Icon name="check_circle" size={14} className="shrink-0" />
+                      Kupon aktif: Hemat {formatPrice(discount)}
+                    </p>
                   )}
                 </div>
-                <Button variant="secondary" size="sm" className="rounded-lg px-3.5">Terapkan</Button>
-              </div>
-              {serverCart?.coupon && !serverCart.couponError && discount > 0 && (
-                <p className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-primary">
-                  <Icon name="check_circle" size={14} className="shrink-0" />
-                  Kupon aktif: Hemat {formatPrice(discount)}
+              ) : (
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      placeholder="Masukkan kode"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      className="w-full rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-foreground outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
+                      disabled={couponLoading}
+                    />
+                  </div>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={applyCoupon}
+                    disabled={couponLoading || !couponCode.trim()}
+                    className="rounded-lg px-3.5"
+                  >
+                    {couponLoading ? "Memeriksa..." : "Terapkan"}
+                  </Button>
+                </div>
+              )}
+              {couponError && (
+                <p className="mt-2 flex items-start gap-1.5 text-xs text-destructive">
+                  <Icon name="info" size={12} className="mt-0.5 shrink-0" /> {couponError}
                 </p>
               )}
             </div>
@@ -636,7 +711,14 @@ export default function CheckoutPage() {
                 <p className="text-[11px] text-muted-foreground">Hubungi Tim JagoFarm</p>
               </div>
             </div>
-            <span className="text-xs font-bold text-primary hover:underline">Chat WA</span>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-primary hover:underline"
+            >
+              Chat WA
+            </a>
           </div>
         </aside>
       </div>

@@ -27,6 +27,8 @@ function ProductsContent() {
   const search = searchParams.get("search")?.trim() || "";
   const category = searchParams.get("category") || "";
   const sort = searchParams.get("sort") || "newest";
+  const minPrice = searchParams.get("min_price") || "";
+  const maxPrice = searchParams.get("max_price") || "";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const view = searchParams.get("view") || "grid";
 
@@ -46,6 +48,8 @@ function ProductsContent() {
         if (search) params.set("search", search);
         if (category) params.set("category", category);
         if (sort) params.set("sort", sort);
+        if (minPrice) params.set("min_price", minPrice);
+        if (maxPrice) params.set("max_price", maxPrice);
         params.set("page", String(page));
         params.set("limit", "12");
         const res = await fetch(`/api/products?${params.toString()}`);
@@ -61,7 +65,7 @@ function ProductsContent() {
       }
     }
     fetchProducts();
-  }, [search, category, sort, page]);
+  }, [search, category, sort, minPrice, maxPrice, page]);
 
   useEffect(() => {
     let active = true;
