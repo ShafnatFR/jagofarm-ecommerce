@@ -1253,7 +1253,8 @@ async function seedCategories(): Promise<Map<string, string>> {
 }
 
 async function seedProduct(product: SeedProductWithImages, categoryId: string) {
-  const { categorySlug: _categorySlug, images, variants, ...scalars } = product;
+  const { images, variants, categorySlug, ...scalars } = product;
+  void categorySlug;
 
   const data = {
     ...scalars,

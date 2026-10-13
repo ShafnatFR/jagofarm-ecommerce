@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -136,7 +135,7 @@ export default function CheckoutPage() {
         setLoadingShip(false);
       }
     },
-    [totalWeight, items]
+    [totalWeight]
   );
 
   useEffect(() => {

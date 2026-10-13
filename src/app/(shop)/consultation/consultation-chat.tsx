@@ -247,6 +247,10 @@ export default function ConsultationChat() {
     // dan setState sinkron di dalam effect memicu cascading render.
     const timer = setTimeout(() => void startSession(), 0);
     return () => clearTimeout(timer);
+    // Sengaja hanya saat mount: guard `session`/selectedSessionId di atas sudah
+    // mencegah pembuatan sesi ganda; menambah startSession ke deps akan
+    // menjalankan ulang tiap render (startSession bukan useCallback).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Polling 5 detik mengikuti sesi yang sedang terbuka (aktif atau riwayat):
@@ -297,6 +301,7 @@ export default function ConsultationChat() {
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative shrink-0">
             <div className="w-12 h-12 rounded-xl overflow-hidden border border-green-700 shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element -- avatar lokal (SVG/data-URL), bukan aset remote */}
               <img
                 alt={TEAM.LABEL}
                 className="w-full h-full object-cover"
@@ -368,6 +373,7 @@ export default function ConsultationChat() {
                 {/* Avatar */}
                 {!isUser && (
                   <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-green-700 shadow-xs mt-1">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- avatar lokal (SVG/data-URL), bukan aset remote */}
                     <img
                       alt={TEAM.LABEL}
                       className="w-full h-full object-cover"

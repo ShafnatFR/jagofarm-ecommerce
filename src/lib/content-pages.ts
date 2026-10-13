@@ -59,7 +59,7 @@ export interface CreateContentPageInput {
 }
 
 export async function createContentPage(input: CreateContentPageInput) {
-  const user = await requireAdminUser();
+  await requireAdminUser();
   const { slug, title, seoTitle, seoDesc, contentHtml, isActive = true } = input;
 
   const existing = await prisma.contentPage.findUnique({ where: { slug } });

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await request.json().catch(() => ({}));
+    await request.json().catch(() => ({}));
     const existingSession = await prisma.consultationSession.findFirst({
       where: {
         userId: user.id,
