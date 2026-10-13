@@ -62,8 +62,13 @@ export function NotificationBell() {
   }, []);
 
   useEffect(() => {
-    load();
-    const interval = setInterval(load, 60_000);
+    const interval = setInterval(() => {
+      void load();
+    }, 60_000);
+    // Muat sekali saat mount. `load()` bersifat async: setState terjadi setelah
+    // await (bukan render sinkron), jadi aman dari cascading render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void load();
     return () => clearInterval(interval);
   }, [load]);
 

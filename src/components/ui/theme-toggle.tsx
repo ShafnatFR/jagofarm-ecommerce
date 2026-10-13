@@ -1,28 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Icon } from "@/components/ui/icon";
 
 type Theme = "light" | "dark";
 
+function subscribe(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  return () => observer.disconnect();
+}
+
+function getSnapshot(): Theme {
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
+function getServerSnapshot(): Theme {
+  return "light";
+}
+
 /**
  * Tombol pengalih mode terang/gelap (A15).
- * Preferensi disimpan di localStorage; kelas `.dark` dipasang di <html>.
- * Script anti-kedip ada di layout (dijalankan sebelum paint).
+ * Status dibaca langsung dari kelas `.dark` di <html> via useSyncExternalStore
+ * (tidak ada setState di dalam effect). Preferensi disimpan di localStorage;
+ * script anti-kedip ada di layout dan dijalankan sebelum paint.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
-  }, []);
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   function toggle() {
     const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
     const root = document.documentElement;
     root.classList.toggle("dark", next === "dark");
     try {
@@ -32,7 +42,6 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     }
   }
 
-  // Hindari hydration mismatch: render ikon netral sampai mounted.
   return (
     <button
       type="button"
@@ -41,7 +50,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       title={theme === "dark" ? "Mode terang" : "Mode gelap"}
       className={`rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low ${className}`}
     >
-      <Icon name={mounted && theme === "dark" ? "light_mode" : "dark_mode"} size={20} />
+      <Icon name={theme === "dark" ? "light_mode" : "dark_mode"} size={20} />
     </button>
   );
 }
