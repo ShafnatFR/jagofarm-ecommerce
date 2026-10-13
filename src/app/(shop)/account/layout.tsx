@@ -14,6 +14,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
           <ul className="flex flex-wrap gap-4 border-b border-outline-variant pb-4">
             {[
               { href: "/account", label: "Profil", icon: "person" },
+              { href: "/account/points", label: "Poin", icon: "stars" },
               { href: "/account/addresses", label: "Alamat", icon: "location_on" },
               { href: "/account/security", label: "Keamanan", icon: "shield" },
               { href: "/account/transactions", label: "Transaksi", icon: "receipt_long" },

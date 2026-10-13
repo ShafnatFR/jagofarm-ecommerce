@@ -8,6 +8,8 @@ const registerSchema = z.object({
   email: z.string().email("Email tidak valid"),
   password: z.string().min(6, "Password minimal 6 karakter"),
   phone: z.string().optional(),
+  /** Kode referral opsional dari teman (A8). */
+  referralCode: z.string().trim().max(20).optional(),
 });
 
 /** Messages from Supabase that mean "this email already has a Supabase account". */
@@ -43,6 +45,7 @@ export async function POST(request: NextRequest) {
 
     const { name, password, phone } = parsed.data;
     const email = parsed.data.email.trim().toLowerCase();
+    const referralInput = parsed.data.referralCode?.trim() || null;
 
     // 1) Row already in our Postgres table (may be leftover from the old bcrypt schema
     //    or an account created through Google/Supabase).
@@ -132,6 +135,24 @@ export async function POST(request: NextRequest) {
       .catch((cartError) => {
         console.error("Registration: failed to create cart:", cartError);
       });
+
+    // 4) Catat referral bila kode diisi (best-effort, tidak menggagalkan registrasi).
+    if (referralInput) {
+      try {
+        const { recordReferral } = await import("@/lib/referral");
+        const recorded = await recordReferral({
+          code: referralInput,
+          refereeId: user.id,
+        });
+        if (!recorded.ok) {
+          console.warn(
+            `Registration: referral "${referralInput}" tidak tercatat — ${recorded.reason}`
+          );
+        }
+      } catch (refError) {
+        console.error("Registration: gagal mencatat referral:", refError);
+      }
+    }
 
     if (data.session) {
       // Case (b): email confirmation disabled -> the user is already signed in.

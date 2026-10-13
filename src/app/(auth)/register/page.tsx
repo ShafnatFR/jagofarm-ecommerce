@@ -23,7 +23,7 @@ function readApiError(data: unknown): string | null {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", confirmPassword: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", referralCode: "", password: "", confirmPassword: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
@@ -67,6 +67,7 @@ export default function RegisterPage() {
           name: form.name,
           email: form.email,
           phone: form.phone,
+          referralCode: form.referralCode.trim() || undefined,
           password: form.password,
         }),
       });
@@ -294,6 +295,26 @@ export default function RegisterPage() {
                           placeholder="08xxxxxxxxxx"
                           value={form.phone}
                           onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                          className="block w-full pl-10 pr-3.5 py-2.5 sm:py-3 text-sm text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 placeholder:text-slate-400 transition"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Kode Referral (opsional) */}
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">Kode Referral</label>
+                        <span className="text-[11px] text-slate-400 font-medium">Opsional</span>
+                      </div>
+                      <div className="relative rounded-xl shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                          <Icon name="redeem" size={16} />
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="Mis. JAGO-AB12CD"
+                          value={form.referralCode}
+                          onChange={(e) => setForm({ ...form, referralCode: e.target.value })}
                           className="block w-full pl-10 pr-3.5 py-2.5 sm:py-3 text-sm text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 placeholder:text-slate-400 transition"
                         />
                       </div>
