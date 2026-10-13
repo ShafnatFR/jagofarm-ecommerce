@@ -42,6 +42,8 @@ async function run(request: NextRequest) {
   }
   const provided =
     request.headers.get("x-cron-secret") ??
+    // Vercel Cron mengirim "Authorization: Bearer <CRON_SECRET>".
+    request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ??
     new URL(request.url).searchParams.get("secret") ??
     "";
   if (provided !== secret) {
