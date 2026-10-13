@@ -35,6 +35,37 @@ interface TopProductRow {
   revenue: number
 }
 
+interface StockRow {
+  id: string
+  name: string
+  slug: string
+  stock: number
+  variantCount: number
+}
+
+interface StockReport {
+  threshold: number
+  totalProducts: number
+  outOfStockCount: number
+  lowStockCount: number
+  outOfStock: StockRow[]
+  lowStock: StockRow[]
+}
+
+interface TopCustomerRow {
+  userId: string | null
+  name: string
+  email: string
+  totalSpent: number
+  orderCount: number
+}
+
+interface CustomerReport {
+  totalCustomers: number
+  newCustomers: number
+  topCustomers: TopCustomerRow[]
+}
+
 interface ReportResponse {
   range: {
     from: string
@@ -54,6 +85,8 @@ interface ReportResponse {
   series: ReportPeriod[]
   categoryBreakdown: CategoryRow[]
   topProducts: TopProductRow[]
+  stockReport?: StockReport
+  customerReport?: CustomerReport
 }
 
 function toIsoDate(date: Date): string {
@@ -185,6 +218,8 @@ export default function AdminReportsPage() {
   const series = data?.series ?? []
   const categoryBreakdown = data?.categoryBreakdown ?? []
   const topProducts = data?.topProducts ?? []
+  const stockReport = data?.stockReport
+  const customerReport = data?.customerReport
   const categoryMax = categoryBreakdown.reduce((max, row) => Math.max(max, row.revenue), 0)
 
   const cards = [
@@ -446,6 +481,131 @@ export default function AdminReportsPage() {
                     ))}
                   </tbody>
                 </table>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* B21b: Laporan Stok */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-lg">Laporan Stok</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              {!stockReport ? (
+                <p className="py-8 text-center text-sm text-gray-400">Data stok tidak tersedia</p>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <div className="rounded-xl bg-surface-container-low p-3">
+                      <p className="text-xs text-on-surface-variant">Total Produk</p>
+                      <p className="text-xl font-bold text-on-surface">{stockReport.totalProducts}</p>
+                    </div>
+                    <div className="rounded-xl bg-red-50 p-3">
+                      <p className="text-xs text-red-700">Stok Habis</p>
+                      <p className="text-xl font-bold text-red-700">{stockReport.outOfStockCount}</p>
+                    </div>
+                    <div className="rounded-xl bg-amber-50 p-3">
+                      <p className="text-xs text-amber-700">Stok Menipis</p>
+                      <p className="text-xl font-bold text-amber-700">{stockReport.lowStockCount}</p>
+                    </div>
+                    <div className="rounded-xl bg-surface-container-low p-3">
+                      <p className="text-xs text-on-surface-variant">Ambang Menipis</p>
+                      <p className="text-xl font-bold text-on-surface">≤ {stockReport.threshold}</p>
+                    </div>
+                  </div>
+
+                  {stockReport.outOfStock.length > 0 && (
+                    <div>
+                      <p className="mb-2 text-sm font-semibold text-red-700">Produk Habis</p>
+                      <ul className="divide-y divide-outline-variant text-sm">
+                        {stockReport.outOfStock.map((p) => (
+                          <li key={p.id} className="flex justify-between py-2">
+                            <span className="text-on-surface">{p.name}</span>
+                            <span className="font-medium text-red-600">0</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {stockReport.lowStock.length > 0 && (
+                    <div>
+                      <p className="mb-2 text-sm font-semibold text-amber-700">Produk Menipis</p>
+                      <ul className="divide-y divide-outline-variant text-sm">
+                        {stockReport.lowStock.map((p) => (
+                          <li key={p.id} className="flex justify-between py-2">
+                            <span className="text-on-surface">{p.name}</span>
+                            <span className="font-medium text-amber-600">{p.stock}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {stockReport.outOfStock.length === 0 && stockReport.lowStock.length === 0 && (
+                    <p className="py-4 text-center text-sm text-green-700">
+                      Semua produk stoknya aman.
+                    </p>
+                  )}
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* B21c: Laporan Pelanggan */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-lg">Laporan Pelanggan</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              {!customerReport ? (
+                <p className="py-8 text-center text-sm text-gray-400">Data pelanggan tidak tersedia</p>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-xl bg-surface-container-low p-3">
+                      <p className="text-xs text-on-surface-variant">Total Pelanggan</p>
+                      <p className="text-xl font-bold text-on-surface">{customerReport.totalCustomers}</p>
+                    </div>
+                    <div className="rounded-xl bg-green-50 p-3">
+                      <p className="text-xs text-green-700">Pelanggan Baru (periode)</p>
+                      <p className="text-xl font-bold text-green-700">{customerReport.newCustomers}</p>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <p className="mb-2 text-sm font-semibold text-on-surface">10 Pelanggan Teratas (belanja)</p>
+                    {customerReport.topCustomers.length === 0 ? (
+                      <p className="py-4 text-center text-sm text-gray-400">
+                        Belum ada pembelian pada periode ini
+                      </p>
+                    ) : (
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b text-left text-on-surface-variant">
+                            <th className="pb-3 font-medium">#</th>
+                            <th className="pb-3 font-medium">Pelanggan</th>
+                            <th className="pb-3 text-right font-medium">Pesanan</th>
+                            <th className="pb-3 text-right font-medium">Total Belanja</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {customerReport.topCustomers.map((c, i) => (
+                            <tr key={c.userId ?? i} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                              <td className="py-2.5 text-gray-400">{i + 1}</td>
+                              <td className="py-2.5">
+                                <span className="font-medium text-on-surface">{c.name}</span>
+                                {c.email && <span className="block text-xs text-on-surface-variant">{c.email}</span>}
+                              </td>
+                              <td className="py-2.5 text-right text-on-surface-variant">{c.orderCount}</td>
+                              <td className="py-2.5 text-right font-medium">{formatPrice(c.totalSpent)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </>
               )}
             </CardContent>
           </Card>

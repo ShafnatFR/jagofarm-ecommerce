@@ -348,6 +348,99 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // ── B21b: Laporan stok (produk menipis & habis) ────────────────────────
+    // Ambang "stok menipis" dapat diatur via env LOW_STOCK_THRESHOLD (default 5).
+    const lowStockThreshold = (() => {
+      const raw = parseInt(process.env.LOW_STOCK_THRESHOLD || "5", 10);
+      return Number.isFinite(raw) && raw >= 0 ? raw : 5;
+    })();
+
+    const stockProducts = await prisma.product.findMany({
+      where: { isActive: true },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        stock: true,
+        variants: { select: { id: true, name: true, sku: true, stock: true } },
+      },
+      orderBy: { stock: "asc" },
+    });
+
+    /** Stok efektif: jumlah stok produk + seluruh variannya (0 varian = stok produk). */
+    function effectiveStock(p: { stock: number; variants: { stock: number }[] }): number {
+      if (p.variants.length === 0) return p.stock;
+      return p.variants.reduce((sum, v) => sum + v.stock, 0);
+    }
+
+    const stockRows = stockProducts.map((p) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      stock: effectiveStock(p),
+      variantCount: p.variants.length,
+    }));
+
+    const outOfStock = stockRows.filter((r) => r.stock <= 0);
+    const lowStock = stockRows.filter((r) => r.stock > 0 && r.stock <= lowStockThreshold);
+
+    const stockReport = {
+      threshold: lowStockThreshold,
+      totalProducts: stockRows.length,
+      outOfStockCount: outOfStock.length,
+      lowStockCount: lowStock.length,
+      outOfStock: outOfStock.slice(0, 50),
+      lowStock: lowStock.slice(0, 50),
+    };
+
+    // ── B21c: Laporan pelanggan (baru, aktif, teratas) ─────────────────────
+    const [totalCustomers, newCustomers] = await Promise.all([
+      prisma.user.count({ where: { role: "customer" } }),
+      prisma.user.count({
+        where: { role: "customer", createdAt: { gte: rangeFrom, lte: rangeTo } },
+      }),
+    ]);
+
+    // Pelanggan teratas berdasarkan belanja pada rentang (hanya order yang dihitung "terjual").
+    const topCustomerGroups = await prisma.order.groupBy({
+      by: ["userId"],
+      where,
+      _sum: { total: true },
+      _count: true,
+      orderBy: { _sum: { total: "desc" } },
+      take: 10,
+    });
+
+    const topCustomerIds = topCustomerGroups
+      .map((g) => g.userId)
+      .filter((id): id is string => Boolean(id));
+    const topCustomerUsers = topCustomerIds.length
+      ? await prisma.user.findMany({
+          where: { id: { in: topCustomerIds } },
+          select: { id: true, name: true, email: true },
+        })
+      : [];
+    const userById = new Map(topCustomerUsers.map((u) => [u.id, u]));
+
+    const topCustomers = topCustomerGroups
+      .map((g) => {
+        const u = g.userId ? userById.get(g.userId) : undefined;
+        return {
+          userId: g.userId,
+          name: u?.name ?? "Pelanggan",
+          email: u?.email ?? "",
+          totalSpent: Number(g._sum?.total ?? 0),
+          orderCount: typeof g._count === "number" ? g._count : 0,
+        };
+      })
+      .filter((c) => c.userId);
+
+    const customerReport = {
+      totalCustomers,
+      newCustomers,
+      topCustomers,
+    };
+
     return NextResponse.json({
       range: {
         from: fromIso,
@@ -367,6 +460,8 @@ export async function GET(request: NextRequest) {
       series,
       categoryBreakdown,
       topProducts,
+      stockReport,
+      customerReport,
     });
   } catch (error) {
     console.error("Admin reports GET error:", error);
