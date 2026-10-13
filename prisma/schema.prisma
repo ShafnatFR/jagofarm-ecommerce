@@ -44,12 +44,23 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  addresses  Address[]
-  orders     Order[]
-  cart       Cart?
-  reviews    Review[]
-  wishlists  Wishlist[]
+  addresses            Address[]
+  orders               Order[]
+  cart                 Cart?
+  reviews              Review[]
+  wishlists            Wishlist[]
   consultationSessions ConsultationSession[]
+
+  // ── Loyalty (A7) & Referral (A8) ──
+  /// Saldo poin loyalitas (diperbarui bersama PointTransaction).
+  points            Int                @default(0)
+  /// Kode unik milik user untuk dibagikan (mis. "JAGO-8F3K").
+  referralCode      String?            @unique @map("referral_code") @db.VarChar(20)
+  pointTransactions PointTransaction[]
+  /// Referral yang dimiliki user ini (sebagai pengundang).
+  referralsOwned    Referral[]         @relation("ReferralOwner")
+  /// Referral yang menjadikan user ini sebagai pihak diundang (unik).
+  referralAsReferee Referral?          @relation("ReferralReferee")
 
   @@map("users")
 }
@@ -96,12 +107,14 @@ model Product {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  images    ProductImage[]
-  variants  ProductVariant[]
+  images     ProductImage[]
+  variants   ProductVariant[]
   orderItems OrderItem[]
   cartItems  CartItem[]
   reviews    Review[]
   wishlists  Wishlist[]
+  /// Pertanyaan tanya-jawab produk (B19).
+  questions  ProductQuestion[]
 
   @@index([categoryId])
   @@index([slug])
@@ -160,13 +173,15 @@ model Address {
 }
 
 model Cart {
-  id        String     @id @default(uuid())
-  userId    String     @unique @map("user_id")
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  couponId  String?    @map("coupon_id")
-  coupon    Coupon?    @relation(fields: [couponId], references: [id])
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  id             String    @id @default(uuid())
+  userId         String    @unique @map("user_id")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  couponId       String?   @map("coupon_id")
+  coupon         Coupon?   @relation(fields: [couponId], references: [id])
+  /// Kapan pengingat keranjang-tertinggal terakhir dikirim (A9) — mencegah spam.
+  reminderSentAt DateTime? @map("reminder_sent_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
 
   items CartItem[]
 
@@ -174,64 +189,64 @@ model Cart {
 }
 
 model CartItem {
-  id        String         @id @default(uuid())
-  cartId    String         @map("cart_id")
-  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  productId String         @map("product_id")
-  product   Product        @relation(fields: [productId], references: [id])
-  variantId String?        @map("variant_id")
+  id        String          @id @default(uuid())
+  cartId    String          @map("cart_id")
+  cart      Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String          @map("product_id")
+  product   Product         @relation(fields: [productId], references: [id])
+  variantId String?         @map("variant_id")
   variant   ProductVariant? @relation(fields: [variantId], references: [id])
-  quantity  Int            @default(1)
+  quantity  Int             @default(1)
 
   @@unique([cartId, productId, variantId])
   @@map("cart_items")
 }
 
 model Order {
-  id               String      @id @default(uuid())
-  orderNumber      String      @unique @map("order_number")
-  userId           String      @map("user_id")
-  user             User        @relation(fields: [userId], references: [id])
-  shippingAddressId String     @map("shipping_address_id")
-  shippingAddress  Address     @relation(fields: [shippingAddressId], references: [id])
-  status           OrderStatus @default(pending)
-  paymentStatus    PaymentStatus @default(unpaid) @map("payment_status")
-  paymentMethod    String?     @map("payment_method") @db.VarChar(50)
-  midtransOrderId  String?     @map("midtrans_order_id")
-  midtransToken    String?     @map("midtrans_token")
+  id                            String        @id @default(uuid())
+  orderNumber                   String        @unique @map("order_number")
+  userId                        String        @map("user_id")
+  user                          User          @relation(fields: [userId], references: [id])
+  shippingAddressId             String        @map("shipping_address_id")
+  shippingAddress               Address       @relation(fields: [shippingAddressId], references: [id])
+  status                        OrderStatus   @default(pending)
+  paymentStatus                 PaymentStatus @default(unpaid) @map("payment_status")
+  paymentMethod                 String?       @map("payment_method") @db.VarChar(50)
+  midtransOrderId               String?       @map("midtrans_order_id")
+  midtransToken                 String?       @map("midtrans_token")
   /// Payment gateway yang dipakai order ini (mis. "mayar", "midtrans").
-  paymentProvider  String?     @map("payment_provider") @db.VarChar(30)
+  paymentProvider               String?       @map("payment_provider") @db.VarChar(30)
   /// Referensi transaksi di gateway (Mayar transaction id / Midtrans order id).
-  paymentRef       String?     @map("payment_ref") @db.VarChar(120)
+  paymentRef                    String?       @map("payment_ref") @db.VarChar(120)
   /// URL halaman pembayaran hosted (Mayar invoice link / Midtrans redirect url).
-  paymentUrl       String?     @map("payment_url") @db.Text
-  shippingCourier  String?     @map("shipping_courier") @db.VarChar(20)
-  shippingService  String?     @map("shipping_service") @db.VarChar(50)
-  shippingCost     Decimal     @default(0) @map("shipping_cost") @db.Decimal(12, 2)
+  paymentUrl                    String?       @map("payment_url") @db.Text
+  shippingCourier               String?       @map("shipping_courier") @db.VarChar(20)
+  shippingService               String?       @map("shipping_service") @db.VarChar(50)
+  shippingCost                  Decimal       @default(0) @map("shipping_cost") @db.Decimal(12, 2)
   /// Biaya asuransi proteksi barang (pilihan saat checkout; nominal dari INSURANCE_FEE).
-  insuranceFee     Decimal     @default(0) @map("insurance_fee") @db.Decimal(12, 2)
-  shippingEtd      String?     @map("shipping_etd") @db.VarChar(20)
-  shippingQuoteSource String?  @map("shipping_quote_source") @db.VarChar(30)
-  shippingQuoteFetchedAt DateTime? @map("shipping_quote_fetched_at")
-  shippingOriginCityId String? @map("shipping_origin_city_id") @db.VarChar(20)
-  shippingDestinationCityId String? @map("shipping_destination_city_id") @db.VarChar(20)
-  shippingDestinationDistrictId String? @map("shipping_destination_district_id") @db.VarChar(20)
-  shippingActualWeightGram Int? @map("shipping_actual_weight_gram")
-  shippingVolumetricWeightGram Int? @map("shipping_volumetric_weight_gram")
-  shippingChargeableWeightGram Int? @map("shipping_chargeable_weight_gram")
-  shippingQuoteSnapshot Json? @map("shipping_quote_snapshot") @db.JsonB
-  trackingNumber   String?     @map("tracking_number") @db.VarChar(100)
-  subtotal         Decimal     @db.Decimal(12, 2)
-  discount         Decimal     @default(0) @db.Decimal(12, 2)
-  total            Decimal     @db.Decimal(12, 2)
-  notes            String?     @db.Text
-  couponId         String?     @map("coupon_id")
-  coupon           Coupon?     @relation(fields: [couponId], references: [id])
-  paidAt           DateTime?   @map("paid_at")
-  shippedAt        DateTime?   @map("shipped_at")
-  deliveredAt      DateTime?   @map("delivered_at")
-  createdAt        DateTime    @default(now()) @map("created_at")
-  updatedAt        DateTime    @updatedAt @map("updated_at")
+  insuranceFee                  Decimal       @default(0) @map("insurance_fee") @db.Decimal(12, 2)
+  shippingEtd                   String?       @map("shipping_etd") @db.VarChar(20)
+  shippingQuoteSource           String?       @map("shipping_quote_source") @db.VarChar(30)
+  shippingQuoteFetchedAt        DateTime?     @map("shipping_quote_fetched_at")
+  shippingOriginCityId          String?       @map("shipping_origin_city_id") @db.VarChar(20)
+  shippingDestinationCityId     String?       @map("shipping_destination_city_id") @db.VarChar(20)
+  shippingDestinationDistrictId String?       @map("shipping_destination_district_id") @db.VarChar(20)
+  shippingActualWeightGram      Int?          @map("shipping_actual_weight_gram")
+  shippingVolumetricWeightGram  Int?          @map("shipping_volumetric_weight_gram")
+  shippingChargeableWeightGram  Int?          @map("shipping_chargeable_weight_gram")
+  shippingQuoteSnapshot         Json?         @map("shipping_quote_snapshot") @db.JsonB
+  trackingNumber                String?       @map("tracking_number") @db.VarChar(100)
+  subtotal                      Decimal       @db.Decimal(12, 2)
+  discount                      Decimal       @default(0) @db.Decimal(12, 2)
+  total                         Decimal       @db.Decimal(12, 2)
+  notes                         String?       @db.Text
+  couponId                      String?       @map("coupon_id")
+  coupon                        Coupon?       @relation(fields: [couponId], references: [id])
+  paidAt                        DateTime?     @map("paid_at")
+  shippedAt                     DateTime?     @map("shipped_at")
+  deliveredAt                   DateTime?     @map("delivered_at")
+  createdAt                     DateTime      @default(now()) @map("created_at")
+  updatedAt                     DateTime      @updatedAt @map("updated_at")
 
   items OrderItem[]
 
@@ -241,31 +256,31 @@ model Order {
 }
 
 model OrderItem {
-  id        String         @id @default(uuid())
-  orderId   String         @map("order_id")
-  order     Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId String         @map("product_id")
-  product   Product        @relation(fields: [productId], references: [id])
-  variantId String?        @map("variant_id")
+  id        String          @id @default(uuid())
+  orderId   String          @map("order_id")
+  order     Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String          @map("product_id")
+  product   Product         @relation(fields: [productId], references: [id])
+  variantId String?         @map("variant_id")
   variant   ProductVariant? @relation(fields: [variantId], references: [id])
   quantity  Int
-  price     Decimal        @db.Decimal(12, 2)
-  total     Decimal        @db.Decimal(12, 2)
+  price     Decimal         @db.Decimal(12, 2)
+  total     Decimal         @db.Decimal(12, 2)
 
   @@map("order_items")
 }
 
 model Review {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  user      User     @relation(fields: [userId], references: [id])
-  productId String   @map("product_id")
-  product   Product  @relation(fields: [productId], references: [id])
-  rating    Int
-  comment   String?  @db.Text
-  imageUrl  String?  @map("image_url") @db.Text
-  isApproved Boolean @default(false) @map("is_approved")
-  createdAt DateTime @default(now()) @map("created_at")
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  user       User     @relation(fields: [userId], references: [id])
+  productId  String   @map("product_id")
+  product    Product  @relation(fields: [productId], references: [id])
+  rating     Int
+  comment    String?  @db.Text
+  imageUrl   String?  @map("image_url") @db.Text
+  isApproved Boolean  @default(false) @map("is_approved")
+  createdAt  DateTime @default(now()) @map("created_at")
 
   @@unique([userId, productId])
   @@map("reviews")
@@ -305,32 +320,32 @@ model Coupon {
 }
 
 model ConsultationSession {
-  id          String   @id @default(uuid())
-  userId      String?  @map("user_id") @db.VarChar(36)
-  user        User?    @relation(fields: [userId], references: [id])
-  status      String   @default("active") @map("status") @db.VarChar(20)
-  expertName  String   @default("Tim Kami") @map("expert_name") @db.VarChar(100)
-  sessionRef  String?  @unique @map("session_ref") @db.VarChar(20)
-  metadata    Json?   @db.JsonB
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id         String   @id @default(uuid())
+  userId     String?  @map("user_id") @db.VarChar(36)
+  user       User?    @relation(fields: [userId], references: [id])
+  status     String   @default("active") @map("status") @db.VarChar(20)
+  expertName String   @default("Tim Kami") @map("expert_name") @db.VarChar(100)
+  sessionRef String?  @unique @map("session_ref") @db.VarChar(20)
+  metadata   Json?    @db.JsonB
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  messages    ConsultationMessage[]
+  messages ConsultationMessage[]
 
   @@map("consultation_sessions")
 }
 
 model ConsultationMessage {
-  id             String   @id @default(uuid())
-  sessionId      String   @map("session_id") @db.VarChar(36)
-  session        ConsultationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  senderType     String   @map("sender_type") @db.VarChar(20) // "user" | "expert" | "system"
-  senderId       String?  @map("sender_id") @db.VarChar(36)
-  content        String   @db.Text
-  attachments    String[] @default([]) @db.Text
-  metadata       Json?   @db.JsonB
-  isRead         Boolean  @default(false) @map("is_read")
-  createdAt      DateTime @default(now()) @map("created_at")
+  id          String              @id @default(uuid())
+  sessionId   String              @map("session_id") @db.VarChar(36)
+  session     ConsultationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  senderType  String              @map("sender_type") @db.VarChar(20) // "user" | "expert" | "system"
+  senderId    String?             @map("sender_id") @db.VarChar(36)
+  content     String              @db.Text
+  attachments String[]            @default([]) @db.Text
+  metadata    Json?               @db.JsonB
+  isRead      Boolean             @default(false) @map("is_read")
+  createdAt   DateTime            @default(now()) @map("created_at")
 
   @@index([sessionId, createdAt])
   @@map("consultation_messages")
@@ -340,8 +355,8 @@ model ContentPage {
   id          String   @id @default(uuid())
   slug        String   @unique @db.VarChar(50)
   title       String   @db.VarChar(255)
-  seoTitle   String?  @map("seo_title") @db.VarChar(255)
-  seoDesc    String?  @map("seo_desc") @db.Text
+  seoTitle    String?  @map("seo_title") @db.VarChar(255)
+  seoDesc     String?  @map("seo_desc") @db.Text
   contentHtml String   @db.Text // HTML content (bisa dari editor)
   isActive    Boolean  @default(true) @map("is_active")
   updatedAt   DateTime @updatedAt @map("updated_at")
@@ -379,4 +394,96 @@ model SiteSetting {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("site_settings")
+}
+
+// ── Loyalty (A7) ────────────────────────────────────────
+
+/// Catatan mutasi poin loyalitas user (earn/redeem/adjust).
+model PointTransaction {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Positif = dapat poin, negatif = tukar poin.
+  amount    Int
+  /// Saldo poin setelah transaksi ini (memudahkan audit).
+  balance   Int
+  /// "earn" | "redeem" | "adjust" | "referral" | "refund"
+  type      String   @db.VarChar(20)
+  /// Keterangan singkat, mis. "Poin belanja JF-260101-AB12".
+  note      String?  @db.VarChar(255)
+  /// Order terkait (bila ada).
+  orderId   String?  @map("order_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@map("point_transactions")
+}
+
+// ── Referral (A8) ───────────────────────────────────────
+
+/// Satu baris per pemakaian kode referral (referee unik — hanya bisa 1x).
+model Referral {
+  id           String    @id @default(uuid())
+  /// User yang memiliki/mengundang (owner kode).
+  ownerId      String    @map("owner_id")
+  owner        User      @relation("ReferralOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  /// User yang memakai kode (diundang) — unik supaya tidak dobel.
+  refereeId    String    @unique @map("referee_id")
+  referee      User      @relation("ReferralReferee", fields: [refereeId], references: [id], onDelete: Cascade)
+  /// Kode yang dipakai saat registrasi.
+  code         String    @db.VarChar(20)
+  /// Poin yang diberikan ke owner (dan/atau referee) saat referral valid.
+  rewardPoints Int       @default(0) @map("reward_points")
+  /// "pending" | "rewarded" | "cancelled"
+  status       String    @default("pending") @db.VarChar(20)
+  /// Order pertama referee yang memicu reward (opsional).
+  orderId      String?   @map("order_id")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  rewardedAt   DateTime? @map("rewarded_at")
+
+  @@index([ownerId])
+  @@map("referrals")
+}
+
+// ── Tanya Jawab produk (B19) ────────────────────────────
+
+/// Pertanyaan pembeli pada produk + jawaban admin (tampil publik bila dijawab).
+model ProductQuestion {
+  id          String    @id @default(uuid())
+  productId   String    @map("product_id")
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  /// Pengguna penanya (null bila anonim/tidak login).
+  userId      String?   @map("user_id") @db.VarChar(36)
+  /// Nama penanya yang ditampilkan.
+  askerName   String    @map("asker_name") @db.VarChar(100)
+  question    String    @db.Text
+  /// Jawaban admin; null = belum dijawab (tidak tampil publik).
+  answer      String?   @db.Text
+  answeredBy  String?   @map("answered_by") @db.VarChar(36)
+  answeredAt  DateTime? @map("answered_at")
+  isPublished Boolean   @default(false) @map("is_published")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([productId, isPublished, createdAt])
+  @@map("product_questions")
+}
+
+// ── Notifikasi admin (B18 / A14) ────────────────────────
+
+/// Notifikasi in-app untuk admin (bell di header admin).
+model AdminNotification {
+  id        String    @id @default(uuid())
+  /// Jenis: "order" | "contact" | "review" | "consultation" | "stock" | "system"
+  type      String    @db.VarChar(30)
+  title     String    @db.VarChar(200)
+  body      String?   @db.Text
+  /// Tautan relatif tujuan, mis. "/admin/orders/xxx".
+  href      String?   @db.VarChar(300)
+  /// Dibaca atau belum.
+  isRead    Boolean   @default(false) @map("is_read")
+  createdAt DateTime  @default(now()) @map("created_at")
+  readAt    DateTime? @map("read_at")
+
+  @@index([isRead, createdAt])
+  @@map("admin_notifications")
 }
