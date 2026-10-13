@@ -164,6 +164,14 @@ export default function OrdersPage() {
     return () => clearTimeout(timer)
   }, [fetchData])
 
+  /** Export pesanan (sesuai filter aktif) ke CSV (A4). */
+  const handleExportCsv = useCallback(() => {
+    const params = new URLSearchParams()
+    if (search) params.set("search", search)
+    if (statusFilter && statusFilter !== "all") params.set("status", statusFilter)
+    window.location.href = `/api/admin/orders/export?${params.toString()}`
+  }, [search, statusFilter])
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reset nomor halaman saat filter berubah (disengaja, bukan nilai turunan render)
     setPage(1)
@@ -279,7 +287,18 @@ export default function OrdersPage() {
           <h1 className="text-2xl font-bold text-on-surface">Pesanan</h1>
           <p className="text-sm text-on-surface-variant">{total} pesanan total</p>
         </div>
-        <AdminRefreshButton endpointPrefixes={["/api/admin/orders"]} onRefresh={fetchData} loading={loading} />
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleExportCsv}
+            className="gap-1.5"
+          >
+            <Icon name="download" size={16} />
+            Export CSV
+          </Button>
+          <AdminRefreshButton endpointPrefixes={["/api/admin/orders"]} onRefresh={fetchData} loading={loading} />
+        </div>
       </div>
 
       <Card>
