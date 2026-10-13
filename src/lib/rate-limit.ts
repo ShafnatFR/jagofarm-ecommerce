@@ -1,8 +1,9 @@
 /**
  * Rate limiter in-memory (sliding window) untuk route /api/*.
  *
- * Dipakai dari `src/middleware.ts` yang berjalan di Edge runtime, jadi modul ini
- * hanya boleh memakai API Web (tidak ada `fs`/`crypto` Node, tidak ada Prisma).
+ * Dipakai dari `src/proxy.ts` (konvensi proxy Next.js, dulu `middleware.ts`),
+ * jadi modul ini hanya boleh memakai API Web (tidak ada `fs`/`crypto` Node,
+ * tidak ada Prisma).
  *
  * Batasan yang perlu diketahui:
  * - State hidup per instance Edge: pada deployment multi-instance, limit efektif
