@@ -13,6 +13,9 @@ import {
   SHIPPING_SETTINGS_DEFAULT,
   normalizeShippingSettings,
   type ShippingSettings,
+  SITE_CONTENT_DEFAULT,
+  normalizeSiteContent,
+  type SiteContent,
 } from "@/lib/site-settings-shared";
 
 export async function updateHomeHero(input: HeroSetting) {
@@ -111,4 +114,45 @@ export async function resetShippingSettings() {
   revalidatePath("/api/shipping/cost");
   revalidatePath("/admin/site-settings");
   return SHIPPING_SETTINGS_DEFAULT;
+}
+
+export async function updateSiteContent(input: SiteContent) {
+  await requireAdminUser();
+  const normalized = normalizeSiteContent(input);
+  if (!normalized) throw new Error("Data teks konten tidak valid.");
+
+  // Semua field berupa string -> objek plain agar sesuai tipe Json Prisma.
+  const payload: Record<string, string> = { ...normalized };
+
+  await prisma.siteSetting.upsert({
+    where: { key: "site_content" },
+    update: { value: payload },
+    create: { key: "site_content", value: payload },
+  });
+
+  // Navbar + halaman storefront yang memakai teks ini di-render ulang, dan
+  // cache endpoint publik untuk komponen klien dibuang.
+  revalidatePath("/", "layout");
+  revalidatePath("/contact");
+  revalidatePath("/login");
+  revalidatePath("/register");
+  revalidatePath("/cart");
+  revalidatePath("/api/site-content");
+  revalidatePath("/admin/site-settings");
+  return normalized;
+}
+
+/** Kembalikan ke default bawaan (hapus override di DB). */
+export async function resetSiteContent() {
+  await requireAdminUser();
+  await prisma.siteSetting.deleteMany({ where: { key: "site_content" } });
+
+  revalidatePath("/", "layout");
+  revalidatePath("/contact");
+  revalidatePath("/login");
+  revalidatePath("/register");
+  revalidatePath("/cart");
+  revalidatePath("/api/site-content");
+  revalidatePath("/admin/site-settings");
+  return SITE_CONTENT_DEFAULT;
 }

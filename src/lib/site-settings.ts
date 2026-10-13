@@ -9,6 +9,9 @@ import {
   SHIPPING_SETTINGS_DEFAULT,
   normalizeShippingSettings,
   type ShippingSettings,
+  SITE_CONTENT_DEFAULT,
+  normalizeSiteContent,
+  type SiteContent,
 } from "@/lib/site-settings-shared";
 
 /**
@@ -61,5 +64,24 @@ export async function getShippingSettings(): Promise<ShippingSettings> {
   } catch {
     // DB tidak terjangkau (mis. saat build) -> default, jangan crash.
     return SHIPPING_SETTINGS_DEFAULT;
+  }
+}
+
+/**
+ * Ambil teks konten situs (marketing copy: navbar, strip keunggulan, banner CTA,
+ * kartu FAQ kontak, panel halaman masuk/daftar) dari DB (tabel site_settings).
+ * Selalu mengembalikan objek valid: nilai tidak valid/kosong -> default.
+ *
+ * Dibaca segar seperti getHomeHero supaya admin langsung melihat hasil edit.
+ * Tanpa baris "site_content" default yang dikembalikan identik dengan teks
+ * hardcode lama, sehingga tampilan tidak berubah.
+ */
+export async function getSiteContent(): Promise<SiteContent> {
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: "site_content" } });
+    return normalizeSiteContent(setting?.value) ?? SITE_CONTENT_DEFAULT;
+  } catch {
+    // DB tidak terjangkau (mis. saat build) -> teks default, jangan crash.
+    return SITE_CONTENT_DEFAULT;
   }
 }

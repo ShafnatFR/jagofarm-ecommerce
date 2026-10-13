@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export default function ForgotPasswordPage() {
   const [sent, setSent] = useState(false);
   const [sentMessage, setSentMessage] = useState("");
   const [error, setError] = useState("");
+  const site = useSiteContent();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -174,7 +176,7 @@ export default function ForgotPasswordPage() {
       {/* Footer */}
       <footer className="relative z-10 w-full py-6 px-4 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200/60 pt-4">
-          <p>&copy; {new Date().getFullYear()} JagoFarm Indonesia. Solusi Pertanian & Akuakultur Modern.</p>
+          <p>&copy; {new Date().getFullYear()} JagoFarm Indonesia. {site.footerTagline}</p>
           <div className="flex items-center gap-5 text-slate-500">
             <Link href="/terms" className="hover:text-primary transition-colors">Syarat & Ketentuan</Link>
             <span>&bull;</span>

@@ -1,10 +1,10 @@
 import ContactForm from "./contact-form";
-import { getStoreProfile } from "@/lib/site-settings";
+import { getStoreProfile, getSiteContent } from "@/lib/site-settings";
 
 export const metadata = { title: "Hubungi Kami - JagoFarm" };
 
 export default async function ContactPage() {
-  const profile = await getStoreProfile();
+  const [profile, content] = await Promise.all([getStoreProfile(), getSiteContent()]);
   const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.address)}`;
 
   return (
@@ -23,7 +23,7 @@ export default async function ContactPage() {
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">Kontak</h1>
           <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-normal">
-            Ada pertanyaan? Kami senang bisa membantu Anda memulai dan mengembangkan ekosistem agrikultur masa depan.
+            {content.contactSubtitle}
           </p>
         </div>
       </div>
@@ -160,30 +160,30 @@ export default async function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-xs font-bold text-brand-700 uppercase tracking-widest">Bantuan Cepat</span>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">Pertanyaan yang Sering Diajukan</h2>
-            <p className="text-sm text-slate-500 mt-1">Dapatkan jawaban instan seputar operasional dan pengiriman JagoFarm.</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">{content.contactFaqTitle}</h2>
+            <p className="text-sm text-slate-500 mt-1">{content.contactFaqSubtitle}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-xl border border-slate-200/70 shadow-sm">
               <h4 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-brand-500" />
-                Jangkauan Pengiriman
+                {content.contactFaq1Title}
               </h4>
-              <p className="text-xs text-slate-600 leading-relaxed">Kami melayani pengiriman peralatan tambak, hidroponik, &amp; sensor IoT ke seluruh wilayah Indonesia melalui ekspedisi logistik khusus kargo terpercaya.</p>
+              <p className="text-xs text-slate-600 leading-relaxed">{content.contactFaq1Body}</p>
             </div>
             <div className="bg-white p-6 rounded-xl border border-slate-200/70 shadow-sm">
               <h4 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-brand-500" />
-                Garansi Bibit &amp; Benih
+                {content.contactFaq2Title}
               </h4>
-              <p className="text-xs text-slate-600 leading-relaxed">Semua benih dan anakan ikan tersertifikasi viabilitas tinggi dengan jaminan garansi hidup saat sampai di lokasi Anda dengan protokol klaim 1x24 jam.</p>
+              <p className="text-xs text-slate-600 leading-relaxed">{content.contactFaq2Body}</p>
             </div>
             <div className="bg-white p-6 rounded-xl border border-slate-200/70 shadow-sm">
               <h4 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-brand-500" />
-                Konsultasi Instalasi IoT
+                {content.contactFaq3Title}
               </h4>
-              <p className="text-xs text-slate-600 leading-relaxed">Tersedia layanan survei teknis serta instalasi langsung sistem automasi hidroponik dan tambak cerdas untuk proyek skala komersial maupun rumahan.</p>
+              <p className="text-xs text-slate-600 leading-relaxed">{content.contactFaq3Body}</p>
             </div>
           </div>
         </div>

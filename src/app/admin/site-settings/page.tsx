@@ -1,22 +1,25 @@
 import { requireAdminUser } from "@/lib/auth";
-import { getHomeHero, getStoreProfile, getShippingSettings } from "@/lib/site-settings";
-import { HOME_HERO_DEFAULT, STORE_PROFILE_DEFAULT, SHIPPING_SETTINGS_DEFAULT } from "@/lib/site-settings-shared";
-import HeroSettingForm, { StoreProfileForm, ShippingSettingsForm } from "./hero-form";
+import { getHomeHero, getStoreProfile, getShippingSettings, getSiteContent } from "@/lib/site-settings";
+import { HOME_HERO_DEFAULT, STORE_PROFILE_DEFAULT, SHIPPING_SETTINGS_DEFAULT, SITE_CONTENT_DEFAULT } from "@/lib/site-settings-shared";
+import HeroSettingForm, { StoreProfileForm, ShippingSettingsForm, SiteContentForm } from "./hero-form";
 
 export const metadata = { title: "Pengaturan Situs - Admin" };
 
 export default async function SiteSettingsAdminPage() {
   await requireAdminUser();
-  const [hero, storeProfile, shipping] = await Promise.all([
+  const [hero, storeProfile, shipping, siteContent] = await Promise.all([
     getHomeHero(),
     getStoreProfile(),
     getShippingSettings(),
+    getSiteContent(),
   ]);
   const isDefault = JSON.stringify(hero) === JSON.stringify(HOME_HERO_DEFAULT);
   const isStoreDefault =
     JSON.stringify(storeProfile) === JSON.stringify(STORE_PROFILE_DEFAULT);
   const isShippingDefault =
     JSON.stringify(shipping) === JSON.stringify(SHIPPING_SETTINGS_DEFAULT);
+  const isContentDefault =
+    JSON.stringify(siteContent) === JSON.stringify(SITE_CONTENT_DEFAULT);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -52,6 +55,16 @@ export default async function SiteSettingsAdminPage() {
           sini, nilai bawaan dari konfigurasi server tetap dipakai.
         </p>
         <ShippingSettingsForm initial={shipping} isDefault={isShippingDefault} />
+      </section>
+
+      <section className="mt-8 border border-green-200 rounded-xl bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-green-900 mb-1">Teks Konten Situs</h2>
+        <p className="mb-4 text-sm text-green-700">
+          Teks pemasaran storefront: banner navbar, strip keunggulan & banner konsultasi
+          homepage, kartu FAQ halaman kontak, dan panel halaman masuk/daftar. Semua perubahan
+          langsung terlihat tanpa deploy.
+        </p>
+        <SiteContentForm initial={siteContent} isDefault={isContentDefault} />
       </section>
     </div>
   );

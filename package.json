@@ -7,7 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test tests/discount-price.test.ts tests/mayar-webhook-secret.test.ts tests/midtrans-signature.test.ts tests/shipping-quote.test.ts tests/site-settings.test.ts tests/store-profile.test.ts",
+    "test": "tsx --test tests/discount-price.test.ts tests/mayar-webhook-secret.test.ts tests/midtrans-signature.test.ts tests/shipping-quote.test.ts tests/site-settings.test.ts tests/store-profile.test.ts tests/site-content.test.ts",
     "postinstall": "prisma generate || exit 0",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

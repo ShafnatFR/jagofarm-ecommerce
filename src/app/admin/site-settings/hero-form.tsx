@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateHomeHero, resetHomeHero, updateStoreProfile, resetStoreProfile, updateShippingSettings, resetShippingSettings } from "./actions";
+import { updateHomeHero, resetHomeHero, updateStoreProfile, resetStoreProfile, updateShippingSettings, resetShippingSettings, updateSiteContent, resetSiteContent } from "./actions";
 import {
   HOME_HERO_DEFAULT,
   STORE_PROFILE_DEFAULT,
   ALLOWED_SHIPPING_COURIERS,
+  SITE_CONTENT_DEFAULT,
   type HeroSetting,
   type StoreProfile,
   type ShippingSettings,
+  type SiteContent,
 } from "@/lib/site-settings-shared";
 import { SHIPPING_COURIER_LABELS } from "@/lib/constants";
 
@@ -445,6 +447,202 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
           Kembalikan ke Default
         </button>
       </div>
+    </form>
+  );
+}
+
+// ── Teks Konten Situs (marketing copy) ──────────────────
+
+interface SiteContentFormProps {
+  initial: SiteContent;
+  /** True bila nilai di layar masih default (belum ada override di DB). */
+  isDefault: boolean;
+}
+
+/** Field teks konten dikelompokkan per area tampilan. */
+const CONTENT_GROUPS: {
+  title: string;
+  fields: { key: keyof SiteContent; label: string; multiline?: boolean }[];
+}[] = [
+  {
+    title: "Navbar",
+    fields: [
+      { key: "navBrandTagline", label: "Tagline di samping logo" },
+      { key: "navAnnouncement", label: "Teks pengumuman (kiri)" },
+      { key: "navPromo", label: "Teks promo (tengah)", multiline: true },
+      { key: "navSupportBadge", label: "Badge dukungan (kanan)" },
+    ],
+  },
+  {
+    title: "Homepage — Keunggulan (4 kartu)",
+    fields: [
+      { key: "trustShippingTitle", label: "Kartu 1 — Judul" },
+      { key: "trustShippingDesc", label: "Kartu 1 — Deskripsi" },
+      { key: "trustGuaranteeTitle", label: "Kartu 2 — Judul" },
+      { key: "trustGuaranteeDesc", label: "Kartu 2 — Deskripsi" },
+      { key: "trustConsultTitle", label: "Kartu 3 — Judul" },
+      { key: "trustConsultDesc", label: "Kartu 3 — Deskripsi" },
+      { key: "trustPaymentTitle", label: "Kartu 4 — Judul" },
+      { key: "trustPaymentDesc", label: "Kartu 4 — Deskripsi" },
+    ],
+  },
+  {
+    title: "Homepage — Banner Konsultasi",
+    fields: [
+      { key: "homeCtaBadge", label: "Badge" },
+      { key: "homeCtaTitle", label: "Judul" },
+      { key: "homeCtaSubtitle", label: "Subjudul", multiline: true },
+      { key: "homeCtaPoint1", label: "Poin 1" },
+      { key: "homeCtaPoint2", label: "Poin 2" },
+    ],
+  },
+  {
+    title: "Halaman Kontak",
+    fields: [
+      { key: "contactSubtitle", label: "Subjudul hero", multiline: true },
+      { key: "contactFaqTitle", label: "FAQ — Judul seksi" },
+      { key: "contactFaqSubtitle", label: "FAQ — Subjudul seksi" },
+      { key: "contactFaq1Title", label: "FAQ 1 — Judul" },
+      { key: "contactFaq1Body", label: "FAQ 1 — Isi", multiline: true },
+      { key: "contactFaq2Title", label: "FAQ 2 — Judul" },
+      { key: "contactFaq2Body", label: "FAQ 2 — Isi", multiline: true },
+      { key: "contactFaq3Title", label: "FAQ 3 — Judul" },
+      { key: "contactFaq3Body", label: "FAQ 3 — Isi", multiline: true },
+    ],
+  },
+  {
+    title: "Halaman Masuk & Daftar",
+    fields: [
+      { key: "authBadge", label: "Badge panel" },
+      { key: "authHeadline", label: "Judul utama" },
+      { key: "authSubtitle", label: "Subjudul", multiline: true },
+      { key: "authStatusBadge", label: "Badge status (kanan atas)" },
+      { key: "authFeature1Title", label: "Fitur 1 — Judul" },
+      { key: "authFeature1Desc", label: "Fitur 1 — Deskripsi" },
+      { key: "authFeature2Title", label: "Fitur 2 — Judul" },
+      { key: "authFeature2Desc", label: "Fitur 2 — Deskripsi" },
+      { key: "authReach", label: "Teks jangkauan distribusi" },
+    ],
+  },
+  {
+    title: "Teks Lain",
+    fields: [
+      { key: "cartConsultLabel", label: "Label konsultasi (keranjang)" },
+      { key: "productConsultNote", label: "Catatan konsultasi (detail produk)", multiline: true },
+      { key: "productsConsultDesc", label: "Deskripsi banner konsultasi (katalog)", multiline: true },
+      { key: "footerTagline", label: "Tagline footer (lupa password)" },
+    ],
+  },
+];
+
+export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
+  const [isPending, startTransition] = useTransition();
+  const [form, setForm] = useState<SiteContent>(initial);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  function setField(key: keyof SiteContent, value: string) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    startTransition(async () => {
+      try {
+        await updateSiteContent(form);
+        setSuccess("Teks konten situs berhasil diperbarui.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
+      }
+    });
+  }
+
+  function handleReset() {
+    setError(null);
+    setSuccess(null);
+    startTransition(async () => {
+      try {
+        const defaults = await resetSiteContent();
+        setForm(defaults);
+        setSuccess("Kembali ke teks default.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
+      }
+    });
+  }
+
+  return (
+    <form onSubmit={handleSave} className="space-y-6">
+      <div className="flex flex-wrap items-center gap-2">
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full ${
+            isDefault ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-800"
+          }`}
+        >
+          {isDefault ? "Menggunakan teks default" : "Teks kustom aktif"}
+        </span>
+      </div>
+
+      {CONTENT_GROUPS.map((group) => (
+        <fieldset key={group.title} className="border border-green-100 rounded-lg p-4">
+          <legend className="px-2 text-sm font-semibold text-green-900">
+            {group.title}
+          </legend>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {group.fields.map((field) => (
+              <div key={field.key} className={field.multiline ? "sm:col-span-2" : ""}>
+                <label className="block text-sm font-medium text-green-900 mb-1">
+                  {field.label}
+                </label>
+                {field.multiline ? (
+                  <textarea
+                    value={form[field.key]}
+                    onChange={(e) => setField(field.key, e.target.value)}
+                    rows={2}
+                    maxLength={500}
+                    className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={form[field.key]}
+                    onChange={(e) => setField(field.key, e.target.value)}
+                    maxLength={500}
+                    className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      {success && <p className="text-sm text-green-700">{success}</p>}
+
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="rounded-lg bg-green-800 px-4 py-2 text-sm font-semibold text-white hover:bg-green-900 disabled:opacity-50"
+        >
+          {isPending ? "Menyimpan..." : "Simpan Teks Konten"}
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          disabled={isPending}
+          className="rounded-lg border border-green-300 px-4 py-2 text-sm font-semibold text-green-800 hover:bg-green-50 disabled:opacity-50"
+        >
+          Kembalikan ke Default
+        </button>
+      </div>
+
+      <p className="text-xs text-green-600">
+        Default saat ini: &ldquo;{SITE_CONTENT_DEFAULT.navPromo}&rdquo;
+      </p>
     </form>
   );
 }

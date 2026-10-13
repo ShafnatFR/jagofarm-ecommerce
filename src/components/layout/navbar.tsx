@@ -5,14 +5,21 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
 import { useCategories } from "@/hooks/use-categories";
+import { useSiteContent } from "@/hooks/use-site-content";
 import { useCartStore } from "@/lib/cart-store";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import type { SiteContent } from "@/lib/site-settings-shared";
 
 
 const SEARCH_PLACEHOLDER = "Cari paket tambak, kit hidroponik, sensor IoT, benih...";
 
-export function Navbar() {
+/**
+ * `content` dikirim oleh parent server component (layout) supaya teks navbar
+ * tampil tanpa flash; bila tidak ada (mis. dipakai di tempat lain), hook
+ * mengambil dari /api/site-content dengan fallback default.
+ */
+export function Navbar({ content }: { content?: SiteContent } = {}) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -20,6 +27,8 @@ export function Navbar() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const cartCount = useCartStore((s) => s.totalItems());
   const { categories } = useCategories();
+  const fetchedContent = useSiteContent();
+  const site = content ?? fetchedContent;
 
   useEffect(() => {
     const supabase = createClient();
@@ -89,18 +98,18 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="hidden md:flex items-center gap-2">
             <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-black text-white text-[10px] font-bold">NEW</span>
-            <span className="text-black">Ekosistem Smart Farming Terintegrasi IoT Pertama di Indonesia</span>
+            <span className="text-black">{site.navAnnouncement}</span>
           </div>
           <div className="flex items-center justify-center gap-1 mx-auto md:mx-0">
             <span className="material-symbols-outlined text-[16px] text-black">eco</span>
-            <span>Promo Musim Panen: Gratis Ongkir &amp; Diskon hingga 25% untuk Paket Tambak Baru!</span>
+            <span>{site.navPromo}</span>
           </div>
           <div className="hidden lg:flex items-center gap-4 text-black">
             <Link className="hover:text-black transition-colors" href="/faq">Pusat Bantuan</Link>
             <span className="opacity-40">•</span>
             <Link className="hover:text-black transition-colors flex items-center gap-1" href="/contact">
               <span className="material-symbols-outlined text-[14px]">support_agent</span>
-              Konsultasi CS 24/7
+              {site.navSupportBadge}
             </Link>
           </div>
         </div>
@@ -116,7 +125,7 @@ export function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-headline-md font-headline-md font-extrabold text-black dark:text-inverse-primary tracking-tight leading-none">JagoFarm</span>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-outline">Agri &amp; Aqua Tech</span>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-outline">{site.navBrandTagline}</span>
             </div>
           </Link>
 

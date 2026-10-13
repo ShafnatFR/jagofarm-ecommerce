@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewForm } from "@/components/product/review-form";
 import { useCartStore } from "@/lib/cart-store";
 import { SITE_CONFIG, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -70,6 +71,7 @@ export default function ProductDetailPage({
   const router = useRouter();
   const slug = params.slug as string;
   const addItem = useCartStore((s) => s.addItem);
+  const site = useSiteContent();
 
   const [product, setProduct] = useState<ApiProduct | null>(initialProduct);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -748,7 +750,7 @@ export default function ProductDetailPage({
               <h3 className="mt-4 text-lg font-bold text-on-surface">Tanya Jawab</h3>
               <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
                 Fitur tanya jawab produk belum tersedia. Sementara, Anda bisa bertanya langsung
-                kepada tim agronom kami atau menghubungi kami via WhatsApp.
+                {" "}{site.productConsultNote}
               </p>
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/consultation">

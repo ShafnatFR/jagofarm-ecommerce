@@ -2,7 +2,7 @@ import Link from "next/link";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 import { FeaturedProducts, type FeaturedProductItem } from "@/components/home/featured-products";
 import { SITE_CONFIG } from "@/lib/constants";
-import { getHomeHero } from "@/lib/site-settings";
+import { getHomeHero, getSiteContent } from "@/lib/site-settings";
 import { getHomeCatalog } from "@/lib/home-data";
 
 export const dynamic = "force-dynamic";
@@ -17,9 +17,9 @@ const CATEGORY_ICONS: Record<string, { icon: string; desc: string; badge?: strin
 };
 
 export default async function HomePage() {
-  // Katalog dari cache 5 menit (lihat lib/home-data); hero dibaca segar dari DB.
-  const [{ categories, featuredProducts, heroProducts, productCount, categoryCount }, hero] =
-    await Promise.all([getHomeCatalog(), getHomeHero()]);
+  // Katalog dari cache 5 menit (lihat lib/home-data); hero & teks konten dibaca segar dari DB.
+  const [{ categories, featuredProducts, heroProducts, productCount, categoryCount }, hero, content] =
+    await Promise.all([getHomeCatalog(), getHomeHero(), getSiteContent()]);
 
   // Data untuk grid "Produk Unggulan" (chip filter butuh client state), jadi
   // Decimal & relasi diserialisasi plus rata-rata rating dari review approved.
@@ -126,8 +126,8 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]">local_shipping</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">Pengiriman Cepat</h4>
-                <p className="text-body-sm font-body-sm text-on-surface-variant">Kirim ke seluruh Indonesia</p>
+                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustShippingTitle}</h4>
+                <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustShippingDesc}</p>
               </div>
             </div>
             <div className="flex items-center gap-3.5 p-2">
@@ -135,8 +135,8 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">Garansi Produk</h4>
-                <p className="text-body-sm font-body-sm text-on-surface-variant">Jaminan kualitas 100% orisinil</p>
+                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustGuaranteeTitle}</h4>
+                <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustGuaranteeDesc}</p>
               </div>
             </div>
             <div className="flex items-center gap-3.5 p-2">
@@ -144,8 +144,8 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]">support_agent</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">Konsultasi Gratis</h4>
-                <p className="text-body-sm font-body-sm text-on-surface-variant">Tim ahli agronom siap bantu</p>
+                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustConsultTitle}</h4>
+                <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustConsultDesc}</p>
               </div>
             </div>
             <div className="flex items-center gap-3.5 p-2">
@@ -153,8 +153,8 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]">credit_card</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">Pembayaran Aman</h4>
-                <p className="text-body-sm font-body-sm text-on-surface-variant">QRIS, VA &amp; E-Wallet</p>
+                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustPaymentTitle}</h4>
+                <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustPaymentDesc}</p>
               </div>
             </div>
           </div>
@@ -277,13 +277,13 @@ export default async function HomePage() {
           <div className="relative z-10 max-w-2xl mx-auto space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-secondary-fixed-dim text-label-md font-label-md backdrop-blur-sm">
               <span className="material-symbols-outlined text-[16px]">psychology</span>
-              <span>Pendampingan Agronomi &amp; Desain Sistem</span>
+              <span>{content.homeCtaBadge}</span>
             </div>
             <h2 className="text-headline-lg font-headline-lg md:text-[36px] md:leading-[44px] text-on-primary font-bold">
-              Butuh Konsultasi untuk Proyek Pertanian Anda?
+              {content.homeCtaTitle}
             </h2>
             <p className="text-body-lg font-body-lg text-primary-fixed leading-relaxed">
-              Tim ahli JagoFarm siap membantu merancang sistem pertanian modern yang sesuai dengan kebutuhan, luas lahan, dan budget Anda.
+              {content.homeCtaSubtitle}
             </p>
             <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
               <Link className="inline-flex items-center justify-center gap-2 bg-secondary-fixed-dim hover:bg-secondary text-primary font-headline-sm text-headline-sm px-7 py-3.5 rounded-full font-bold shadow-md transition-all active:scale-95" href="/products">
@@ -298,11 +298,11 @@ export default async function HomePage() {
             <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-label-md font-label-md text-primary-fixed-dim">
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-secondary-fixed-dim">schedule</span>
-                Respon Cepat &lt; 15 Menit
+                {content.homeCtaPoint1}
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-secondary-fixed-dim">verified</span>
-                Gratis Sketsa Rancangan Awal
+                {content.homeCtaPoint2}
               </span>
             </div>
           </div>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/components/ui/icon";
 import { STORE_PROFILE_DEFAULT } from "@/lib/site-settings-shared";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 /**
  * Hanya izinkan path internal situs. Tanpa filter ini, `/login?callbackUrl=https://evil.com`
@@ -33,6 +34,8 @@ function LoginForm() {
   const [productCount, setProductCount] = useState<number | null>(null);
   // Jam layanan dari profil toko (API publik); default tampil selama fetch berjalan.
   const [hoursShort, setHoursShort] = useState(STORE_PROFILE_DEFAULT.hoursShort);
+  // Teks panel pemasaran dari Pengaturan Situs (API publik).
+  const site = useSiteContent();
 
   useEffect(() => {
     let cancelled = false;
@@ -138,20 +141,20 @@ function LoginForm() {
           </Link>
           <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-medium text-primary-fixed-dim flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            IoT Sensor Aktif 24/7
+            {site.authStatusBadge}
           </div>
         </div>
 
         <div className="relative z-10 max-w-xl my-auto py-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-primary-fixed-dim text-xs font-semibold uppercase tracking-wider mb-6 border border-white/15">
             <Icon name="eco" size={14} />
-            Platform Agroteknologi Terpadu
+            {site.authBadge}
           </div>
           <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-extrabold tracking-tight text-white leading-tight mb-5">
-            Solusi Pertanian & Akuakultur Modern Berbasis IoT
+            {site.authHeadline}
           </h1>
           <p className="text-slate-300 text-base xl:text-lg leading-relaxed mb-8">
-            Kelola kolam bioflok, monitoring kualitas air, otomasi fertigasi, dan pantau hasil panen dalam satu ekosistem presisi terpercaya.
+            {site.authSubtitle}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-xl flex items-start gap-3">
@@ -159,8 +162,8 @@ function LoginForm() {
                 <Icon name="water_drop" size={20} />
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-white">Monitoring Kolam</h2>
-                <p className="text-xs text-slate-300 mt-0.5">Suhu, pH, DO, & amonia terpantau otomatis</p>
+                <h2 className="text-sm font-semibold text-white">{site.authFeature1Title}</h2>
+                <p className="text-xs text-slate-300 mt-0.5">{site.authFeature1Desc}</p>
               </div>
             </div>
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-xl flex items-start gap-3">
@@ -168,8 +171,8 @@ function LoginForm() {
                 <Icon name="menu_book" size={20} />
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-white">Bibit & Agronomi</h2>
-                <p className="text-xs text-slate-300 mt-0.5">Jaminan bibit unggul & panduan ahli agronomi</p>
+                <h2 className="text-sm font-semibold text-white">{site.authFeature2Title}</h2>
+                <p className="text-xs text-slate-300 mt-0.5">{site.authFeature2Desc}</p>
               </div>
             </div>
           </div>
@@ -180,7 +183,7 @@ function LoginForm() {
             </div>
             <div className="h-8 w-px bg-white/15" />
             <div>
-              <div className="text-2xl font-bold text-white tracking-tight">Seluruh Indonesia</div>
+              <div className="text-2xl font-bold text-white tracking-tight">{site.authReach}</div>
               <div className="text-xs text-primary-fixed-dim/80">Jangkauan Distribusi</div>
             </div>
             <div className="h-8 w-px bg-white/15" />

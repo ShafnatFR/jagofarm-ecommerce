@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/components/ui/icon";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 type FieldErrors = Record<string, string[] | undefined>;
 
@@ -29,6 +30,8 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   // Jumlah produk diambil dari API publik supaya angka di layar bukan klaim manual.
   const [productCount, setProductCount] = useState<number | null>(null);
+  // Teks panel pemasaran dari Pengaturan Situs (API publik).
+  const site = useSiteContent();
 
   useEffect(() => {
     let cancelled = false;
@@ -116,7 +119,7 @@ export default function RegisterPage() {
                 </div>
                 <div>
                   <span className="text-2xl font-bold tracking-tight text-white block leading-none">JagoFarm</span>
-                  <span className="text-[11px] font-medium text-primary-fixed-dim/80 tracking-wide uppercase">Smart Agri-Aquaculture</span>
+                  <span className="text-[11px] font-medium text-primary-fixed-dim/80 tracking-wide uppercase">{site.navBrandTagline}</span>
                 </div>
               </div>
               <div className="mt-12 space-y-3">
@@ -127,7 +130,7 @@ export default function RegisterPage() {
                   Mulai Perjalanan Pertanian Modern Anda Bersama Kami.
                 </h1>
                 <p className="text-sm text-emerald-100/80 leading-relaxed font-normal">
-                  Akses ribuan bibit unggul, paket kit hidroponik, pakan akuakultur, dan pemantauan IoT smart farming terintegrasi dalam satu platform.
+                  {site.authSubtitle}
                 </p>
               </div>
             </div>
@@ -138,7 +141,7 @@ export default function RegisterPage() {
                   <Icon name="check" size={16} />
                 </div>
                 <div>
-                  <h2 className="text-xs font-bold text-white uppercase tracking-wider">Kualitas Teruji & Terverifikasi</h2>
+                  <h2 className="text-xs font-bold text-white uppercase tracking-wider">Kualitas Teruji &amp; Terverifikasi</h2>
                   <p className="text-xs text-emerald-100/70 mt-0.5">Semua bibit dan nutrisi lolos kurasi ahli agronomi bersertifikasi.</p>
                 </div>
               </div>

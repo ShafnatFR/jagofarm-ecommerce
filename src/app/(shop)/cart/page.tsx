@@ -9,6 +9,7 @@ import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore, type CartItem } from "@/lib/cart-store";
 import { useToast } from "@/components/ui/use-toast";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 /** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */
 function errorMessage(error: unknown): string {
@@ -39,6 +40,7 @@ export default function CartPage() {
   } = useCartStore();
   const { toast } = useToast();
   const router = useRouter();
+  const site = useSiteContent();
 
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
@@ -546,7 +548,7 @@ export default function CartPage() {
               </div>
               <div className="flex items-center gap-2 rounded-xl bg-secondary p-2.5 text-[11px]">
                 <Icon name="support_agent" size={16} className="shrink-0 text-primary" />
-                <span>Konsultasi CS 24/7</span>
+                <span>{site.cartConsultLabel}</span>
               </div>
             </div>
             <Link href="/products" className="mt-3 block text-center text-sm text-primary hover:underline">

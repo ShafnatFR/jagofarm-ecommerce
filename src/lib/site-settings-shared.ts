@@ -251,3 +251,185 @@ export function normalizeShippingSettings(value: unknown): ShippingSettings | nu
     ),
   };
 }
+
+// ── Teks konten situs (marketing copy) ──────────────────
+// Semua teks pemasaran storefront yang dulu hardcode di JSX dikumpulkan di sini
+// supaya admin bisa mengubahnya lewat Pengaturan Situs tanpa deploy.
+// Default sengaja disamakan dengan teks hardcode lama agar tampilan tidak berubah.
+
+export interface SiteContent {
+  /** Tagline kecil di samping logo navbar (mis. "Agri & Aqua Tech"). */
+  navBrandTagline: string;
+  /** Strip pengumuman navbar (kiri, desktop). */
+  navAnnouncement: string;
+  /** Teks promo navbar (tengah). */
+  navPromo: string;
+  /** Badge dukungan navbar (kanan, mis. "Konsultasi CS 24/7"). */
+  navSupportBadge: string;
+
+  // Home — strip 4 keunggulan
+  trustShippingTitle: string;
+  trustShippingDesc: string;
+  trustGuaranteeTitle: string;
+  trustGuaranteeDesc: string;
+  trustConsultTitle: string;
+  trustConsultDesc: string;
+  trustPaymentTitle: string;
+  trustPaymentDesc: string;
+
+  // Home — banner ajakan konsultasi
+  homeCtaBadge: string;
+  homeCtaTitle: string;
+  homeCtaSubtitle: string;
+  homeCtaPoint1: string;
+  homeCtaPoint2: string;
+
+  // Halaman kontak
+  contactSubtitle: string;
+  contactFaqTitle: string;
+  contactFaqSubtitle: string;
+  contactFaq1Title: string;
+  contactFaq1Body: string;
+  contactFaq2Title: string;
+  contactFaq2Body: string;
+  contactFaq3Title: string;
+  contactFaq3Body: string;
+
+  // Halaman masuk & daftar (panel pemasaran)
+  authBadge: string;
+  authHeadline: string;
+  authSubtitle: string;
+  authStatusBadge: string;
+  authFeature1Title: string;
+  authFeature1Desc: string;
+  authFeature2Title: string;
+  authFeature2Desc: string;
+  authReach: string;
+
+  // CTA kecil
+  cartConsultLabel: string;
+  productConsultNote: string;
+  /** Deskripsi banner konsultasi di halaman katalog produk. */
+  productsConsultDesc: string;
+  /** Tagline footer di halaman lupa password. */
+  footerTagline: string;
+}
+
+export const SITE_CONTENT_DEFAULT: SiteContent = {
+  navBrandTagline: "Agri & Aqua Tech",
+  navAnnouncement: "Ekosistem Smart Farming Terintegrasi IoT Pertama di Indonesia",
+  navPromo:
+    "Promo Musim Panen: Gratis Ongkir & Diskon hingga 25% untuk Paket Tambak Baru!",
+  navSupportBadge: "Konsultasi CS 24/7",
+
+  trustShippingTitle: "Pengiriman Cepat",
+  trustShippingDesc: "Kirim ke seluruh Indonesia",
+  trustGuaranteeTitle: "Garansi Produk",
+  trustGuaranteeDesc: "Jaminan kualitas 100% orisinil",
+  trustConsultTitle: "Konsultasi Gratis",
+  trustConsultDesc: "Tim ahli agronom siap bantu",
+  trustPaymentTitle: "Pembayaran Aman",
+  trustPaymentDesc: "QRIS, VA & E-Wallet",
+
+  homeCtaBadge: "Pendampingan Agronomi & Desain Sistem",
+  homeCtaTitle: "Butuh Konsultasi untuk Proyek Pertanian Anda?",
+  homeCtaSubtitle:
+    "Tim ahli JagoFarm siap membantu merancang sistem pertanian modern yang sesuai dengan kebutuhan, luas lahan, dan budget Anda.",
+  homeCtaPoint1: "Respon Cepat < 15 Menit",
+  homeCtaPoint2: "Gratis Sketsa Rancangan Awal",
+
+  contactSubtitle:
+    "Ada pertanyaan? Kami senang bisa membantu Anda memulai dan mengembangkan ekosistem agrikultur masa depan.",
+  contactFaqTitle: "Pertanyaan yang Sering Diajukan",
+  contactFaqSubtitle:
+    "Dapatkan jawaban instan seputar operasional dan pengiriman JagoFarm.",
+  contactFaq1Title: "Jangkauan Pengiriman",
+  contactFaq1Body:
+    "Kami melayani pengiriman peralatan tambak, hidroponik, & sensor IoT ke seluruh wilayah Indonesia melalui ekspedisi logistik khusus kargo terpercaya.",
+  contactFaq2Title: "Garansi Bibit & Benih",
+  contactFaq2Body:
+    "Semua benih dan anakan ikan tersertifikasi viabilitas tinggi dengan jaminan garansi hidup saat sampai di lokasi Anda dengan protokol klaim 1x24 jam.",
+  contactFaq3Title: "Konsultasi Instalasi IoT",
+  contactFaq3Body:
+    "Tersedia layanan survei teknis serta instalasi langsung sistem automasi hidroponik dan tambak cerdas untuk proyek skala komersial maupun rumahan.",
+
+  authBadge: "Platform Agroteknologi Terpadu",
+  authHeadline: "Solusi Pertanian & Akuakultur Modern Berbasis IoT",
+  authSubtitle:
+    "Kelola kolam bioflok, monitoring kualitas air, otomasi fertigasi, dan pantau hasil panen dalam satu ekosistem presisi terpercaya.",
+  authStatusBadge: "IoT Sensor Aktif 24/7",
+  authFeature1Title: "Monitoring Kolam",
+  authFeature1Desc: "Suhu, pH, DO, & amonia terpantau otomatis",
+  authFeature2Title: "Bibit & Agronomi",
+  authFeature2Desc: "Jaminan bibit unggul & panduan ahli agronomi",
+  authReach: "Seluruh Indonesia",
+
+  cartConsultLabel: "Konsultasi CS 24/7",
+  productConsultNote:
+    "kepada tim agronom kami atau menghubungi kami via WhatsApp.",
+  productsConsultDesc:
+    "Tim akuakultur JagoFarm siap mendesain kolam, instalasi aerasi, atau sistem filtrasi sesuai ukuran lahan Anda.",
+  footerTagline: "Solusi Pertanian & Akuakultur Modern.",
+};
+
+const SITE_CONTENT_FIELDS: (keyof SiteContent)[] = [
+  "navBrandTagline",
+  "navAnnouncement",
+  "navPromo",
+  "navSupportBadge",
+  "trustShippingTitle",
+  "trustShippingDesc",
+  "trustGuaranteeTitle",
+  "trustGuaranteeDesc",
+  "trustConsultTitle",
+  "trustConsultDesc",
+  "trustPaymentTitle",
+  "trustPaymentDesc",
+  "homeCtaBadge",
+  "homeCtaTitle",
+  "homeCtaSubtitle",
+  "homeCtaPoint1",
+  "homeCtaPoint2",
+  "contactSubtitle",
+  "contactFaqTitle",
+  "contactFaqSubtitle",
+  "contactFaq1Title",
+  "contactFaq1Body",
+  "contactFaq2Title",
+  "contactFaq2Body",
+  "contactFaq3Title",
+  "contactFaq3Body",
+  "authBadge",
+  "authHeadline",
+  "authSubtitle",
+  "authStatusBadge",
+  "authFeature1Title",
+  "authFeature1Desc",
+  "authFeature2Title",
+  "authFeature2Desc",
+  "authReach",
+  "cartConsultLabel",
+  "productConsultNote",
+  "productsConsultDesc",
+  "footerTagline",
+];
+
+/**
+ * Validasi ringan teks konten: field wajib string non-kosong & <= 500 karakter.
+ * Field kosong/tidak valid jatuh kembali ke default per-field, sehingga
+ * tampilan tidak pernah kosong walau data tersimpan rusak.
+ */
+export function normalizeSiteContent(value: unknown): SiteContent | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const record = value as Record<string, unknown>;
+  const result = { ...SITE_CONTENT_DEFAULT };
+  for (const field of SITE_CONTENT_FIELDS) {
+    const raw = record[field];
+    if (typeof raw === "string" && raw.trim() && raw.length <= 500) {
+      result[field] = raw.trim();
+    } else if (raw !== undefined) {
+      result[field] = SITE_CONTENT_DEFAULT[field];
+    }
+  }
+  return result;
+}

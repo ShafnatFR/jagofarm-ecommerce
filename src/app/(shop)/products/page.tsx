@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/product/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductFilters } from "@/components/product/product-filters";
 import { useCategories } from "@/hooks/use-categories";
+import { useSiteContent } from "@/hooks/use-site-content";
 import { SITE_CONFIG } from "@/lib/constants";
 
 interface ApiProduct {
@@ -23,6 +24,7 @@ function ProductsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { categories } = useCategories();
+  const site = useSiteContent();
 
   const search = searchParams.get("search")?.trim() || "";
   const category = searchParams.get("category") || "";
@@ -322,7 +324,7 @@ function ProductsContent() {
                 </div>
                 <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight">Tidak menemukan spesifikasi yang pas?</h3>
                 <p className="text-emerald-100 text-xs sm:text-sm max-w-xl">
-                  Tim akuakultur JagoFarm siap mendesain kolam, instalasi aerasi, atau sistem filtrasi sesuai ukuran lahan Anda.
+                  {site.productsConsultDesc}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 z-10 w-full md:w-auto">
