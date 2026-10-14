@@ -579,7 +579,7 @@ export default function CheckoutPage() {
               <p className="mt-3.5 text-center text-[11px] leading-relaxed text-muted-foreground">
                 Dengan mengklik &quot;Bayar Sekarang&quot;, Anda menyetujui{" "}
                 <Link href="/terms" className="underline hover:text-primary">Syarat &amp; Ketentuan</Link> serta{" "}
-                <Link href="/privacy" className="underline hover:text-primary">Kebijakan Privasi</Link> JagoFarm.
+                <Link href="/privacy-policy" className="underline hover:text-primary">Kebijakan Privasi</Link> JagoFarm.
               </p>
             </section>
           )}

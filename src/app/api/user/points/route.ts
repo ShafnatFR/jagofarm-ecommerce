@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { listPointHistory } from "@/lib/loyalty";
+import { listPointHistory, earnPerAmount } from "@/lib/loyalty";
 
 /**
  * GET /api/user/points
@@ -25,6 +25,8 @@ export async function GET() {
     return NextResponse.json({
       points: user?.points ?? 0,
       referralCode: user?.referralCode ?? null,
+      /** Rupiah per 1 poin — sumber tunggal (env LOYALTY_EARN_PER_AMOUNT). */
+      earnPerAmount: earnPerAmount(),
       history,
     });
   } catch (error) {

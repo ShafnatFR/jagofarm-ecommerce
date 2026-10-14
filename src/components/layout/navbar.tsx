@@ -169,6 +169,16 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
 
           {/* Trailing Icon Actions: shopping_cart, account_circle */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Hamburger — buka menu mobile (hanya di layar kecil) */}
+            <button
+              type="button"
+              aria-label="Buka menu"
+              aria-expanded={mobileOpen}
+              className="md:hidden p-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors"
+              onClick={() => setMobileOpen(true)}
+            >
+              <span className="material-symbols-outlined text-[24px]">menu</span>
+            </button>
             {/* Search Trigger for Mobile */}
             <button aria-label="Search" className="md:hidden p-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" onClick={() => router.push("/products")}>
               <span className="material-symbols-outlined text-[24px]">search</span>

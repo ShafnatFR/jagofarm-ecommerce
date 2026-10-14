@@ -291,17 +291,25 @@ function ProductsContent() {
                 >
                   <Icon name="chevron_left" size={16} />
                 </button>
-                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                  const p = i + 1;
-                  return (
-                    <button key={p} onClick={() => goToPage(p)}
-                      className={cn("w-9 h-9 rounded-lg text-xs font-bold transition",
-                        p === page ? "bg-primary text-white shadow-sm" : "border border-slate-200 text-slate-600 hover:bg-slate-50"
-                      )}>
-                      {p}
-                    </button>
-                  );
-                })}
+                {(() => {
+                  // Sliding window: tampilkan maks 5 nomor halaman, bergeser
+                  // mengikuti halaman aktif sehingga halaman >5 tetap terjangkau.
+                  const WINDOW = 5;
+                  let start = Math.max(1, page - Math.floor(WINDOW / 2));
+                  const end = Math.min(totalPages, start + WINDOW - 1);
+                  start = Math.max(1, end - WINDOW + 1);
+                  return Array.from({ length: end - start + 1 }, (_, i) => {
+                    const p = start + i;
+                    return (
+                      <button key={p} onClick={() => goToPage(p)}
+                        className={cn("w-9 h-9 rounded-lg text-xs font-bold transition",
+                          p === page ? "bg-primary text-white shadow-sm" : "border border-slate-200 text-slate-600 hover:bg-slate-50"
+                        )}>
+                        {p}
+                      </button>
+                    );
+                  });
+                })()}
                 <button
                   onClick={() => goToPage(page + 1)}
                   disabled={page >= totalPages}
