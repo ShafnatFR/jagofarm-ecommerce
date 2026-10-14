@@ -43,6 +43,19 @@ export const loginSchema = z.object({
 
 // ── Address ───────────────────────────────────────────
 
+/**
+ * @deprecated JANGAN dipakai untuk validasi alamat.
+ *
+ * Skema ini LEBIH LONGGAR daripada yang dipakai route sebenarnya
+ * (src/app/api/user/addresses/route.ts) dan meloloskan data cacat:
+ *  - postalCode: min(5).max(5) menghitung KARAKTER, bukan angka, sehingga
+ *    "abcde" lolos. Route memakai /^[0-9]{5}$/ yang benar.
+ *  - district: tidak wajib di sini, padahal route mewajibkan.
+ *  - Tidak punya field provinceId/cityId/districtId yang dipakai ongkir.
+ *
+ * Satu-satunya sumber validasi alamat yang sah ada di route-nya sendiri.
+ * Skema ini disimpan hanya karena type AddressInput dipakai komponen form.
+ */
 export const addressSchema = z.object({
   label: z
     .string()
@@ -69,10 +82,9 @@ export const addressSchema = z.object({
     .string()
     .min(1, "Kecamatan wajib diisi")
     .max(100, "Kecamatan maksimal 100 karakter"),
+  // Harus 5 ANGKA (min/max menghitung karakter, jadi "abcde" lolos tanpa regex).
   postalCode: z
     .string()
-    .min(5, "Kode pos harus 5 digit")
-    .max(5, "Kode pos harus 5 digit")
     .regex(/^[0-9]{5}$/, "Kode pos harus 5 digit angka"),
   detail: z
     .string()
