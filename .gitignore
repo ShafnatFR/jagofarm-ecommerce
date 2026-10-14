@@ -44,3 +44,6 @@ next-env.d.ts
 
 # artefak build/log agen
 build*.txt
+
+# Obsidian editor config (bukan bagian repo)
+.obsidian/
