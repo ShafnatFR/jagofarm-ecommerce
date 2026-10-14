@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
@@ -113,30 +113,32 @@ export default function OrdersPage() {
     router.push("/cart");
   }
 
-  useEffect(() => {
-    async function fetchOrders() {
-      setLoading(true);
-      setError(null);
-      setUnauthorized(false);
-      try {
-        const res = await fetch(`/api/orders?page=${page}&limit=10`);
-        if (res.status === 401 || res.status === 403) {
-          setUnauthorized(true);
-          return;
-        }
-        if (!res.ok) throw new Error("Gagal memuat pesanan");
-        const data = await res.json();
-        setOrders(data.orders ?? []);
-        // API mengembalikan { pagination: { totalPages } } — dukung juga bentuk lama.
-        setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
-      } finally {
-        setLoading(false);
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setUnauthorized(false);
+    try {
+      const res = await fetch(`/api/orders?page=${page}&limit=10`);
+      if (res.status === 401 || res.status === 403) {
+        setUnauthorized(true);
+        return;
       }
+      if (!res.ok) throw new Error("Gagal memuat pesanan");
+      const data = await res.json();
+      setOrders(data.orders ?? []);
+      // API mengembalikan { pagination: { totalPages } } — dukung juga bentuk lama.
+      setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan");
+    } finally {
+      setLoading(false);
     }
-    fetchOrders();
   }, [page]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- memuat pesanan saat halaman berubah
+    void fetchOrders();
+  }, [fetchOrders]);
 
   if (loading) {
     return (
@@ -176,6 +178,12 @@ export default function OrdersPage() {
         <Icon name="info" size={48} className="mx-auto text-destructive" />
         <h1 className="mt-4 text-2xl font-bold">Gagal Memuat Pesanan</h1>
         <p className="mt-2 text-muted-foreground">{error}</p>
+        <button
+          onClick={() => void fetchOrders()}
+          className="mt-4 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Coba lagi
+        </button>
       </div>
     );
   }

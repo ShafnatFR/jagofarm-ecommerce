@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
+import { MIN_PASSWORD_LENGTH } from "@/lib/constants";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
   email: z.string().email("Email tidak valid"),
-  password: z.string().min(6, "Password minimal 6 karakter"),
+  password: z
+    .string()
+    .min(MIN_PASSWORD_LENGTH, `Password minimal ${MIN_PASSWORD_LENGTH} karakter`),
   phone: z.string().optional(),
   /** Kode referral opsional dari teman (A8). */
   referralCode: z.string().trim().max(20).optional(),

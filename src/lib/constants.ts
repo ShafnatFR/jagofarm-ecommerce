@@ -1,5 +1,8 @@
 // ── Site Configuration ────────────────────────────────
 
+/** Panjang minimum password di seluruh aplikasi (register, reset, ganti password). */
+export const MIN_PASSWORD_LENGTH = 8;
+
 export const SITE_CONFIG = {
   name: "JagoFarm",
   tagline: "Pertanian Modern, Hasil Melimpah",
