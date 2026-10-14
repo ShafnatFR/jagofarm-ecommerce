@@ -63,7 +63,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-4">
           <span className="text-lg font-bold text-primary">Menu</span>
-          <button onClick={onClose} className="rounded-full p-1.5 transition-colors hover:bg-secondary">
+          <button onClick={onClose} aria-label="Tutup menu" className="rounded-full p-1.5 transition-colors hover:bg-secondary">
             <Icon name="close" size={20} />
           </button>
         </div>
