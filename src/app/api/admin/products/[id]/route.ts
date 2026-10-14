@@ -226,7 +226,7 @@ export async function PATCH(
 
     const existing = await prisma.product.findUnique({
       where: { id },
-      select: { id: true, isActive: true, weightGram: true, lengthCm: true, widthCm: true, heightCm: true },
+      select: { id: true, isActive: true, weightGram: true, lengthCm: true, widthCm: true, heightCm: true, basePrice: true, discountPrice: true },
     });
     if (!existing) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -235,6 +235,20 @@ export async function PATCH(
     // pickProductFields hanya mengembalikan field PATCHABLE_FIELDS (sudah
     // dikoersikan dari string form admin), jadi bentuknya cocok dengan Prisma.
     const updateData = pickProductFields(rest) as Prisma.ProductUpdateInput;
+
+    // Harga diskon harus lebih kecil dari harga dasar (pakai nilai efektif).
+    {
+      const effBase = updateData.basePrice !== undefined ? Number(updateData.basePrice) : Number(existing.basePrice);
+      const rawDiscount =
+        updateData.discountPrice !== undefined ? updateData.discountPrice : existing.discountPrice;
+      const effDiscount = rawDiscount === null || rawDiscount === undefined ? null : Number(rawDiscount);
+      if (effDiscount !== null && Number.isFinite(effDiscount) && effDiscount >= effBase) {
+        return NextResponse.json(
+          { error: "Harga diskon harus lebih kecil dari harga dasar." },
+          { status: 400 }
+        );
+      }
+    }
 
     // Validasi berat & dimensi paket.
     // Aturannya dua, supaya produk lama yang datanya belum lengkap tetap bisa

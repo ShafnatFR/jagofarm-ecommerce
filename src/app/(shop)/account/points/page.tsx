@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
+import { formatPrice } from "@/lib/utils";
 
 interface PointRow {
   id: string;
@@ -136,7 +137,7 @@ export default function PointsPage() {
               {formatNumber(points?.points ?? 0)}
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              1 poin per Rp{formatNumber(points?.earnPerAmount ?? 10_000)} belanja.
+              1 poin per {formatPrice(points?.earnPerAmount ?? 10_000)} belanja.
             </p>
           </div>
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-fixed/30 text-primary">

@@ -96,7 +96,10 @@ const createProductSchema = z.object({
       })
     )
     .optional(),
-});
+}).refine(
+  (d) => d.discountPrice == null || d.discountPrice < d.basePrice,
+  { message: "Harga diskon harus lebih kecil dari harga dasar.", path: ["discountPrice"] }
+);
 
 export async function POST(request: NextRequest) {
   try {
