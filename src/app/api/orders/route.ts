@@ -391,12 +391,24 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // Hitung pemakaian kupon
+      // Hitung pemakaian kupon. Guard ATOMIK `usedCount < usageLimit`:
+      // validasi kupon terjadi SEBELUM transaction (baca), jadi tanpa guard ini
+      // dua request yang sama-sama lolos validasi bisa melampaui kuota (TOCTOU).
+      // updateMany + cek count menutup celah itu.
       if (couponId) {
-        await tx.coupon.update({
-          where: { id: couponId },
+        const claimed = await tx.coupon.updateMany({
+          where: {
+            id: couponId,
+            OR: [
+              { usageLimit: null },
+              { usageLimit: { gt: prisma.coupon.fields.usedCount } },
+            ],
+          },
           data: { usedCount: { increment: 1 } },
         });
+        if (claimed.count === 0) {
+          throw new CheckoutError("Kuota kupon sudah habis. Silakan lepas kupon untuk melanjutkan.");
+        }
       }
 
       // Kosongkan keranjang + lepas kupon
