@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -41,33 +41,35 @@ function ProductsContent() {
   const [error, setError] = useState<string | null>(null);
   const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    async function fetchProducts() {
-      setLoading(true);
-      setError(null);
-      try {
-        const params = new URLSearchParams();
-        if (search) params.set("search", search);
-        if (category) params.set("category", category);
-        if (sort) params.set("sort", sort);
-        if (minPrice) params.set("min_price", minPrice);
-        if (maxPrice) params.set("max_price", maxPrice);
-        params.set("page", String(page));
-        params.set("limit", "12");
-        const res = await fetch(`/api/products?${params.toString()}`);
-        if (!res.ok) throw new Error("Gagal memuat produk");
-        const data = await res.json();
-        setProducts(data.products ?? []);
-        setTotal(data.pagination?.total ?? data.total ?? data.products?.length ?? 0);
-        setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
-      } finally {
-        setLoading(false);
-      }
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params = new URLSearchParams();
+      if (search) params.set("search", search);
+      if (category) params.set("category", category);
+      if (sort) params.set("sort", sort);
+      if (minPrice) params.set("min_price", minPrice);
+      if (maxPrice) params.set("max_price", maxPrice);
+      params.set("page", String(page));
+      params.set("limit", "12");
+      const res = await fetch(`/api/products?${params.toString()}`);
+      if (!res.ok) throw new Error("Gagal memuat produk");
+      const data = await res.json();
+      setProducts(data.products ?? []);
+      setTotal(data.pagination?.total ?? data.total ?? data.products?.length ?? 0);
+      setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan");
+    } finally {
+      setLoading(false);
     }
-    fetchProducts();
   }, [search, category, sort, minPrice, maxPrice, page]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- memuat produk saat filter/page berubah
+    void fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
     let active = true;
@@ -209,6 +211,12 @@ function ProductsContent() {
             <div className="py-20 text-center">
               <Icon name="error" size={32} className="mx-auto text-destructive" />
               <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+              <button
+                onClick={() => void fetchProducts()}
+                className="mt-4 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                Coba lagi
+              </button>
             </div>
           ) : products.length === 0 ? (
             <div className="py-16 text-center">
