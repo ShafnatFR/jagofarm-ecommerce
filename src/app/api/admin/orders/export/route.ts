@@ -62,9 +62,10 @@ export async function GET(request: NextRequest) {
       ];
     }
     if (dateFrom || dateTo) {
+      // Tanggal dari filter admin = tanggal WIB (offset +07:00).
       const createdAt: Prisma.DateTimeFilter = {};
-      if (dateFrom) createdAt.gte = new Date(dateFrom);
-      if (dateTo) createdAt.lte = new Date(dateTo + "T23:59:59");
+      if (dateFrom) createdAt.gte = new Date(`${dateFrom}T00:00:00.000+07:00`);
+      if (dateTo) createdAt.lte = new Date(`${dateTo}T23:59:59.999+07:00`);
       where.createdAt = createdAt;
     }
 
