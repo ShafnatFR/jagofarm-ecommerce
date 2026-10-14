@@ -9,7 +9,10 @@ import { getHomeCatalog } from "@/lib/home-data";
 
 // Metadata beranda (judul & deskripsi spesifik untuk SEO + social share).
 export const metadata: Metadata = {
-  title: "JagoFarm — Solusi Akuaponik & Hidroponik Modern",
+  // absolute: hindari template layout menempelkan "| JagoFarm" dua kali.
+  title: {
+    absolute: "JagoFarm — Solusi Akuaponik & Hidroponik Modern",
+  },
   description:
     "Belanja pupuk, bibit, alat pertanian, dan kebutuhan akuaponik/hidroponik dengan harga terjangkau. Pengiriman cepat ke seluruh Indonesia.",
   alternates: { canonical: "/" },
