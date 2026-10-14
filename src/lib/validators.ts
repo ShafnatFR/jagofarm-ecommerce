@@ -33,14 +33,6 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
-export const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email wajib diisi")
-    .email("Format email tidak valid"),
-  password: z.string().min(1, "Password wajib diisi"),
-});
-
 // ── Address ───────────────────────────────────────────
 
 /**
@@ -145,28 +137,6 @@ export const checkoutSchema = z.object({
 
 // ── Product Filter ────────────────────────────────────
 
-export const productFilterSchema = z.object({
-  search: z.string().optional(),
-  categoryId: z.string().uuid().optional(),
-  categorySlug: z.string().optional(),
-  minPrice: z
-    .number()
-    .min(0, "Harga minimum tidak boleh negatif")
-    .optional(),
-  maxPrice: z
-    .number()
-    .min(0, "Harga maksimum tidak boleh negatif")
-    .optional(),
-  tags: z.array(z.string()).optional(),
-  isFeatured: z.boolean().optional(),
-  inStock: z.boolean().optional(),
-  sortBy: z
-    .enum(["newest", "price_asc", "price_desc", "name_asc", "name_desc", "popular"])
-    .optional(),
-  page: z.number().int().min(1).optional().default(1),
-  limit: z.number().int().min(1).max(100).optional().default(12),
-});
-
 // ── Review ────────────────────────────────────────────
 
 export const reviewSchema = z.object({
@@ -217,10 +187,8 @@ export const applyCouponSchema = z.object({
 // ── Type exports for form handling ────────────────────
 
 export type RegisterInput = z.infer<typeof registerSchema>;
-export type LoginInput = z.infer<typeof loginSchema>;
 export type AddressInput = z.infer<typeof addressSchema>;
 export type CheckoutInput = z.infer<typeof checkoutSchema>;
-export type ProductFilterInput = z.infer<typeof productFilterSchema>;
 export type ReviewInput = z.infer<typeof reviewSchema>;
 export type AddToCartInput = z.infer<typeof addToCartSchema>;
 export type UpdateCartItemInput = z.infer<typeof updateCartItemSchema>;

@@ -459,6 +459,7 @@ export default function ConsultationChat() {
           <div className="flex-1 relative">
             <input
               ref={inputRef}
+              aria-label="Tulis pesan konsultasi"
               className="w-full pl-3.5 pr-10 py-2.5 bg-white rounded-xl text-body-md text-green-900 border border-green-200 focus:border-green-700 focus:ring-1 focus:ring-primary-container focus:outline-none placeholder:text-gray-500 text-sm"
               placeholder="Ketik pertanyaan atau laporkan kondisi kolam Anda ke Tim Kami..."
               value={input}
@@ -469,6 +470,7 @@ export default function ConsultationChat() {
           <button
             type="submit"
             disabled={!input.trim() || sending || !session}
+            aria-label="Kirim pesan"
             className="px-4 py-2.5 rounded-xl bg-green-800 text-white font-bold text-sm flex items-center gap-1.5 shadow-sm hover:brightness-110 active:scale-95 transition-all shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="material-symbols-outlined text-base" data-icon="send">

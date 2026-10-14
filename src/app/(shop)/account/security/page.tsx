@@ -122,7 +122,7 @@ export default function SecurityPage() {
                   placeholder="Masukkan password saat ini"
                   required
                 />
-                <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline hover:text-primary">
+                <button type="button" onClick={() => setShowCurrent(!showCurrent)} aria-label={showCurrent ? "Sembunyikan password" : "Tampilkan password"} aria-pressed={showCurrent} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-full">
                   <span className="material-symbols-outlined text-[20px]">{showCurrent ? "visibility_off" : "visibility"}</span>
                 </button>
               </div>
@@ -141,7 +141,7 @@ export default function SecurityPage() {
                   required
                   minLength={8}
                 />
-                <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline hover:text-primary">
+                <button type="button" onClick={() => setShowNew(!showNew)} aria-label={showNew ? "Sembunyikan password" : "Tampilkan password"} aria-pressed={showNew} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-full">
                   <span className="material-symbols-outlined text-[20px]">{showNew ? "visibility_off" : "visibility"}</span>
                 </button>
               </div>

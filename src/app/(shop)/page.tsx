@@ -146,7 +146,7 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]">local_shipping</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustShippingTitle}</h4>
+                <h2 className="text-headline-sm font-headline-sm text-on-surface">{content.trustShippingTitle}</h2>
                 <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustShippingDesc}</p>
               </div>
             </div>
@@ -155,7 +155,7 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustGuaranteeTitle}</h4>
+                <h2 className="text-headline-sm font-headline-sm text-on-surface">{content.trustGuaranteeTitle}</h2>
                 <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustGuaranteeDesc}</p>
               </div>
             </div>
@@ -164,7 +164,7 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]">support_agent</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustConsultTitle}</h4>
+                <h2 className="text-headline-sm font-headline-sm text-on-surface">{content.trustConsultTitle}</h2>
                 <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustConsultDesc}</p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-[26px]">credit_card</span>
               </div>
               <div>
-                <h4 className="text-headline-sm font-headline-sm text-on-surface">{content.trustPaymentTitle}</h4>
+                <h2 className="text-headline-sm font-headline-sm text-on-surface">{content.trustPaymentTitle}</h2>
                 <p className="text-body-sm font-body-sm text-on-surface-variant">{content.trustPaymentDesc}</p>
               </div>
             </div>
