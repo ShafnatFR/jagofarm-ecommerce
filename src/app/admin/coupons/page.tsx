@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { useToast } from "@/components/ui/use-toast"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -46,6 +47,7 @@ const statusConfig: Record<string, { label: string; variant: "default" | "succes
 const emptyForm = { code: "", type: "PERCENTAGE", value: "", minOrder: "", maxDiscount: "", usageLimit: "", startDate: "", endDate: "" }
 
 export default function CouponsPage() {
+  const { toast } = useToast()
   const [coupons, setCoupons] = useState<Coupon[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -107,7 +109,7 @@ export default function CouponsPage() {
       const scope = window as Window & { __jagoAdminClearCache?: (prefixes?: string[]) => void }
       scope.__jagoAdminClearCache?.(["/api/admin/coupons"])
       setCoupons((prev) => prev.filter((c) => c.id !== id))
-    } catch (e) { alert(toMessage(e)) }
+    } catch (e) { toast({ variant: "destructive", title: "Gagal menghapus", description: toMessage(e) }) }
   }
 
   const handleSave = async () => {
@@ -137,7 +139,7 @@ export default function CouponsPage() {
       const fresh = await fetch("/api/admin/coupons").then((r) => r.json())
       setCoupons(normalizeCoupons(fresh.coupons || []))
       setDialogOpen(false)
-    } catch (e) { alert(toMessage(e)) }
+    } catch (e) { toast({ variant: "destructive", title: "Gagal menyimpan", description: toMessage(e) }) }
     finally { setSaving(false) }
   }
 
