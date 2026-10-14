@@ -40,15 +40,16 @@ function formatNumber(n: number): string {
 }
 
 function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  } catch {
-    return iso;
-  }
+  // Catatan: new Date(tak-valid) TIDAK melempar — ia membentuk Invalid Date dan
+  // toLocaleDateString mengembalikan "Invalid Date" tanpa error, sehingga
+  // try/catch lama tak pernah aktif. Guard eksplisit diperlukan.
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 export default function PointsPage() {
