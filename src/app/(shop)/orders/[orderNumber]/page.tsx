@@ -695,9 +695,9 @@ export default function OrderDetailPage() {
   if (!order) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Order tidak ditemukan</h1>
+        <h1 className="text-2xl font-bold mb-4">Pesanan tidak ditemukan</h1>
         <Link href="/orders">
-          <Button>Kembali ke Orders</Button>
+          <Button>Kembali ke Daftar Pesanan</Button>
         </Link>
       </div>
     );
