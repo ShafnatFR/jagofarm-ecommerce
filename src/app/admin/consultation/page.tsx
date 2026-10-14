@@ -8,16 +8,18 @@ import {
   type ConsultationSessionSummary,
 } from "@/lib/consultation-admin";
 import { ConsultationThreadPanel } from "./consultation-thread";
+import { APP_TIME_ZONE } from "@/lib/utils";
 
 export const metadata = { title: "Konsultasi - Admin JagoFarm" };
 
 function formatDate(value: Date): string {
-  return new Date(value).toLocaleString("id-ID", {
+  return new Intl.DateTimeFormat("id-ID", {
     day: "2-digit",
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
-  });
+    timeZone: APP_TIME_ZONE,
+  }).format(new Date(value));
 }
 
 function SessionListItem({

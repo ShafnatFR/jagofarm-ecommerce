@@ -9,7 +9,7 @@
  * - Tautan situs memakai NEXT_PUBLIC_SITE_URL (fallback http://localhost:3000).
  */
 
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, APP_TIME_ZONE } from "@/lib/utils";
 import { SHIPPING_COURIER_LABELS } from "@/lib/constants";
 
 const BRAND_COLOR = "#1B4D3E";
@@ -192,6 +192,7 @@ function formatDateTimeId(value: Date | string | null | undefined): string | nul
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: APP_TIME_ZONE,
   }).format(date);
 }
 

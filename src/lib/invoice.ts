@@ -1,5 +1,6 @@
 import { PdfBuilder } from "@/lib/pdf";
 import { SITE_CONFIG } from "@/lib/constants";
+import { APP_TIME_ZONE } from "@/lib/utils";
 
 /** Data minimal yang dibutuhkan untuk membuat invoice. */
 export interface InvoiceOrderItem {
@@ -38,13 +39,15 @@ function rupiah(n: number): string {
 
 function tanggal(d: Date | string): string {
   const date = typeof d === "string" ? new Date(d) : d;
-  return date.toLocaleDateString("id-ID", {
+  // Server (Vercel) = UTC; pakai WIB agar tanggal & jam invoice benar.
+  return new Intl.DateTimeFormat("id-ID", {
     day: "2-digit",
     month: "long",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  });
+    timeZone: APP_TIME_ZONE,
+  }).format(date);
 }
 
 /**

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { SITE_CONFIG } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
+import { APP_TIME_ZONE } from "@/lib/utils";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Nama harus minimal 2 karakter"),
@@ -89,7 +90,7 @@ export async function POST(request: NextRequest) {
           <p><strong>Pesan:</strong></p>
           <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>
           <hr>
-          <p style="color: #888; font-size: 12px;"> dikirim via JagoFarm E-commerce • ${new Date().toLocaleString("id-ID")} </p>
+          <p style="color: #888; font-size: 12px;"> dikirim via JagoFarm E-commerce • ${new Intl.DateTimeFormat("id-ID", { dateStyle: "long", timeStyle: "short", timeZone: APP_TIME_ZONE }).format(new Date())} </p>
         `,
         text: `Pesan Baru dari Contact Form
 
@@ -101,7 +102,7 @@ Subjek: ${subject}
 Pesan:
 ${message}
 
---- dikirim via JagoFarm E-commerce • ${new Date().toLocaleString("id-ID")} ---`,
+--- dikirim via JagoFarm E-commerce • ${new Intl.DateTimeFormat("id-ID", { dateStyle: "long", timeStyle: "short", timeZone: APP_TIME_ZONE }).format(new Date())} ---`,
       });
 
       // Pelacakan status email juga best-effort: jangan sampai menggagalkan respons sukses.

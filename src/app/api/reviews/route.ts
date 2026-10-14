@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { APP_TIME_ZONE } from "@/lib/utils";
 
 const reviewSchema = z.object({
   productId: z.string().uuid(),
@@ -25,11 +26,12 @@ const REVIEWABLE_ORDER_STATUSES = [
 
 function formatReviewDate(date: Date): string {
   try {
-    return date.toLocaleDateString("id-ID", {
+    return new Intl.DateTimeFormat("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    });
+      timeZone: APP_TIME_ZONE,
+    }).format(date);
   } catch {
     return date.toISOString().slice(0, 10);
   }

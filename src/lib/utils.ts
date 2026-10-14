@@ -2,6 +2,13 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 /**
+ * Zona waktu resmi toko. Server (Vercel) berjalan di UTC, jadi format tanggal
+ * di sisi server WAJIB menyebut timeZone ini — kalau tidak, tanggal bisa
+ * berbeda satu hari dari yang dilihat pelanggan di WIB.
+ */
+export const APP_TIME_ZONE = "Asia/Jakarta";
+
+/**
  * Merge class names with Tailwind CSS conflict resolution
  */
 export function cn(...inputs: ClassValue[]) {
@@ -41,6 +48,7 @@ export function formatDate(date: Date | string): string {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: APP_TIME_ZONE,
   }).format(d);
 }
 
@@ -55,6 +63,7 @@ export function formatDateTime(date: Date | string): string {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: APP_TIME_ZONE,
   }).format(d);
 }
 
@@ -63,12 +72,17 @@ export function formatDateTime(date: Date | string): string {
  * JF = JagoFarm prefix, date portion, 4-char random hex
  */
 export function generateOrderNumber(): string {
-  const now = new Date();
-  const yy = String(now.getFullYear()).slice(-2);
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
+  // Bagian tanggal harus mengikuti WIB (bukan UTC server), agar nomor pesanan
+  // tidak bertanggal "kemarin/besok" relatif waktu pelanggan.
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: APP_TIME_ZONE,
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
   const rand = Math.random().toString(16).slice(2, 6).toUpperCase();
-  return `JF-${yy}${mm}${dd}-${rand}`;
+  return `JF-${get("year")}${get("month")}${get("day")}-${rand}`;
 }
 
 /**
