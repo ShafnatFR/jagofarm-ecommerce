@@ -6,6 +6,19 @@ import { paymentReceivedEmail, toEmailOrder } from "@/lib/email-templates";
 import { prisma } from "@/lib/prisma";
 import { mapToOrderStatus, shouldReleaseStock } from "@/lib/midtrans";
 import { providerForOrder, type PaymentStatusResult } from "@/lib/payments";
+
+/**
+ * Dilempar ketika update status pesanan kalah balapan dengan request lain.
+ * Bukan kesalahan: berarti webhook/polling lain sudah memproses lebih dulu,
+ * jadi permintaan ini cukup dilewati (idempoten).
+ */
+class OrderAlreadyUpdatedError extends Error {
+  constructor() {
+    super("Order status already updated by another request");
+    this.name = "OrderAlreadyUpdatedError";
+  }
+}
+
 import { asMidtransStatus } from "@/lib/payments/midtrans";
 
 /**
@@ -231,10 +244,25 @@ export async function GET(
             }
           }
 
-          return tx.order.update({
-            where: { id: order.id },
+          // Guard ATOMIK: hanya update bila status di DB masih sama dengan yang
+          // kita baca tadi. Tanpa ini, dua request paralel (webhook + polling
+          // user) bisa sama-sama melihat "belum paid" lalu memproses dua kali —
+          // stok dikembalikan dua kali dan email "pembayaran diterima" terkirim
+          // dua kali. updateMany mengembalikan jumlah baris yang benar-benar
+          // berubah; count 0 = request lain sudah menang, kita lewati.
+          const claimed = await tx.order.updateMany({
+            where: {
+              id: order.id,
+              status: order.status,
+              paymentStatus: order.paymentStatus,
+            },
             data,
           });
+          if (claimed.count === 0) {
+            throw new OrderAlreadyUpdatedError();
+          }
+
+          return tx.order.findUniqueOrThrow({ where: { id: order.id } });
         });
 
         updatedScalars = {
@@ -246,11 +274,30 @@ export async function GET(
         };
         stockRestored = restoreStock;
       } catch (error) {
-        console.error("Order status sync failed:", error);
-        return NextResponse.json(
-          { error: "Gagal memperbarui status pesanan" },
-          { status: 500 }
-        );
+        // Kalah balapan: request lain sudah memproses. Bukan kesalahan —
+        // jangan 500 (webhook gateway akan menganggap gagal & mengulang).
+        if (error instanceof OrderAlreadyUpdatedError) {
+          const fresh = await prisma.order.findUnique({
+            where: { id: order.id },
+            select: { status: true, paymentStatus: true, paidAt: true },
+          });
+          updatedScalars = fresh
+            ? {
+                status: fresh.status,
+                paymentStatus: fresh.paymentStatus,
+                paidAt: fresh.paidAt,
+                paymentMethod: order.paymentMethod,
+                updatedAt: new Date(),
+              }
+            : updatedScalars;
+          stockRestored = false;
+        } else {
+          console.error("Order status sync failed:", error);
+          return NextResponse.json(
+            { error: "Gagal memperbarui status pesanan" },
+            { status: 500 }
+          );
+        }
       }
     }
 
