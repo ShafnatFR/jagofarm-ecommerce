@@ -61,6 +61,7 @@ function prune(now: number, maxWindowMs: number) {
  */
 export const RATE_LIMIT_RULES: Array<{ pattern: RegExp; rule: RateLimitRule }> = [
   { pattern: /^\/api\/auth\/(register|forgot-password|reset-password)$/, rule: { limit: 5, windowMs: 60_000 } },
+  { pattern: /^\/api\/contact$/, rule: { limit: 5, windowMs: 60_000 } },
   { pattern: /^\/api\/payments\/webhook$/, rule: { limit: 100, windowMs: 60_000 } },
   { pattern: /^\/api\/admin\//, rule: { limit: 120, windowMs: 60_000 } },
   { pattern: /^\/api\/(cart|orders)\//, rule: { limit: 60, windowMs: 60_000 } },
