@@ -1,6 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import { z } from "zod";
+
+// Whitelist field kupon yang boleh diubah (cegah mass-assignment).
+const patchCouponSchema = z
+  .object({
+    code: z.string().min(3).max(50).optional(),
+    description: z.string().max(255).optional().or(z.literal("")),
+    discountType: z.enum(["percentage", "fixed", "free_shipping"]).optional(),
+    discountValue: z.coerce.number().min(0).optional(),
+    minOrderValue: z.coerce.number().min(0).nullable().optional(),
+    maxDiscount: z.coerce.number().min(0).nullable().optional(),
+    usageLimit: z.coerce.number().int().min(0).nullable().optional(),
+    startsAt: z.string().optional(),
+    expiresAt: z.string().optional(),
+    isActive: z.boolean().optional(),
+  })
+  .partial();
 
 export async function PATCH(
   request: NextRequest,
@@ -15,18 +33,29 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
 
+    const parsed = patchCouponSchema.safeParse(body);
+    if (!parsed.success) {
+      const first = Object.values(parsed.error.flatten().fieldErrors).flat()[0];
+      return NextResponse.json(
+        { error: first ?? "Data kupon tidak valid." },
+        { status: 400 }
+      );
+    }
+    const parsedData = parsed.data;
+
     const existing = await prisma.coupon.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: "Coupon not found" }, { status: 404 });
     }
 
-    if (body.code) body.code = body.code.toUpperCase();
-    if (body.startsAt) body.startsAt = new Date(body.startsAt);
-    if (body.expiresAt) body.expiresAt = new Date(body.expiresAt);
+    const updateData: Prisma.CouponUpdateInput = { ...parsedData };
+    if (parsedData.code) updateData.code = parsedData.code.toUpperCase();
+    if (parsedData.startsAt) updateData.startsAt = new Date(parsedData.startsAt);
+    if (parsedData.expiresAt) updateData.expiresAt = new Date(parsedData.expiresAt);
 
     const coupon = await prisma.coupon.update({
       where: { id },
-      data: body,
+      data: updateData,
     });
 
     return NextResponse.json({
