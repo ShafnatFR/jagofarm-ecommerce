@@ -20,8 +20,9 @@ export default function SecurityPage() {
       toast({ title: "Password tidak cocok", description: "Konfirmasi password harus sama", variant: "destructive" });
       return;
     }
-    if (newPassword.length < 6) {
-      toast({ title: "Password terlalu pendek", description: "Minimal 6 karakter", variant: "destructive" });
+    // Konsisten dgn register & reset password (validators.ts): minimal 8.
+    if (newPassword.length < 8) {
+      toast({ title: "Password terlalu pendek", description: "Minimal 8 karakter", variant: "destructive" });
       return;
     }
     if (!currentPassword) {
@@ -136,9 +137,9 @@ export default function SecurityPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full bg-surface-container-low hover:bg-surface-container border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-full pl-11 pr-12 py-2.5 text-body-md font-body-md text-on-surface placeholder:text-outline outline-none transition-colors"
-                  placeholder="Minimal 6 karakter"
+                  placeholder="Minimal 8 karakter"
                   required
-                  minLength={6}
+                  minLength={8}
                 />
                 <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline hover:text-primary">
                   <span className="material-symbols-outlined text-[20px]">{showNew ? "visibility_off" : "visibility"}</span>
