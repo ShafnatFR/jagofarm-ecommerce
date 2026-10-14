@@ -9,7 +9,7 @@ export async function POST(
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.redirect(new URL("/login", request.url), 303);
     }
 
     const { id } = await params;
@@ -19,7 +19,10 @@ export async function POST(
       where: { id, userId: session.user.id },
     });
     if (!address) {
-      return NextResponse.json({ error: "Address not found" }, { status: 404 });
+      return NextResponse.redirect(
+        new URL("/account/addresses?error=Alamat+tidak+ditemukan", request.url),
+        303
+      );
     }
 
     // Unset other defaults
@@ -29,14 +32,18 @@ export async function POST(
     });
 
     // Set this as default
-    const updated = await prisma.address.update({
+    await prisma.address.update({
       where: { id },
       data: { isDefault: true },
     });
 
-    return NextResponse.json({ message: "Default address updated", address: updated });
+    // Form HTML native: redirect balik ke daftar alamat (bukan JSON mentah).
+    return NextResponse.redirect(new URL("/account/addresses", request.url), 303);
   } catch (error) {
     console.error("Default address error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.redirect(
+      new URL("/account/addresses?error=Gagal+menjadikan+alamat+utama", request.url),
+      303
+    );
   }
 }

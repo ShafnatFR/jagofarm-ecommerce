@@ -3,12 +3,18 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-export default async function AddressesPage() {
+export default async function AddressesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
   const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");
   }
+
+  const { error } = await searchParams;
 
   const addresses = await prisma.address.findMany({
     where: { userId: user.id },
@@ -26,6 +32,12 @@ export default async function AddressesPage() {
           + Tambah Alamat Baru
         </Link>
       </div>
+
+      {error ? (
+        <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      ) : null}
 
       {addresses.length === 0 ? (
         <div className="bg-card p-8 rounded-lg border border-border text-center">
