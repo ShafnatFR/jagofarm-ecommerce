@@ -4,6 +4,17 @@ import { prisma } from "@/lib/prisma";
 import { sendEmailSafe } from "@/lib/email";
 import { orderCancelledEmail, toEmailOrder } from "@/lib/email-templates";
 
+
+/**
+ * Dilempar ketika pembatalan kalah balapan dengan request lain (batal user
+ * kedua, atau webhook expired yang datang bersamaan). Bukan kesalahan.
+ */
+class OrderAlreadyCancelledError extends Error {
+  constructor() {
+    super("Order already cancelled by another request");
+    this.name = "OrderAlreadyCancelledError";
+  }
+}
 async function loadOrder(userId: string, orderNumber: string) {
   return prisma.order.findFirst({
     where: { orderNumber, userId },
@@ -147,6 +158,19 @@ export async function PATCH(
     }
 
     await prisma.$transaction(async (tx) => {
+      // Guard ATOMIK: pastikan status masih "pending" sebelum memproses pembatalan.
+      // Tanpa guard ini, dua request cancel paralel (user klik tombol dua kali,
+      // atau cancel user berbarengan dengan webhook expired) sama-sama lolos
+      // pre-check di atas lalu mengembalikan stok dua kali. updateMany mengembalikan
+      // jumlah baris yang benar-benar berubah; count 0 = request lain sudah menang.
+      const claimed = await tx.order.updateMany({
+        where: { id: order.id, status: "pending", paymentStatus: "unpaid" },
+        data: { status: "cancelled" },
+      });
+      if (claimed.count === 0) {
+        throw new OrderAlreadyCancelledError();
+      }
+
       // Kembalikan stok produk/varian
       for (const item of order.items) {
         if (item.variantId) {
@@ -176,10 +200,7 @@ export async function PATCH(
         }
       }
 
-      await tx.order.update({
-        where: { id: order.id },
-        data: { status: "cancelled" },
-      });
+      // Status sudah di-set "cancelled" oleh updateMany guard di atas.
     });
 
     const updated = await loadOrder(session.user.id, orderNumber);
@@ -234,6 +255,13 @@ export async function PATCH(
       order: serializeOrder(updated),
     });
   } catch (error) {
+    if (error instanceof OrderAlreadyCancelledError) {
+      // Request lain sudah memproses pembatalan. Bukan kesalahan — kembalikan
+      // status sukses agar klien tidak bingung (bukan 500).
+      return NextResponse.json({
+        message: "Pesanan sudah dibatalkan",
+      });
+    }
     console.error("Order cancel error:", error);
     return NextResponse.json(
       { error: "Gagal membatalkan pesanan" },
