@@ -2,6 +2,7 @@ import Link from "next/link";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 import { FeaturedProducts, type FeaturedProductItem } from "@/components/home/featured-products";
 import { SITE_CONFIG } from "@/lib/constants";
+import { formatPrice } from "@/lib/utils";
 import { getHomeHero, getSiteContent } from "@/lib/site-settings";
 import { getHomeCatalog } from "@/lib/home-data";
 
@@ -246,9 +247,9 @@ export default async function HomePage() {
               </div>
               <div className="pt-2 w-full">
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-price-lg font-price-lg text-primary text-[28px]">Rp {spotPrice.toLocaleString("id-ID")}</span>
+                  <span className="text-price-lg font-price-lg text-primary text-[28px]">{formatPrice(spotPrice)}</span>
                   {spot.discountPrice && (
-                    <span className="text-body-sm font-body-sm text-outline line-through">Rp {Number(spot.basePrice).toLocaleString("id-ID")}</span>
+                    <span className="text-body-sm font-body-sm text-outline line-through">{formatPrice(Number(spot.basePrice))}</span>
                   )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">

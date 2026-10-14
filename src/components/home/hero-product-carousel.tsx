@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { formatPrice } from "@/lib/utils";
 
 export interface HeroProduct {
   id: string;
@@ -71,11 +72,11 @@ export function HeroProductCarousel({ products, intervalMs = 4000 }: Props) {
               </h3>
               <div className="flex items-baseline gap-2 mt-1">
                 <p className="text-headline-sm font-headline-sm text-white font-bold">
-                  Rp {price.toLocaleString("id-ID")}
+                  {formatPrice(price)}
                 </p>
                 {p.discountPrice && (
                   <p className="text-label-md font-label-md text-white/60 line-through">
-                    Rp {p.basePrice.toLocaleString("id-ID")}
+                    {formatPrice(p.basePrice)}
                   </p>
                 )}
               </div>

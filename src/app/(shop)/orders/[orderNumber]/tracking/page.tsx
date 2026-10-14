@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
+import { formatPrice } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 
 interface TrackingEvent {
@@ -373,14 +374,14 @@ export default function TrackingPage() {
                         <p className="text-body-md font-body-md text-on-surface font-medium">{itemName(item)}</p>
                         <p className="text-label-sm font-label-sm text-on-surface-variant">{item.quantity}x</p>
                       </div>
-                      <p className="text-body-md font-body-md text-on-surface font-semibold whitespace-nowrap">Rp {(item.price * item.quantity).toLocaleString("id-ID")}</p>
+                      <p className="text-body-md font-body-md text-on-surface font-semibold whitespace-nowrap">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   ))
                 )}
               </div>
               <div className="mt-4 pt-4 border-t border-outline-variant flex justify-between">
                 <span className="text-headline-sm font-headline-sm text-on-surface">Total</span>
-                <span className="text-headline-sm font-headline-sm text-primary">Rp {order.total.toLocaleString("id-ID")}</span>
+                <span className="text-headline-sm font-headline-sm text-primary">{formatPrice(order.total)}</span>
               </div>
             </div>
 
