@@ -101,11 +101,8 @@ function ProductsContent() {
   }
 
   function clearSearch() {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("search");
-    params.delete("page");
-    const qs = params.toString();
-    router.push(qs ? `/products?${qs}` : "/products");
+    // Hapus SEMUA filter (search, kategori, harga, urutan) — bukan hanya search.
+    router.push("/products");
   }
 
   function handleWishlistChange(productId: string, wishlisted: boolean) {
@@ -117,7 +114,7 @@ function ProductsContent() {
     });
   }
 
-  const hasFilterOrSearch = Boolean(search || category || sort !== "newest");
+  const hasFilterOrSearch = Boolean(search || category || minPrice || maxPrice || sort !== "newest");
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
