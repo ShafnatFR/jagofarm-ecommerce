@@ -57,23 +57,23 @@ export async function GET(request: NextRequest) {
     let orderBy: Prisma.ProductOrderByWithRelationInput[];
     switch (sort) {
       case "price_asc":
-        orderBy = [{ basePrice: "asc", id: "asc" }];
+        orderBy = [{ basePrice: "asc" }, { id: "asc" }];
         break;
       case "price_desc":
-        orderBy = [{ basePrice: "desc", id: "asc" }];
+        orderBy = [{ basePrice: "desc" }, { id: "asc" }];
         break;
       case "name_asc":
-        orderBy = [{ name: "asc", id: "asc" }];
+        orderBy = [{ name: "asc" }, { id: "asc" }];
         break;
       case "name_desc":
-        orderBy = [{ name: "desc", id: "asc" }];
+        orderBy = [{ name: "desc" }, { id: "asc" }];
         break;
       case "popular":
         orderBy = [{ orderItems: { _count: "desc" } }, { id: "asc" }];
         break;
       case "newest":
       default:
-        orderBy = [{ createdAt: "desc", id: "asc" }];
+        orderBy = [{ createdAt: "desc" }, { id: "asc" }];
         break;
     }
 
