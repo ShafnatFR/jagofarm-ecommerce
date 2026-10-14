@@ -1,4 +1,4 @@
-export const metadata = { title: "Kebijakan Privasi - JagoFarm" };
+export const metadata = { title: "Kebijakan Privasi", alternates: { canonical: "/privacy-policy" } };
 
 import { getContentPageHtml } from "@/lib/content";
 

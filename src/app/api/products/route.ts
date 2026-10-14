@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { parseIntSafe } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
-    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "12")));
+    const page = parseIntSafe(searchParams.get("page"), 1, 1, 10_000);
+    const limit = parseIntSafe(searchParams.get("limit"), 12, 1, 50);
     const category = searchParams.get("category");
     const minPrice = searchParams.get("min_price");
     const maxPrice = searchParams.get("max_price");

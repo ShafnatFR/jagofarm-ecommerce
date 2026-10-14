@@ -28,7 +28,8 @@ export async function proxy(request: NextRequest) {
               "Retry-After": String(result.retryAfterSeconds),
               "X-RateLimit-Limit": String(result.limit),
               "X-RateLimit-Remaining": "0",
-              "X-RateLimit-Reset": String(result.resetAt),
+              // Konvensi header ini = detik sejak epoch (bukan milidetik).
+              "X-RateLimit-Reset": String(Math.ceil(result.resetAt / 1000)),
             },
           }
         );

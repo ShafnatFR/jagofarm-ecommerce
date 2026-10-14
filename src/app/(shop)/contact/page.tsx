@@ -1,7 +1,7 @@
 import ContactForm from "./contact-form";
 import { getStoreProfile, getSiteContent } from "@/lib/site-settings";
 
-export const metadata = { title: "Hubungi Kami - JagoFarm" };
+export const metadata = { title: "Hubungi Kami", alternates: { canonical: "/contact" } };
 
 export default async function ContactPage() {
   const [profile, content] = await Promise.all([getStoreProfile(), getSiteContent()]);

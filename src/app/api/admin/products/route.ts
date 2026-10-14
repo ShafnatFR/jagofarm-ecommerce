@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
-import { slugify } from "@/lib/utils";
+import { slugify , parseIntSafe} from "@/lib/utils";
 import { z } from "zod";
 
 export async function GET(request: NextRequest) {
@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
-    const limit = Math.min(50, parseInt(searchParams.get("limit") || "20"));
+    const page = parseIntSafe(searchParams.get("page"), 1, 1, 10_000);
+    const limit = parseIntSafe(searchParams.get("limit"), 20, 1, 50);
     const search = searchParams.get("search");
     const category = searchParams.get("category");
     const status = searchParams.get("status"); // active, inactive, all

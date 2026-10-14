@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     "benih ikan",
     "aquaponics Indonesia",
   ],
-  alternates: {
-    canonical: "/",
-  },
+  // CATATAN: JANGAN set `alternates.canonical` di root — metadata diwariskan ke
+  // SEMUA halaman, sehingga tiap halaman produk/kebijakan akan memancarkan
+  // canonical "/" dan berisiko tidak terindeks. Set canonical per-halaman.
   manifest: "/manifest.json",
   robots: {
     index: true,

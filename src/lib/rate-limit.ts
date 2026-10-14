@@ -121,14 +121,26 @@ export function consume(key: string, rule: RateLimitRule): RateLimitResult {
   };
 }
 
-/** Ambil IP pemanggil dari header proxy yang umum dipakai. */
+/**
+ * Ambil IP klien untuk rate limiting.
+ *
+ * PENTING (keamanan): JANGAN pakai elemen KIRI `x-forwarded-for` — nilai kiri
+ * adalah yang dikirim klien sendiri, jadi bisa dipalsukan (rate limit jadi
+ * bisa dilewati). Header `x-real-ip` / `cf-connecting-ip` diset oleh platform
+ * (Vercel/Cloudflare) dan tidak bisa di-set klien. Bila terpaksa memakai
+ * `x-forwarded-for`, pakai elemen KANAN (ditambahkan oleh proxy terakhir).
+ */
 export function getClientIp(headers: Headers): string {
-  return (
-    headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    headers.get("x-real-ip") ||
-    headers.get("cf-connecting-ip") ||
-    "unknown"
-  );
+  const real = headers.get("x-real-ip") || headers.get("cf-connecting-ip");
+  if (real) return real.trim();
+
+  const forwarded = headers.get("x-forwarded-for");
+  if (forwarded) {
+    const parts = forwarded.split(",").map((p) => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
+  }
+
+  return "unknown";
 }
 
 /** Hanya untuk test: kosongkan semua bucket. */

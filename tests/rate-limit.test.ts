@@ -58,12 +58,22 @@ test("consume: key berbeda punya kuota terpisah", () => {
   assert.equal(consume("ip-a:/api/x", rule).allowed, false, "ip-a sudah habis");
 });
 
-test("getClientIp: prioritas x-forwarded-for lalu fallback", () => {
+test("getClientIp: header platform dulu, x-forwarded-for pakai elemen KANAN", () => {
+  // Elemen kanan ditambahkan proxy terakhir (tak bisa diset klien);
+  // elemen kiri BISA dipalsukan klien — jangan dipakai.
   assert.equal(
     getClientIp(new Headers({ "x-forwarded-for": "1.2.3.4, 5.6.7.8" })),
-    "1.2.3.4"
+    "5.6.7.8"
+  );
+  // Header platform menang atas forwarded (tidak bisa diset klien).
+  assert.equal(
+    getClientIp(
+      new Headers({ "x-forwarded-for": "1.2.3.4", "x-real-ip": "9.9.9.9" })
+    ),
+    "9.9.9.9"
   );
   assert.equal(getClientIp(new Headers({ "x-real-ip": "9.9.9.9" })), "9.9.9.9");
   assert.equal(getClientIp(new Headers({ "cf-connecting-ip": "8.8.8.8" })), "8.8.8.8");
+  assert.equal(getClientIp(new Headers({ "x-forwarded-for": "  1.2.3.4  " })), "1.2.3.4");
   assert.equal(getClientIp(new Headers()), "unknown");
 });

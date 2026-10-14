@@ -150,3 +150,13 @@ export function getEffectivePrice(
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+/**
+ * Parse angka query string dengan aman. Return fallback bila bukan angka valid,
+ * lalu clamp ke [min, max]. Tanpa ini, parseInt("abc") = NaN -> Prisma error -> 500.
+ */
+export function parseIntSafe(value: string | null, fallback: number, min: number, max: number): number {
+  const n = parseInt(value ?? "", 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}

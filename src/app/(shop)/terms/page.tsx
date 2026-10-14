@@ -1,4 +1,4 @@
-export const metadata = { title: "Syarat dan Ketentuan - JagoFarm" };
+export const metadata = { title: "Syarat dan Ketentuan", alternates: { canonical: "/terms" } };
 
 import { getContentPageHtml } from "@/lib/content";
 

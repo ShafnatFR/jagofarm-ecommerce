@@ -7,7 +7,6 @@ const SITE_URL = (
 
 /** Sitemap di-regenerate tiap jam, bukan tiap request. */
 export const revalidate = 3600;
-export const dynamic = "force-dynamic";
 
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/`, changeFrequency: "daily", priority: 1 },

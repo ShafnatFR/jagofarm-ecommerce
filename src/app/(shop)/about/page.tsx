@@ -1,4 +1,4 @@
-export const metadata = { title: "Tentang Kami - JagoFarm" };
+export const metadata = { title: "Tentang Kami", alternates: { canonical: "/about" } };
 
 import { getContentPageHtml } from "@/lib/content";
 

@@ -54,7 +54,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return { title: "Produk tidak ditemukan" };
 
   const price = effectivePrice(Number(product.basePrice), product.discountPrice ? Number(product.discountPrice) : null);
-  const title = `${product.name} - ${SITE_CONFIG.name}`;
+  // Tanpa brand di title — template layout ("%s | JagoFarm") menambahkannya.
+  const title = product.name;
   const description =
     product.shortDesc?.trim() ||
     product.description?.slice(0, 155) ||
@@ -64,6 +65,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
+    // Canonical per-produk (root tidak lagi menetapkannya).
+    alternates: { canonical: `/products/${product.slug}` },
     openGraph: {
       title,
       description,

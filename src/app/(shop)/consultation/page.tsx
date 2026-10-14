@@ -1,6 +1,6 @@
 import ConsultationChat, { ConsultationSidebar } from "./consultation-chat";
 
-export const metadata = { title: "Konsultasi - JagoFarm" };
+export const metadata = { title: "Konsultasi", alternates: { canonical: "/consultation" } };
 
 export default function ConsultationPage() {
   return (

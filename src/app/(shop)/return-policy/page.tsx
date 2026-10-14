@@ -1,4 +1,4 @@
-export const metadata = { title: "Kebijakan Pengembalian - JagoFarm" };
+export const metadata = { title: "Kebijakan Pengembalian", alternates: { canonical: "/return-policy" } };
 
 import { getContentPageHtml } from "@/lib/content";
 
