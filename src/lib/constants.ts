@@ -5,7 +5,12 @@ export const SITE_CONFIG = {
   tagline: "Pertanian Modern, Hasil Melimpah",
   description:
     "JagoFarm — marketplace pertanian terlengkap. Pupuk, bibit, alat pertanian, dan kebutuhan tani lainnya dengan harga terjangkau dan pengiriman cepat ke seluruh Indonesia.",
-  url: process.env.NEXT_PUBLIC_APP_URL ?? "https://jagofarm.dev/",
+  // Satu sumber URL situs: pakai NEXT_PUBLIC_SITE_URL (dipakai sitemap/robots/email),
+  // fallback ke APP_URL lama, lalu default.
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    "https://jagofarm.dev/",
   ogImage: "/images/og-image.jpg",
   email: "jagofarm.corporation@gmail.com",
   /** Nomor lokal (08…) untuk ditampilkan, format internasional (62…) untuk tautan wa.me. */
