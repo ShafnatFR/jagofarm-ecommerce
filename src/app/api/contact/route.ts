@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(
+    console.info(
       `[Contact Form] Baru (id: ${contactMessage.id}):\n` +
       `  Nama: ${name}\n` +
       `  Email: ${email}\n` +
