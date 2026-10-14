@@ -169,6 +169,7 @@ model Address {
 
   orders Order[]
 
+  @@index([userId])
   @@map("addresses")
 }
 
@@ -283,6 +284,7 @@ model Review {
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@unique([userId, productId])
+  @@index([isApproved, createdAt])
   @@map("reviews")
 }
 
