@@ -1,10 +1,26 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { HeroProductCarousel } from "@/components/home/hero-product-carousel";
 import { FeaturedProducts, type FeaturedProductItem } from "@/components/home/featured-products";
 import { SITE_CONFIG } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
 import { getHomeHero, getSiteContent } from "@/lib/site-settings";
 import { getHomeCatalog } from "@/lib/home-data";
+
+// Metadata beranda (judul & deskripsi spesifik untuk SEO + social share).
+export const metadata: Metadata = {
+  title: "JagoFarm — Solusi Akuaponik & Hidroponik Modern",
+  description:
+    "Belanja pupuk, bibit, alat pertanian, dan kebutuhan akuaponik/hidroponik dengan harga terjangkau. Pengiriman cepat ke seluruh Indonesia.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "JagoFarm — Solusi Akuaponik & Hidroponik Modern",
+    description:
+      "Marketplace pertanian terlengkap: pupuk, bibit, alat tani, dan kebutuhan akuaponik/hidroponik.",
+    url: "/",
+    type: "website",
+  },
+};
 
 export const dynamic = "force-dynamic";
 

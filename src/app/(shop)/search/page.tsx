@@ -1,4 +1,11 @@
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+// Halaman hasil pencarian: jangan diindeks (duplikat /products + query bebas).
+export const metadata: Metadata = {
+  title: "Pencarian",
+  robots: { index: false, follow: true },
+};
 
 export const dynamic = "force-dynamic";
 

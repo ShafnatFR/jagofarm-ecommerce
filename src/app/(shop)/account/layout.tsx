@@ -1,7 +1,14 @@
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Icon } from "@/components/ui/icon";
+
+// Area akun bersifat privat — jangan diindeks mesin pencari.
+export const metadata: Metadata = {
+  title: "Akun Saya",
+  robots: { index: false, follow: false },
+};
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
