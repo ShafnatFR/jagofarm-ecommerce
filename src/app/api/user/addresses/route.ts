@@ -23,17 +23,28 @@ export async function GET() {
 }
 
 const addressSchema = z.object({
-  label: z.string().min(1).max(50),
-  recipientName: z.string().min(1).max(100),
-  phone: z.string().min(8).max(20),
-  province: z.string().min(1).max(100),
+  label: z.string().min(1, "Label alamat wajib diisi").max(50, "Label maksimal 50 karakter"),
+  recipientName: z
+    .string()
+    .min(2, "Nama penerima minimal 2 karakter")
+    .max(100, "Nama penerima maksimal 100 karakter"),
+  phone: z
+    .string()
+    .min(10, "Nomor telepon minimal 10 digit")
+    .max(20, "Nomor telepon maksimal 20 digit")
+    .regex(/^[0-9+\-\s()]+$/, "Format nomor telepon tidak valid"),
+  province: z.string().min(1, "Provinsi wajib diisi").max(100),
   provinceId: z.string().max(20).optional().or(z.literal("")),
-  city: z.string().min(1).max(100),
+  city: z.string().min(1, "Kota/kabupaten wajib diisi").max(100),
   cityId: z.string().max(20).optional().or(z.literal("")),
+  // Kecamatan opsional: form storefront saat ini mengirim "" (belum ada input kecamatan).
   district: z.string().max(100).optional().default(""),
   districtId: z.string().max(20).optional().or(z.literal("")),
-  postalCode: z.string().min(4).max(10),
-  detail: z.string().optional(),
+  // Kode pos 5 digit — konsisten dengan form (pattern="[0-9]{5}") & lib/validators.
+  postalCode: z
+    .string()
+    .regex(/^[0-9]{5}$/, "Kode pos harus 5 digit angka"),
+  detail: z.string().max(500, "Detail alamat maksimal 500 karakter").optional().or(z.literal("")),
   street: z.string().optional(), // alias for detail
   isDefault: z.boolean().default(false),
 });

@@ -144,9 +144,9 @@ export function ProductFilters({ className }: ProductFiltersProps) {
         <h3 className="mb-3 text-sm font-semibold text-foreground">Kategori</h3>
         <div className="space-y-2">
           {loading ? (
-            <div className="px-3 py-2 text-sm text-muted-foreground">Loading categories...</div>
+            <div className="px-3 py-2 text-sm text-muted-foreground">Memuat kategori...</div>
           ) : categories.length === 0 ? (
-            <div className="px-3 py-2 text-sm text-muted-foreground">No categories available</div>
+            <div className="px-3 py-2 text-sm text-muted-foreground">Tidak ada kategori</div>
           ) : (
             categories.map((cat) => (
               <button

@@ -143,7 +143,7 @@ export const productFilterSchema = z.object({
     .optional(),
   maxPrice: z
     .number()
-    .min(0, "Harga minimum tidak boleh negatif")
+    .min(0, "Harga maksimum tidak boleh negatif")
     .optional(),
   tags: z.array(z.string()).optional(),
   isFeatured: z.boolean().optional(),

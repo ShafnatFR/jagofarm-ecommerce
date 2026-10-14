@@ -9,7 +9,7 @@
  * - Tautan situs memakai NEXT_PUBLIC_SITE_URL (fallback http://localhost:3000).
  */
 
-import { formatPrice } from "@/lib/format";
+import { formatPrice } from "@/lib/utils";
 import { SHIPPING_COURIER_LABELS } from "@/lib/constants";
 
 const BRAND_COLOR = "#1B4D3E";

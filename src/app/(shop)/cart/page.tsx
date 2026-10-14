@@ -212,6 +212,16 @@ export default function CartPage() {
     setMoving(false);
   }
 
+  // Tunggu hydrate selesai sebelum memutuskan "kosong" — cegah flash keranjang kosong.
+  if (!cartLoaded) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-20 text-center">
+        <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
+        <p className="text-sm text-muted-foreground">Memuat keranjang...</p>
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">

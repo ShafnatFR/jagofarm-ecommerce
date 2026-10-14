@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
-import { formatPrice } from "@/lib/format"
+import { formatPrice } from "@/lib/utils"
 import { AdminRefreshButton } from "../admin-refresh"
 
 type GroupBy = "day" | "month"

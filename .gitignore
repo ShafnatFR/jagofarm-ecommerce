@@ -47,3 +47,4 @@ build*.txt
 
 # Obsidian editor config (bukan bagian repo)
 .obsidian/
+.hermes/

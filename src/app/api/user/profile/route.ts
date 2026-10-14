@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -45,10 +46,31 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const { name, phone, image } = body;
 
+    // Validasi input (cegah data sampah / tipe salah).
+    const patchProfileSchema = z.object({
+      name: z.string().min(2, "Nama minimal 2 karakter").max(100).optional(),
+      phone: z
+        .string()
+        .min(8, "Nomor telepon minimal 8 digit")
+        .max(20)
+        .regex(/^[0-9+\-\s()]*$/, "Format nomor telepon tidak valid")
+        .optional()
+        .or(z.literal("")),
+      image: z.string().url("URL gambar tidak valid").optional().or(z.literal("")),
+    });
+    const parsed = patchProfileSchema.safeParse({ name, phone, image });
+    if (!parsed.success) {
+      const first = Object.values(parsed.error.flatten().fieldErrors).flat()[0];
+      return NextResponse.json(
+        { error: first ?? "Data tidak valid." },
+        { status: 400 }
+      );
+    }
+
     const updateData: Prisma.UserUpdateInput = {};
-    if (name !== undefined) updateData.name = name;
-    if (phone !== undefined) updateData.phone = phone;
-    if (image !== undefined) updateData.image = image;
+    if (parsed.data.name !== undefined) updateData.name = parsed.data.name;
+    if (parsed.data.phone !== undefined) updateData.phone = parsed.data.phone;
+    if (parsed.data.image !== undefined) updateData.image = parsed.data.image;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
