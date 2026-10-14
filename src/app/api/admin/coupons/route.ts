@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     const [coupons, total] = await Promise.all([
       prisma.coupon.findMany({
         where,
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ createdAt: "desc" }, { id: "asc" }],
         skip,
         take: limit,
       }),

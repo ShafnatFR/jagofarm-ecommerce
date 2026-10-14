@@ -20,6 +20,17 @@ test("resolveRule: cocokkan pola route sesuai tabel", () => {
   assert.equal(resolveRule("/halaman-biasa"), null, "non-API -> null");
 });
 
+test("resolveRule: webhook termasuk varian ber-provider", () => {
+  // Sebelumnya pola webhook memakai $ persis sehingga /webhook/mayar
+  // jatuh ke fallback 120/menit (bukan 100/menit yang diinginkan).
+  const plain = resolveRule("/api/payments/webhook");
+  assert.ok(plain, "/api/payments/webhook harus punya rule");
+
+  const withProvider = resolveRule("/api/payments/webhook/mayar");
+  assert.ok(withProvider, "/api/payments/webhook/mayar harus punya rule");
+  assert.equal(withProvider.rule.limit, plain.rule.limit, "limit webhook sama");
+});
+
 test("resolveRule: dev melonggarkan limit 10x", () => {
   const env = process.env as Record<string, string | undefined>;
   const prev = env.NODE_ENV;

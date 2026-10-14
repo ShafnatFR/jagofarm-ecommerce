@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
       await Promise.all([
         prisma.review.findMany({
           where,
-          orderBy: { createdAt: "desc" },
+          orderBy: [{ createdAt: "desc" }, { id: "asc" }],
           skip,
           take: limit,
           include: {

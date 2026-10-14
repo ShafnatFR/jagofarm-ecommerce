@@ -62,12 +62,15 @@ function prune(now: number, maxWindowMs: number) {
 export const RATE_LIMIT_RULES: Array<{ pattern: RegExp; rule: RateLimitRule }> = [
   { pattern: /^\/api\/auth\/(register|forgot-password|reset-password)$/, rule: { limit: 5, windowMs: 60_000 } },
   { pattern: /^\/api\/contact$/, rule: { limit: 5, windowMs: 60_000 } },
-  { pattern: /^\/api\/payments\/webhook$/, rule: { limit: 100, windowMs: 60_000 } },
+  // Webhook: termasuk varian ber-provider (/api/payments/webhook/mayar).
+  { pattern: /^\/api\/payments\/webhook(\/|$)/, rule: { limit: 100, windowMs: 60_000 } },
   { pattern: /^\/api\/admin\//, rule: { limit: 120, windowMs: 60_000 } },
   { pattern: /^\/api\/(cart|orders)\//, rule: { limit: 60, windowMs: 60_000 } },
   { pattern: /^\/api\/(cart|orders)$/, rule: { limit: 60, windowMs: 60_000 } },
   { pattern: /^\/api\/reviews$/, rule: { limit: 30, windowMs: 60_000 } },
-  { pattern: /^\/api\/products(\/|$|\?)/, rule: { limit: 120, windowMs: 60_000 } },
+  // Catatan: pathname di middleware TIDAK pernah memuat query string, jadi
+  // alternasi `\?` sengaja tidak dipakai (dead code).
+  { pattern: /^\/api\/products(\/|$)/, rule: { limit: 120, windowMs: 60_000 } },
   { pattern: /^\/api\//, rule: { limit: 120, windowMs: 60_000 } },
 ];
 
