@@ -50,72 +50,78 @@ async function run(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const idleHours = envHours("ABANDONED_IDLE_HOURS", DEFAULT_IDLE_HOURS);
-  const maxAgeHours = envHours("ABANDONED_MAX_AGE_HOURS", DEFAULT_MAX_AGE_HOURS);
+  try {
+    const idleHours = envHours("ABANDONED_IDLE_HOURS", DEFAULT_IDLE_HOURS);
+    const maxAgeHours = envHours("ABANDONED_MAX_AGE_HOURS", DEFAULT_MAX_AGE_HOURS);
 
-  const now = Date.now();
-  const idleBefore = new Date(now - idleHours * 3_600_000);
-  const maxAgeAfter = new Date(now - maxAgeHours * 3_600_000);
+    const now = Date.now();
+    const idleBefore = new Date(now - idleHours * 3_600_000);
+    const maxAgeAfter = new Date(now - maxAgeHours * 3_600_000);
 
-  const carts = await prisma.cart.findMany({
-    where: {
-      items: { some: {} },
-      updatedAt: { lte: idleBefore, gte: maxAgeAfter },
-      OR: [{ reminderSentAt: null }, { reminderSentAt: { lte: idleBefore } }],
-      user: { email: { not: "" } },
-    },
-    orderBy: { updatedAt: "asc" },
-    take: BATCH_LIMIT,
-    select: {
-      id: true,
-      updatedAt: true,
-      user: { select: { name: true, email: true } },
-      items: { select: { quantity: true, product: { select: { name: true } } } },
-    },
-  });
-
-  let sent = 0;
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url).replace(/\/$/, "");
-
-  for (const cart of carts) {
-    const recipient = cart.user?.email?.trim();
-    if (!recipient) continue;
-
-    const itemLines = cart.items
-      .slice(0, 5)
-      .map((it) => `<li>${it.quantity}× ${it.product?.name ?? "Produk"}</li>`)
-      .join("");
-
-    const result = await sendEmailSafe({
-      to: recipient,
-      subject: "Keranjang belanja Anda masih menunggu 🛒",
-      html: `
-        <h2>Halo ${cart.user?.name ?? "Pelanggan"},</h2>
-        <p>Produk berikut masih tersimpan di keranjang Anda:</p>
-        <ul>${itemLines}</ul>
-        <p>Lanjutkan pembelian sebelum stoknya habis:</p>
-        <p><a href="${base}/cart" style="background:#1B4D3E;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;">Buka Keranjang</a></p>
-        <p style="color:#888;font-size:12px;">${SITE_CONFIG.name}</p>
-      `,
-      text: `Produk masih di keranjang Anda. Lanjutkan di ${base}/cart`,
+    const carts = await prisma.cart.findMany({
+      where: {
+        items: { some: {} },
+        updatedAt: { lte: idleBefore, gte: maxAgeAfter },
+        OR: [{ reminderSentAt: null }, { reminderSentAt: { lte: idleBefore } }],
+        user: { email: { not: "" } },
+      },
+      orderBy: { updatedAt: "asc" },
+      take: BATCH_LIMIT,
+      select: {
+        id: true,
+        updatedAt: true,
+        user: { select: { name: true, email: true } },
+        items: { select: { quantity: true, product: { select: { name: true } } } },
+      },
     });
 
-    // Tandai sudah diingatkan meski email dilewati (tanpa RESEND_API_KEY),
-    // supaya tidak mencoba berulang tiap cron berjalan.
-    await prisma.cart.update({
-      where: { id: cart.id },
-      data: { reminderSentAt: new Date() },
+    let sent = 0;
+    const base = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url).replace(/\/$/, "");
+
+    for (const cart of carts) {
+      const recipient = cart.user?.email?.trim();
+      if (!recipient) continue;
+
+      const itemLines = cart.items
+        .slice(0, 5)
+        .map((it) => `<li>${it.quantity}× ${it.product?.name ?? "Produk"}</li>`)
+        .join("");
+
+      const result = await sendEmailSafe({
+        to: recipient,
+        subject: "Keranjang belanja Anda masih menunggu 🛒",
+        html: `
+          <h2>Halo ${cart.user?.name ?? "Pelanggan"},</h2>
+          <p>Produk berikut masih tersimpan di keranjang Anda:</p>
+          <ul>${itemLines}</ul>
+          <p>Lanjutkan pembelian sebelum stoknya habis:</p>
+          <p><a href="${base}/cart" style="background:#1B4D3E;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;">Buka Keranjang</a></p>
+          <p style="color:#888;font-size:12px;">${SITE_CONFIG.name}</p>
+        `,
+        text: `Produk masih di keranjang Anda. Lanjutkan di ${base}/cart`,
+      });
+
+      // Tandai sudah diingatkan meski email dilewati (tanpa RESEND_API_KEY),
+      // supaya tidak mencoba berulang tiap cron berjalan.
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: { reminderSentAt: new Date() },
+      });
+      if (result.status === "sent") sent += 1;
+    }
+
+    return NextResponse.json({
+      ok: true,
+      candidates: carts.length,
+      sent,
+      idleHours,
+      maxAgeHours,
     });
-    if (result.status === "sent") sent += 1;
+  } catch (error) {
+    // Jangan biarkan cron gagal dengan error tak tertangani — kembalikan JSON bersih.
+    console.error("[cron/abandoned-cart] error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  return NextResponse.json({
-    ok: true,
-    candidates: carts.length,
-    sent,
-    idleHours,
-    maxAgeHours,
-  });
 }
 
 export async function GET(request: NextRequest) {
