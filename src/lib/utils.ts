@@ -15,12 +15,14 @@ export function cn(...inputs: ClassValue[]) {
 export function formatPrice(
   price: number | string | { toString(): string }
 ): string {
-  const amount =
+  const parsed =
     typeof price === "number"
       ? price
       : typeof price === "string"
         ? parseFloat(price)
         : parseFloat(price.toString());
+  // Guard: nilai tak valid jangan tampil sebagai "RpNaN".
+  const amount = Number.isFinite(parsed) ? parsed : 0;
 
   return new Intl.NumberFormat("id-ID", {
     style: "currency",

@@ -5,11 +5,14 @@ import Link from "next/link";
 
 export default async function EditAddressPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
   const user = await getCurrentUser();
   const { id } = await params;
+  const { error } = await searchParams;
 
   if (!user) {
     redirect("/login");
@@ -34,6 +37,12 @@ export default async function EditAddressPage({
           ← Kembali
         </Link>
       </div>
+
+      {error ? (
+        <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      ) : null}
 
       <form action={`/api/user/addresses/${id}`} method="POST" className="space-y-6">
         <input type="hidden" name="_method" value="PATCH" />

@@ -97,7 +97,17 @@ export function AddressForm({ initialValues, existingCount }: Props) {
         body: JSON.stringify({ ...values, district: "" }),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(typeof data.error === "string" ? data.error : "Alamat gagal disimpan.");
+      if (!response.ok) {
+        // API bisa membalas { error: string } atau { error: { field: [msg] } }.
+        const raw = data?.error;
+        const msg =
+          typeof raw === "string"
+            ? raw
+            : raw && typeof raw === "object"
+              ? (Object.values(raw).flat()[0] as string) ?? "Alamat gagal disimpan."
+              : "Alamat gagal disimpan.";
+        throw new Error(msg);
+      }
       router.push("/account/addresses");
     } catch (caught) {
       setSaving(false);

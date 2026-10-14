@@ -66,7 +66,15 @@ export default function ContactForm() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error((data?.errors ?? data?.error ?? "Gagal mengirim pesan").toString());
+        // API bisa membalas { error: string } atau { errors: [{field,message}] }.
+        const errs = Array.isArray(data?.errors) ? data.errors : [];
+        const msg =
+          errs.length > 0
+            ? errs.map((e: { message?: string }) => e?.message).filter(Boolean).join(", ")
+            : typeof data?.error === "string"
+              ? data.error
+              : "Gagal mengirim pesan";
+        throw new Error(msg);
       }
 
       setStatus("success");

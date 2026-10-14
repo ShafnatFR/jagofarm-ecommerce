@@ -18,6 +18,13 @@ test("formatPrice: format Rupiah Indonesia tanpa desimal", () => {
   assert.match(formatPrice({ toString: () => "1500" }), /1\.500/);
 });
 
+test("formatPrice: nilai tak valid tidak menghasilkan 'RpNaN'", () => {
+  assert.doesNotMatch(formatPrice(NaN), /NaN/);
+  assert.doesNotMatch(formatPrice("abc"), /NaN/);
+  assert.doesNotMatch(formatPrice({ toString: () => "bukan angka" }), /NaN/);
+  assert.match(formatPrice(NaN), /0/);
+});
+
 test("generateOrderNumber: format JF-YYMMDD-XXXX & unik", () => {
   const n = generateOrderNumber();
   assert.match(n, /^JF-\d{6}-[0-9A-F]{4}$/, `format salah: ${n}`);
