@@ -10,6 +10,7 @@ type AddressFormValues = {
   phone: string;
   detail: string;
   city: string;
+  district: string;
   province: string;
   postalCode: string;
   isDefault: boolean;
@@ -28,6 +29,7 @@ export function AddressForm({ initialValues, existingCount }: Props) {
     phone: initialValues.phone ?? "",
     detail: initialValues.detail ?? "",
     city: initialValues.city ?? "",
+    district: initialValues.district ?? "",
     province: initialValues.province ?? "",
     postalCode: initialValues.postalCode ?? "",
     isDefault: existingCount === 0,
@@ -94,7 +96,7 @@ export function AddressForm({ initialValues, existingCount }: Props) {
       const response = await fetch("/api/user/addresses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, district: "" }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -155,6 +157,10 @@ export function AddressForm({ initialValues, existingCount }: Props) {
           <div>
             <label htmlFor="city" className="block text-sm font-medium mb-1">Kota/Kabupaten <span className="text-red-500">*</span></label>
             <input type="text" id="city" value={values.city} onChange={(event) => update("city", event.target.value)} required className={inputClass} />
+          </div>
+          <div>
+            <label htmlFor="district" className="block text-sm font-medium mb-1">Kecamatan <span className="text-red-500">*</span></label>
+            <input type="text" id="district" value={values.district} onChange={(event) => update("district", event.target.value)} required className={inputClass} />
           </div>
           <div>
             <label htmlFor="province" className="block text-sm font-medium mb-1">Provinsi <span className="text-red-500">*</span></label>

@@ -37,8 +37,8 @@ const addressSchema = z.object({
   provinceId: z.string().max(20).optional().or(z.literal("")),
   city: z.string().min(1, "Kota/kabupaten wajib diisi").max(100),
   cityId: z.string().max(20).optional().or(z.literal("")),
-  // Kecamatan opsional: form storefront saat ini mengirim "" (belum ada input kecamatan).
-  district: z.string().max(100).optional().default(""),
+  // Kecamatan wajib — dipakai untuk akurasi ongkir (checkout memakai districtId).
+  district: z.string().min(1, "Kecamatan wajib diisi").max(100),
   districtId: z.string().max(20).optional().or(z.literal("")),
   // Kode pos 5 digit — konsisten dengan form (pattern="[0-9]{5}") & lib/validators.
   postalCode: z
