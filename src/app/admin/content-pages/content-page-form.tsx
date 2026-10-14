@@ -9,6 +9,7 @@ import {
   type CreateContentPageInput,
   type UpdateContentPageInput,
 } from "@/lib/content-pages";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface Props {
   initial: ContentPageRow | null;
@@ -245,7 +246,7 @@ export default function ContentPageForm({ initial }: Props) {
         <div className="mt-6 border-t border-green-200 pt-4">
           <h3 className="mb-2 text-sm font-semibold text-green-900">Preview</h3>
           <div className="min-h-[120px] border border-green-200 rounded-lg bg-white p-4">
-            <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(contentHtml) }} />
           </div>
         </div>
       )}
