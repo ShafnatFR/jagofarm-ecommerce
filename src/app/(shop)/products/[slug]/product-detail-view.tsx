@@ -99,6 +99,7 @@ export default function ProductDetailPage({
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [reviewSummary, setReviewSummary] = useState<ReviewSummary | null>(null);
+  const [reviewsError, setReviewsError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"deskripsi" | "ulasan" | "tanya">("deskripsi");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [relatedAddedId, setRelatedAddedId] = useState<string | null>(null);
@@ -119,15 +120,21 @@ export default function ProductDetailPage({
   /** Muat ulasan + ringkasan rating; dipakai saat halaman dibuka dan setelah kirim ulasan. */
   async function loadReviews(productId: string) {
     try {
+      setReviewsError(null);
       const res = await fetch(`/api/reviews?productId=${productId}`, {
         cache: "no-store",
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        setReviewsError("Gagal memuat ulasan.");
+        return;
+      }
       const data = await res.json();
       setReviews(data.reviews ?? []);
       setReviewSummary(data.summary ?? null);
     } catch {
-      /* ulasan opsional: kegagalan muat tidak boleh menggagalkan halaman */
+      // Ulasan opsional: kegagalan tidak boleh menggagalkan halaman, tapi
+      // tetap dibedakan dari "belum ada ulasan".
+      setReviewsError("Gagal memuat ulasan.");
     }
   }
 
@@ -854,7 +861,13 @@ export default function ProductDetailPage({
 
               {/* Review list */}
               {reviews.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-8">Belum ada ulasan.</p>
+                reviewsError ? (
+                  <p className="text-sm text-destructive text-center py-8">
+                    {reviewsError} Silakan muat ulang halaman.
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-8">Belum ada ulasan.</p>
+                )
               ) : (
                 <div className="space-y-4">
                   {reviews.map((r) => (
