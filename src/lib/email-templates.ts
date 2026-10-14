@@ -229,10 +229,6 @@ export function getCourierTrackingUrl(
 }
 
 /** "JF-260924-AB12" -> "JF-260924-AB12" (dipakai sebagai judul blok ringkasan). */
-function orderLabel(orderNumber: string): string {
-  return escapeHtml(orderNumber);
-}
-
 // ── Blok HTML ───────────────────────────────────────────────────────────────
 
 interface LayoutOptions {
@@ -319,13 +315,13 @@ function renderLayout(options: LayoutOptions): string {
 
 function renderSummaryCard(order: EmailOrderData): string {
   const rows: Array<[string, string]> = [
-    ["Nomor pesanan", orderLabel(order.orderNumber)],
+    ["Nomor pesanan", order.orderNumber],
     ["Status", escapeHtml(statusLabel(order.status))],
   ];
   const created = formatDateTimeId(order.createdAt);
-  if (created) rows.push(["Tanggal pesanan", escapeHtml(created)]);
+  if (created) rows.push(["Tanggal pesanan", created]);
   if (order.paymentMethod) {
-    rows.push(["Metode pembayaran", escapeHtml(order.paymentMethod)]);
+    rows.push(["Metode pembayaran", order.paymentMethod]);
   }
 
   const rowsHtml = rows
@@ -334,10 +330,10 @@ function renderSummaryCard(order: EmailOrderData): string {
         `<tr>
           <td style="padding:6px 0;font-size:13px;color:${TEXT_MUTED};${
           index < rows.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""
-        }">${label}</td>
+        }">${escapeHtml(label)}</td>
           <td style="padding:6px 0;font-size:13px;color:#111827;font-weight:bold;text-align:right;${
           index < rows.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""
-        }">${value}</td>
+        }">${escapeHtml(value)}</td>
         </tr>`
     )
     .join("");
@@ -396,16 +392,16 @@ function renderTotals(order: EmailOrderData): string {
     order.subtotal != null
       ? order.subtotal
       : order.items.reduce((sum, item) => sum + item.total, 0);
-  rows.push(["Subtotal Produk", escapeHtml(money(subtotal)), false]);
+  rows.push(["Subtotal Produk", money(subtotal), false]);
 
   const discount = toNumber(order.discount ?? 0);
   if (discount > 0) {
-    rows.push(["Diskon", `-${escapeHtml(money(discount))}`, false]);
+    rows.push(["Diskon", `-${money(discount)}`, false]);
   }
 
   const shippingCost = toNumber(order.shippingCost ?? 0);
-  rows.push(["Ongkos Kirim", escapeHtml(money(shippingCost)), false]);
-  rows.push(["Total", escapeHtml(money(order.total)), true]);
+  rows.push(["Ongkos Kirim", money(shippingCost), false]);
+  rows.push(["Total", money(order.total), true]);
 
   const rowsHtml = rows
     .map(([label, value, strong]) => {
@@ -413,10 +409,12 @@ function renderTotals(order: EmailOrderData): string {
         ? `border-top:1px solid ${BORDER};padding-top:10px;font-weight:bold;color:${BRAND_COLOR};`
         : `color:#374151;`;
       return `<tr>
-        <td style="padding:6px 0;font-size:${strong ? "15px" : "14px"};${inner}">${label}</td>
+        <td style="padding:6px 0;font-size:${strong ? "15px" : "14px"};${inner}">${escapeHtml(
+          label
+        )}</td>
         <td align="right" style="padding:6px 0;font-size:${
           strong ? "15px" : "14px"
-        };${inner}">${value}</td>
+        };${inner}">${escapeHtml(value)}</td>
       </tr>`;
     })
     .join("");
