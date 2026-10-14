@@ -75,7 +75,7 @@ export function Footer({ profile }: { profile?: StoreProfile } = {}) {
               <h4 className="text-headline-sm font-headline-sm text-on-primary font-bold mb-4">PRODUK</h4>
               <ul className="space-y-2.5 text-label-md font-label-md">
                 {loading ? (
-                  <li className="text-on-primary-container dark:text-on-surface-variant">Loading...</li>
+                  <li className="text-on-primary-container dark:text-on-surface-variant">Memuat...</li>
                 ) : categories.length === 0 ? (
                   <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/products">Semua Produk</Link></li>
                 ) : (
@@ -131,7 +131,7 @@ export function Footer({ profile }: { profile?: StoreProfile } = {}) {
           {/* Bottom Copyright Row */}
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-primary-fixed-dim gap-4">
             <p className="text-center sm:text-left">
-              © {year} {store.name}. All rights reserved.
+              © {year} {store.name}. Seluruh hak cipta dilindungi.
             </p>
           </div>
         </div>

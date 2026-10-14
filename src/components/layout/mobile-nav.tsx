@@ -87,7 +87,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             <p className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Kategori</p>
             <div className="mt-2 space-y-1">
               {loading ? (
-                <div className="px-3 py-2 text-sm text-muted-foreground">Loading...</div>
+                <div className="px-3 py-2 text-sm text-muted-foreground">Memuat...</div>
               ) : categories.length === 0 ? (
                 <div className="px-3 py-2 text-sm text-muted-foreground">Belum ada kategori</div>
               ) : (

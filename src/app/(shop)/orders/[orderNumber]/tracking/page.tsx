@@ -197,14 +197,14 @@ export default function TrackingPage() {
     async function fetchOrder() {
       try {
         const res = await fetch(`/api/orders/${orderNumber}`);
-        if (!res.ok) throw new Error("Order not found");
+        if (!res.ok) throw new Error("Pesanan tidak ditemukan");
         const payload = (await res.json()) as Partial<SerializedOrder> & {
           order?: SerializedOrder;
         };
         // GET /api/orders/[orderNumber] membalas { order }; tolerir order langsung.
         const source = payload.order ?? (payload as SerializedOrder);
         if (!source?.orderNumber || !source.status) {
-          throw new Error("Order not found");
+          throw new Error("Pesanan tidak ditemukan");
         }
 
         const normalized: SerializedOrder = {
