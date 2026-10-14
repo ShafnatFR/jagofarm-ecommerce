@@ -261,12 +261,13 @@ function LoginForm() {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Email</label>
+                <label htmlFor="login-email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Email</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <Icon name="email" size={20} />
                   </div>
                   <input
+                    id="login-email"
                     type="email"
                     placeholder="nama@email.com"
                     value={email}
@@ -279,13 +280,14 @@ function LoginForm() {
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Password</label>
+                  <label htmlFor="login-password" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Password</label>
                 </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <Icon name="lock" size={20} />
                   </div>
                   <input
+                    id="login-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Masukkan password"
                     value={password}

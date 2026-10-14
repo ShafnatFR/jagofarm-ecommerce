@@ -114,10 +114,11 @@ export default function ContactForm() {
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
               Nama <span className="text-red-500">*</span>
             </label>
             <input
+              id="contact-name" 
               className={`w-full rounded-xl border px-4 py-3 text-sm bg-slate-50/50 focus:bg-white transition outline-none ${
                 errors.name ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200" : "border-slate-200 focus:border-brand-700 focus:ring-2 focus:ring-brand-700/20"
               }`}
@@ -130,10 +131,11 @@ export default function ContactForm() {
             {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
               Email <span className="text-red-500">*</span>
             </label>
             <input
+              id="contact-email" 
               className={`w-full rounded-xl border px-4 py-3 text-sm bg-slate-50/50 focus:bg-white transition outline-none ${
                 errors.email ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200" : "border-slate-200 focus:border-brand-700 focus:ring-2 focus:ring-brand-700/20"
               }`}
@@ -172,10 +174,11 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+          <label htmlFor="contact-subject" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
             Subjek <span className="text-red-500">*</span>
           </label>
           <input
+              id="contact-subject" 
             className={`w-full rounded-xl border px-4 py-3 text-sm bg-slate-50/50 focus:bg-white transition outline-none ${
               errors.subject ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200" : "border-slate-200 focus:border-brand-700 focus:ring-2 focus:ring-brand-700/20"
             }`}
@@ -190,12 +193,13 @@ export default function ContactForm() {
 
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
               Pesan <span className="text-red-500">*</span>
             </label>
             <span className="text-xs text-slate-400">Minimal 20 karakter</span>
           </div>
           <textarea
+              id="contact-message" 
             className={`w-full rounded-xl border px-4 py-3 text-sm bg-slate-50/50 focus:bg-white transition outline-none resize-y ${
               errors.message ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200" : "border-slate-200 focus:border-brand-700 focus:ring-2 focus:ring-brand-700/20"
             }`}

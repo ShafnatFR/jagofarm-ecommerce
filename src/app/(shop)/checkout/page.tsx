@@ -422,10 +422,11 @@ export default function CheckoutPage() {
 
                   {/* Notes */}
                   <div className="mt-4">
-                    <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-foreground">
+                    <label htmlFor="checkout-notes" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-foreground">
                       Catatan untuk Kurir (Opsional)
                     </label>
                     <input
+                      id="checkout-notes"
                       type="text"
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}

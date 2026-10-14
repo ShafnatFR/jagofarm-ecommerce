@@ -111,10 +111,11 @@ export default function SecurityPage() {
               </div>
             )}
             <div>
-              <label className="text-label-md font-label-md text-on-surface mb-1.5 block">Password Saat Ini</label>
+              <label htmlFor="sec-current-password" className="text-label-md font-label-md text-on-surface mb-1.5 block">Password Saat Ini</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
                 <input
+                  id="sec-current-password"
                   type={showCurrent ? "text" : "password"}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
@@ -129,10 +130,11 @@ export default function SecurityPage() {
             </div>
 
             <div>
-              <label className="text-label-md font-label-md text-on-surface mb-1.5 block">Password Baru</label>
+              <label htmlFor="sec-new-password" className="text-label-md font-label-md text-on-surface mb-1.5 block">Password Baru</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock_reset</span>
                 <input
+                  id="sec-new-password"
                   type={showNew ? "text" : "password"}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
@@ -148,10 +150,11 @@ export default function SecurityPage() {
             </div>
 
             <div>
-              <label className="text-label-md font-label-md text-on-surface mb-1.5 block">Konfirmasi Password Baru</label>
+              <label htmlFor="sec-confirm-password" className="text-label-md font-label-md text-on-surface mb-1.5 block">Konfirmasi Password Baru</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
                 <input
+                  id="sec-confirm-password"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

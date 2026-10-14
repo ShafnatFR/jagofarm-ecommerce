@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
                   )}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <label className="block text-sm font-semibold text-slate-700">Email</label>
+                      <label htmlFor="forgot-email" className="block text-sm font-semibold text-slate-700">Email</label>
                       <span className="text-xs text-slate-400">Akun terdaftar</span>
                     </div>
                     <div className="relative rounded-xl shadow-sm">
@@ -122,6 +122,7 @@ export default function ForgotPasswordPage() {
                         <Icon name="email" size={20} />
                       </div>
                       <input
+                        id="forgot-email"
                         type="email"
                         autoComplete="email"
                         placeholder="nama@email.com"

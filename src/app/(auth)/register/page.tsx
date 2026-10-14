@@ -246,12 +246,13 @@ export default function RegisterPage() {
                   <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Nama Lengkap */}
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Nama Lengkap</label>
+                      <label htmlFor="reg-name" className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Nama Lengkap</label>
                       <div className="relative rounded-xl shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                           <Icon name="person" size={16} />
                         </div>
                         <input
+                    id="reg-name" 
                           type="text"
                           placeholder="Contoh: Budi Santoso"
                           value={form.name}
@@ -264,12 +265,13 @@ export default function RegisterPage() {
 
                     {/* Email */}
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Email</label>
+                      <label htmlFor="reg-email" className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Email</label>
                       <div className="relative rounded-xl shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                           <Icon name="email" size={16} />
                         </div>
                         <input
+                    id="reg-email" 
                           type="email"
                           placeholder="nama@email.com"
                           value={form.email}
@@ -283,7 +285,7 @@ export default function RegisterPage() {
                     {/* WhatsApp */}
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">No. WhatsApp</label>
+                        <label htmlFor="reg-phone" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">No. WhatsApp</label>
                         <span className="text-[11px] text-slate-400 font-medium">Untuk notifikasi status pesanan</span>
                       </div>
                       <div className="relative rounded-xl shadow-sm">
@@ -291,6 +293,7 @@ export default function RegisterPage() {
                           <Icon name="phone" size={16} />
                         </div>
                         <input
+                    id="reg-phone" 
                           type="tel"
                           placeholder="08xxxxxxxxxx"
                           value={form.phone}
@@ -303,7 +306,7 @@ export default function RegisterPage() {
                     {/* Kode Referral (opsional) */}
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">Kode Referral</label>
+                        <label htmlFor="reg-referral" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">Kode Referral</label>
                         <span className="text-[11px] text-slate-400 font-medium">Opsional</span>
                       </div>
                       <div className="relative rounded-xl shadow-sm">
@@ -311,6 +314,7 @@ export default function RegisterPage() {
                           <Icon name="redeem" size={16} />
                         </div>
                         <input
+                    id="reg-referral" 
                           type="text"
                           placeholder="Mis. JAGO-AB12CD"
                           value={form.referralCode}
@@ -323,12 +327,13 @@ export default function RegisterPage() {
                     {/* Password & Confirm */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Password</label>
+                        <label htmlFor="reg-password" className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Password</label>
                         <div className="relative rounded-xl shadow-sm">
                           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                             <Icon name="lock" size={16} />
                           </div>
                           <input
+                    id="reg-password" 
                             type={showPassword ? "text" : "password"}
                             placeholder="Minimal 8 karakter"
                             value={form.password}
@@ -349,12 +354,13 @@ export default function RegisterPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Konfirmasi Password</label>
+                        <label htmlFor="reg-confirm" className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">Konfirmasi Password</label>
                         <div className="relative rounded-xl shadow-sm">
                           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                             <Icon name="shield" size={16} />
                           </div>
                           <input
+                    id="reg-confirm" 
                             type="password"
                             placeholder="Ulangi password"
                             value={form.confirmPassword}
