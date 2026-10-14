@@ -255,7 +255,14 @@ export default function TrackingPage() {
     );
   }
 
-  if (!order) return null;
+  if (!order) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-20 text-center">
+        <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
+        <p className="text-sm text-muted-foreground">Mengalihkan ke daftar pesanan...</p>
+      </div>
+    );
+  }
 
   const statusInfo = STATUS_MAP[order.status] || STATUS_MAP.pending;
   const trackingNumber = (order.trackingNumber ?? "").trim();

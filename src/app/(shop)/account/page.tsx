@@ -189,7 +189,12 @@ export default function AccountPage() {
   }
 
   if (!user) {
-    return null;
+    return (
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
+        <p className="text-sm text-slate-500">Mengalihkan ke halaman masuk...</p>
+      </div>
+    );
   }
 
   return (
