@@ -27,10 +27,14 @@ export async function GET(request: NextRequest) {
     }
 
     if (minPrice || maxPrice) {
+      // Guard: parseFloat("abc") = NaN -> Prisma menolak filter Decimal ->
+      // 500. Hanya nilai finit yang dipakai.
       const basePrice: Prisma.DecimalFilter = {};
-      if (minPrice) basePrice.gte = parseFloat(minPrice);
-      if (maxPrice) basePrice.lte = parseFloat(maxPrice);
-      where.basePrice = basePrice;
+      const min = minPrice ? parseFloat(minPrice) : NaN;
+      const max = maxPrice ? parseFloat(maxPrice) : NaN;
+      if (Number.isFinite(min)) basePrice.gte = min;
+      if (Number.isFinite(max)) basePrice.lte = max;
+      if (Object.keys(basePrice).length > 0) where.basePrice = basePrice;
     }
 
     if (search) {

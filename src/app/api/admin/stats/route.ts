@@ -43,10 +43,15 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const period = searchParams.get("period") || "30"; // days
+    // ?period=angka (hari). Guard: parseInt("abc") = NaN -> Invalid Date ->
+    // Prisma error 500. Clamp ke 1..365 hari.
+    const requestedPeriod = parseInt(searchParams.get("period") ?? "30", 10);
+    const periodDays = Number.isFinite(requestedPeriod)
+      ? Math.min(365, Math.max(1, requestedPeriod))
+      : 30;
 
     const since = new Date();
-    since.setDate(since.getDate() - parseInt(period));
+    since.setDate(since.getDate() - periodDays);
 
     const [
       totalRevenue,
