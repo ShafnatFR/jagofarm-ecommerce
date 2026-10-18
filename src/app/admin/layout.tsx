@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { AdminRefreshProvider } from "./admin-refresh"
 import { NotificationBell } from "@/components/admin/notification-bell"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
@@ -327,6 +328,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle variant="menu" />
             <NotificationBell />
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#123f2d] dark:bg-[#0d2118] text-white">
