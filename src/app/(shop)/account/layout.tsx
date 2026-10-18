@@ -15,10 +15,10 @@ export default async function AccountLayout({ children }: { children: React.Reac
   if (!user) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-[#FAFBFB]">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background text-on-surface">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <nav className="mb-8" aria-label="Account navigation">
-          <ul className="flex flex-wrap gap-4 border-b border-outline-variant pb-4">
+          <ul className="flex flex-wrap items-center gap-2 border-b border-outline-variant pb-4">
             {[
               { href: "/account", label: "Profil", icon: "person" },
               { href: "/account/points", label: "Poin", icon: "stars" },
@@ -29,8 +29,10 @@ export default async function AccountLayout({ children }: { children: React.Reac
               { href: "/orders", label: "Pesanan", icon: "inventory_2" },
             ].map((item) => (
               <li key={item.href}>
-                <Link href={item.href}
-                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors border-b-2 border-transparent hover:border-primary">
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
+                >
                   <Icon name={item.icon} size={16} />
                   {item.label}
                 </Link>

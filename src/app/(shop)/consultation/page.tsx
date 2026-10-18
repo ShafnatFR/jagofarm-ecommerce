@@ -1,29 +1,35 @@
 import ConsultationChat, { ConsultationSidebar } from "./consultation-chat";
 
-export const metadata = { title: "Konsultasi", alternates: { canonical: "/consultation" } };
+export const metadata = { title: "Konsultasi Pakar", alternates: { canonical: "/consultation" } };
 
 export default function ConsultationPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-body-sm">
-        <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 border border-emerald-200 text-green-800 text-xs font-semibold">
-            <span className="w-2 h-2 rounded-full bg-green-500" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      {/* Header Banner */}
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container border border-outline-variant text-on-surface text-xs font-semibold mb-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Konsultasi bersama Tim Pakar JagoFarm</span>
           </div>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
+            Konsultasi Budidaya &amp; Akuaponik
+          </h1>
+          <p className="text-xs sm:text-sm text-on-surface-variant mt-1">
+            Diskusi langsung dengan tim agronomis &amp; pakar akuakultur JagoFarm secara real-time.
+          </p>
         </div>
       </div>
 
       {/* Main grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-grow items-start min-h-[750px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start min-h-[720px]">
         {/* Sidebar — data sesi konsultasi user */}
-        <aside className="lg:col-span-3 bg-white rounded-2xl border border-green-200 shadow-sm flex flex-col h-[750px] overflow-hidden">
+        <aside className="lg:col-span-4 xl:col-span-3 bg-surface rounded-2xl border border-outline-variant shadow-md flex flex-col h-[720px] overflow-hidden">
           <ConsultationSidebar />
         </aside>
 
         {/* Area chat — dinamis */}
-        <section className="bg-white rounded-2xl border border-green-200 shadow-sm flex flex-col h-[750px] overflow-hidden lg:col-span-9">
+        <section className="bg-surface rounded-2xl border border-outline-variant shadow-md flex flex-col h-[720px] overflow-hidden lg:col-span-8 xl:col-span-9">
           <ConsultationChat />
         </section>
       </div>

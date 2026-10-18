@@ -285,8 +285,8 @@ export default function ConsultationChat() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 border-4 border-green-200 border-t-green-800 rounded-full animate-spin" />
-          <span className="text-sm text-gray-500">Memulai sesi konsultasi...</span>
+          <div className="w-8 h-8 border-4 border-outline-variant border-t-primary rounded-full animate-spin" />
+          <span className="text-sm text-on-surface-variant">Memulai sesi konsultasi...</span>
         </div>
       </div>
     );
@@ -297,10 +297,10 @@ export default function ConsultationChat() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-5 py-3.5 border-b border-surface-container bg-green-50/50 flex items-center justify-between gap-3 flex-shrink-0">
+      <div className="px-5 py-3.5 border-b border-outline-variant bg-surface-container-low/60 flex items-center justify-between gap-3 flex-shrink-0">
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative shrink-0">
-            <div className="w-12 h-12 rounded-xl overflow-hidden border border-green-700 shadow-sm">
+            <div className="w-12 h-12 rounded-xl overflow-hidden border border-outline-variant shadow-sm bg-surface-container">
               {/* eslint-disable-next-line @next/next/no-img-element -- avatar lokal (SVG/data-URL), bukan aset remote */}
               <img
                 alt={TEAM.LABEL}
@@ -309,24 +309,24 @@ export default function ConsultationChat() {
               />
             </div>
             {isActive && (
-              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-surface rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
             )}
           </div>
           <div className="min-w-0">
-            <h3 className="font-headline-sm text-sm sm:text-base font-bold text-green-900 truncate">
+            <h3 className="font-serif text-base sm:text-lg font-bold text-on-surface truncate">
               {session?.expertName || TEAM.LABEL}
             </h3>
-            <p className="text-xs text-gray-500 truncate flex items-center gap-1.5 flex-wrap">
+            <p className="text-xs text-on-surface-variant truncate flex items-center gap-1.5 flex-wrap">
               {isActive ? (
                 <>
-                  <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
-                  <span className="text-green-700 font-semibold">Aktif Sekarang</span>
+                  <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
+                  <span className="text-primary dark:text-tertiary font-semibold">Aktif Sekarang</span>
                 </>
               ) : (
-                <span className="text-gray-500">Sesi tidak aktif</span>
+                <span className="text-on-surface-variant">Sesi tidak aktif</span>
               )}
               {session?.sessionRef && (
-                <span className="truncate">• {session.sessionRef}</span>
+                <span className="truncate opacity-75">• {session.sessionRef}</span>
               )}
             </p>
           </div>
@@ -334,13 +334,16 @@ export default function ConsultationChat() {
       </div>
 
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-white/40 flex-1">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-transparent">
         {error && (
-          <div className="text-xs text-red-600 bg-red-50 p-2 rounded">{error}</div>
+          <div className="text-xs text-error bg-error-container/20 border border-error/30 p-3 rounded-xl flex items-center gap-2">
+            <span className="material-symbols-outlined text-base">error</span>
+            <span>{error}</span>
+          </div>
         )}
 
         <div className="flex items-center justify-center my-1">
-          <span className="px-3 py-1 rounded-full bg-green-50 text-[11px] font-semibold text-gray-500">
+          <span className="px-3.5 py-1 rounded-full bg-surface-container-low border border-outline-variant text-[11px] font-medium text-on-surface-variant">
             {session?.sessionRef
               ? `Hari ini, ${new Date().toLocaleDateString("id-ID")} • Sesi Konsultasi ${session.sessionRef}`
               : "Memulai sesi..."}
@@ -352,7 +355,7 @@ export default function ConsultationChat() {
           .filter((m) => m.senderType === "system")
           .map((msg) => (
             <div key={msg.id} className="flex items-center justify-center my-1">
-              <span className="px-3 py-1 rounded-full bg-green-50 text-[11px] text-gray-500">
+              <span className="px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-[11px] text-on-surface-variant">
                 {msg.content}
               </span>
             </div>
@@ -372,7 +375,7 @@ export default function ConsultationChat() {
               >
                 {/* Avatar */}
                 {!isUser && (
-                  <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-green-700 shadow-xs mt-1">
+                  <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-outline-variant shadow-xs mt-1 bg-surface-container">
                     {/* eslint-disable-next-line @next/next/no-img-element -- avatar lokal (SVG/data-URL), bukan aset remote */}
                     <img
                       alt={TEAM.LABEL}
@@ -397,13 +400,13 @@ export default function ConsultationChat() {
                     }`}
                   >
                     {isUser ? (
-                      <span className="text-gray-500">Anda</span>
+                      <span className="text-on-surface-variant">Anda</span>
                     ) : (
-                      <span className="text-green-800 font-semibold">
+                      <span className="text-primary dark:text-tertiary font-semibold">
                         {TEAM.LABEL}
                       </span>
                     )}
-                    <span className="text-gray-400 ml-1">
+                    <span className="text-on-surface-variant/70 ml-1">
                       {formatTime(msg.createdAt)}
                     </span>
                   </div>
@@ -412,8 +415,8 @@ export default function ConsultationChat() {
                   <div
                     className={`${
                       isUser
-                        ? "bg-green-800 text-white rounded-2xl rounded-tr-sm shadow-sm inline-block px-4 py-2.5 max-w-[85%] text-sm text-left leading-relaxed"
-                        : "bg-white border border-green-200 rounded-2xl rounded-tl-sm shadow-xs text-sm text-green-900 leading-relaxed p-3.5 w-full"
+                        ? "bg-primary text-on-primary rounded-2xl rounded-tr-sm shadow-sm inline-block px-4 py-2.5 max-w-[85%] text-sm text-left leading-relaxed"
+                        : "bg-surface-container-low border border-outline-variant rounded-2xl rounded-tl-sm shadow-xs text-sm text-on-surface leading-relaxed p-3.5 w-full"
                     }`}
                   >
                     {msg.content}
@@ -427,7 +430,7 @@ export default function ConsultationChat() {
                       {msg.attachments.map((att, i) => (
                         <span
                           key={i}
-                          className="text-[10px] px-2 py-0.5 rounded bg-green-100 text-green-800 font-medium"
+                          className="text-[10px] px-2 py-0.5 rounded bg-surface-container text-primary font-medium border border-outline-variant"
                         >
                           {att}
                         </span>
@@ -439,7 +442,7 @@ export default function ConsultationChat() {
                 {/* Avatar user (right side) */}
                 {isUser && (
                   <div
-                    className="w-8 h-8 rounded-full bg-green-50 text-green-800 flex items-center justify-center font-bold text-xs border border-green-200 shrink-0 mt-1"
+                    className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs border border-outline-variant shrink-0 mt-1"
                     aria-hidden
                   >
                     A
@@ -451,7 +454,7 @@ export default function ConsultationChat() {
       </div>
 
       {/* Chat input */}
-      <div className="px-4 py-3 bg-white border-t border-surface-container flex-shrink-0">
+      <div className="px-4 py-3 bg-surface-container-low/60 border-t border-outline-variant flex-shrink-0">
         <form
           onSubmit={sendMessage}
           className="flex items-center gap-2"
@@ -460,7 +463,7 @@ export default function ConsultationChat() {
             <input
               ref={inputRef}
               aria-label="Tulis pesan konsultasi"
-              className="w-full pl-3.5 pr-10 py-2.5 bg-white rounded-xl text-body-md text-green-900 border border-green-200 focus:border-green-700 focus:ring-1 focus:ring-primary-container focus:outline-none placeholder:text-gray-500 text-sm"
+              className="w-full pl-3.5 pr-10 py-2.5 bg-surface rounded-xl text-on-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none placeholder:text-on-surface-variant/60 text-sm"
               placeholder="Ketik pertanyaan atau laporkan kondisi kolam Anda ke Tim Kami..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -471,14 +474,14 @@ export default function ConsultationChat() {
             type="submit"
             disabled={!input.trim() || sending || !session}
             aria-label="Kirim pesan"
-            className="px-4 py-2.5 rounded-xl bg-green-800 text-white font-bold text-sm flex items-center gap-1.5 shadow-sm hover:brightness-110 active:scale-95 transition-all shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-sm flex items-center gap-1.5 shadow-sm hover:brightness-110 active:scale-95 transition-all shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <span className="material-symbols-outlined text-base" data-icon="send">
               send
             </span>
           </button>
         </form>
-        <p className="text-[10px] text-gray-500 text-center mt-1.5">
+        <p className="text-[10px] text-on-surface-variant/80 text-center mt-1.5">
           Tekan Enter untuk mengirim pesan • Konsultasi dilindungi kerahasiaan SOP formulasi JagoFarm
         </p>
       </div>
@@ -541,27 +544,27 @@ export function ConsultationSidebar() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="p-3.5 border-b border-surface-container flex-shrink-0">
+      <div className="p-3.5 border-b border-outline-variant flex-shrink-0 bg-surface-container-low/40">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-headline-sm text-sm text-green-800 font-bold flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-green-800 text-lg" data-icon="forum">
+          <h2 className="font-serif text-base text-on-surface font-bold flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-primary dark:text-tertiary text-lg" data-icon="forum">
               forum
             </span>
             Konsultasi Pakar
           </h2>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-green-800 text-green-100 font-bold">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] bg-primary text-on-primary font-bold">
             {activeSessions.length} Aktif
           </span>
         </div>
 
-        <div className="grid grid-cols-2 p-1 bg-green-50 rounded-xl text-xs font-semibold text-center">
+        <div className="grid grid-cols-2 p-1 bg-surface-container rounded-xl text-xs font-semibold text-center border border-outline-variant">
           <button
             type="button"
             onClick={() => setTab("active")}
-            className={`py-1.5 px-2 rounded-lg transition-colors ${
+            className={`py-1.5 px-2 rounded-lg transition-all ${
               tab === "active"
-                ? "bg-white text-green-800 shadow-sm"
-                : "text-gray-500 hover:text-green-900"
+                ? "bg-surface text-on-surface shadow-xs font-bold border border-outline-variant"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             Sesi Aktif
@@ -569,10 +572,10 @@ export function ConsultationSidebar() {
           <button
             type="button"
             onClick={() => setTab("history")}
-            className={`py-1.5 px-2 rounded-lg transition-colors ${
+            className={`py-1.5 px-2 rounded-lg transition-all ${
               tab === "history"
-                ? "bg-white text-green-800 shadow-sm"
-                : "text-gray-500 hover:text-green-900"
+                ? "bg-surface text-on-surface shadow-xs font-bold border border-outline-variant"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             Riwayat ({historySessions.length})
@@ -581,15 +584,18 @@ export function ConsultationSidebar() {
       </div>
 
       {/* Daftar sesi konsultasi */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-surface-container">
+      <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-outline-variant">
         {error ? (
           <div className="p-4 text-center">
-            <p className="text-xs text-red-600 mb-2">{error}</p>
+            <div className="text-xs text-error bg-error-container/20 border border-error/30 p-2.5 rounded-xl mb-3">
+              {error}
+            </div>
             <button
               type="button"
               onClick={() => void loadSessions()}
-              className="text-xs font-bold text-green-800 hover:underline"
+              className="text-xs font-bold text-primary dark:text-tertiary hover:underline inline-flex items-center gap-1"
             >
+              <span className="material-symbols-outlined text-sm">refresh</span>
               Coba lagi
             </button>
           </div>
@@ -597,16 +603,16 @@ export function ConsultationSidebar() {
           [0, 1, 2].map((i) => (
             <div key={i} className="p-3.5 animate-pulse">
               <div className="flex gap-3">
-                <div className="w-11 h-11 rounded-xl bg-green-100 shrink-0" />
+                <div className="w-11 h-11 rounded-xl bg-surface-container shrink-0" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-3 bg-green-100 rounded w-2/3" />
-                  <div className="h-2.5 bg-green-100/70 rounded w-full" />
+                  <div className="h-3 bg-surface-container rounded w-2/3" />
+                  <div className="h-2.5 bg-surface-container rounded w-full" />
                 </div>
               </div>
             </div>
           ))
         ) : visible.length === 0 ? (
-          <div className="p-6 text-center text-xs text-gray-500">
+          <div className="p-6 text-center text-xs text-on-surface-variant">
             {tab === "active"
               ? "Belum ada sesi aktif. Mulai dari kotak chat di samping."
               : "Belum ada riwayat konsultasi."}
@@ -636,50 +642,50 @@ export function ConsultationSidebar() {
                   }
                 }}
                 className={`p-3.5 cursor-pointer transition-colors ${
-                  isSelected ? "bg-green-50 ring-1 ring-inset ring-green-300" : "hover:bg-green-50"
+                  isSelected ? "bg-surface-container border-l-2 border-primary" : "hover:bg-surface-container-low/60"
                 }`}
               >
                 <div className="flex gap-3">
                   <div className="relative shrink-0">
-                    <div className="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center text-green-800 font-bold text-sm">
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 border border-outline-variant flex items-center justify-center text-primary font-bold text-sm">
                       {getInitials(s.expertName)}
                     </div>
                     <span
-                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 border-2 border-white rounded-full ${
-                        isActive ? "bg-green-500" : "bg-outline-variant"
+                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 border-2 border-surface rounded-full ${
+                        isActive ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]" : "bg-outline-variant"
                       }`}
                     />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <h4 className="text-xs font-bold text-green-900 truncate">
+                      <h4 className="text-xs font-bold text-on-surface truncate">
                         {s.expertName}
                       </h4>
-                      <span className="text-[10px] text-gray-500 shrink-0 ml-2">
+                      <span className="text-[10px] text-on-surface-variant shrink-0 ml-2">
                         {formatRelative(s.updatedAt)}
                       </span>
                     </div>
-                    <p className="text-[11px] text-green-800 font-semibold truncate flex items-center gap-1">
+                    <p className="text-[11px] text-primary dark:text-tertiary font-semibold truncate flex items-center gap-1">
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
-                          isActive ? "bg-emerald-600" : "bg-gray-400"
+                          isActive ? "bg-emerald-500" : "bg-on-surface-variant/40"
                         }`}
                       />
                       {isActive ? "Aktif" : "Nonaktif"}
                       {s.sessionRef ? ` • ${s.sessionRef}` : ""}
                     </p>
-                    <p className="text-[11px] text-gray-700 truncate mt-1">
+                    <p className="text-[11px] text-on-surface-variant truncate mt-1">
                       {last ? (
                         <>
                           {prefix && (
-                            <span className="font-medium text-green-800">
+                            <span className="font-medium text-primary dark:text-tertiary">
                               {prefix}
                             </span>
                           )}
                           {last.content}
                         </>
                       ) : (
-                        <span className="text-gray-400">Belum ada pesan</span>
+                        <span className="text-on-surface-variant/60">Belum ada pesan</span>
                       )}
                     </p>
                   </div>
@@ -690,17 +696,18 @@ export function ConsultationSidebar() {
         )}
       </div>
 
-      <div className="p-3 bg-green-50 border-t border-green-200 text-[11px] flex items-center justify-between flex-shrink-0">
-        <span className="text-gray-500 flex items-center gap-1">
-          <span className="material-symbols-outlined text-sm text-green-800" data-icon="lock">
+      <div className="p-3 bg-surface-container-low/60 border-t border-outline-variant text-[11px] flex items-center justify-between flex-shrink-0 text-on-surface-variant">
+        <span className="flex items-center gap-1">
+          <span className="material-symbols-outlined text-sm text-primary dark:text-tertiary" data-icon="lock">
             lock
           </span>
           Sesi Anda tersimpan aman
         </span>
-        <Link href="/faq" className="text-green-800 font-bold hover:underline">
+        <Link href="/faq" className="text-primary dark:text-tertiary font-bold hover:underline">
           Bantuan
         </Link>
       </div>
     </div>
   );
 }
+

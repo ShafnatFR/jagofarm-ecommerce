@@ -186,27 +186,28 @@ body {
 }
 
 /* ── Mode gelap (Induk JagoFarm) ──────────────────────────────────────────
-   Palet hijau botani gelap elegan dari induk web jagofarm.biz.id */
+   Palet hijau botani gelap elegan — kontras permukaan diperkuat agar
+   kartu/panel terlihat jelas di atas latar belakang gelap. */
 .dark {
   --color-background: #04110c;
-  --color-surface: #0b2419;
-  --color-surface-bright: #123827;
-  --color-surface-container-lowest: #020b08;
-  --color-surface-container-low: #061710;
-  --color-surface-container: #0b2419;
-  --color-surface-container-high: #102d20;
-  --color-surface-container-highest: #153929;
-  --color-surface-variant: #153328;
+  --color-surface: #0d2118;
+  --color-surface-bright: #153d2b;
+  --color-surface-container-lowest: #030a07;
+  --color-surface-container-low: #091a12;
+  --color-surface-container: #0f2a1e;
+  --color-surface-container-high: #153626;
+  --color-surface-container-highest: #1c422f;
+  --color-surface-variant: #183a2b;
   --color-surface-dim: #04110c;
 
   --color-on-background: #f4f0e3;
-  --color-on-surface: #f4f0e3;
+  --color-on-surface: #e8e4d8;
   --color-on-surface-variant: #a6b8ad;
   --color-inverse-on-surface: #04110c;
 
-  --color-primary: #245f43;
+  --color-primary: #2d7a56;
   --color-on-primary: #ffffff;
-  --color-primary-container: #102d20;
+  --color-primary-container: #153626;
   --color-on-primary-container: #c9df91;
   --color-inverse-primary: #04110c;
   --color-primary-fixed: #c9df91;
@@ -214,9 +215,9 @@ body {
   --color-on-primary-fixed: #020b08;
   --color-on-primary-fixed-variant: #061710;
 
-  --color-secondary: #153328;
+  --color-secondary: #1c422f;
   --color-on-secondary: #f4f0e3;
-  --color-secondary-container: #102d20;
+  --color-secondary-container: #153626;
   --color-on-secondary-container: #b8ce8d;
   --color-secondary-fixed: #1c3e30;
   --color-secondary-fixed-dim: #c9df91;
@@ -225,7 +226,7 @@ body {
 
   --color-tertiary: #c9df91;
   --color-on-tertiary: #020b08;
-  --color-tertiary-container: #153328;
+  --color-tertiary-container: #1c422f;
   --color-on-tertiary-container: #c9df91;
   --color-tertiary-fixed: #c9df91;
   --color-tertiary-fixed-dim: #b8ce8d;
@@ -237,34 +238,34 @@ body {
   --color-error-container: #7f1d1d;
   --color-on-error-container: #fee2e2;
 
-  --color-outline: rgba(234, 242, 235, 0.16);
-  --color-outline-variant: rgba(234, 242, 235, 0.08);
+  --color-outline: rgba(234, 242, 235, 0.20);
+  --color-outline-variant: rgba(234, 242, 235, 0.12);
 
-  --color-foreground: #f4f0e3;
+  --color-foreground: #e8e4d8;
   --color-primary-foreground: #ffffff;
   --color-secondary-foreground: #f4f0e3;
   --color-accent: #c9df91;
   --color-accent-foreground: #020b08;
-  --color-muted: #102d20;
+  --color-muted: #153626;
   --color-muted-foreground: #a6b8ad;
-  --color-card: #0b2419;
-  --color-card-foreground: #f4f0e3;
-  --color-border: rgba(234, 242, 235, 0.12);
-  --color-input: rgba(234, 242, 235, 0.16);
+  --color-card: #0d2118;
+  --color-card-foreground: #e8e4d8;
+  --color-border: rgba(234, 242, 235, 0.14);
+  --color-input: rgba(234, 242, 235, 0.18);
   --color-ring: #c9df91;
   --color-destructive: #f87171;
   --color-destructive-foreground: #450a0a;
 
   /* Direct Parent Colors in Dark Mode */
-  --color-forest: #245f43;
+  --color-forest: #2d7a56;
   --color-forest-deep: #020b08;
   --color-leaf: #b8ce8d;
-  --color-sage: #153328;
+  --color-sage: #1c422f;
   --color-lime: #c9df91;
-  --color-cream: #061710;
-  --color-paper: #0b2419;
-  --color-ink: #f4f0e3;
-  --color-line: rgba(234, 242, 235, 0.12);
+  --color-cream: #091a12;
+  --color-paper: #0d2118;
+  --color-ink: #e8e4d8;
+  --color-line: rgba(234, 242, 235, 0.14);
 }
 
 .dark body {
@@ -272,15 +273,40 @@ body {
 }
 
 /* Penyesuaian kelas Tailwind literal agar tidak menyilaukan di mode gelap */
-.dark .bg-white { background-color: #0b2419; }
+.dark .bg-white { background-color: #0d2118; }
 .dark .bg-slate-50,
-.dark .bg-slate-50\/70 { background-color: #061710; }
+.dark .bg-slate-50\/70 { background-color: #091a12; }
 .dark .text-slate-900,
-.dark .text-slate-800 { color: #f4f0e3; }
+.dark .text-slate-800 { color: #e8e4d8; }
 .dark .text-slate-600,
 .dark .text-slate-500 { color: #a6b8ad; }
 .dark .border-slate-200,
-.dark .border-slate-100 { border-color: rgba(234, 242, 235, 0.12); }
+.dark .border-slate-100 { border-color: rgba(234, 242, 235, 0.14); }
+
+.dark .bg-green-50,
+.dark .bg-green-50\/50,
+.dark .bg-green-100 { background-color: #153626; }
+.dark .border-green-200,
+.dark .border-emerald-200,
+.dark .border-green-300 { border-color: rgba(234, 242, 235, 0.14); }
+.dark .text-green-900,
+.dark .text-green-800 { color: #e8e4d8; }
+.dark .text-green-700,
+.dark .text-green-600 { color: #c9df91; }
+.dark .bg-red-50 { background-color: rgba(185, 28, 28, 0.15); }
+.dark .text-red-600,
+.dark .text-red-700 { color: #f87171; }
+.dark .border-red-300,
+.dark .border-red-200 { border-color: rgba(248, 113, 113, 0.3); }
+.dark .bg-yellow-100,
+.dark .bg-amber-50 { background-color: rgba(217, 119, 6, 0.18); }
+.dark .text-yellow-800,
+.dark .text-yellow-700,
+.dark .text-amber-700 { color: #fde68a; }
+.dark .bg-blue-100 { background-color: rgba(37, 99, 235, 0.18); }
+.dark .text-blue-800,
+.dark .text-blue-700 { color: #bfdbfe; }
+
 
 html {
   scroll-behavior: smooth;

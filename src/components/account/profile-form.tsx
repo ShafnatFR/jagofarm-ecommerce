@@ -304,10 +304,10 @@ export function ProfileForm() {
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Icon name="person" size={20} className="text-primary" />
-        <h3 className="text-lg font-semibold">Pengaturan Akun</h3>
+    <div className="rounded-2xl border border-outline-variant bg-surface p-6 sm:p-8 shadow-md">
+      <div className="mb-6 flex items-center gap-2">
+        <Icon name="person" size={22} className="text-primary dark:text-tertiary" />
+        <h3 className="font-serif text-2xl font-bold text-on-surface">Pengaturan Akun</h3>
       </div>
 
       <Tabs defaultValue="profil">

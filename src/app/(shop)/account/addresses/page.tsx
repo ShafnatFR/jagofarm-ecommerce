@@ -24,27 +24,30 @@ export default async function AddressesPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Alamat Saya</h1>
+        <div>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-on-surface">Alamat Saya</h1>
+          <p className="text-xs sm:text-sm text-on-surface-variant mt-1">Kelola daftar alamat untuk kemudahan checkout &amp; pengiriman.</p>
+        </div>
         <Link
           href="/account/addresses/new"
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+          className="px-4 py-2.5 bg-primary text-on-primary rounded-xl hover:brightness-110 transition-all text-sm font-semibold shadow-sm"
         >
           + Tambah Alamat Baru
         </Link>
       </div>
 
       {error ? (
-        <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="rounded-xl border border-error/30 bg-error-container/20 px-4 py-3 text-sm text-error">
           {error}
         </div>
       ) : null}
 
       {addresses.length === 0 ? (
-        <div className="bg-card p-8 rounded-lg border border-border text-center">
-          <p className="text-muted-foreground mb-4">Belum ada alamat tersimpan</p>
+        <div className="bg-surface p-10 rounded-2xl border border-outline-variant text-center shadow-sm">
+          <p className="text-on-surface-variant mb-4 text-sm">Belum ada alamat tersimpan</p>
           <Link
             href="/account/addresses/new"
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors inline-block"
+            className="px-5 py-2.5 bg-primary text-on-primary rounded-xl hover:brightness-110 transition-all text-sm font-semibold inline-block shadow-sm"
           >
             Tambah Alamat Pertama
           </Link>
@@ -54,34 +57,38 @@ export default async function AddressesPage({
           {addresses.map((address) => (
             <div
               key={address.id}
-              className="bg-card p-6 rounded-lg border border-border relative"
+              className="bg-surface p-6 rounded-2xl border border-outline-variant relative shadow-sm flex flex-col justify-between"
             >
-              {address.isDefault && (
-                <span className="absolute top-4 right-4 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                  Utama
-                </span>
-              )}
-              <h3 className="font-semibold mb-2">{address.label}</h3>
-              <p className="text-sm text-muted-foreground mb-1">
-                {address.recipientName}
-              </p>
-              <p className="text-sm text-muted-foreground mb-1">
-                {address.phone}
-              </p>
-              <p className="text-sm text-muted-foreground mb-4">
-                {address.detail}, {address.city}, {address.province} {address.postalCode}
-              </p>
-              <div className="flex gap-2">
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h3 className="font-serif text-lg font-bold text-on-surface">{address.label}</h3>
+                  {address.isDefault && (
+                    <span className="px-2.5 py-0.5 text-xs font-semibold bg-primary/15 text-primary dark:text-tertiary border border-outline-variant rounded-full">
+                      Utama
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm font-medium text-on-surface mb-1">
+                  {address.recipientName}
+                </p>
+                <p className="text-xs text-on-surface-variant mb-1">
+                  {address.phone}
+                </p>
+                <p className="text-xs text-on-surface-variant/90 mb-4 leading-relaxed">
+                  {address.detail}, {address.city}, {address.province} {address.postalCode}
+                </p>
+              </div>
+              <div className="flex gap-2 pt-2 border-t border-outline-variant">
                 <Link
                   href={`/account/addresses/${address.id}/edit`}
-                  className="flex-1 px-3 py-1.5 text-sm text-primary hover:text-primary/80 border border-primary rounded-lg text-center transition-colors"
+                  className="flex-1 px-3 py-1.5 text-xs font-semibold text-primary dark:text-tertiary hover:bg-surface-container border border-outline-variant rounded-xl text-center transition-colors"
                 >
                   Edit
                 </Link>
-                <form action={`/api/user/addresses/${address.id}/default`} method="POST">
+                <form action={`/api/user/addresses/${address.id}/default`} method="POST" className="flex-1">
                   <button
                     type="submit"
-                    className="flex-1 px-3 py-1.5 text-sm text-foreground hover:text-primary border border-border rounded-lg text-center transition-colors"
+                    className="w-full px-3 py-1.5 text-xs font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container border border-outline-variant rounded-xl text-center transition-colors disabled:opacity-50"
                     disabled={address.isDefault}
                   >
                     {address.isDefault ? "Sudah Utama" : "Jadikan Utama"}
