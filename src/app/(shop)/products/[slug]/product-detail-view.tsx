@@ -26,7 +26,7 @@ interface ApiProduct {
   sku?: string; weightGram?: number; stock?: number;
   images: { url: string; altText?: string | null; isPrimary?: boolean }[];
   category: { id: string; name: string; slug: string };
-  variants?: { id: string; name: string; priceModifier?: number }[];
+  variants?: { id: string; name: string; price: number; stock?: number; weightGram?: number | null }[];
   _count?: { reviews?: number };
 }
 
@@ -341,10 +341,10 @@ export default function ProductDetailPage({
 
   /* ---------- Derived data ---------- */
   const variant = product.variants?.[selectedVariant];
-  const priceMod = variant?.priceModifier ?? 0;
-  const basePrice = product.basePrice + priceMod;
-  const displayPrice = (product.discountPrice ?? product.basePrice) + priceMod;
-  const hasDiscount = product.discountPrice != null && product.discountPrice < product.basePrice;
+  // Harga absolut: varian punya harga sendiri, bukan selisih dari basePrice.
+  const displayPrice = variant?.price ?? product.discountPrice ?? product.basePrice;
+  const basePrice = variant?.price ?? product.basePrice;
+  const hasDiscount = !variant && product.discountPrice != null && product.discountPrice < product.basePrice;
   const discountPct = hasDiscount
     ? Math.round(((product.basePrice - product.discountPrice!) / product.basePrice) * 100)
     : 0;
@@ -361,7 +361,8 @@ export default function ProductDetailPage({
       price: displayPrice,
       quantity,
       image: images[0]?.url,
-      weightGram: product!.weightGram ?? 0,
+      // Berat varian diprioritaskan; null berarti ikut berat produk.
+      weightGram: variant?.weightGram ?? product!.weightGram ?? 0,
       slug: product!.slug,
     });
     setAddedToCart(true);
@@ -582,7 +583,6 @@ export default function ProductDetailPage({
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {product.variants.map((v, i) => {
                     const isSelected = selectedVariant === i;
-                    const mod = v.priceModifier ?? 0;
                     return (
                       <button
                         key={v.id}
@@ -600,12 +600,11 @@ export default function ProductDetailPage({
                           </span>
                           {isSelected ? (
                             <Icon name="check_circle" size={18} filled className="text-primary" />
-                          ) : mod > 0 ? (
-                            <span className="text-[10px] font-bold bg-secondary-fixed-dim/40 text-secondary px-1.5 py-0.5 rounded">
-                              +{formatPrice(mod)}
-                            </span>
                           ) : null}
                         </div>
+                        <span className="text-xs font-bold text-primary mt-0.5">
+                          {formatPrice(v.price)}
+                        </span>
                       </button>
                     );
                   })}

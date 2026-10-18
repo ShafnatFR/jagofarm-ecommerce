@@ -29,12 +29,41 @@ export async function GET(request: NextRequest) {
     if (minPrice || maxPrice) {
       // Guard: parseFloat("abc") = NaN -> Prisma menolak filter Decimal ->
       // 500. Hanya nilai finit yang dipakai.
-      const basePrice: Prisma.DecimalFilter = {};
       const min = minPrice ? parseFloat(minPrice) : NaN;
       const max = maxPrice ? parseFloat(maxPrice) : NaN;
-      if (Number.isFinite(min)) basePrice.gte = min;
-      if (Number.isFinite(max)) basePrice.lte = max;
-      if (Object.keys(basePrice).length > 0) where.basePrice = basePrice;
+
+      /*
+       * Produk bervarian menyimpan harga di varian, bukan basePrice (basePrice
+       * hanya cache harga termurah). Filter harus memakai rentang varian supaya
+       * produk dengan varian mahal tidak ikut tersembunyi:
+       *   - batas bawah -> bandingkan dengan maxPrice (harga termahal)
+       *   - batas atas  -> bandingkan dengan minPrice (harga termurah)
+       * Produk tanpa varian memakai basePrice seperti sebelumnya.
+       */
+      const priceConditions: Prisma.ProductWhereInput[] = [];
+
+      if (Number.isFinite(min)) {
+        priceConditions.push({
+          OR: [
+            { hasVariants: false, basePrice: { gte: min } },
+            { hasVariants: true, maxPrice: { gte: min } },
+          ],
+        });
+      }
+      if (Number.isFinite(max)) {
+        priceConditions.push({
+          OR: [
+            { hasVariants: false, basePrice: { lte: max } },
+            { hasVariants: true, minPrice: { lte: max } },
+          ],
+        });
+      }
+
+      if (priceConditions.length > 0) {
+        where.AND = priceConditions;
+        // Filter harga menggantikan syarat basePrice dasar.
+        delete where.basePrice;
+      }
     }
 
     if (search) {
@@ -61,10 +90,16 @@ export async function GET(request: NextRequest) {
     let orderBy: Prisma.ProductOrderByWithRelationInput[];
     switch (sort) {
       case "price_asc":
+        // Urutkan pakai harga efektif: varian termurah untuk produk bervarian,
+        // basePrice untuk produk tunggal. basePrice sudah diisi harga varian
+        // termurah oleh API admin, jadi satu kolom cukup.
         orderBy = [{ basePrice: "asc" }, { id: "asc" }];
         break;
       case "price_desc":
-        orderBy = [{ basePrice: "desc" }, { id: "asc" }];
+        // Untuk "termahal dulu", produk bervarian harus dibandingkan lewat
+        // harga varian tertingginya — kalau memakai basePrice, produk dengan
+        // varian 500k akan muncul seolah berharga 150k.
+        orderBy = [{ maxPrice: { sort: "desc", nulls: "last" } }, { basePrice: "desc" }, { id: "asc" }];
         break;
       case "name_asc":
         orderBy = [{ name: "asc" }, { id: "asc" }];
@@ -102,6 +137,8 @@ export async function GET(request: NextRequest) {
       ...p,
       basePrice: Number(p.basePrice),
       discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
+      minPrice: p.minPrice ? Number(p.minPrice) : null,
+      maxPrice: p.maxPrice ? Number(p.maxPrice) : null,
     }));
 
     return NextResponse.json({

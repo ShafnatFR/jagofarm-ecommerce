@@ -26,6 +26,11 @@ interface ProductCardProps {
     isFeatured?: boolean;
     /** Berat dalam gram (dipakai saat menambah ke keranjang). */
     weightGram?: number;
+    /** Produk dijual dalam beberapa varian (harga & stok per varian). */
+    hasVariants?: boolean;
+    /** Harga terendah & tertinggi antar varian aktif. */
+    minPrice?: number | null;
+    maxPrice?: number | null;
   };
   index?: number;
   /** Kondisi awal tombol hati (mis. dari GET /api/wishlist di halaman induk). */
@@ -46,6 +51,25 @@ export function ProductCard({
 
   const displayPrice = product.discountPrice ?? product.price;
   const hasDiscount = product.discountPrice != null && product.discountPrice < product.price;
+
+  /*
+   * Produk bervarian: tampilkan rentang harga varian (mis. "Rp150.000 -
+   * Rp500.000"). Kalau semua varian berharga sama, atau hanya ada satu,
+   * cukup satu harga — rentang "Rp150.000 - Rp150.000" terlihat seperti bug.
+   */
+  const isVariantProduct = Boolean(product.hasVariants);
+  const variantMin = product.minPrice ?? null;
+  const variantMax = product.maxPrice ?? null;
+  const hasPriceRange =
+    isVariantProduct &&
+    variantMin != null &&
+    variantMax != null &&
+    variantMax > variantMin;
+
+  /** Label harga yang tampil di kartu. */
+  const priceLabel = hasPriceRange
+    ? `${formatPrice(variantMin)} - ${formatPrice(variantMax)}`
+    : formatPrice(isVariantProduct && variantMin != null ? variantMin : displayPrice);
 
   const [wishlisted, setWishlisted] = useState(isWishlisted ?? false);
   const [pending, setPending] = useState(false);
@@ -199,25 +223,53 @@ export function ProductCard({
 
         {/* Price + Add to cart */}
         <div className="mt-2.5 flex items-end justify-between gap-2">
-          <div>
-            {hasDiscount && (
+          <div className="min-w-0">
+            {hasDiscount && !isVariantProduct && (
               <p className="text-xs text-on-surface-variant line-through">
                 {formatPrice(product.price)}
               </p>
             )}
-            <p className={cn("font-serif font-bold text-primary", hasDiscount ? "text-base" : "text-lg")}>
-              {formatPrice(displayPrice)}
+            <p
+              className={cn(
+                "font-serif font-bold text-primary",
+                hasPriceRange ? "text-sm leading-tight" : hasDiscount ? "text-base" : "text-lg"
+              )}
+            >
+              {priceLabel}
             </p>
+            {hasPriceRange && (
+              <p className="text-[10px] text-on-surface-variant">
+                {variantMin === null ? "" : "Harga per varian"}
+              </p>
+            )}
           </div>
-          <Button
-            size="icon"
-            variant="primary"
-            className="h-8 w-8 rounded-xl bg-primary hover:bg-primary-container text-on-primary shadow-xs"
-            onClick={handleAddToCart}
-            aria-label="Tambah ke keranjang"
-          >
-            <Icon name="shopping_cart" size={16} />
-          </Button>
+          {isVariantProduct ? (
+            // Produk bervarian wajib dipilih variannya dulu di halaman detail;
+            // menambah ke keranjang tanpa varian akan membuat harga tidak pasti.
+            <Button
+              size="sm"
+              variant="secondary"
+              className="h-8 shrink-0 rounded-xl px-3 text-xs"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                router.push(`/products/${product.slug}`);
+              }}
+              aria-label="Pilih varian produk"
+            >
+              Pilih Varian
+            </Button>
+          ) : (
+            <Button
+              size="icon"
+              variant="primary"
+              className="h-8 w-8 rounded-xl bg-primary hover:bg-primary-container text-on-primary shadow-xs"
+              onClick={handleAddToCart}
+              aria-label="Tambah ke keranjang"
+            >
+              <Icon name="shopping_cart" size={16} />
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>

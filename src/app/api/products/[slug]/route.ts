@@ -53,7 +53,7 @@ export async function GET(
       discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
       variants: product.variants.map((v) => ({
         ...v,
-        priceModifier: Number(v.priceModifier),
+        price: Number(v.price),
       })),
       reviews: {
         items: product.reviews,

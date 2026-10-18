@@ -281,11 +281,8 @@ export async function POST(request: NextRequest) {
       const discountPrice = item.product.discountPrice
         ? Number(item.product.discountPrice)
         : null;
-      const variantModifier = item.variant ? Number(item.variant.priceModifier) : 0;
-      const unitPrice = Math.round(
-        (discountPrice && discountPrice > 0 ? discountPrice : basePrice) +
-          variantModifier
-      );
+      const variantPrice = item.variant ? Number(item.variant.price) : null;
+      const unitPrice = Math.round(variantPrice ?? (discountPrice && discountPrice > 0 ? discountPrice : basePrice));
       const lineTotal = unitPrice * item.quantity;
 
       subtotal += lineTotal;

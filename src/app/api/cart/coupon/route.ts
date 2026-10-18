@@ -16,8 +16,8 @@ async function computeCartSubtotal(cartId: string): Promise<number> {
     const discountPrice = item.product.discountPrice
       ? Number(item.product.discountPrice)
       : null;
-    const variantModifier = item.variant ? Number(item.variant.priceModifier) : 0;
-    return sum + ((discountPrice || basePrice) + variantModifier) * item.quantity;
+    const variantPrice = item.variant ? Number(item.variant.price) : null;
+    return sum + (variantPrice ?? discountPrice ?? basePrice) * item.quantity;
   }, 0);
 
   return Math.round(subtotal);

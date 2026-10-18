@@ -15,6 +15,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 interface ApiProduct {
   id: string; name: string; slug: string; basePrice: number;
   discountPrice?: number | null; isFeatured?: boolean; weightGram?: number;
+  hasVariants?: boolean; minPrice?: number | null; maxPrice?: number | null;
   images: { url: string; altText?: string | null; isPrimary?: boolean }[];
   category: { id: string; name: string; slug: string };
   _count?: { reviews?: number };
@@ -277,6 +278,9 @@ function ProductsContent() {
                   image: p.images?.[0]?.url || "/placeholder-product.png",
                   category: p.category.name, isFeatured: p.isFeatured,
                   weightGram: p.weightGram,
+                  hasVariants: p.hasVariants,
+                  minPrice: p.minPrice,
+                  maxPrice: p.maxPrice,
                 }} />
               ))}
             </div>

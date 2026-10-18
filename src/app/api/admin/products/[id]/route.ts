@@ -13,7 +13,9 @@ function serializeProduct(p: ProductWithVariants) {
     ...p,
     basePrice: Number(p.basePrice),
     discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
-    variants: p.variants?.map((v) => ({ ...v, priceModifier: Number(v.priceModifier) })),
+    minPrice: p.minPrice ? Number(p.minPrice) : null,
+    maxPrice: p.maxPrice ? Number(p.maxPrice) : null,
+    variants: p.variants?.map((v) => ({ ...v, price: Number(v.price) })),
   };
 }
 
@@ -113,9 +115,9 @@ function coerceNumber(value: unknown): number | null {
 
 /**
  * Normalisasi daftar varian pengganti (deleteMany + create).
- * Baris yang belum diisi diabaikan; nama & SKU wajib, angka dikoersi dari
- * string form admin, dan SKU harus unik dalam satu produk (case-insensitive)
- * — aturan yang sama dengan form produk.
+ * Baris yang belum diisi diabaikan; nama & SKU wajib, harga absolut wajib
+ * lebih dari 0, dan SKU harus unik dalam satu produk (case-insensitive) —
+ * aturan yang sama dengan form produk.
  */
 function normalizeVariants(variants: unknown): VariantSync | undefined {
   if (!Array.isArray(variants)) return undefined;
@@ -141,15 +143,20 @@ function normalizeVariants(variants: unknown): VariantSync | undefined {
       return { rows: [], error: `${label}: SKU varian wajib diisi minimal 2 karakter.` };
     }
 
-    const priceModifier = coerceNumber(source.priceModifier);
-    if (priceModifier === null) {
-      return { rows: [], error: `${label}: selisih harga harus berupa angka.` };
+    const price = coerceNumber(source.price);
+    if (price === null || price <= 0) {
+      return { rows: [], error: `${label}: harga varian wajib diisi dan harus lebih dari 0.` };
     }
 
     const stock = coerceNumber(source.stock);
     if (stock === null || !Number.isInteger(stock) || stock < 0) {
       return { rows: [], error: `${label}: stok harus bilangan bulat dan tidak boleh negatif.` };
     }
+
+    // Berat per varian opsional: null berarti memakai berat produk.
+    const weightRaw = coerceNumber(source.weightGram);
+    const weightGram =
+      weightRaw === null ? null : Number.isInteger(weightRaw) && weightRaw > 0 ? weightRaw : null;
 
     const skuKey = sku.toUpperCase();
     if (skuKeys.has(skuKey)) {
@@ -163,8 +170,11 @@ function normalizeVariants(variants: unknown): VariantSync | undefined {
     rows.push({
       name,
       sku,
-      priceModifier,
+      price,
       stock: Math.trunc(stock),
+      weightGram,
+      isActive: source.isActive === false ? false : true,
+      sortOrder: index,
       // attributes opsional; hanya dikalim bila bentukan JSON yang valid.
       ...(source.attributes && typeof source.attributes === "object" && !Array.isArray(source.attributes)
         ? { attributes: source.attributes as Prisma.InputJsonValue }
@@ -316,6 +326,45 @@ export async function PATCH(
           { status: 400 }
         );
       }
+    }
+
+    /*
+     * Jaga konsistensi produk <-> varian.
+     *
+     * `variantSync` bernilai undefined bila payload tidak mengirim key
+     * `variants` (varian lama dipertahankan). Dalam kasus itu min/max harga
+     * harus dihitung dari varian yang SUDAH ada di database, bukan dari
+     * payload — kalau tidak, cache harga jadi salah setiap kali admin hanya
+     * mengubah nama produk.
+     */
+    const existingVariants =
+      variantSync === undefined
+        ? await prisma.productVariant.findMany({
+            where: { productId: id, isActive: true },
+            select: { price: true },
+          })
+        : [];
+
+    const activePrices =
+      variantSync !== undefined
+        ? variantSync.rows.filter((row) => row.isActive !== false).map((row) => Number(row.price))
+        : existingVariants.map((row) => Number(row.price));
+
+    const hasVariants = activePrices.length > 0;
+
+    if (hasVariants) {
+      updateData.hasVariants = true;
+      updateData.stock = 0;
+      updateData.minPrice = Math.min(...activePrices);
+      updateData.maxPrice = Math.max(...activePrices);
+      // Harga dasar mengikuti varian termurah agar pembaca lama tetap benar.
+      updateData.basePrice = updateData.minPrice;
+      // Diskon level produk tidak berlaku saat bervarian (harga sudah final).
+      updateData.discountPrice = null;
+    } else {
+      updateData.hasVariants = false;
+      updateData.minPrice = null;
+      updateData.maxPrice = null;
     }
 
     const product = await prisma.$transaction(async (tx) => {

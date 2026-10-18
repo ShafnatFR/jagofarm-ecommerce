@@ -171,8 +171,11 @@ export default async function ProductPage({ params }: Props) {
     })),
     category: product.category,
     variants: product.variants.map((v) => ({
-      ...v,
-      priceModifier: Number(v.priceModifier),
+      id: v.id,
+      name: v.name,
+      price: Number(v.price),
+      stock: v.stock,
+      weightGram: v.weightGram ?? null,
     })),
     _count: { reviews: product._count.reviews },
   };

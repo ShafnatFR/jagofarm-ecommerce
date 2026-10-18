@@ -36,7 +36,7 @@ export interface SeedImage {
 export interface SeedVariant {
   name: string;
   sku: string;
-  priceModifier: number;
+  price: number;
   stock: number;
   attributes: Record<string, string | number>;
 }
@@ -383,9 +383,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Tambak Lele Starter - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Basic", sku: "JF-TMB-LELE-001-BAS", priceModifier: -150000, stock: 15, attributes: { paket: "Basic", ukuranKolam: "2x2m", kapasitas: "50 ekor", aerator: "2 lubang" } },
-      { name: "Paket Standard", sku: "JF-TMB-LELE-001-STD", priceModifier: 0, stock: 25, attributes: { paket: "Standard", ukuranKolam: "2x2m", kapasitas: "100 ekor", aerator: "2 lubang" } },
-      { name: "Paket Premium", sku: "JF-TMB-LELE-001-PRM", priceModifier: 1350000, stock: 10, attributes: { paket: "Premium", ukuranKolam: "3x2m", kapasitas: "300 ekor", aerator: "4 lubang" } },
+      { name: "Paket Basic", sku: "JF-TMB-LELE-001-BAS", price: 1700000, stock: 15, attributes: { paket: "Basic", ukuranKolam: "2x2m", kapasitas: "50 ekor", aerator: "2 lubang" } },
+      { name: "Paket Standard", sku: "JF-TMB-LELE-001-STD", price: 1850000, stock: 25, attributes: { paket: "Standard", ukuranKolam: "2x2m", kapasitas: "100 ekor", aerator: "2 lubang" } },
+      { name: "Paket Premium", sku: "JF-TMB-LELE-001-PRM", price: 3200000, stock: 10, attributes: { paket: "Premium", ukuranKolam: "3x2m", kapasitas: "300 ekor", aerator: "4 lubang" } },
     ],
   },
   {
@@ -409,8 +409,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Tambak Nila Premium - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Standard", sku: "JF-TMB-NILA-001-STD", priceModifier: 0, stock: 15, attributes: { paket: "Standard", ukuranKolam: "2x3m", kapasitas: "200 ekor" } },
-      { name: "Paket Komersial", sku: "JF-TMB-NILA-001-KOM", priceModifier: 1400000, stock: 6, attributes: { paket: "Komersial", ukuranKolam: "3x4m", kapasitas: "600 ekor" } },
+      { name: "Paket Standard", sku: "JF-TMB-NILA-001-STD", price: 2100000, stock: 15, attributes: { paket: "Standard", ukuranKolam: "2x3m", kapasitas: "200 ekor" } },
+      { name: "Paket Komersial", sku: "JF-TMB-NILA-001-KOM", price: 3500000, stock: 6, attributes: { paket: "Komersial", ukuranKolam: "3x4m", kapasitas: "600 ekor" } },
     ],
   },
   {
@@ -434,8 +434,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Tambak Udang Vaname - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Komersial", sku: "JF-TMB-UDANG-001-KOM", priceModifier: 0, stock: 8, attributes: { paket: "Komersial", ukuranKolam: "4x4m", kapasitas: "5.000 ekor", blok: "1 petak" } },
-      { name: "Paket Komersial Plus", sku: "JF-TMB-UDANG-001-KPP", priceModifier: 3500000, stock: 3, attributes: { paket: "Komersial Plus", ukuranKolam: "6x4m", kapasitas: "10.000 ekor", blok: "2 petak" } },
+      { name: "Paket Komersial", sku: "JF-TMB-UDANG-001-KOM", price: 4500000, stock: 8, attributes: { paket: "Komersial", ukuranKolam: "4x4m", kapasitas: "5.000 ekor", blok: "1 petak" } },
+      { name: "Paket Komersial Plus", sku: "JF-TMB-UDANG-001-KPP", price: 8000000, stock: 3, attributes: { paket: "Komersial Plus", ukuranKolam: "6x4m", kapasitas: "10.000 ekor", blok: "2 petak" } },
     ],
   },
   {
@@ -458,8 +458,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Tambak Gurami - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Standard", sku: "JF-TMB-GURAMI-001-STD", priceModifier: 0, stock: 12, attributes: { paket: "Standard", ukuranKolam: "3x3m", kapasitas: "100 ekor" } },
-      { name: "Paket Premium", sku: "JF-TMB-GURAMI-001-PRM", priceModifier: 900000, stock: 5, attributes: { paket: "Premium", ukuranKolam: "4x3m", kapasitas: "250 ekor", aerator: "4 lubang" } },
+      { name: "Paket Standard", sku: "JF-TMB-GURAMI-001-STD", price: 2500000, stock: 12, attributes: { paket: "Standard", ukuranKolam: "3x3m", kapasitas: "100 ekor" } },
+      { name: "Paket Premium", sku: "JF-TMB-GURAMI-001-PRM", price: 3400000, stock: 5, attributes: { paket: "Premium", ukuranKolam: "4x3m", kapasitas: "250 ekor", aerator: "4 lubang" } },
     ],
   },
   {
@@ -482,8 +482,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Tambak Patin - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Standard", sku: "JF-TMB-PATIN-001-STD", priceModifier: 0, stock: 12, attributes: { paket: "Standard", ukuranKolam: "3x3m", kapasitas: "150 ekor" } },
-      { name: "Paket Premium", sku: "JF-TMB-PATIN-001-PRM", priceModifier: 850000, stock: 5, attributes: { paket: "Premium", ukuranKolam: "4x3m", kapasitas: "400 ekor" } },
+      { name: "Paket Standard", sku: "JF-TMB-PATIN-001-STD", price: 2750000, stock: 12, attributes: { paket: "Standard", ukuranKolam: "3x3m", kapasitas: "150 ekor" } },
+      { name: "Paket Premium", sku: "JF-TMB-PATIN-001-PRM", price: 3600000, stock: 5, attributes: { paket: "Premium", ukuranKolam: "4x3m", kapasitas: "400 ekor" } },
     ],
   },
   {
@@ -508,8 +508,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Hidroponik NFT 6 Lubang - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket 6 Lubang", sku: "JF-HDR-NFT-001-P6", priceModifier: 0, stock: 30, attributes: { jumlahLubang: 6, tingkat: 1, rockwool: "1 slab" } },
-      { name: "Paket 12 Lubang", sku: "JF-HDR-NFT-001-P12", priceModifier: 500000, stock: 18, attributes: { jumlahLubang: 12, tingkat: 2, rockwool: "1 slab", timer: "ada" } },
+      { name: "Paket 6 Lubang", sku: "JF-HDR-NFT-001-P6", price: 850000, stock: 30, attributes: { jumlahLubang: 6, tingkat: 1, rockwool: "1 slab" } },
+      { name: "Paket 12 Lubang", sku: "JF-HDR-NFT-001-P12", price: 1350000, stock: 18, attributes: { jumlahLubang: 12, tingkat: 2, rockwool: "1 slab", timer: "ada" } },
     ],
   },
   {
@@ -532,8 +532,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Hidroponik DWC 12 Lubang - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
-      { name: "Paket 12 Lubang", sku: "JF-HDR-DWC-001-P12", priceModifier: 0, stock: 30, attributes: { jumlahLubang: 12, kapasitasAir: "40 liter" } },
-      { name: "Paket 24 Lubang", sku: "JF-HDR-DWC-001-P24", priceModifier: 650000, stock: 14, attributes: { jumlahLubang: 24, kapasitasAir: "80 liter", aerator: "2 lubang" } },
+      { name: "Paket 12 Lubang", sku: "JF-HDR-DWC-001-P12", price: 950000, stock: 30, attributes: { jumlahLubang: 12, kapasitasAir: "40 liter" } },
+      { name: "Paket 24 Lubang", sku: "JF-HDR-DWC-001-P24", price: 1600000, stock: 14, attributes: { jumlahLubang: 24, kapasitasAir: "80 liter", aerator: "2 lubang" } },
     ],
   },
   {
@@ -557,8 +557,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Hidroponik Indoor LED - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Rak 2 Tingkat", sku: "JF-HDR-INDOOR-001-R2", priceModifier: -300000, stock: 10, attributes: { tingkat: 2, jumlahLubang: 12, led: "60 watt" } },
-      { name: "Rak 3 Tingkat", sku: "JF-HDR-INDOOR-001-R3", priceModifier: 0, stock: 18, attributes: { tingkat: 3, jumlahLubang: 18, led: "90 watt" } },
+      { name: "Rak 2 Tingkat", sku: "JF-HDR-INDOOR-001-R2", price: 1500000, stock: 10, attributes: { tingkat: 2, jumlahLubang: 12, led: "60 watt" } },
+      { name: "Rak 3 Tingkat", sku: "JF-HDR-INDOOR-001-R3", price: 1800000, stock: 18, attributes: { tingkat: 3, jumlahLubang: 18, led: "90 watt" } },
     ],
   },
   {
@@ -581,8 +581,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Hidroponik Wick System - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
-      { name: "Paket 6 Lubang", sku: "JF-HDR-WICK-001-P6", priceModifier: 0, stock: 60, attributes: { jumlahLubang: 6, sumbu: "kain flanel", listrik: "tidak perlu" } },
-      { name: "Paket 12 Lubang", sku: "JF-HDR-WICK-001-P12", priceModifier: 250000, stock: 25, attributes: { jumlahLubang: 12, sumbu: "kain flanel", listrik: "tidak perlu" } },
+      { name: "Paket 6 Lubang", sku: "JF-HDR-WICK-001-P6", price: 450000, stock: 60, attributes: { jumlahLubang: 6, sumbu: "kain flanel", listrik: "tidak perlu" } },
+      { name: "Paket 12 Lubang", sku: "JF-HDR-WICK-001-P12", price: 700000, stock: 25, attributes: { jumlahLubang: 12, sumbu: "kain flanel", listrik: "tidak perlu" } },
     ],
   },
   {
@@ -605,8 +605,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Hidroponik Drip 8 Lubang - foto 2", sortOrder: 1, isPrimary: false },
     ],
     variants: [
-      { name: "Paket 8 Lubang", sku: "JF-HDR-DRIP-001-P8", priceModifier: 0, stock: 25, attributes: { jumlahLubang: 8, debit: "2 liter/jam" } },
-      { name: "Paket 16 Lubang", sku: "JF-HDR-DRIP-001-P16", priceModifier: 400000, stock: 12, attributes: { jumlahLubang: 16, debit: "2 liter/jam", timer: "ada" } },
+      { name: "Paket 8 Lubang", sku: "JF-HDR-DRIP-001-P8", price: 700000, stock: 25, attributes: { jumlahLubang: 8, debit: "2 liter/jam" } },
+      { name: "Paket 16 Lubang", sku: "JF-HDR-DRIP-001-P16", price: 1100000, stock: 12, attributes: { jumlahLubang: 16, debit: "2 liter/jam", timer: "ada" } },
     ],
   },
   {
@@ -630,8 +630,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Aquaponik Mini (Rumahan) - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Mini", sku: "JF-AQP-MINI-001-MIN", priceModifier: 0, stock: 15, attributes: { kapasitasBak: "60L", jumlahTanaman: 12, tingkatGrowBed: 2 } },
-      { name: "Paket Mini Plus", sku: "JF-AQP-MINI-001-MNP", priceModifier: 900000, stock: 8, attributes: { kapasitasBak: "100L", jumlahTanaman: 24, tingkatGrowBed: 3 } },
+      { name: "Paket Mini", sku: "JF-AQP-MINI-001-MIN", price: 2800000, stock: 15, attributes: { kapasitasBak: "60L", jumlahTanaman: 12, tingkatGrowBed: 2 } },
+      { name: "Paket Mini Plus", sku: "JF-AQP-MINI-001-MNP", price: 3700000, stock: 8, attributes: { kapasitasBak: "100L", jumlahTanaman: 24, tingkatGrowBed: 3 } },
     ],
   },
   {
@@ -655,8 +655,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Aquaponik Medium - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Medium", sku: "JF-AQP-MED-001-MED", priceModifier: 0, stock: 8, attributes: { kapasitasBak: "200L", jumlahTanaman: 36, konsultasi: "2x" } },
-      { name: "Paket Medium Plus", sku: "JF-AQP-MED-001-MDP", priceModifier: 2000000, stock: 4, attributes: { kapasitasBak: "400L", jumlahTanaman: 72, konsultasi: "4x" } },
+      { name: "Paket Medium", sku: "JF-AQP-MED-001-MED", price: 5500000, stock: 8, attributes: { kapasitasBak: "200L", jumlahTanaman: 36, konsultasi: "2x" } },
+      { name: "Paket Medium Plus", sku: "JF-AQP-MED-001-MDP", price: 7500000, stock: 4, attributes: { kapasitasBak: "400L", jumlahTanaman: 72, konsultasi: "4x" } },
     ],
   },
   {
@@ -681,9 +681,9 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Set Aquaponik Komersial - foto 4", sortOrder: 3, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Komersial", sku: "JF-AQP-KOM-001-KOM", priceModifier: 0, stock: 3, attributes: { kapasitasBak: "1000L", jumlahTanaman: 120, garansi: "1 tahun" } },
-      { name: "Komersial + Instalasi", sku: "JF-AQP-KOM-001-KIN", priceModifier: 2500000, stock: 2, attributes: { kapasitasBak: "1000L", jumlahTanaman: 120, instalasi: "onsite Jabodetabek" } },
-      { name: "Komersial 2 Unit", sku: "JF-AQP-KOM-001-K2U", priceModifier: 12000000, stock: 1, attributes: { kapasitasBak: "2x1000L", jumlahTanaman: 240, instalasi: "onsite Jabodetabek" } },
+      { name: "Paket Komersial", sku: "JF-AQP-KOM-001-KOM", price: 15000000, stock: 3, attributes: { kapasitasBak: "1000L", jumlahTanaman: 120, garansi: "1 tahun" } },
+      { name: "Komersial + Instalasi", sku: "JF-AQP-KOM-001-KIN", price: 17500000, stock: 2, attributes: { kapasitasBak: "1000L", jumlahTanaman: 120, instalasi: "onsite Jabodetabek" } },
+      { name: "Komersial 2 Unit", sku: "JF-AQP-KOM-001-K2U", price: 27000000, stock: 1, attributes: { kapasitasBak: "2x1000L", jumlahTanaman: 240, instalasi: "onsite Jabodetabek" } },
     ],
   },
   {
@@ -819,8 +819,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Paket IoT Kolam Lengkap - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Standar", sku: "JF-IOT-KOLAM-001-PST", priceModifier: -300000, stock: 10, attributes: { jumlahSensor: 3, autoFeeder: "tidak termasuk", garansi: "1 tahun" } },
-      { name: "Paket Lengkap", sku: "JF-IOT-KOLAM-001-PLG", priceModifier: 0, stock: 20, attributes: { jumlahSensor: 3, autoFeeder: "termasuk", garansi: "1 tahun" } },
+      { name: "Paket Standar", sku: "JF-IOT-KOLAM-001-PST", price: 1900000, stock: 10, attributes: { jumlahSensor: 3, autoFeeder: "tidak termasuk", garansi: "1 tahun" } },
+      { name: "Paket Lengkap", sku: "JF-IOT-KOLAM-001-PLG", price: 2200000, stock: 20, attributes: { jumlahSensor: 3, autoFeeder: "termasuk", garansi: "1 tahun" } },
     ],
   },
   {
@@ -844,8 +844,8 @@ export const CATALOG_PRODUCTS: SeedProduct[] =
       { url: "/placeholder-product.png", altText: "Paket IoT Hidroponik & Aquaponik - foto 3", sortOrder: 2, isPrimary: false },
     ],
     variants: [
-      { name: "Paket Hidroponik", sku: "JF-IOT-FULL-002-HID", priceModifier: 0, stock: 18, attributes: { sensor: "pH, TDS, suhu", kontrol: "pompa & LED" } },
-      { name: "Paket Aquaponik", sku: "JF-IOT-FULL-002-AQP", priceModifier: 400000, stock: 9, attributes: { sensor: "pH, DO, suhu", kontrol: "pompa, aerator & LED" } },
+      { name: "Paket Hidroponik", sku: "JF-IOT-FULL-002-HID", price: 1800000, stock: 18, attributes: { sensor: "pH, TDS, suhu", kontrol: "pompa & LED" } },
+      { name: "Paket Aquaponik", sku: "JF-IOT-FULL-002-AQP", price: 2200000, stock: 9, attributes: { sensor: "pH, DO, suhu", kontrol: "pompa, aerator & LED" } },
     ],
   },
   {
@@ -1256,9 +1256,19 @@ async function seedProduct(product: SeedProductWithImages, categoryId: string) {
   const { images, variants, categorySlug, ...scalars } = product;
   void categorySlug;
 
+  const activePrices = variants.filter(v => v.stock >= 0).map(v => v.price);
+  const hasVariants = activePrices.length > 0;
+  const minPrice = hasVariants ? Math.min(...activePrices) : null;
+  const maxPrice = hasVariants ? Math.max(...activePrices) : null;
+
   const data = {
     ...scalars,
-    discountPrice: scalars.discountPrice ?? null,
+    discountPrice: hasVariants ? null : (scalars.discountPrice ?? null),
+    basePrice: hasVariants ? (minPrice ?? scalars.basePrice) : scalars.basePrice,
+    stock: hasVariants ? 0 : scalars.stock,
+    hasVariants,
+    minPrice,
+    maxPrice,
     categoryId,
   };
 
@@ -1292,7 +1302,7 @@ async function seedProduct(product: SeedProductWithImages, categoryId: string) {
     const variantData = {
       productId: saved.id,
       name: variant.name,
-      priceModifier: variant.priceModifier,
+      price: variant.price,
       stock: variant.stock,
       attributes: variant.attributes,
     };

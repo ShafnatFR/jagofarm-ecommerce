@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
         ...p,
         basePrice: Number(p.basePrice),
         discountPrice: p.discountPrice ? Number(p.discountPrice) : null,
-        variants: p.variants.map((v) => ({ ...v, priceModifier: Number(v.priceModifier) })),
+        variants: p.variants.map((v) => ({ ...v, price: Number(v.price) })),
       })),
       pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     });
@@ -85,21 +85,106 @@ const createProductSchema = z.object({
   images: z
     .array(z.object({ url: z.string(), altText: z.string().optional(), isPrimary: z.boolean().optional() }))
     .optional(),
+  hasVariants: z.boolean().default(false),
   variants: z
     .array(
       z.object({
-        name: z.string(),
-        sku: z.string(),
-        priceModifier: z.number().default(0),
+        name: z.string().min(1, "Nama varian wajib diisi."),
+        sku: z.string().min(2, "SKU varian minimal 2 karakter."),
+        price: z.number().positive("Harga varian harus lebih dari 0."),
         stock: z.number().int().min(0).default(0),
+        weightGram: z.number().int().positive().nullable().optional(),
+        isActive: z.boolean().default(true),
+        sortOrder: z.number().int().min(0).default(0),
         attributes: z.any().optional(),
       })
     )
     .optional(),
-}).refine(
-  (d) => d.discountPrice == null || d.discountPrice < d.basePrice,
-  { message: "Harga diskon harus lebih kecil dari harga dasar.", path: ["discountPrice"] }
-);
+})
+  .refine(
+    (d) => d.discountPrice == null || d.discountPrice < d.basePrice,
+    { message: "Harga diskon harus lebih kecil dari harga dasar.", path: ["discountPrice"] }
+  )
+  .refine(
+    // Diskon hanya berlaku untuk produk tanpa varian: harga tiap varian sudah
+    // final, jadi satu discountPrice di level produk akan ambigu.
+    (d) => !d.hasVariants || d.discountPrice == null,
+    {
+      message: "Harga diskon tidak tersedia untuk produk bervarian. Atur harga langsung di tiap varian.",
+      path: ["discountPrice"],
+    }
+  )
+  .refine(
+    (d) => !d.hasVariants || (d.variants != null && d.variants.length > 0),
+    { message: "Tambahkan minimal satu varian bila produk bervarian.", path: ["variants"] }
+  )
+  .refine(
+    (d) => d.hasVariants || d.variants == null || d.variants.length === 0,
+    { message: "Produk tanpa varian tidak boleh memiliki baris varian.", path: ["variants"] }
+  );
+
+/**
+ * Normalisasi data produk + varian agar selalu konsisten.
+ *
+ * Aturan yang ditegakkan di sini (bukan hanya di UI):
+ *  1. Bervarian -> `stock` produk = 0, stok dihitung dari varian aktif.
+ *  2. Bervarian -> `basePrice` = harga varian aktif terendah (fallback waras
+ *     untuk kode lama yang masih membaca basePrice).
+ *  3. Bervarian -> `minPrice`/`maxPrice` diisi dari varian aktif; dipakai
+ *     filter & sort /api/products.
+ *  4. Tidak bervarian -> min/max = null dan varian tidak disimpan.
+ *  5. `discountPrice` dipaksa null saat bervarian.
+ */
+function normalizeVariants(input: {
+  hasVariants: boolean;
+  basePrice: number;
+  discountPrice?: number | null;
+  stock: number;
+  variants?: Array<{
+    name: string;
+    sku: string;
+    price: number;
+    stock: number;
+    weightGram?: number | null;
+    isActive?: boolean;
+    sortOrder?: number;
+    attributes?: unknown;
+  }>;
+}) {
+  const rows = input.hasVariants ? (input.variants ?? []).filter((v) => v.isActive !== false) : [];
+
+  if (!input.hasVariants || rows.length === 0) {
+    return {
+      hasVariants: false,
+      stock: input.stock,
+      basePrice: input.basePrice,
+      discountPrice: input.discountPrice ?? null,
+      minPrice: null as number | null,
+      maxPrice: null as number | null,
+      variants: [] as typeof rows,
+    };
+  }
+
+  const prices = rows.map((v) => v.price);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+
+  return {
+    hasVariants: true,
+    stock: 0,
+    // Harga dasar mengikuti varian termurah supaya pembaca lama tetap benar.
+    basePrice: minPrice,
+    discountPrice: null,
+    minPrice,
+    maxPrice,
+    variants: rows.map((v, index) => ({
+      ...v,
+      isActive: v.isActive !== false,
+      sortOrder: v.sortOrder ?? index,
+      weightGram: v.weightGram ?? null,
+    })),
+  };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -114,8 +199,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    const { images, variants, ...productData } = parsed.data;
+    const { images, variants, hasVariants, ...productData } = parsed.data;
     const slug = slugify(productData.name);
+
+    // Tegakkan aturan konsistensi produk/varian sebelum menyimpan.
+    const normalized = normalizeVariants({
+      hasVariants,
+      basePrice: productData.basePrice,
+      discountPrice: productData.discountPrice ?? null,
+      stock: productData.stock,
+      variants,
+    });
 
     // Gambar pertama otomatis jadi primary, sortOrder mengikuti urutan kiriman
     const normalizedImages = images
@@ -131,8 +225,28 @@ export async function POST(request: NextRequest) {
       data: {
         ...productData,
         slug,
+        hasVariants: normalized.hasVariants,
+        stock: normalized.stock,
+        basePrice: normalized.basePrice,
+        discountPrice: normalized.discountPrice,
+        minPrice: normalized.minPrice,
+        maxPrice: normalized.maxPrice,
         images: normalizedImages ? { create: normalizedImages } : undefined,
-        variants: variants ? { create: variants } : undefined,
+        variants:
+          normalized.variants.length > 0
+            ? {
+                create: normalized.variants.map((v) => ({
+                  name: v.name,
+                  sku: v.sku,
+                  price: v.price,
+                  stock: v.stock,
+                  weightGram: v.weightGram ?? null,
+                  isActive: v.isActive,
+                  sortOrder: v.sortOrder,
+                  attributes: v.attributes ?? undefined,
+                })),
+              }
+            : undefined,
       },
       include: { images: { orderBy: { sortOrder: "asc" } }, variants: true },
     });
@@ -140,7 +254,17 @@ export async function POST(request: NextRequest) {
     // Bersihkan cache katalog homepage supaya produk baru langsung tampil.
     revalidateTag("catalog", "max");
     return NextResponse.json(
-      { message: "Product created", product: { ...product, basePrice: Number(product.basePrice), discountPrice: product.discountPrice ? Number(product.discountPrice) : null } },
+      {
+        message: "Product created",
+        product: {
+          ...product,
+          basePrice: Number(product.basePrice),
+          discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
+          minPrice: product.minPrice ? Number(product.minPrice) : null,
+          maxPrice: product.maxPrice ? Number(product.maxPrice) : null,
+          variants: product.variants.map((v) => ({ ...v, price: Number(v.price) })),
+        },
+      },
       { status: 201 }
     );
   } catch (error) {
