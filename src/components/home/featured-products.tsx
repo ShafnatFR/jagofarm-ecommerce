@@ -51,7 +51,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <div>
           <span className="text-label-md font-label-md uppercase tracking-wider text-secondary font-bold">Produk Teruji</span>
-          <h2 className="text-headline-lg font-headline-lg text-on-surface mt-1">Produk Unggulan</h2>
+          <h2 className="text-headline-lg font-serif font-semibold text-on-surface mt-1">Produk Unggulan</h2>
           <p className="text-body-md font-body-md text-on-surface-variant mt-1">Pilihan terbaik petani modern Indonesia dengan garansi resmi</p>
         </div>
         <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
@@ -64,10 +64,10 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                 onClick={() => setActiveSlug(filter.slug)}
                 aria-pressed={isActive}
                 className={cn(
-                  "px-4 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap",
+                  "px-4 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap transition-all duration-200",
                   isActive
-                    ? "bg-primary text-on-primary shadow-sm"
-                    : "bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant border border-outline-variant transition-colors"
+                    ? "bg-primary text-on-primary shadow-sm font-semibold"
+                    : "bg-surface hover:bg-surface-container text-on-surface-variant border border-outline-variant hover:text-on-surface"
                 )}
               >
                 {filter.label}

@@ -130,25 +130,25 @@ export function ProductCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="group relative overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-lg"
+      className="group relative overflow-hidden rounded-2xl border border-outline-variant bg-surface transition-all duration-300 hover:shadow-lg hover:border-primary/40"
     >
       {/* Image */}
       <Link href={`/products/${product.slug}`} className="block overflow-hidden">
-        <div className="relative aspect-square bg-secondary">
+        <div className="relative aspect-square bg-surface-container-low overflow-hidden">
           <Image
             src={product.image || "/placeholder-product.png"}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
           {hasDiscount && (
-            <span className="absolute left-2 top-2 rounded-full bg-destructive px-2.5 py-0.5 text-xs font-bold text-white">
+            <span className="absolute left-2.5 top-2.5 rounded-full bg-[#9f2c25] px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
               -{Math.round(((product.price - product.discountPrice!) / product.price) * 100)}%
             </span>
           )}
           {product.isFeatured && !hasDiscount && (
-            <span className="absolute left-2 top-2 rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-white">
+            <span className="absolute left-2.5 top-2.5 rounded-full bg-lime text-forest-deep px-2.5 py-0.5 text-[11px] font-bold shadow-xs">
               Unggulan
             </span>
           )}
@@ -164,22 +164,22 @@ export function ProductCard({
         aria-label={wishlisted ? "Hapus dari wishlist" : "Simpan ke wishlist"}
         title={wishlisted ? "Hapus dari wishlist" : "Simpan ke wishlist"}
         className={cn(
-          "absolute right-3 top-3 rounded-full bg-white/80 p-1.5 transition-opacity hover:bg-white disabled:cursor-not-allowed",
-          wishlisted ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+          "absolute right-2.5 top-2.5 rounded-full bg-surface/85 hover:bg-surface text-on-surface border border-outline-variant/60 p-1.5 backdrop-blur-xs transition-all duration-200 disabled:cursor-not-allowed shadow-xs",
+          wishlisted ? "opacity-100 text-error" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
         )}
       >
         {pending ? (
-          <Icon name="progress_activity" size={16} className="animate-spin text-muted-foreground" />
+          <Icon name="progress_activity" size={16} className="animate-spin text-on-surface-variant" />
         ) : (
           <Icon name="favorite" size={16} />
         )}
       </button>
 
       {/* Content */}
-      <div className="p-3">
-        <p className="text-xs text-muted-foreground">{product.category}</p>
+      <div className="p-3.5">
+        <p className="text-xs font-medium text-secondary">{product.category}</p>
         <Link href={`/products/${product.slug}`}>
-          <h3 className="mt-1 text-sm font-medium leading-snug line-clamp-2 hover:text-primary transition-colors">
+          <h3 className="mt-1 text-sm font-semibold leading-snug line-clamp-2 text-on-surface hover:text-primary transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -187,10 +187,10 @@ export function ProductCard({
         {/* Rating */}
         {product.rating != null && (
           <div className="mt-1.5 flex items-center gap-1">
-            <Icon name="star" size={12} className="fill-accent text-accent" />
-            <span className="text-xs font-medium">{product.rating.toFixed(1)}</span>
+            <Icon name="star" size={13} className="fill-secondary text-secondary" />
+            <span className="text-xs font-medium text-on-surface">{product.rating.toFixed(1)}</span>
             {product.reviewCount != null && (
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-on-surface-variant">
                 ({product.reviewCount})
               </span>
             )}
@@ -198,21 +198,21 @@ export function ProductCard({
         )}
 
         {/* Price + Add to cart */}
-        <div className="mt-2 flex items-end justify-between">
+        <div className="mt-2.5 flex items-end justify-between gap-2">
           <div>
             {hasDiscount && (
-              <p className="text-xs text-muted-foreground line-through">
+              <p className="text-xs text-on-surface-variant line-through">
                 {formatPrice(product.price)}
               </p>
             )}
-            <p className={cn("font-bold text-primary", hasDiscount ? "text-sm" : "text-base")}>
+            <p className={cn("font-serif font-bold text-primary", hasDiscount ? "text-base" : "text-lg")}>
               {formatPrice(displayPrice)}
             </p>
           </div>
           <Button
             size="icon"
             variant="primary"
-            className="h-8 w-8 rounded-lg"
+            className="h-8 w-8 rounded-xl bg-primary hover:bg-primary-container text-on-primary shadow-xs"
             onClick={handleAddToCart}
             aria-label="Tambah ke keranjang"
           >

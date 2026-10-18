@@ -42,46 +42,46 @@ export function Footer({ profile }: { profile?: StoreProfile } = {}) {
 
   return (
     <>
-      <footer className="bg-primary dark:bg-surface-container-lowest border-t border-primary-container dark:border-outline-variant text-on-primary-container dark:text-on-surface-variant w-full">
+      <footer className="bg-[#061710] border-t border-white/10 text-[#a6b8ad] w-full">
         <div className="w-full px-margin py-space-xl max-w-7xl mx-auto">
           {/* Top Grid: Brand & Link Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 pb-12 border-b border-primary-container/80">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 pb-12 border-b border-white/10">
             {/* Brand Bio (2 Cols on lg) */}
             <div className="lg:col-span-2 space-y-4">
               <Link className="flex items-center gap-2.5" href="/">
-                <div className="w-9 h-9 rounded-xl bg-secondary-fixed-dim text-primary flex items-center justify-center shadow-sm">
+                <div className="w-9 h-9 rounded-xl bg-lime text-forest-deep flex items-center justify-center shadow-sm">
                   <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>water_drop</span>
                 </div>
-                <span className="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">{store.name}</span>
+                <span className="text-headline-md font-serif font-bold text-white tracking-tight">{store.name}</span>
               </Link>
-              <p className="text-body-sm font-body-sm text-primary-fixed-dim max-w-sm leading-relaxed">
+              <p className="text-body-sm font-body-sm text-[#a6b8ad] max-w-sm leading-relaxed">
                 Solusi pertanian modern Indonesia. Menyediakan peralatan akuaponik, hidroponik, tambak bioflok, dan IoT smart farming berkualitas tinggi demi ketahanan pangan nasional.
               </p>
               {/* Social Links */}
               <div className="flex items-center gap-3 pt-2">
-                <a aria-label="Instagram" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href={store.instagram} rel="noopener noreferrer" target="_blank">
+                <a aria-label="Instagram" className="w-9 h-9 rounded-full bg-white/5 hover:bg-lime hover:text-forest-deep text-white/90 flex items-center justify-center border border-white/10 transition-colors" href={store.instagram} rel="noopener noreferrer" target="_blank">
                   <span className="material-symbols-outlined text-[18px]">share</span>
                 </a>
-                <a aria-label="Website" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href={store.website} rel="noopener noreferrer" target="_blank">
+                <a aria-label="Website" className="w-9 h-9 rounded-full bg-white/5 hover:bg-lime hover:text-forest-deep text-white/90 flex items-center justify-center border border-white/10 transition-colors" href={store.website} rel="noopener noreferrer" target="_blank">
                   <span className="material-symbols-outlined text-[18px]">language</span>
                 </a>
-                <a aria-label="Email" className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary-fixed-dim hover:text-primary text-on-primary flex items-center justify-center transition-colors" href={`mailto:${store.email}`}>
+                <a aria-label="Email" className="w-9 h-9 rounded-full bg-white/5 hover:bg-lime hover:text-forest-deep text-white/90 flex items-center justify-center border border-white/10 transition-colors" href={`mailto:${store.email}`}>
                   <span className="material-symbols-outlined text-[18px]">mail</span>
                 </a>
               </div>
             </div>
             {/* Col 1: PRODUK */}
             <div>
-              <h4 className="text-headline-sm font-headline-sm text-on-primary font-bold mb-4">PRODUK</h4>
+              <h4 className="text-headline-sm font-serif font-bold text-white mb-4 tracking-wide">PRODUK</h4>
               <ul className="space-y-2.5 text-label-md font-label-md">
                 {loading ? (
-                  <li className="text-on-primary-container dark:text-on-surface-variant">Memuat...</li>
+                  <li className="text-[#a6b8ad]">Memuat...</li>
                 ) : categories.length === 0 ? (
-                  <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/products">Semua Produk</Link></li>
+                  <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/products">Semua Produk</Link></li>
                 ) : (
                   categories.map((cat) => (
                     <li key={cat.id}>
-                      <Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href={`/products?category=${cat.slug}`}>
+                      <Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href={`/products?category=${cat.slug}`}>
                         {cat.name}
                       </Link>
                     </li>
@@ -91,45 +91,45 @@ export function Footer({ profile }: { profile?: StoreProfile } = {}) {
             </div>
             {/* Col 2: INFORMASI & KEBIJAKAN */}
             <div>
-              <h4 className="text-headline-sm font-headline-sm text-on-primary font-bold mb-4">INFORMASI</h4>
+              <h4 className="text-headline-sm font-serif font-bold text-white mb-4 tracking-wide">INFORMASI</h4>
               <ul className="space-y-2.5 text-label-md font-label-md">
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/about">Tentang Kami</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/how-to-order">Cara Pemesanan</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/faq">FAQ</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/contact">Hubungi Kami</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/shipping-policy">Kebijakan Pengiriman</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/return-policy">Kebijakan Pengembalian</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/privacy-policy">Kebijakan Privasi</Link></li>
-                <li><Link className="text-on-primary-container dark:text-on-surface-variant hover:text-on-primary dark:hover:text-primary transition-colors duration-150" href="/terms">Syarat dan Ketentuan</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/about">Tentang Kami</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/how-to-order">Cara Pemesanan</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/faq">FAQ</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/contact">Hubungi Kami</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/shipping-policy">Kebijakan Pengiriman</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/return-policy">Kebijakan Pengembalian</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/privacy-policy">Kebijakan Privasi</Link></li>
+                <li><Link className="text-[#a6b8ad] hover:text-lime transition-colors duration-150" href="/terms">Syarat dan Ketentuan</Link></li>
               </ul>
             </div>
             {/* Col 3: KONTAK KANTOR */}
             <div>
-              <h4 className="text-headline-sm font-headline-sm text-on-primary font-bold mb-4">KONTAK</h4>
-              <ul className="space-y-3 text-body-sm font-body-sm text-primary-fixed-dim">
+              <h4 className="text-headline-sm font-serif font-bold text-white mb-4 tracking-wide">KONTAK</h4>
+              <ul className="space-y-3 text-body-sm font-body-sm text-[#a6b8ad]">
                 <li className="flex items-start gap-2.5">
-                  <span className="material-symbols-outlined text-[18px] text-secondary-fixed-dim shrink-0 mt-0.5">location_on</span>
+                  <span className="material-symbols-outlined text-[18px] text-lime shrink-0 mt-0.5">location_on</span>
                   <span>{store.address}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[18px] text-secondary-fixed-dim shrink-0">call</span>
-                  <a className="hover:text-on-primary transition-colors" href={`tel:+${store.whatsapp}`}>{store.phone}</a>
+                  <span className="material-symbols-outlined text-[18px] text-lime shrink-0">call</span>
+                  <a className="hover:text-white transition-colors" href={`tel:+${store.whatsapp}`}>{store.phone}</a>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[18px] text-secondary-fixed-dim shrink-0">mail</span>
-                  <a className="hover:text-on-primary transition-colors" href={`mailto:${store.email}`}>{store.email}</a>
+                  <span className="material-symbols-outlined text-[18px] text-lime shrink-0">mail</span>
+                  <a className="hover:text-white transition-colors" href={`mailto:${store.email}`}>{store.email}</a>
                 </li>
                 <li className="pt-2">
                   <div className="p-3 bg-white/5 border border-white/10 rounded-xl">
-                    <p className="text-[11px] text-primary-fixed-dim">Jam Operasional Layanan:</p>
-                    <p className="text-label-md font-label-md text-on-primary font-semibold">{store.hours}</p>
+                    <p className="text-[11px] text-[#a6b8ad]">Jam Operasional Layanan:</p>
+                    <p className="text-label-md font-label-md text-white font-semibold">{store.hours}</p>
                   </div>
                 </li>
               </ul>
             </div>
           </div>
           {/* Bottom Copyright Row */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-primary-fixed-dim gap-4">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-[#63726a] gap-4">
             <p className="text-center sm:text-left">
               © {year} {store.name}. Seluruh hak cipta dilindungi.
             </p>

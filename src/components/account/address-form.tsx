@@ -124,7 +124,7 @@ export function AddressForm({ initialValues, existingCount }: Props) {
       <div className="bg-card p-6 rounded-lg border border-border space-y-4">
         <div className="flex items-center justify-between gap-3 border-b pb-2">
           <h2 className="text-lg font-semibold">Detail Alamat</h2>
-          <button type="button" onClick={useCurrentLocation} disabled={locating} className="inline-flex items-center gap-2 rounded-lg border border-black bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-black hover:text-white disabled:cursor-wait disabled:opacity-60">
+          <button type="button" onClick={useCurrentLocation} disabled={locating} className="inline-flex items-center gap-2 rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm font-semibold text-on-surface hover:bg-surface-container hover:text-primary transition-colors disabled:cursor-wait disabled:opacity-60">
             <span className="material-symbols-outlined text-[18px]">my_location</span>
             {locating ? "Mencari lokasi..." : "Gunakan lokasi saya"}
           </button>

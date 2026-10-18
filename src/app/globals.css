@@ -3,76 +3,87 @@
 /* Dark mode berbasis kelas `.dark` pada <html> (Tailwind v4). */
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme inline {
-  /* Simplified Green and White Theme */
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
+@theme {
+  /* Parent Site (JagoFarm) Brand Color Palette */
+  --color-background: #f4f0e6;
+  --color-surface: #fbfaf6;
   --color-surface-bright: #ffffff;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #ffffff;
-  --color-surface-container: #ffffff;
-  --color-surface-container-high: #ffffff;
-  --color-surface-container-highest: #ffffff;
-  --color-surface-variant: #ffffff;
-  --color-surface-dim: #ffffff;
+  --color-surface-container-low: #f5f2e9;
+  --color-surface-container: #ebe6d8;
+  --color-surface-container-high: #e2dbcb;
+  --color-surface-container-highest: #d7cebd;
+  --color-surface-variant: #dfe7d7;
+  --color-surface-dim: #e4ddcf;
 
-  --color-on-background: #15803d;
-  --color-on-surface: #15803d;
-  --color-on-surface-variant: #15803d;
-  --color-inverse-on-surface: #ffffff;
+  --color-on-background: #123b2b;
+  --color-on-surface: #123b2b;
+  --color-on-surface-variant: #63726a;
+  --color-inverse-on-surface: #f4f0e3;
 
-  --color-primary: #15803d;
+  --color-primary: #123f2d;
   --color-on-primary: #ffffff;
-  --color-primary-container: #15803d;
-  --color-on-primary-container: #ffffff;
-  --color-inverse-primary: #ffffff;
-  --color-primary-fixed: #15803d;
-  --color-primary-fixed-dim: #15803d;
-  --color-on-primary-fixed: #ffffff;
-  --color-on-primary-fixed-variant: #ffffff;
+  --color-primary-container: #092f21;
+  --color-on-primary-container: #dfe7d7;
+  --color-inverse-primary: #c9dc94;
+  --color-primary-fixed: #c9dc94;
+  --color-primary-fixed-dim: #dfe7d7;
+  --color-on-primary-fixed: #092f21;
+  --color-on-primary-fixed-variant: #123f2d;
 
-  --color-secondary: #ffffff;
-  --color-on-secondary: #15803d;
-  --color-secondary-container: #ffffff;
-  --color-on-secondary-container: #15803d;
-  --color-secondary-fixed: #ffffff;
-  --color-secondary-fixed-dim: #ffffff;
-  --color-on-secondary-fixed: #15803d;
-  --color-on-secondary-fixed-variant: #15803d;
+  --color-secondary: #66885d;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #dfe7d7;
+  --color-on-secondary-container: #123b2b;
+  --color-secondary-fixed: #dfe7d7;
+  --color-secondary-fixed-dim: #c9dc94;
+  --color-on-secondary-fixed: #123b2b;
+  --color-on-secondary-fixed-variant: #092f21;
 
-  --color-tertiary: #ffffff;
-  --color-on-tertiary: #15803d;
-  --color-tertiary-container: #ffffff;
-  --color-on-tertiary-container: #15803d;
-  --color-tertiary-fixed: #ffffff;
-  --color-tertiary-fixed-dim: #ffffff;
-  --color-on-tertiary-fixed: #15803d;
-  --color-on-tertiary-fixed-variant: #15803d;
+  --color-tertiary: #c9dc94;
+  --color-on-tertiary: #123b2b;
+  --color-tertiary-container: #dfe7d7;
+  --color-on-tertiary-container: #123b2b;
+  --color-tertiary-fixed: #c9dc94;
+  --color-tertiary-fixed-dim: #dfe7d7;
+  --color-on-tertiary-fixed: #123b2b;
+  --color-on-tertiary-fixed-variant: #123b2b;
 
-  --color-error: #ef4444;
+  --color-error: #b91c1c;
   --color-on-error: #ffffff;
-  --color-error-container: #ef4444;
-  --color-on-error-container: #ffffff;
+  --color-error-container: #fee2e2;
+  --color-on-error-container: #7f1d1d;
 
-  --color-outline: #15803d;
-  --color-outline-variant: #15803d;
+  --color-outline: rgba(18, 63, 45, 0.22);
+  --color-outline-variant: rgba(18, 63, 45, 0.12);
 
   /* Legacy App Theme Variables */
-  --color-foreground: #15803d;
+  --color-foreground: #123b2b;
   --color-primary-foreground: #ffffff;
-  --color-secondary-foreground: #15803d;
-  --color-accent: #15803d;
+  --color-secondary-foreground: #123b2b;
+  --color-accent: #66885d;
   --color-accent-foreground: #ffffff;
-  --color-muted: #ffffff;
-  --color-muted-foreground: #15803d;
-  --color-card: #ffffff;
-  --color-card-foreground: #15803d;
-  --color-border: #15803d;
-  --color-input: #15803d;
-  --color-ring: #15803d;
-  --color-destructive: #ef4444;
+  --color-muted: #ebe6d8;
+  --color-muted-foreground: #63726a;
+  --color-card: #fbfaf6;
+  --color-card-foreground: #123b2b;
+  --color-border: rgba(18, 63, 45, 0.16);
+  --color-input: rgba(18, 63, 45, 0.22);
+  --color-ring: #123f2d;
+  --color-destructive: #b91c1c;
   --color-destructive-foreground: #ffffff;
-  
+
+  /* Parent Site Direct Colors */
+  --color-forest: #123f2d;
+  --color-forest-deep: #092f21;
+  --color-leaf: #66885d;
+  --color-sage: #dfe7d7;
+  --color-lime: #c9dc94;
+  --color-cream: #f4f0e6;
+  --color-paper: #fbfaf6;
+  --color-ink: #123b2b;
+  --color-line: rgba(18, 63, 45, 0.18);
+
   --radius: 0.75rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -148,104 +159,128 @@
   --text-label-lg--letter-spacing: 0.01em;
   --text-label-lg--font-weight: 600;
 
-  --font-plus-jakarta: "Plus Jakarta Sans";
-  --font-headline-lg: var(--font-plus-jakarta);
-  --font-headline-lg-mobile: var(--font-plus-jakarta);
-  --font-label-md: var(--font-plus-jakarta);
-  --font-body-sm: var(--font-plus-jakarta);
-  --font-headline-md: var(--font-plus-jakarta);
-  --font-headline-sm: var(--font-plus-jakarta);
-  --font-body-md: var(--font-plus-jakarta);
-  --font-price-md: var(--font-plus-jakarta);
-  --font-display-hero-mobile: var(--font-plus-jakarta);
-  --font-body-lg: var(--font-plus-jakarta);
-  --font-price-lg: var(--font-plus-jakarta);
-  --font-label-sm: var(--font-plus-jakarta);
-  --font-display-hero: var(--font-plus-jakarta);
-  --font-label-lg: var(--font-plus-jakarta);
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", system-ui, sans-serif;
+  --font-plus-jakarta: var(--font-sans);
+  --font-headline-lg: var(--font-serif);
+  --font-headline-lg-mobile: var(--font-serif);
+  --font-headline-md: var(--font-serif);
+  --font-headline-sm: var(--font-sans);
+  --font-label-md: var(--font-sans);
+  --font-body-sm: var(--font-sans);
+  --font-body-md: var(--font-sans);
+  --font-body-lg: var(--font-sans);
+  --font-price-md: var(--font-serif);
+  --font-price-lg: var(--font-serif);
+  --font-display-hero-mobile: var(--font-serif);
+  --font-display-hero: var(--font-serif);
+  --font-label-sm: var(--font-sans);
+  --font-label-lg: var(--font-sans);
 }
 
 body {
-  background: var(--color-background);
+  background: radial-gradient(circle at 8% 4%, rgba(201, 220, 148, 0.17), transparent 28rem), var(--color-background);
   color: var(--color-on-surface);
-  font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Mode gelap (A15) ─────────────────────────────────────────────────────
-   Utilitas Tailwind v4 di atas memakai var(--color-*), jadi cukup menimpa
-   variabelnya di bawah `.dark`. Palet dipertahankan hijau–gelap. */
+/* ── Mode gelap (Induk JagoFarm) ──────────────────────────────────────────
+   Palet hijau botani gelap elegan dari induk web jagofarm.biz.id */
 .dark {
-  --color-background: #0b1120;
-  --color-surface: #0f172a;
-  --color-surface-bright: #0f172a;
-  --color-surface-container-lowest: #0b1120;
-  --color-surface-container-low: #111c33;
-  --color-surface-container: #16223d;
-  --color-surface-container-high: #1c2a49;
-  --color-surface-container-highest: #233254;
-  --color-surface-variant: #1c2a49;
-  --color-surface-dim: #0b1120;
+  --color-background: #04110c;
+  --color-surface: #0b2419;
+  --color-surface-bright: #123827;
+  --color-surface-container-lowest: #020b08;
+  --color-surface-container-low: #061710;
+  --color-surface-container: #0b2419;
+  --color-surface-container-high: #102d20;
+  --color-surface-container-highest: #153929;
+  --color-surface-variant: #153328;
+  --color-surface-dim: #04110c;
 
-  --color-on-background: #e2e8f0;
-  --color-on-surface: #e2e8f0;
-  --color-on-surface-variant: #94a3b8;
-  --color-inverse-on-surface: #0b1120;
+  --color-on-background: #f4f0e3;
+  --color-on-surface: #f4f0e3;
+  --color-on-surface-variant: #a6b8ad;
+  --color-inverse-on-surface: #04110c;
 
-  --color-primary: #34d399;
-  --color-on-primary: #052e1b;
-  --color-primary-container: #10b981;
-  --color-on-primary-container: #052e1b;
-  --color-primary-fixed: #10b981;
-  --color-primary-fixed-dim: #059669;
+  --color-primary: #245f43;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #102d20;
+  --color-on-primary-container: #c9df91;
+  --color-inverse-primary: #04110c;
+  --color-primary-fixed: #c9df91;
+  --color-primary-fixed-dim: #b8ce8d;
+  --color-on-primary-fixed: #020b08;
+  --color-on-primary-fixed-variant: #061710;
 
-  --color-secondary: #16223d;
-  --color-on-secondary: #e2e8f0;
-  --color-secondary-container: #1c2a49;
-  --color-on-secondary-container: #e2e8f0;
-  --color-secondary-fixed: #1c2a49;
-  --color-secondary-fixed-dim: #233254;
+  --color-secondary: #153328;
+  --color-on-secondary: #f4f0e3;
+  --color-secondary-container: #102d20;
+  --color-on-secondary-container: #b8ce8d;
+  --color-secondary-fixed: #1c3e30;
+  --color-secondary-fixed-dim: #c9df91;
+  --color-on-secondary-fixed: #020b08;
+  --color-on-secondary-fixed-variant: #b8ce8d;
 
-  --color-tertiary: #16223d;
-  --color-on-tertiary: #e2e8f0;
-  --color-tertiary-container: #1c2a49;
-  --color-on-tertiary-container: #e2e8f0;
+  --color-tertiary: #c9df91;
+  --color-on-tertiary: #020b08;
+  --color-tertiary-container: #153328;
+  --color-on-tertiary-container: #c9df91;
+  --color-tertiary-fixed: #c9df91;
+  --color-tertiary-fixed-dim: #b8ce8d;
+  --color-on-tertiary-fixed: #020b08;
+  --color-on-tertiary-fixed-variant: #020b08;
 
   --color-error: #f87171;
   --color-on-error: #450a0a;
   --color-error-container: #7f1d1d;
   --color-on-error-container: #fee2e2;
 
-  --color-outline: #334155;
-  --color-outline-variant: #334155;
+  --color-outline: rgba(234, 242, 235, 0.16);
+  --color-outline-variant: rgba(234, 242, 235, 0.08);
 
-  --color-foreground: #e2e8f0;
-  --color-primary-foreground: #052e1b;
-  --color-secondary-foreground: #e2e8f0;
-  --color-accent: #10b981;
-  --color-accent-foreground: #052e1b;
-  --color-muted: #16223d;
-  --color-muted-foreground: #94a3b8;
-  --color-card: #0f172a;
-  --color-card-foreground: #e2e8f0;
-  --color-border: #334155;
-  --color-input: #334155;
-  --color-ring: #34d399;
+  --color-foreground: #f4f0e3;
+  --color-primary-foreground: #ffffff;
+  --color-secondary-foreground: #f4f0e3;
+  --color-accent: #c9df91;
+  --color-accent-foreground: #020b08;
+  --color-muted: #102d20;
+  --color-muted-foreground: #a6b8ad;
+  --color-card: #0b2419;
+  --color-card-foreground: #f4f0e3;
+  --color-border: rgba(234, 242, 235, 0.12);
+  --color-input: rgba(234, 242, 235, 0.16);
+  --color-ring: #c9df91;
   --color-destructive: #f87171;
   --color-destructive-foreground: #450a0a;
+
+  /* Direct Parent Colors in Dark Mode */
+  --color-forest: #245f43;
+  --color-forest-deep: #020b08;
+  --color-leaf: #b8ce8d;
+  --color-sage: #153328;
+  --color-lime: #c9df91;
+  --color-cream: #061710;
+  --color-paper: #0b2419;
+  --color-ink: #f4f0e3;
+  --color-line: rgba(234, 242, 235, 0.12);
 }
 
-/* Beberapa halaman memakai warna Tailwind literal (slate/white). Petakan
-   yang paling umum agar tidak menyilaukan di mode gelap. */
-.dark .bg-white { background-color: #0f172a; }
+.dark body {
+  background: radial-gradient(circle at 8% 4%, rgba(119, 157, 96, 0.12), transparent 32rem), var(--color-background);
+}
+
+/* Penyesuaian kelas Tailwind literal agar tidak menyilaukan di mode gelap */
+.dark .bg-white { background-color: #0b2419; }
 .dark .bg-slate-50,
-.dark .bg-slate-50\/70 { background-color: #111c33; }
+.dark .bg-slate-50\/70 { background-color: #061710; }
 .dark .text-slate-900,
-.dark .text-slate-800 { color: #e2e8f0; }
+.dark .text-slate-800 { color: #f4f0e3; }
 .dark .text-slate-600,
-.dark .text-slate-500 { color: #94a3b8; }
+.dark .text-slate-500 { color: #a6b8ad; }
 .dark .border-slate-200,
-.dark .border-slate-100 { border-color: #334155; }
+.dark .border-slate-100 { border-color: rgba(234, 242, 235, 0.12); }
 
 html {
   scroll-behavior: smooth;

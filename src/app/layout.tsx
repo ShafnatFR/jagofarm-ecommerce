@@ -1,15 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
 import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-plus-jakarta",
+  variable: "--font-cormorant",
+  weight: ["500", "600", "700"],
   display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
   weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const SITE_URL = (
@@ -84,8 +91,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1B4D3E",
-  colorScheme: "light",
+  themeColor: "#061710",
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({
@@ -94,7 +101,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${jakarta.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="id" className={`${cormorant.variable} ${manrope.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         {/* Anti-kedip mode gelap (A15): terapkan tema sebelum paint pertama. */}
         <script
