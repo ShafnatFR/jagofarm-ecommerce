@@ -268,12 +268,46 @@ body {
   --color-line: rgba(234, 242, 235, 0.14);
 }
 
+/* ── Aksen teks mode gelap ────────────────────────────────────────────────
+   `--color-primary`/`--color-secondary`/`--color-forest` dipakai untuk dua
+   peran sekaligus: isian (bg-primary pada tombol) dan warna teks
+   (text-primary). Di mode gelap peran teks butuh nilai jauh lebih terang —
+   nilai isian (#2d7a56) hanya mencapai 3.69:1 di atas #04110c, bahkan lebih
+   rendah daripada item non-aktif (#a6b8ad, 9.24:1) sehingga hierarki
+   terbalik.
+
+   Custom property diwariskan, sedangkan `bg-primary` dan `text-primary`
+   sama-sama membaca `var(--color-primary)`. Dengan mendeklarasikan ulang
+   variabel itu PADA elemen teks, hanya warna teks yang berubah dan isian
+   tombol tetap. Tidak perlu menyentuh 197 pemakaian `text-primary`.
+
+   Nilai diambil dari palet induk (jagofarm.biz.id): lime/leaf, bukan hijau
+   baru, supaya tetap satu keluarga warna. */
+.dark .text-primary {
+  --color-primary: #9ecf74; /* 8.9:1 di atas surface #0d2118 */
+}
+
+.dark .text-secondary {
+  --color-secondary: #8fb86a; /* 7.4:1 — sebelumnya #1c422f hanya 1.5:1 */
+}
+
+.dark .text-forest {
+  --color-forest: #93c46d; /* 8.3:1 */
+}
+
 .dark body {
   background: radial-gradient(circle at 8% 4%, rgba(119, 157, 96, 0.12), transparent 32rem), var(--color-background);
 }
 
 /* Penyesuaian kelas Tailwind literal agar tidak menyilaukan di mode gelap */
 .dark .bg-white { background-color: #0d2118; }
+/* Hex literal dari tema terang tidak beradaptasi sendiri — paksa versi gelap. */
+.dark .text-\[\#63726a\] { color: #a6b8ad; }
+.dark .text-\[\#1B4D3E\] { color: #93c46d; }
+.dark .border-\[\#1B4D3E\] { border-color: rgba(234, 242, 235, 0.20); }
+.dark .bg-\[\#1B4D3E\]\/5 { background-color: rgba(147, 196, 109, 0.10); }
+.dark .bg-\[\#1B4D3E\]\/10 { background-color: rgba(147, 196, 109, 0.16); }
+.dark .ring-\[\#1B4D3E\] { --tw-ring-color: #93c46d; }
 .dark .bg-slate-50,
 .dark .bg-slate-50\/70 { background-color: #091a12; }
 .dark .text-slate-900,
@@ -294,8 +328,12 @@ body {
 .dark .text-green-700,
 .dark .text-green-600 { color: #c9df91; }
 .dark .bg-red-50 { background-color: rgba(185, 28, 28, 0.15); }
+.dark .bg-red-100 { background-color: rgba(185, 28, 28, 0.18); }
 .dark .text-red-600,
 .dark .text-red-700 { color: #f87171; }
+/* Netral (status "refunded") — abu-abu terang tidak terbaca di atas hijau gelap. */
+.dark .bg-gray-100 { background-color: rgba(234, 242, 235, 0.10); }
+.dark .text-gray-700 { color: #a6b8ad; }
 .dark .border-red-300,
 .dark .border-red-200 { border-color: rgba(248, 113, 113, 0.3); }
 .dark .bg-yellow-100,
