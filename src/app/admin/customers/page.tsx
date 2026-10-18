@@ -159,9 +159,9 @@ export default function CustomersPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pelanggan: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -180,7 +180,7 @@ export default function CustomersPage() {
       <Card>
         <CardContent className="p-4">
           <div className="relative">
-            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <Input placeholder="Cari nama, email, atau telepon..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
         </CardContent>
@@ -189,8 +189,8 @@ export default function CustomersPage() {
       <Card>
         <CardContent className="p-0">
           {customers.length === 0 ? (
-            <div className="py-12 text-center text-gray-400">
-              <Icon name="search" size={40} className="mx-auto text-gray-300" />
+            <div className="py-12 text-center text-on-surface-variant">
+              <Icon name="search" size={40} className="mx-auto text-on-surface-variant/70" />
               <p className="mt-2">Tidak ada pelanggan ditemukan</p>
             </div>
           ) : (
@@ -209,10 +209,10 @@ export default function CustomersPage() {
                 </thead>
                 <tbody>
                   {customers.map((customer, i) => (
-                    <tr key={customer.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                    <tr key={customer.id} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1B4D3E]/10 text-sm font-bold text-[#1B4D3E]">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                             {customer.name.charAt(0)}
                           </div>
                           <p className="font-medium">{customer.name}</p>
@@ -221,11 +221,11 @@ export default function CustomersPage() {
                       <td className="px-4 py-3">
                         <div className="flex flex-col gap-0.5">
                           <span className="flex items-center gap-1.5 text-on-surface-variant"><Icon name="mail" size={12} /> {customer.email}</span>
-                          <span className="flex items-center gap-1.5 text-gray-400"><Icon name="call" size={12} /> {customer.phone}</span>
+                          <span className="flex items-center gap-1.5 text-on-surface-variant"><Icon name="call" size={12} /> {customer.phone}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3 text-center"><Badge variant="secondary">{customer.ordersCount}</Badge></td>
-                      <td className="px-4 py-3 font-medium text-[#1B4D3E]">{formatPrice(customer.totalSpent)}</td>
+                      <td className="px-4 py-3 font-medium text-primary">{formatPrice(customer.totalSpent)}</td>
                       <td className="px-4 py-3 text-on-surface-variant">{customer.joinedAt ? formatDate(customer.joinedAt) : "-"}</td>
                       <td className="px-4 py-3 text-on-surface-variant">{customer.lastOrder ? formatDate(customer.lastOrder) : "-"}</td>
                       <td className="px-4 py-3 text-right">
@@ -259,20 +259,20 @@ export default function CustomersPage() {
             </div>
           ) : detailError || !detail ? (
             <div className="flex h-40 flex-col items-center justify-center gap-2 text-center">
-              <Icon name="info" size={32} className="text-red-400" />
+              <Icon name="info" size={32} className="text-destructive/80" />
               <p className="text-sm text-on-surface-variant">{detailError || "Detail pelanggan tidak tersedia."}</p>
             </div>
           ) : (
             <div className="max-h-[70vh] space-y-5 overflow-y-auto pr-1">
               {/* Profil + ringkasan */}
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1B4D3E]/10 text-lg font-bold text-[#1B4D3E]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary">
                   {(detail.name || detail.email).charAt(0)}
                 </div>
                 <div>
                   <p className="font-semibold text-on-surface">{detail.name || "-"}</p>
                   <p className="text-xs text-on-surface-variant">{detail.email}</p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-on-surface-variant">
                     {detail.phone || "Telepon belum diisi"} • Bergabung{" "}
                     {detail.createdAt ? formatDate(detail.createdAt) : "-"}
                   </p>
@@ -286,7 +286,7 @@ export default function CustomersPage() {
                 </div>
                 <div className="rounded-lg border p-3">
                   <p className="text-xs text-on-surface-variant">Total Belanja</p>
-                  <p className="text-lg font-bold text-[#1B4D3E]">{formatPrice(detail.summary.totalSpent)}</p>
+                  <p className="text-lg font-bold text-primary">{formatPrice(detail.summary.totalSpent)}</p>
                 </div>
                 <div className="rounded-lg border p-3">
                   <p className="text-xs text-on-surface-variant">Order Terakhir</p>
@@ -299,10 +299,10 @@ export default function CustomersPage() {
               {/* Alamat */}
               <div>
                 <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-on-surface">
-                  <Icon name="location_on" size={16} className="text-[#1B4D3E]" /> Daftar Alamat ({detail.addresses.length})
+                  <Icon name="location_on" size={16} className="text-primary" /> Daftar Alamat ({detail.addresses.length})
                 </p>
                 {detail.addresses.length === 0 ? (
-                  <p className="text-xs text-gray-400">Belum ada alamat tersimpan.</p>
+                  <p className="text-xs text-on-surface-variant">Belum ada alamat tersimpan.</p>
                 ) : (
                   <div className="space-y-2">
                     {detail.addresses.map((address) => (
@@ -327,10 +327,10 @@ export default function CustomersPage() {
               {/* Order terakhir */}
               <div>
                 <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-on-surface">
-                  <Icon name="shopping_cart" size={16} className="text-[#1B4D3E]" /> Order Terakhir
+                  <Icon name="shopping_cart" size={16} className="text-primary" /> Order Terakhir
                 </p>
                 {detail.summary.recentOrders.length === 0 ? (
-                  <p className="text-xs text-gray-400">Belum ada pesanan.</p>
+                  <p className="text-xs text-on-surface-variant">Belum ada pesanan.</p>
                 ) : (
                   <div className="overflow-x-auto rounded-lg border">
                     <table className="w-full text-xs">

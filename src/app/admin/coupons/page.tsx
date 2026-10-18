@@ -157,9 +157,9 @@ export default function CouponsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kupon: {error}</p>
-          <button onClick={() => void fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => void fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -189,7 +189,7 @@ export default function CouponsPage() {
       <Card>
         <CardContent className="p-0">
           {filtered.length === 0 ? (
-            <div className="py-12 text-center text-gray-400">Tidak ada kupon ditemukan</div>
+            <div className="py-12 text-center text-on-surface-variant">Tidak ada kupon ditemukan</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -207,19 +207,19 @@ export default function CouponsPage() {
                 </thead>
                 <tbody>
                   {filtered.map((coupon, i) => (
-                    <tr key={coupon.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                    <tr key={coupon.id} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <code className="rounded bg-[#1B4D3E]/5 px-2 py-0.5 font-mono text-sm font-bold text-[#1B4D3E]">{coupon.code}</code>
-                          <button onClick={() => handleCopy(coupon.code)} className="text-gray-400 hover:text-on-surface-variant"><Icon name="content_copy" size={12} /></button>
+                          <code className="rounded bg-primary/10 px-2 py-0.5 font-mono text-sm font-bold text-primary">{coupon.code}</code>
+                          <button onClick={() => handleCopy(coupon.code)} className="text-on-surface-variant hover:text-on-surface-variant"><Icon name="content_copy" size={12} /></button>
                         </div>
                       </td>
                       <td className="px-4 py-3"><Badge variant="secondary">{coupon.type === "percentage" ? "Persentase" : "Nominal"}</Badge></td>
                       <td className="px-4 py-3 font-medium">{coupon.type === "percentage" ? `${coupon.value}%` : formatPrice(coupon.value)}</td>
                       <td className="px-4 py-3 text-on-surface-variant">{formatPrice(coupon.minOrder)}</td>
                       <td className="px-4 py-3 text-center">
-                        <span className={coupon.usageCount >= coupon.usageLimit ? "text-red-500 font-medium" : ""}>{coupon.usageCount}</span>
-                        <span className="text-gray-400">/{coupon.usageLimit}</span>
+                        <span className={coupon.usageCount >= coupon.usageLimit ? "text-destructive font-medium" : ""}>{coupon.usageCount}</span>
+                        <span className="text-on-surface-variant">/{coupon.usageLimit}</span>
                       </td>
                       <td className="px-4 py-3 text-xs text-on-surface-variant">{formatDate(coupon.startDate)} — {formatDate(coupon.endDate)}</td>
                       <td className="px-4 py-3">
@@ -228,7 +228,7 @@ export default function CouponsPage() {
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(coupon)}><Icon name="edit" size={12} /></Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(coupon.id)}><Icon name="delete" size={12} /></Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDelete(coupon.id)}><Icon name="delete" size={12} /></Button>
                         </div>
                       </td>
                     </tr>

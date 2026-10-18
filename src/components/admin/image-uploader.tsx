@@ -165,7 +165,7 @@ export function ImageUploader({
               />
 
               {index === 0 && (
-                <span className="absolute left-1 top-1 rounded-full bg-[#1B4D3E] px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                <span className="absolute left-1 top-1 rounded-full bg-[#123f2d] dark:bg-[#0d2118] px-1.5 py-0.5 text-[10px] font-semibold text-white">
                   Utama
                 </span>
               )}
@@ -178,7 +178,7 @@ export function ImageUploader({
                     disabled={locked}
                     title="Jadikan gambar utama"
                     aria-label={`Jadikan gambar ${index + 1} sebagai gambar utama`}
-                    className="rounded-full bg-white/90 p-1 text-[#1B4D3E] shadow hover:bg-white disabled:opacity-50"
+                    className="rounded-full bg-surface/90 p-1 text-primary shadow hover:bg-surface-container disabled:opacity-50"
                   >
                     <Icon name="star" size={12} />
                   </button>
@@ -189,7 +189,7 @@ export function ImageUploader({
                   disabled={locked}
                   title="Hapus gambar"
                   aria-label={`Hapus gambar ${index + 1}`}
-                  className="rounded-full bg-white/90 p-1 text-red-500 shadow hover:bg-white disabled:opacity-50"
+                  className="rounded-full bg-surface/90 p-1 text-destructive shadow hover:bg-surface-container disabled:opacity-50"
                 >
                   <Icon name="close" size={12} />
                 </button>
@@ -202,7 +202,7 @@ export function ImageUploader({
               type="button"
               onClick={openPicker}
               disabled={locked}
-              className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low text-gray-400 transition-colors hover:border-[#1B4D3E]/40 hover:text-[#1B4D3E] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low text-on-surface-variant transition-colors hover:border-outline-variant/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isBusy ? (
                 <Icon name="progress_activity" size={20} className="animate-spin" />
@@ -239,21 +239,21 @@ export function ImageUploader({
           className={cn(
             "flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors",
             dragging
-              ? "border-[#1B4D3E] bg-[#1B4D3E]/5"
-              : "border-outline-variant bg-surface-container-low hover:border-[#1B4D3E]/40",
+              ? "border-primary bg-primary/10"
+              : "border-outline-variant bg-surface-container-low hover:border-outline-variant/40",
             locked && "cursor-not-allowed opacity-60"
           )}
         >
           {isBusy ? (
             <>
-              <Icon name="progress_activity" size={28} className="mb-2 animate-spin text-[#1B4D3E]" />
+              <Icon name="progress_activity" size={28} className="mb-2 animate-spin text-primary" />
               <p className="text-sm text-on-surface-variant">Mengunggah {uploading} gambar...</p>
             </>
           ) : (
             <>
               <Icon name="upload" size={28} />
               <p className="text-sm text-on-surface-variant">Seret &amp; lepas gambar di sini</p>
-              <p className="text-xs text-gray-400">atau klik untuk memilih (maks. {max} gambar, 5 MB/gambar)</p>
+              <p className="text-xs text-on-surface-variant">atau klik untuk memilih (maks. {max} gambar, 5 MB/gambar)</p>
               <Button variant="secondary" size="sm" className="mt-3" type="button" disabled={locked}>
                 Pilih File
               </Button>
@@ -263,21 +263,21 @@ export function ImageUploader({
       )}
 
       {remaining === 0 && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-on-surface-variant">
           Sudah mencapai batas maksimal {max} gambar. Hapus salah satu untuk menambah gambar baru.
         </p>
       )}
 
       {value.length > 0 && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-on-surface-variant">
           Gambar pertama dipakai sebagai gambar utama produk. Gunakan ikon bintang untuk mengubahnya.
         </p>
       )}
 
       {errors.length > 0 && (
-        <ul className="space-y-1 rounded-lg bg-red-50 p-3">
+        <ul className="space-y-1 rounded-lg bg-destructive/10 p-3">
           {errors.map((message, i) => (
-            <li key={`${message}-${i}`} className="flex items-start gap-1.5 text-xs text-red-600">
+            <li key={`${message}-${i}`} className="flex items-start gap-1.5 text-xs text-destructive">
               <Icon name="info" size={12} className="mt-0.5 shrink-0" />
               <span>{message}</span>
             </li>

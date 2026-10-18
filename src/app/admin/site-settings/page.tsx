@@ -24,32 +24,32 @@ export default async function SiteSettingsAdminPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold text-green-900">Pengaturan Situs</h1>
-        <p className="mt-1 text-sm text-green-700">
+        <h1 className="text-2xl font-bold text-on-surface">Pengaturan Situs</h1>
+        <p className="mt-1 text-sm text-primary">
           Ubah teks tampilan storefront tanpa deploy. Perubahan langsung terlihat di halaman utama.
         </p>
       </header>
 
-      <section className="border border-green-200 rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-green-900 mb-1">Hero Halaman Utama</h2>
-        <p className="mb-4 text-sm text-green-700">
+      <section className="border border-outline-variant rounded-xl bg-surface p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-on-surface mb-1">Hero Halaman Utama</h2>
+        <p className="mb-4 text-sm text-primary">
           Teks pembuka homepage: badge, judul, subjudul, dan dua tombol aksi.
         </p>
         <HeroSettingForm initial={hero} isDefault={isDefault} />
       </section>
 
-      <section className="mt-8 border border-green-200 rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-green-900 mb-1">Profil Toko</h2>
-        <p className="mb-4 text-sm text-green-700">
+      <section className="mt-8 border border-outline-variant rounded-xl bg-surface p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-on-surface mb-1">Profil Toko</h2>
+        <p className="mb-4 text-sm text-primary">
           Identitas & kontak toko: nama, tagline, email, telepon/WhatsApp, alamat, jam
           operasional, dan tautan sosial. Dipakai di footer, halaman kontak, dan halaman masuk.
         </p>
         <StoreProfileForm initial={storeProfile} isDefault={isStoreDefault} />
       </section>
 
-      <section className="mt-8 border border-green-200 rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-green-900 mb-1">Pengiriman</h2>
-        <p className="mb-4 text-sm text-green-700">
+      <section className="mt-8 border border-outline-variant rounded-xl bg-surface p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-on-surface mb-1">Pengiriman</h2>
+        <p className="mb-4 text-sm text-primary">
           Kurir yang aktif saat checkout, kota asal gudang (city_id RajaOngkir), dan pembagi
           berat volumetrik. Dipakai halaman checkout saat menghitung ongkir. Tanpa perubahan di
           sini, nilai bawaan dari konfigurasi server tetap dipakai.
@@ -57,9 +57,9 @@ export default async function SiteSettingsAdminPage() {
         <ShippingSettingsForm initial={shipping} isDefault={isShippingDefault} />
       </section>
 
-      <section className="mt-8 border border-green-200 rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-green-900 mb-1">Teks Konten Situs</h2>
-        <p className="mb-4 text-sm text-green-700">
+      <section className="mt-8 border border-outline-variant rounded-xl bg-surface p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-on-surface mb-1">Teks Konten Situs</h2>
+        <p className="mb-4 text-sm text-primary">
           Teks pemasaran storefront: banner navbar, strip keunggulan & banner konsultasi
           homepage, kartu FAQ halaman kontak, dan panel halaman masuk/daftar. Semua perubahan
           langsung terlihat tanpa deploy.

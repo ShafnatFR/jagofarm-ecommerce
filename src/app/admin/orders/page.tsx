@@ -275,9 +275,9 @@ export default function OrdersPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pesanan: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -310,7 +310,7 @@ export default function OrdersPage() {
       <Card>
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <Input placeholder="Cari no. pesanan atau pelanggan..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -332,8 +332,8 @@ export default function OrdersPage() {
       <Card>
         <CardContent className="p-0">
           {orders.length === 0 ? (
-            <div className="py-12 text-center text-gray-400">
-              <Icon name="search" size={40} className="mx-auto text-gray-300" />
+            <div className="py-12 text-center text-on-surface-variant">
+              <Icon name="search" size={40} className="mx-auto text-on-surface-variant/70" />
               <p className="mt-2">Tidak ada pesanan ditemukan</p>
             </div>
           ) : (
@@ -358,12 +358,12 @@ export default function OrdersPage() {
                     const status = statusConfig[order.status]
                     const payment = paymentConfig[order.paymentStatus]
                     return (
-                      <tr key={order.id} className={busyId === order.id ? "bg-[#1B4D3E]/5" : i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                      <tr key={order.id} className={busyId === order.id ? "bg-primary/10" : i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                         <td className="px-4 py-3 font-mono text-xs font-medium">{order.orderNumber}</td>
                         <td className="px-4 py-3 text-on-surface-variant">{formatDate(order.date)}</td>
                         <td className="px-4 py-3">
                           <p className="font-medium">{order.customer}</p>
-                          <p className="text-xs text-gray-400">{order.email}</p>
+                          <p className="text-xs text-on-surface-variant">{order.email}</p>
                         </td>
                         <td className="px-4 py-3 text-center">{order.items}</td>
                         <td className="px-4 py-3 font-medium">{formatPrice(order.total)}</td>
@@ -376,7 +376,7 @@ export default function OrdersPage() {
                           {order.trackingNumber ? (
                             <span className="font-mono text-xs text-on-surface-variant">{order.trackingNumber}</span>
                           ) : (
-                            <span className="text-xs text-gray-300">-</span>
+                            <span className="text-xs text-on-surface-variant/70">-</span>
                           )}
                         </td>
                         <td className="px-4 py-3">
@@ -501,7 +501,7 @@ export default function OrdersPage() {
               value={resiEtd}
               onChange={(e) => setResiEtd(e.target.value)}
             />
-            <p className="rounded-lg bg-[#1B4D3E]/5 p-3 text-xs text-on-surface-variant">
+            <p className="rounded-lg bg-surface-container-low p-3 text-xs text-on-surface-variant">
               Menyimpan resi akan mengisi tanggal kirim dan menaikkan status pesanan ke
               &quot;Dikirim&quot; bila statusnya masih Menunggu atau Diproses.
             </p>

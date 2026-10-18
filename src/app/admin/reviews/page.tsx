@@ -202,11 +202,11 @@ export default function AdminReviewsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat ulasan: {error}</p>
           <button
             onClick={() => fetchData()}
-            className="mt-2 text-sm text-[#1B4D3E] underline"
+            className="mt-2 text-sm text-primary underline"
           >
             Coba lagi
           </button>
@@ -248,7 +248,7 @@ export default function AdminReviewsPage() {
           </Tabs>
 
           <div className="relative w-full lg:max-w-xs">
-            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <Input
               placeholder="Cari komentar atau produk..."
               value={searchInput}
@@ -263,7 +263,7 @@ export default function AdminReviewsPage() {
         <CardContent className="p-0">
           {reviews.length === 0 ? (
             <div className="py-16 text-center">
-              <Icon name="forum" size={40} className="mx-auto text-gray-300" />
+              <Icon name="forum" size={40} className="mx-auto text-on-surface-variant/70" />
               <p className="mt-3 text-sm font-medium text-on-surface-variant">
                 {search.trim()
                   ? "Tidak ada ulasan yang cocok dengan pencarian"
@@ -273,7 +273,7 @@ export default function AdminReviewsPage() {
                       ? "Belum ada ulasan yang disetujui"
                       : "Belum ada ulasan dari pelanggan"}
               </p>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="mt-1 text-xs text-on-surface-variant">
                 Ulasan muncul di sini setelah pelanggan mengulas produk yang dibelinya.
               </p>
             </div>
@@ -294,13 +294,13 @@ export default function AdminReviewsPage() {
                   {reviews.map((review, i) => (
                     <tr
                       key={review.id}
-                      className={i % 2 === 0 ? "bg-white align-top" : "bg-surface-container-low/50 align-top"}
+                      className={i % 2 === 0 ? "bg-surface align-top" : "bg-surface-container-low/50 align-top"}
                     >
                       <td className="max-w-md px-4 py-3">
                         <Stars rating={review.rating} />
                         <p className="mt-1.5 text-on-surface-variant">
                           {review.comment?.trim() || (
-                            <span className="text-gray-400 italic">Tanpa komentar</span>
+                            <span className="text-on-surface-variant italic">Tanpa komentar</span>
                           )}
                         </p>
                         {review.imageUrl && (
@@ -308,7 +308,7 @@ export default function AdminReviewsPage() {
                             href={review.imageUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-2 inline-block text-xs text-[#1B4D3E] underline"
+                            className="mt-2 inline-block text-xs text-primary underline"
                           >
                             Lihat foto ulasan
                           </a>
@@ -320,12 +320,12 @@ export default function AdminReviewsPage() {
                             href={`/products/${review.product.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-medium text-[#1B4D3E] hover:underline"
+                            className="font-medium text-primary hover:underline"
                           >
                             {review.product.name}
                           </a>
                         ) : (
-                          <span className="text-gray-400">Produk dihapus</span>
+                          <span className="text-on-surface-variant">Produk dihapus</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
@@ -359,7 +359,7 @@ export default function AdminReviewsPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-8 text-green-700 hover:text-green-800"
+                              className="h-8 text-primary hover:text-on-surface"
                               disabled={busyId === review.id}
                               onClick={() => moderate(review, true)}
                             >
@@ -370,7 +370,7 @@ export default function AdminReviewsPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-red-500 hover:text-red-600"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
                             title="Hapus ulasan"
                             disabled={busyId === review.id}
                             onClick={() => remove(review)}

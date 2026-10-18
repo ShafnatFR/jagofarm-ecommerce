@@ -86,7 +86,7 @@ export default function HeroSettingForm({ initial, isDefault }: Props) {
       <div className="flex flex-wrap items-center gap-2">
         <span
           className={`text-xs font-medium px-2 py-1 rounded-full ${
-            isDefault ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-800"
+            isDefault ? "bg-surface-container-low text-on-surface-variant" : "bg-surface-container text-on-surface"
           }`}
         >
           {isDefault ? "Menggunakan teks default" : "Teks kustom aktif"}
@@ -96,7 +96,7 @@ export default function HeroSettingForm({ initial, isDefault }: Props) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {FIELDS.map((field) => (
           <div key={field.key} className={field.multiline ? "sm:col-span-2" : ""}>
-            <label className="block text-sm font-medium text-green-900 mb-1">
+            <label className="block text-sm font-medium text-on-surface mb-1">
               {field.label}
             </label>
             {field.multiline ? (
@@ -104,7 +104,7 @@ export default function HeroSettingForm({ initial, isDefault }: Props) {
                 value={form[field.key]}
                 onChange={(e) => setField(field.key, e.target.value)}
                 rows={3}
-                className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
               />
             ) : (
               <input
@@ -112,22 +112,22 @@ export default function HeroSettingForm({ initial, isDefault }: Props) {
                 value={form[field.key]}
                 onChange={(e) => setField(field.key, e.target.value)}
                 maxLength={300}
-                className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
               />
             )}
-            {field.hint && <p className="mt-1 text-xs text-green-600">{field.hint}</p>}
+            {field.hint && <p className="mt-1 text-xs text-primary">{field.hint}</p>}
           </div>
         ))}
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && <p className="text-sm text-green-700">{success}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      {success && <p className="text-sm text-primary">{success}</p>}
 
       <div className="flex flex-wrap gap-3">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-green-800 px-4 py-2 text-sm font-semibold text-white hover:bg-green-900 disabled:opacity-50"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-surface-container-highest disabled:opacity-50"
         >
           {isPending ? "Menyimpan..." : "Simpan Hero"}
         </button>
@@ -135,13 +135,13 @@ export default function HeroSettingForm({ initial, isDefault }: Props) {
           type="button"
           onClick={handleReset}
           disabled={isPending}
-          className="rounded-lg border border-green-300 px-4 py-2 text-sm font-semibold text-green-800 hover:bg-green-50 disabled:opacity-50"
+          className="rounded-lg border border-outline-variant px-4 py-2 text-sm font-semibold text-on-surface hover:bg-surface-container-low disabled:opacity-50"
         >
           Kembalikan ke Default
         </button>
       </div>
 
-      <p className="text-xs text-green-600">
+      <p className="text-xs text-primary">
         Default saat ini: &ldquo;{HOME_HERO_DEFAULT.headline} {HOME_HERO_DEFAULT.headlineHighlight}&rdquo;
       </p>
     </form>
@@ -225,7 +225,7 @@ export function StoreProfileForm({ initial, isDefault }: StoreProfileFormProps) 
       <div className="flex flex-wrap items-center gap-2">
         <span
           className={`text-xs font-medium px-2 py-1 rounded-full ${
-            isDefault ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-800"
+            isDefault ? "bg-surface-container-low text-on-surface-variant" : "bg-surface-container text-on-surface"
           }`}
         >
           {isDefault ? "Menggunakan data default" : "Data kustom aktif"}
@@ -235,7 +235,7 @@ export function StoreProfileForm({ initial, isDefault }: StoreProfileFormProps) 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {STORE_FIELDS.map((field) => (
           <div key={field.key} className={field.multiline ? "sm:col-span-2" : ""}>
-            <label className="block text-sm font-medium text-green-900 mb-1">
+            <label className="block text-sm font-medium text-on-surface mb-1">
               {field.label}
             </label>
             {field.multiline ? (
@@ -244,7 +244,7 @@ export function StoreProfileForm({ initial, isDefault }: StoreProfileFormProps) 
                 onChange={(e) => setField(field.key, e.target.value)}
                 rows={3}
                 maxLength={field.maxLength ?? 300}
-                className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
               />
             ) : (
               <input
@@ -252,22 +252,22 @@ export function StoreProfileForm({ initial, isDefault }: StoreProfileFormProps) 
                 value={form[field.key]}
                 onChange={(e) => setField(field.key, e.target.value)}
                 maxLength={field.maxLength ?? 300}
-                className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
               />
             )}
-            {field.hint && <p className="mt-1 text-xs text-green-600">{field.hint}</p>}
+            {field.hint && <p className="mt-1 text-xs text-primary">{field.hint}</p>}
           </div>
         ))}
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && <p className="text-sm text-green-700">{success}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      {success && <p className="text-sm text-primary">{success}</p>}
 
       <div className="flex flex-wrap gap-3">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-green-800 px-4 py-2 text-sm font-semibold text-white hover:bg-green-900 disabled:opacity-50"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-surface-container-highest disabled:opacity-50"
         >
           {isPending ? "Menyimpan..." : "Simpan Profil Toko"}
         </button>
@@ -275,13 +275,13 @@ export function StoreProfileForm({ initial, isDefault }: StoreProfileFormProps) 
           type="button"
           onClick={handleReset}
           disabled={isPending}
-          className="rounded-lg border border-green-300 px-4 py-2 text-sm font-semibold text-green-800 hover:bg-green-50 disabled:opacity-50"
+          className="rounded-lg border border-outline-variant px-4 py-2 text-sm font-semibold text-on-surface hover:bg-surface-container-low disabled:opacity-50"
         >
           Kembalikan ke Default
         </button>
       </div>
 
-      <p className="text-xs text-green-600">
+      <p className="text-xs text-primary">
         Default saat ini: &ldquo;{STORE_PROFILE_DEFAULT.name} — {STORE_PROFILE_DEFAULT.email}&rdquo;
       </p>
     </form>
@@ -360,7 +360,7 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
       <div className="flex flex-wrap items-center gap-2">
         <span
           className={`text-xs font-medium px-2 py-1 rounded-full ${
-            isDefault ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-800"
+            isDefault ? "bg-surface-container-low text-on-surface-variant" : "bg-surface-container text-on-surface"
           }`}
         >
           {isDefault ? "Menggunakan data default" : "Data kustom aktif"}
@@ -368,21 +368,21 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
       </div>
 
       <div>
-        <span className="block text-sm font-medium text-green-900 mb-1">Kurir Aktif</span>
+        <span className="block text-sm font-medium text-on-surface mb-1">Kurir Aktif</span>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {ALLOWED_SHIPPING_COURIERS.map((code) => (
-            <label key={code} className="flex items-center gap-2 text-sm text-green-900">
+            <label key={code} className="flex items-center gap-2 text-sm text-on-surface">
               <input
                 type="checkbox"
                 checked={couriers.includes(code)}
                 onChange={(e) => toggleCourier(code, e.target.checked)}
-                className="h-4 w-4 rounded border-green-300 text-green-800 focus:ring-green-600"
+                className="h-4 w-4 rounded border-outline-variant text-on-surface focus:ring-primary"
               />
               {SHIPPING_COURIER_LABELS[code] ?? code.toUpperCase()}
             </label>
           ))}
         </div>
-        <p className="mt-1 text-xs text-green-600">
+        <p className="mt-1 text-xs text-primary">
           Kurir yang dipilih dipakai saat checkout meminta ongkir. Tanpa override, daftar
           bawaan JNE, POS Indonesia, dan TIKI yang aktif.
         </p>
@@ -390,7 +390,7 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-green-900 mb-1">
+          <label className="block text-sm font-medium text-on-surface mb-1">
             Kota Asal Gudang (city_id RajaOngkir)
           </label>
           <input
@@ -399,9 +399,9 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
             value={warehouseCityId}
             onChange={(e) => setWarehouseCityId(e.target.value)}
             maxLength={10}
-            className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+            className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
           />
-          <p className="mt-1 text-xs text-green-600">
+          <p className="mt-1 text-xs text-primary">
             Angka city_id RajaOngkir, mis. 5099 (Bandung). Cari id kota lewat endpoint
             /api/shipping/cities (mis. <code>?province=Jawa Barat&amp;q=bandung</code>) atau
             dashboard RajaOngkir.
@@ -409,7 +409,7 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-green-900 mb-1">
+          <label className="block text-sm font-medium text-on-surface mb-1">
             Pembagi Berat Volumetrik
           </label>
           <input
@@ -418,23 +418,23 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
             step={100}
             value={divisorInput}
             onChange={(e) => setDivisorInput(e.target.value)}
-            className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+            className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
           />
-          <p className="mt-1 text-xs text-green-600">
+          <p className="mt-1 text-xs text-primary">
             Pembagi cm³/kg untuk berat volumetrik (bawaan 5000). Berat volumetrik = panjang
             &times; lebar &times; tinggi (cm) &divide; pembagi.
           </p>
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && <p className="text-sm text-green-700">{success}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      {success && <p className="text-sm text-primary">{success}</p>}
 
       <div className="flex flex-wrap gap-3">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-green-800 px-4 py-2 text-sm font-semibold text-white hover:bg-green-900 disabled:opacity-50"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-surface-container-highest disabled:opacity-50"
         >
           {isPending ? "Menyimpan..." : "Simpan Pengiriman"}
         </button>
@@ -442,7 +442,7 @@ export function ShippingSettingsForm({ initial, isDefault }: ShippingSettingsFor
           type="button"
           onClick={handleReset}
           disabled={isPending}
-          className="rounded-lg border border-green-300 px-4 py-2 text-sm font-semibold text-green-800 hover:bg-green-50 disabled:opacity-50"
+          className="rounded-lg border border-outline-variant px-4 py-2 text-sm font-semibold text-on-surface hover:bg-surface-container-low disabled:opacity-50"
         >
           Kembalikan ke Default
         </button>
@@ -579,7 +579,7 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
       <div className="flex flex-wrap items-center gap-2">
         <span
           className={`text-xs font-medium px-2 py-1 rounded-full ${
-            isDefault ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-800"
+            isDefault ? "bg-surface-container-low text-on-surface-variant" : "bg-surface-container text-on-surface"
           }`}
         >
           {isDefault ? "Menggunakan teks default" : "Teks kustom aktif"}
@@ -587,14 +587,14 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
       </div>
 
       {CONTENT_GROUPS.map((group) => (
-        <fieldset key={group.title} className="border border-green-100 rounded-lg p-4">
-          <legend className="px-2 text-sm font-semibold text-green-900">
+        <fieldset key={group.title} className="border border-outline-variant rounded-lg p-4">
+          <legend className="px-2 text-sm font-semibold text-on-surface">
             {group.title}
           </legend>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {group.fields.map((field) => (
               <div key={field.key} className={field.multiline ? "sm:col-span-2" : ""}>
-                <label className="block text-sm font-medium text-green-900 mb-1">
+                <label className="block text-sm font-medium text-on-surface mb-1">
                   {field.label}
                 </label>
                 {field.multiline ? (
@@ -603,7 +603,7 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
                     onChange={(e) => setField(field.key, e.target.value)}
                     rows={2}
                     maxLength={500}
-                    className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                    className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
                   />
                 ) : (
                   <input
@@ -611,7 +611,7 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
                     value={form[field.key]}
                     onChange={(e) => setField(field.key, e.target.value)}
                     maxLength={500}
-                    className="w-full rounded-lg border border-green-200 px-3 py-2 text-sm text-green-900 focus:border-green-600 focus:outline-none"
+                    className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"
                   />
                 )}
               </div>
@@ -620,14 +620,14 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
         </fieldset>
       ))}
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && <p className="text-sm text-green-700">{success}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      {success && <p className="text-sm text-primary">{success}</p>}
 
       <div className="flex flex-wrap gap-3">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-green-800 px-4 py-2 text-sm font-semibold text-white hover:bg-green-900 disabled:opacity-50"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-surface-container-highest disabled:opacity-50"
         >
           {isPending ? "Menyimpan..." : "Simpan Teks Konten"}
         </button>
@@ -635,13 +635,13 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
           type="button"
           onClick={handleReset}
           disabled={isPending}
-          className="rounded-lg border border-green-300 px-4 py-2 text-sm font-semibold text-green-800 hover:bg-green-50 disabled:opacity-50"
+          className="rounded-lg border border-outline-variant px-4 py-2 text-sm font-semibold text-on-surface hover:bg-surface-container-low disabled:opacity-50"
         >
           Kembalikan ke Default
         </button>
       </div>
 
-      <p className="text-xs text-green-600">
+      <p className="text-xs text-primary">
         Default saat ini: &ldquo;{SITE_CONTENT_DEFAULT.navPromo}&rdquo;
       </p>
     </form>

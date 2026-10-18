@@ -228,11 +228,11 @@ export default function AdminContactPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pesan: {error}</p>
           <button
             onClick={() => fetchData()}
-            className="mt-2 text-sm text-[#1B4D3E] underline"
+            className="mt-2 text-sm text-primary underline"
           >
             Coba lagi
           </button>
@@ -252,7 +252,7 @@ export default function AdminContactPage() {
           <h1 className="flex items-center gap-2 text-2xl font-bold text-on-surface">
             Kotak Masuk
             {unread > 0 && (
-              <span className="rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white">
+              <span className="rounded-full bg-destructive px-2 py-0.5 text-xs font-bold text-white">
                 {unread} baru
               </span>
             )}
@@ -281,7 +281,7 @@ export default function AdminContactPage() {
           </Tabs>
 
           <div className="relative w-full lg:max-w-xs">
-            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <Input
               placeholder="Cari nama, email, subjek, pesan..."
               value={searchInput}
@@ -296,7 +296,7 @@ export default function AdminContactPage() {
         <CardContent className="p-0">
           {messages.length === 0 ? (
             <div className="py-16 text-center">
-              <Icon name="mail" size={40} className="mx-auto text-gray-300" />
+              <Icon name="mail" size={40} className="mx-auto text-on-surface-variant/70" />
               <p className="mt-3 text-sm font-medium text-on-surface-variant">
                 {search.trim()
                   ? "Tidak ada pesan yang cocok dengan pencarian"
@@ -306,7 +306,7 @@ export default function AdminContactPage() {
                       ? "Belum ada pesan yang sudah dibaca"
                       : "Belum ada pesan masuk"}
               </p>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="mt-1 text-xs text-on-surface-variant">
                 Pesan muncul di sini setelah pengunjung mengirim contact form di halaman /contact.
               </p>
             </div>
@@ -327,13 +327,13 @@ export default function AdminContactPage() {
                   {messages.map((message, i) => (
                     <tr
                       key={message.id}
-                      className={`${i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"} align-top`}
+                      className={`${i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"} align-top`}
                     >
                       <td className="px-4 py-3">
                         <p className={`text-on-surface ${message.isRead ? "" : "font-bold"}`}>
                           {message.name}
                         </p>
-                        <a href={`mailto:${message.email}`} className="text-xs text-[#1B4D3E] hover:underline">
+                        <a href={`mailto:${message.email}`} className="text-xs text-primary hover:underline">
                           {message.email}
                         </a>
                         {message.phone && (
@@ -351,7 +351,7 @@ export default function AdminContactPage() {
                       <td className="max-w-md px-4 py-3">
                         <p className="line-clamp-2 text-on-surface-variant">
                           {message.message.trim() || (
-                            <span className="text-gray-400 italic">Tanpa pesan</span>
+                            <span className="text-on-surface-variant italic">Tanpa pesan</span>
                           )}
                         </p>
                       </td>
@@ -392,7 +392,7 @@ export default function AdminContactPage() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-green-700 hover:text-green-800"
+                              className="h-8 w-8 text-primary hover:text-on-surface"
                               title="Tandai sudah dibaca"
                               disabled={busyId === message.id}
                               onClick={() => markRead(message, true)}
@@ -403,7 +403,7 @@ export default function AdminContactPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-red-500 hover:text-red-600"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
                             title="Hapus pesan"
                             disabled={busyId === message.id}
                             onClick={() => remove(message)}
@@ -481,7 +481,7 @@ export default function AdminContactPage() {
                 </div>
                 <div>
                   <p className="text-xs text-on-surface-variant">Email</p>
-                  <a href={`mailto:${selected.email}`} className="font-medium text-[#1B4D3E] hover:underline">
+                  <a href={`mailto:${selected.email}`} className="font-medium text-primary hover:underline">
                     {selected.email}
                   </a>
                 </div>
@@ -536,7 +536,7 @@ export default function AdminContactPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-red-500 hover:text-red-600"
+                  className="text-destructive hover:text-destructive"
                   disabled={busyId === selected.id}
                   onClick={async () => {
                     const deleted = await remove(selected)

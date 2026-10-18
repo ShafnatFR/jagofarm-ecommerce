@@ -18,7 +18,7 @@
 
   --color-on-background: #123b2b;
   --color-on-surface: #123b2b;
-  --color-on-surface-variant: #63726a;
+  --color-on-surface-variant: #5d6b63;
   --color-inverse-on-surface: #f4f0e3;
 
   --color-primary: #123f2d;
@@ -64,7 +64,7 @@
   --color-accent: #66885d;
   --color-accent-foreground: #ffffff;
   --color-muted: #ebe6d8;
-  --color-muted-foreground: #63726a;
+  --color-muted-foreground: #5d6b63;
   --color-card: #fbfaf6;
   --color-card-foreground: #123b2b;
   --color-border: rgba(18, 63, 45, 0.16);
@@ -266,6 +266,12 @@ body {
   --color-paper: #0d2118;
   --color-ink: #e8e4d8;
   --color-line: rgba(234, 242, 235, 0.14);
+
+  /* Kartu di mode gelap memakai permukaan, bukan putih: #153d2b (surface-bright)
+     dan #030a07 (lowest) terlalu ekstrem untuk panel admin yang isinya padat.
+     Disamakan dengan permukaan standar supaya seragam dengan halaman lain. */
+  --color-surface-bright: #0d2118;
+  --color-surface-container-lowest: #0d2118;
 }
 
 /* ── Aksen teks mode gelap ────────────────────────────────────────────────

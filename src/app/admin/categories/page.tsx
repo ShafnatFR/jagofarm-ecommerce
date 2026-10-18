@@ -37,18 +37,18 @@ function CategoryNode({ category, depth = 0, onEdit, onDelete }: {
       <div className={`flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors hover:bg-surface-container-low ${depth > 0 ? "ml-6" : ""}`}>
         <div className="flex items-center gap-2">
           {hasChildren ? (
-            <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-on-surface-variant">
+            <button onClick={() => setExpanded(!expanded)} className="text-on-surface-variant hover:text-on-surface-variant">
               {expanded ? <Icon name="expand_more" size={16} /> : <Icon name="chevron_right" size={16} />}
             </button>
           ) : <div className="w-4" />}
-          <Icon name="account_tree" size={16} className="text-[#1B4D3E]" />
+          <Icon name="account_tree" size={16} className="text-primary" />
           <span className="font-medium">{category.name}</span>
           <span className="rounded-full bg-surface-container-low px-2 py-0.5 text-xs text-on-surface-variant">{productCount} produk</span>
           {category.isActive === false && <Badge variant="secondary">Nonaktif</Badge>}
         </div>
         <div className="flex items-center gap-1">
           <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8" title="Edit kategori"><Icon name="edit" size={12} /></Button>
-          <Button variant="ghost" size="icon" onClick={() => onDelete(category)} className="h-8 w-8 text-red-500 hover:text-red-600" title="Hapus kategori"><Icon name="delete" size={12} /></Button>
+          <Button variant="ghost" size="icon" onClick={() => onDelete(category)} className="h-8 w-8 text-destructive hover:text-destructive" title="Hapus kategori"><Icon name="delete" size={12} /></Button>
         </div>
       </div>
       <AnimatePresence>
@@ -214,9 +214,9 @@ export default function CategoriesPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kategori: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -239,8 +239,8 @@ export default function CategoriesPage() {
         <CardHeader><CardTitle className="text-lg">Daftar Kategori</CardTitle></CardHeader>
         <CardContent className="p-0">
           {categories.length === 0 ? (
-            <div className="py-12 text-center text-gray-400">
-              <Icon name="account_tree" size={40} className="mx-auto text-gray-300" />
+            <div className="py-12 text-center text-on-surface-variant">
+              <Icon name="account_tree" size={40} className="mx-auto text-on-surface-variant/70" />
               <p className="mt-2">Belum ada kategori</p>
             </div>
           ) : (
@@ -275,7 +275,7 @@ export default function CategoriesPage() {
             <div>
               <label className="mb-1.5 block text-sm font-medium">Deskripsi</label>
               <textarea
-                className="flex min-h-[70px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4D3E]"
+                className="flex min-h-[70px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 placeholder="Deskripsi singkat..."
                 value={formDesc}
                 onChange={(e) => setFormDesc(e.target.value)}

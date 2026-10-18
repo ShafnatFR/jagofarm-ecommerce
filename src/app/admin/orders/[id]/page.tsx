@@ -225,7 +225,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   if (error || !order) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
-        <Icon name="info" size={40} className="text-red-400" />
+        <Icon name="info" size={40} className="text-destructive/80" />
         <p className="text-sm text-on-surface-variant">{error || "Pesanan tidak ditemukan"}</p>
         <Link href="/admin/orders"><Button variant="secondary">Kembali ke daftar pesanan</Button></Link>
       </div>
@@ -285,7 +285,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     </thead>
                     <tbody>
                       {order.items.map((item, i) => (
-                        <tr key={item.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                        <tr key={item.id} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
@@ -297,7 +297,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                                     className="h-full w-full object-cover"
                                   />
                                 ) : (
-                                  <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                  <div className="flex h-full w-full items-center justify-center text-on-surface-variant">
                                     <Icon name="inventory_2" size={20} />
                                   </div>
                                 )}
@@ -305,7 +305,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                               <div>
                                 <p className="font-medium text-on-surface">{item.productName || "Produk"}</p>
                                 {item.variantName && (
-                                  <p className="text-xs text-gray-400">Varian: {item.variantName}</p>
+                                  <p className="text-xs text-on-surface-variant">Varian: {item.variantName}</p>
                                 )}
                               </div>
                             </div>
@@ -336,7 +336,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                       <span>{formatPrice(order.insuranceFee ?? 0)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between border-t pt-2 text-base font-bold text-[#1B4D3E]">
+                  <div className="flex justify-between border-t pt-2 text-base font-bold text-primary">
                     <span>Total</span><span>{formatPrice(order.total)}</span>
                   </div>
                 </div>
@@ -348,7 +348,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Icon name="schedule" size={16} className="text-[#1B4D3E]" /> Riwayat Waktu
+                  <Icon name="schedule" size={16} className="text-primary" /> Riwayat Waktu
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -356,13 +356,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   {timeline.map((step) => (
                     <li key={step.label} className="flex items-start gap-3">
                       <span
-                        className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${step.value ? "bg-[#1B4D3E]" : "bg-surface-container"}`}
+                        className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${step.value ? "bg-primary" : "bg-surface-container"}`}
                       />
                       <div>
-                        <p className={`text-sm font-medium ${step.value ? "text-on-surface" : "text-gray-400"}`}>
+                        <p className={`text-sm font-medium ${step.value ? "text-on-surface" : "text-on-surface-variant"}`}>
                           {step.label}
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-on-surface-variant">
                           {step.value ? formatDateTime(step.value) : "Belum terjadi"}
                         </p>
                       </div>
@@ -377,12 +377,12 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Icon name="sticky_note_2" size={16} className="text-[#1B4D3E]" />Catatan Internal
+                  <Icon name="sticky_note_2" size={16} className="text-primary" />Catatan Internal
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <textarea
-                  className="flex min-h-[100px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4D3E]"
+                  className="flex min-h-[100px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   placeholder="Catatan untuk tim gudang / CS..."
                   value={notesDraft}
                   onChange={(e) => setNotesDraft(e.target.value)}
@@ -457,7 +457,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Icon name="person" size={16} className="text-[#1B4D3E]" />Pelanggan
+                  <Icon name="person" size={16} className="text-primary" />Pelanggan
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-1 text-sm">
@@ -472,7 +472,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Icon name="location_on" size={16} className="text-[#1B4D3E]" /> Alamat Pengiriman
+                  <Icon name="location_on" size={16} className="text-primary" /> Alamat Pengiriman
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-1 text-sm">
@@ -484,10 +484,10 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                       {address.detail ? `${address.detail}, ` : ""}
                       {address.district}, {address.city}, {address.province} {address.postalCode}
                     </p>
-                    <p className="pt-1 text-xs text-gray-400">Label: {address.label}</p>
+                    <p className="pt-1 text-xs text-on-surface-variant">Label: {address.label}</p>
                   </>
                 ) : (
-                  <p className="text-gray-400">Alamat pengiriman tidak tersedia.</p>
+                  <p className="text-on-surface-variant">Alamat pengiriman tidak tersedia.</p>
                 )}
                 <div className="mt-3 space-y-1 border-t pt-3 text-xs text-on-surface-variant">
                   <p>Kurir: {order.shippingCourier || "-"}</p>

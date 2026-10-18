@@ -235,7 +235,7 @@ export default function NewProductPage() {
         <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={fetchCategories} loading={loadingCats} />
       </div>
 
-      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
+      {error && <p className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
@@ -260,11 +260,11 @@ export default function NewProductPage() {
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
-                  <textarea className="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4D3E]" placeholder="Deskripsi pendek untuk kartu produk..." value={form.shortDescription} onChange={(e) => updateField("shortDescription", e.target.value)} />
+                  <textarea className="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" placeholder="Deskripsi pendek untuk kartu produk..." value={form.shortDescription} onChange={(e) => updateField("shortDescription", e.target.value)} />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                  <textarea className="flex min-h-[160px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4D3E]" placeholder="Deskripsi lengkap produk..." value={form.description} onChange={(e) => updateField("description", e.target.value)} />
+                  <textarea className="flex min-h-[160px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" placeholder="Deskripsi lengkap produk..." value={form.description} onChange={(e) => updateField("description", e.target.value)} />
                 </div>
               </CardContent>
             </Card>
@@ -308,7 +308,7 @@ export default function NewProductPage() {
               <CardContent className="space-y-3">
                 {variants.length === 0 ? (
                   <div className="rounded-lg border border-dashed p-6 text-center">
-                    <Icon name="inventory_2" size={32} className="mx-auto text-gray-300" />
+                    <Icon name="inventory_2" size={32} className="mx-auto text-on-surface-variant/70" />
                     <p className="mt-2 text-sm text-on-surface-variant">Belum ada varian. Produk akan dijual dalam satu versi saja.</p>
                   </div>
                 ) : (
@@ -324,7 +324,7 @@ export default function NewProductPage() {
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="text-red-500 hover:text-red-600"
+                            className="text-destructive hover:text-destructive"
                             onClick={() => removeVariant(row.id)}
                             disabled={saving}
                             title="Hapus varian"
@@ -371,10 +371,10 @@ export default function NewProductPage() {
                 <label className="flex cursor-pointer items-center justify-between rounded-lg border p-3">
                   <div>
                     <p className="text-sm font-medium">Produk Unggulan</p>
-                    <p className="text-xs text-gray-400">Tampilkan di halaman utama</p>
+                    <p className="text-xs text-on-surface-variant">Tampilkan di halaman utama</p>
                   </div>
-                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-[#1B4D3E]" : "bg-surface-container"}`} onClick={() => updateField("featured", !form.featured)}>
-                    <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${form.featured ? "translate-x-[22px]" : "translate-x-0.5"}`} />
+                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-primary" : "bg-surface-container"}`} onClick={() => updateField("featured", !form.featured)}>
+                    <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-transform ${form.featured ? "translate-x-[22px]" : "translate-x-0.5"}`} />
                   </div>
                 </label>
                 <div>
@@ -386,9 +386,9 @@ export default function NewProductPage() {
                   {form.tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {form.tags.map((tag) => (
-                        <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-[#1B4D3E]/10 px-2.5 py-0.5 text-xs font-medium text-[#1B4D3E]">
+                        <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
                           {tag}
-                          <button type="button" onClick={() => removeTag(tag)} className="hover:text-red-500"><Icon name="close" size={12} /></button>
+                          <button type="button" onClick={() => removeTag(tag)} className="hover:text-destructive"><Icon name="close" size={12} /></button>
                         </span>
                       ))}
                     </div>

@@ -41,13 +41,15 @@ const statusConfig: Record<string, { label: string; variant: "default" | "succes
 }
 
 const colorMap: Record<string, string> = {
-  pending: "bg-yellow-500",
-  paid: "bg-green-500",
-  processing: "bg-blue-500",
-  shipped: "bg-indigo-500",
+  // Warna status memakai keluarga palet induk (lime/leaf/forest), bukan
+  // kuning-biru-indigo bawaan Tailwind, supaya grafik tetap satu nada hijau.
+  pending: "bg-[#c9dc94] dark:bg-[#c9df91]",
+  paid: "bg-primary",
+  processing: "bg-[#66885d] dark:bg-[#b8ce8d]",
+  shipped: "bg-[#245f43] dark:bg-[#3d9c6f]",
   delivered: "bg-primary",
-  cancelled: "bg-red-500",
-  expired: "bg-gray-400",
+  cancelled: "bg-destructive",
+  expired: "bg-outline",
 }
 
 /* -------------------------------------------------------------------------- */
@@ -186,7 +188,7 @@ function MonthlyRevenueChart({
               type="button"
               onClick={() => setMonths(option)}
               className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                months === option ? "bg-white text-[#1B4D3E] shadow-sm" : "text-on-surface-variant hover:text-on-surface-variant"
+                months === option ? "bg-surface text-primary shadow-sm" : "text-on-surface-variant hover:text-on-surface-variant"
               }`}
             >
               {option} bulan
@@ -198,16 +200,16 @@ function MonthlyRevenueChart({
       {loading ? (
         <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low">
           <div className="flex flex-col items-center gap-2">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1B4D3E] border-t-transparent" />
-            <p className="text-sm text-gray-400">Memuat data pendapatan...</p>
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-outline-variant border-t-transparent" />
+            <p className="text-sm text-on-surface-variant">Memuat data pendapatan...</p>
           </div>
         </div>
       ) : !hasData ? (
         <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low">
           <div className="text-center">
-            <Icon name="trending_up" size={40} className="mx-auto text-gray-300" />
+            <Icon name="trending_up" size={40} className="mx-auto text-on-surface-variant/70" />
             <p className="mt-2 text-sm text-on-surface-variant">Belum ada pendapatan pada {months} bulan terakhir</p>
-            <p className="text-xs text-gray-400">Grafik akan terisi otomatis setelah ada pesanan masuk</p>
+            <p className="text-xs text-on-surface-variant">Grafik akan terisi otomatis setelah ada pesanan masuk</p>
           </div>
         </div>
       ) : (
@@ -222,7 +224,7 @@ function MonthlyRevenueChart({
                   </span>
                   <div
                     className={`w-full max-w-14 rounded-t-md transition-colors ${
-                      bucket.revenue > 0 ? "bg-[#1B4D3E]/80 hover:bg-[#1B4D3E]" : "bg-surface-container"
+                      bucket.revenue > 0 ? "bg-primary hover:bg-primary-container" : "bg-surface-container"
                     }`}
                     style={{ height: `${height}px` }}
                     title={`${bucket.fullLabel}: ${formatPrice(bucket.revenue)} dari ${bucket.orders} pesanan`}
@@ -234,7 +236,7 @@ function MonthlyRevenueChart({
               )
             })}
           </div>
-          <p className="mt-3 text-xs text-gray-400">
+          <p className="mt-3 text-xs text-on-surface-variant">
             Angka di atas batang adalah pendapatan bulan tersebut. Arahkan kursor ke batang untuk
             detail lengkap (bulan, rupiah, jumlah pesanan).
           </p>
@@ -300,9 +302,9 @@ export default function AdminDashboardPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat data: {error || "Unknown error"}</p>
-          <button onClick={() => void fetchDashboard()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => void fetchDashboard()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -337,11 +339,11 @@ export default function AdminDashboardPage() {
           <Card key={stat.title}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div className="rounded-lg bg-[#1B4D3E]/10 p-2">
+                <div className="rounded-lg bg-primary/10 p-2 text-primary">
                   <Icon name={stat.icon} size={20} />
                 </div>
                 {stat.change && (
-                  <div className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-green-600" : "text-red-500"}`}>
+                  <div className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-primary" : "text-destructive"}`}>
                     {stat.trend === "up" ? <Icon name="open_in_new" size={16} /> : <Icon name="south_west" size={16} />}
                     {stat.change}
                   </div>
@@ -369,7 +371,7 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader><CardTitle className="text-lg">Status Pesanan</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            {breakdown.length === 0 && <p className="text-sm text-gray-400">Belum ada data</p>}
+            {breakdown.length === 0 && <p className="text-sm text-on-surface-variant">Belum ada data</p>}
             {breakdown.map((item) => {
               const pct = totalBreakdown > 0 ? Math.round((item.count / totalBreakdown) * 100) : 0
               return (
@@ -379,7 +381,7 @@ export default function AdminDashboardPage() {
                     <span className="text-on-surface-variant">{item.count} ({pct}%)</span>
                   </div>
                   <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-low">
-                    <div className={`h-full rounded-full ${colorMap[item.status] || "bg-gray-400"}`} style={{ width: `${pct}%` }} />
+                    <div className={`h-full rounded-full ${colorMap[item.status] || "bg-outline"}`} style={{ width: `${pct}%` }} />
                   </div>
                 </div>
               )
@@ -391,11 +393,11 @@ export default function AdminDashboardPage() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">Pesanan Terbaru</CardTitle>
-          <Link href="/admin/orders" className="text-sm font-medium text-[#1B4D3E] hover:underline">Lihat Semua →</Link>
+          <Link href="/admin/orders" className="text-sm font-medium text-primary hover:underline">Lihat Semua →</Link>
         </CardHeader>
         <CardContent>
           {data.recentOrders.length === 0 ? (
-            <p className="py-8 text-center text-sm text-gray-400">Belum ada pesanan</p>
+            <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada pesanan</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -412,7 +414,7 @@ export default function AdminDashboardPage() {
                   {data.recentOrders.map((order, i) => {
                     const orderDate = order.date || order.createdAt
                     return (
-                      <tr key={order.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                      <tr key={order.id} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                         <td className="py-3 font-mono text-xs font-medium">{order.orderNumber || order.id}</td>
                         <td className="py-3">{order.customer || order.user?.name || order.user?.email || "-"}</td>
                         <td className="py-3 text-on-surface-variant">{orderDate ? formatDate(orderDate) : "-"}</td>

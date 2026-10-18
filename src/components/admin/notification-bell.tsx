@@ -111,16 +111,16 @@ export function NotificationBell() {
       >
         <Icon name="notifications" size={20} />
         {unread > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-80 overflow-hidden rounded-xl border border-outline-variant bg-white shadow-xl">
+        <div className="absolute right-0 z-50 mt-2 w-80 overflow-hidden rounded-xl border border-outline-variant bg-surface shadow-xl">
           <div className="flex items-center justify-between border-b border-outline-variant px-4 py-3">
-            <span className="text-sm font-semibold text-slate-800">Notifikasi</span>
+            <span className="text-sm font-semibold text-on-surface">Notifikasi</span>
             {unread > 0 && (
               <button
                 type="button"
@@ -134,7 +134,7 @@ export function NotificationBell() {
 
           <div className="max-h-96 overflow-y-auto">
             {items.length === 0 ? (
-              <p className="px-4 py-8 text-center text-sm text-slate-500">
+              <p className="px-4 py-8 text-center text-sm text-on-surface-variant">
                 Belum ada notifikasi.
               </p>
             ) : (
@@ -142,7 +142,7 @@ export function NotificationBell() {
                 {items.map((n) => {
                   const inner = (
                     <div
-                      className={`flex gap-3 px-4 py-3 transition-colors hover:bg-slate-50 ${
+                      className={`flex gap-3 px-4 py-3 transition-colors hover:bg-surface-container-low ${
                         n.isRead ? "" : "bg-primary-fixed/10"
                       }`}
                     >
@@ -150,13 +150,13 @@ export function NotificationBell() {
                         <Icon name={TYPE_ICON[n.type] ?? "info"} size={16} />
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-slate-800">
+                        <p className="truncate text-sm font-medium text-on-surface">
                           {n.title}
                         </p>
                         {n.body && (
-                          <p className="truncate text-xs text-slate-500">{n.body}</p>
+                          <p className="truncate text-xs text-on-surface-variant">{n.body}</p>
                         )}
-                        <p className="mt-0.5 text-[11px] text-slate-400">
+                        <p className="mt-0.5 text-[11px] text-on-surface-variant">
                           {timeAgo(n.createdAt)}
                         </p>
                       </div>

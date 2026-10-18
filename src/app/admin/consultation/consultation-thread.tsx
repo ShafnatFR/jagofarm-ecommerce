@@ -140,7 +140,7 @@ export function ConsultationThreadPanel({
         {error ? <p className="mb-2 text-xs text-error">{error}</p> : null}
         <div className="flex items-end gap-2">
           <textarea
-            className="min-h-[64px] w-full resize-y rounded-lg border border-outline-variant bg-white px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none disabled:bg-surface-container"
+            className="min-h-[64px] w-full resize-y rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none disabled:bg-surface-container"
             placeholder={closed ? "Sesi ditutup — buka lagi untuk membalas." : "Tulis balasan untuk pelanggan…"}
             value={draft}
             disabled={isPending || closed}

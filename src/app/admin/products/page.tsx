@@ -94,9 +94,9 @@ export default function ProductsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat produk: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-[#1B4D3E] underline">Coba lagi</button>
+          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
         </div>
       </div>
     )
@@ -118,7 +118,7 @@ export default function ProductsPage() {
       <Card>
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <Input placeholder="Cari produk..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
           <Select value={category} onValueChange={setCategory}>
@@ -134,8 +134,8 @@ export default function ProductsPage() {
       <Card>
         <CardContent className="p-0">
           {products.length === 0 ? (
-            <div className="py-12 text-center text-gray-400">
-              <Icon name="inventory_2" size={40} className="mx-auto text-gray-300" />
+            <div className="py-12 text-center text-on-surface-variant">
+              <Icon name="inventory_2" size={40} className="mx-auto text-on-surface-variant/70" />
               <p className="mt-2">Tidak ada produk ditemukan</p>
             </div>
           ) : (
@@ -153,15 +153,15 @@ export default function ProductsPage() {
                 </thead>
                 <tbody>
                   {products.map((product, i) => (
-                    <tr key={product.id} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                    <tr key={product.id} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
-                            <div className="flex h-full w-full items-center justify-center text-gray-400"><Icon name="inventory_2" size={20} /></div>
+                            <div className="flex h-full w-full items-center justify-center text-on-surface-variant"><Icon name="inventory_2" size={20} /></div>
                           </div>
                           <div>
                             <p className="font-medium text-on-surface">{product.name}</p>
-                            <p className="text-xs text-gray-400">/{product.slug}</p>
+                            <p className="text-xs text-on-surface-variant">/{product.slug}</p>
                           </div>
                         </div>
                       </td>
@@ -169,13 +169,13 @@ export default function ProductsPage() {
                       <td className="px-4 py-3">
                         {product.discountPrice ? (
                           <div>
-                            <span className="font-medium text-[#1B4D3E]">{formatPrice(product.discountPrice)}</span>
-                            <span className="ml-2 text-xs text-gray-400 line-through">{formatPrice(product.price)}</span>
+                            <span className="font-medium text-primary">{formatPrice(product.discountPrice)}</span>
+                            <span className="ml-2 text-xs text-on-surface-variant line-through">{formatPrice(product.price)}</span>
                           </div>
                         ) : <span className="font-medium">{formatPrice(product.price)}</span>}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={product.stock <= 10 ? "font-medium text-red-500" : "text-on-surface-variant"}>{product.stock}</span>
+                        <span className={product.stock <= 10 ? "font-medium text-destructive" : "text-on-surface-variant"}>{product.stock}</span>
                       </td>
                       <td className="px-4 py-3">
                         {product.featured && <Badge variant="warning">Unggulan</Badge>}
@@ -188,11 +188,11 @@ export default function ProductsPage() {
                             <Icon name="more_vert" size={16} />
                           </Button>
                           {activeMenu === product.id && (
-                            <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border bg-white py-1 shadow-lg">
+                            <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border bg-surface py-1 shadow-lg">
                               <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-container-low" onClick={() => setActiveMenu(null)}>
                                 <Icon name="edit" size={16} /> Edit
                               </Link>
-                              <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50" onClick={() => { setActiveMenu(null); handleDelete(product.id, product.name) }}>
+                              <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10" onClick={() => { setActiveMenu(null); handleDelete(product.id, product.name) }}>
                                 <Icon name="delete" size={16} /> Hapus
                               </button>
                             </div>

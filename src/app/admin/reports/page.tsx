@@ -204,9 +204,9 @@ export default function AdminReportsPage() {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-red-400" />
+          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
           <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat laporan: {error}</p>
-          <button onClick={() => fetchReport()} className="mt-2 text-sm text-[#1B4D3E] underline">
+          <button onClick={() => fetchReport()} className="mt-2 text-sm text-primary underline">
             Coba lagi
           </button>
         </div>
@@ -266,7 +266,7 @@ export default function AdminReportsPage() {
                 onClick={() => applyPreset(preset.key)}
                 className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
                   activePreset === preset.key
-                    ? "border-[#1B4D3E] bg-[#1B4D3E]/10 text-[#1B4D3E]"
+                    ? "border-primary/40 bg-primary/10 text-primary"
                     : "border-outline-variant text-on-surface-variant hover:border-outline-variant hover:text-on-surface"
                 }`}
               >
@@ -315,7 +315,7 @@ export default function AdminReportsPage() {
                     onClick={() => setGroupBy(option.key)}
                     className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
                       groupBy === option.key
-                        ? "bg-white text-[#1B4D3E] shadow-sm"
+                        ? "bg-surface text-primary shadow-sm"
                         : "text-on-surface-variant hover:text-on-surface-variant"
                     }`}
                   >
@@ -349,7 +349,7 @@ export default function AdminReportsPage() {
         {cards.map((card) => (
           <Card key={card.title}>
             <CardContent className="p-6">
-              <div className="rounded-lg bg-[#1B4D3E]/10 p-2 w-fit">
+              <div className="rounded-lg bg-primary/10 p-2 w-fit text-primary">
                 <Icon name={card.icon} size={20} />
               </div>
               <div className="mt-4">
@@ -364,11 +364,11 @@ export default function AdminReportsPage() {
       {isEmpty ? (
         <Card>
           <CardContent className="py-16 text-center">
-            <Icon name="bar_chart" size={40} className="mx-auto text-gray-300" />
+            <Icon name="bar_chart" size={40} className="mx-auto text-on-surface-variant/70" />
             <p className="mt-3 text-sm font-medium text-on-surface-variant">
               Tidak ada penjualan pada rentang tanggal ini
             </p>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-on-surface-variant">
               Coba ubah rentang tanggal, atau pilih preset 30 hari / Bulan ini.
             </p>
           </CardContent>
@@ -393,10 +393,10 @@ export default function AdminReportsPage() {
                 </thead>
                 <tbody>
                   {series.map((row, i) => (
-                    <tr key={row.key} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
+                    <tr key={row.key} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
                       <td className="py-2.5">
                         <span className="font-medium text-on-surface">{row.label}</span>
-                        <span className="ml-1 text-xs text-gray-400">{row.key}</span>
+                        <span className="ml-1 text-xs text-on-surface-variant">{row.key}</span>
                       </td>
                       <td className="py-2.5 text-right font-medium">{formatPrice(row.revenue)}</td>
                       <td className="py-2.5 text-right text-on-surface-variant">{row.orders}</td>
@@ -422,7 +422,7 @@ export default function AdminReportsPage() {
             </CardHeader>
             <CardContent>
               {categoryBreakdown.length === 0 ? (
-                <p className="py-8 text-center text-sm text-gray-400">
+                <p className="py-8 text-center text-sm text-on-surface-variant">
                   Belum ada data kategori pada periode ini
                 </p>
               ) : (
@@ -439,7 +439,7 @@ export default function AdminReportsPage() {
                         </div>
                         <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-low">
                           <div
-                            className="h-full rounded-full bg-[#1B4D3E]/80"
+                            className="h-full rounded-full bg-primary"
                             style={{ width: `${pct}%` }}
                           />
                         </div>
@@ -457,7 +457,7 @@ export default function AdminReportsPage() {
             </CardHeader>
             <CardContent className="overflow-x-auto">
               {topProducts.length === 0 ? (
-                <p className="py-8 text-center text-sm text-gray-400">
+                <p className="py-8 text-center text-sm text-on-surface-variant">
                   Belum ada produk terjual pada periode ini
                 </p>
               ) : (
@@ -472,8 +472,8 @@ export default function AdminReportsPage() {
                   </thead>
                   <tbody>
                     {topProducts.map((product, i) => (
-                      <tr key={product.productId} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
-                        <td className="py-2.5 text-gray-400">{i + 1}</td>
+                      <tr key={product.productId} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
+                        <td className="py-2.5 text-on-surface-variant">{i + 1}</td>
                         <td className="py-2.5 font-medium text-on-surface">{product.name}</td>
                         <td className="py-2.5 text-right text-on-surface-variant">{product.qty} item</td>
                         <td className="py-2.5 text-right font-medium">{formatPrice(product.revenue)}</td>
@@ -492,7 +492,7 @@ export default function AdminReportsPage() {
             </CardHeader>
             <CardContent className="space-y-5">
               {!stockReport ? (
-                <p className="py-8 text-center text-sm text-gray-400">Data stok tidak tersedia</p>
+                <p className="py-8 text-center text-sm text-on-surface-variant">Data stok tidak tersedia</p>
               ) : (
                 <>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -500,13 +500,13 @@ export default function AdminReportsPage() {
                       <p className="text-xs text-on-surface-variant">Total Produk</p>
                       <p className="text-xl font-bold text-on-surface">{stockReport.totalProducts}</p>
                     </div>
-                    <div className="rounded-xl bg-red-50 p-3">
-                      <p className="text-xs text-red-700">Stok Habis</p>
-                      <p className="text-xl font-bold text-red-700">{stockReport.outOfStockCount}</p>
+                    <div className="rounded-xl bg-destructive/10 p-3">
+                      <p className="text-xs text-destructive">Stok Habis</p>
+                      <p className="text-xl font-bold text-destructive">{stockReport.outOfStockCount}</p>
                     </div>
-                    <div className="rounded-xl bg-amber-50 p-3">
-                      <p className="text-xs text-amber-700">Stok Menipis</p>
-                      <p className="text-xl font-bold text-amber-700">{stockReport.lowStockCount}</p>
+                    <div className="rounded-xl bg-[#fffbeb] dark:bg-[#78350f]/30 p-3">
+                      <p className="text-xs text-[#b45309] dark:text-[#fbbf24]">Stok Menipis</p>
+                      <p className="text-xl font-bold text-[#b45309] dark:text-[#fbbf24]">{stockReport.lowStockCount}</p>
                     </div>
                     <div className="rounded-xl bg-surface-container-low p-3">
                       <p className="text-xs text-on-surface-variant">Ambang Menipis</p>
@@ -516,12 +516,12 @@ export default function AdminReportsPage() {
 
                   {stockReport.outOfStock.length > 0 && (
                     <div>
-                      <p className="mb-2 text-sm font-semibold text-red-700">Produk Habis</p>
+                      <p className="mb-2 text-sm font-semibold text-destructive">Produk Habis</p>
                       <ul className="divide-y divide-outline-variant text-sm">
                         {stockReport.outOfStock.map((p) => (
                           <li key={p.id} className="flex justify-between py-2">
                             <span className="text-on-surface">{p.name}</span>
-                            <span className="font-medium text-red-600">0</span>
+                            <span className="font-medium text-destructive">0</span>
                           </li>
                         ))}
                       </ul>
@@ -530,12 +530,12 @@ export default function AdminReportsPage() {
 
                   {stockReport.lowStock.length > 0 && (
                     <div>
-                      <p className="mb-2 text-sm font-semibold text-amber-700">Produk Menipis</p>
+                      <p className="mb-2 text-sm font-semibold text-[#b45309] dark:text-[#fbbf24]">Produk Menipis</p>
                       <ul className="divide-y divide-outline-variant text-sm">
                         {stockReport.lowStock.map((p) => (
                           <li key={p.id} className="flex justify-between py-2">
                             <span className="text-on-surface">{p.name}</span>
-                            <span className="font-medium text-amber-600">{p.stock}</span>
+                            <span className="font-medium text-[#b45309] dark:text-[#fbbf24]">{p.stock}</span>
                           </li>
                         ))}
                       </ul>
@@ -543,7 +543,7 @@ export default function AdminReportsPage() {
                   )}
 
                   {stockReport.outOfStock.length === 0 && stockReport.lowStock.length === 0 && (
-                    <p className="py-4 text-center text-sm text-green-700">
+                    <p className="py-4 text-center text-sm text-primary">
                       Semua produk stoknya aman.
                     </p>
                   )}
@@ -559,7 +559,7 @@ export default function AdminReportsPage() {
             </CardHeader>
             <CardContent className="space-y-5">
               {!customerReport ? (
-                <p className="py-8 text-center text-sm text-gray-400">Data pelanggan tidak tersedia</p>
+                <p className="py-8 text-center text-sm text-on-surface-variant">Data pelanggan tidak tersedia</p>
               ) : (
                 <>
                   <div className="grid grid-cols-2 gap-3">
@@ -567,16 +567,16 @@ export default function AdminReportsPage() {
                       <p className="text-xs text-on-surface-variant">Total Pelanggan</p>
                       <p className="text-xl font-bold text-on-surface">{customerReport.totalCustomers}</p>
                     </div>
-                    <div className="rounded-xl bg-green-50 p-3">
-                      <p className="text-xs text-green-700">Pelanggan Baru (periode)</p>
-                      <p className="text-xl font-bold text-green-700">{customerReport.newCustomers}</p>
+                    <div className="rounded-xl bg-surface-container-low p-3">
+                      <p className="text-xs text-primary">Pelanggan Baru (periode)</p>
+                      <p className="text-xl font-bold text-primary">{customerReport.newCustomers}</p>
                     </div>
                   </div>
 
                   <div className="overflow-x-auto">
                     <p className="mb-2 text-sm font-semibold text-on-surface">10 Pelanggan Teratas (belanja)</p>
                     {customerReport.topCustomers.length === 0 ? (
-                      <p className="py-4 text-center text-sm text-gray-400">
+                      <p className="py-4 text-center text-sm text-on-surface-variant">
                         Belum ada pembelian pada periode ini
                       </p>
                     ) : (
@@ -591,8 +591,8 @@ export default function AdminReportsPage() {
                         </thead>
                         <tbody>
                           {customerReport.topCustomers.map((c, i) => (
-                            <tr key={c.userId ?? i} className={i % 2 === 0 ? "bg-white" : "bg-surface-container-low/50"}>
-                              <td className="py-2.5 text-gray-400">{i + 1}</td>
+                            <tr key={c.userId ?? i} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
+                              <td className="py-2.5 text-on-surface-variant">{i + 1}</td>
                               <td className="py-2.5">
                                 <span className="font-medium text-on-surface">{c.name}</span>
                                 {c.email && <span className="block text-xs text-on-surface-variant">{c.email}</span>}

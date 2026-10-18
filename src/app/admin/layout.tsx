@@ -194,8 +194,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (guardState === "checking") {
     return (
-      <div className="flex h-screen flex-col items-center justify-center gap-3 bg-[#F8F7F4]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#1B4D3E] border-t-transparent" />
+      <div className="flex h-screen flex-col items-center justify-center gap-3 bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-outline-variant border-t-transparent" />
         <p className="text-sm text-on-surface-variant">Memeriksa hak akses...</p>
       </div>
     )
@@ -203,9 +203,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (guardState === "denied") {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#F8F7F4] p-6">
-        <div className="w-full max-w-md rounded-xl border bg-white p-8 text-center shadow-sm">
-          <Icon name="shield" size={48} className="mx-auto text-red-500" />
+      <div className="flex h-screen items-center justify-center bg-background p-6">
+        <div className="w-full max-w-md rounded-xl border bg-surface p-8 text-center shadow-sm">
+          <Icon name="shield" size={48} className="mx-auto text-destructive" />
           <h1 className="mt-4 text-xl font-bold text-on-surface">Akses ditolak</h1>
           <p className="mt-2 text-sm text-on-surface-variant">
             Halaman admin hanya dapat diakses oleh admin atau staf. Akun Anda tidak memiliki
@@ -225,7 +225,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F8F7F4]">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
@@ -242,7 +242,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex flex-col bg-[#1B4D3E] text-white transition-all duration-300 lg:static",
+          "fixed inset-y-0 left-0 z-50 flex flex-col bg-[#123f2d] dark:bg-[#0d2118] text-white transition-all duration-300 lg:static",
           collapsed ? "w-[72px]" : "w-64",
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
@@ -273,8 +273,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-white/15 text-white"
-                    : "text-white/70 hover:bg-white/10 hover:text-white",
+                    ? "bg-surface/15 text-white"
+                    : "text-white/70 hover:bg-on-primary/10 hover:text-white",
                   collapsed && "justify-center px-0"
                 )}
               >
@@ -283,7 +283,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <>
                     <span>{link.label}</span>
                     {link.href === "/admin/contact" && unreadCount > 0 && (
-                      <span className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white">
+                      <span className="ml-auto rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-bold leading-none text-white">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
@@ -299,7 +299,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={cn(
-              "flex w-full items-center justify-center rounded-lg p-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white",
+              "flex w-full items-center justify-center rounded-lg p-2 text-sm text-white/70 transition-colors hover:bg-on-primary/10 hover:text-white",
               collapsed ? "" : "font-medium"
             )}
             title={collapsed ? "Buka sidebar" : undefined}
@@ -312,29 +312,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm lg:px-6">
+        <header className="flex h-16 items-center justify-between border-b bg-surface px-4 shadow-sm lg:px-6">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
               <Icon name="menu" size={20} />
             </Button>
             <div className="hidden items-center gap-2 rounded-lg bg-surface-container-low px-3 py-2 md:flex">
-              <Icon name="search" size={16} className="text-gray-400" />
+              <Icon name="search" size={16} className="text-on-surface-variant" />
               <input
                 type="text"
                 placeholder="Cari..."
-                className="bg-transparent text-sm outline-none placeholder:text-gray-400"
+                className="bg-transparent text-sm outline-none placeholder:text-on-surface-variant"
               />
             </div>
           </div>
           <div className="flex items-center gap-3">
             <NotificationBell />
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1B4D3E] text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#123f2d] dark:bg-[#0d2118] text-white">
                 <Icon name="person" size={16} />
               </div>
               <div className="hidden leading-tight md:block">
                 <p className="text-sm font-medium">{admin?.name || "Admin"}</p>
-                <p className="text-xs capitalize text-gray-400">{admin?.role || "admin"}</p>
+                <p className="text-xs capitalize text-on-surface-variant">{admin?.role || "admin"}</p>
               </div>
             </div>
             <Button
