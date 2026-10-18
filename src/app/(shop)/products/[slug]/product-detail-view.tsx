@@ -566,11 +566,12 @@ export default function ProductDetailPage({
                   <p className="text-xs text-on-surface-variant mt-1">{product.shortDesc}</p>
                 )}
               </div>
-              {product.stock != null && (
+              {/* Stok: ikuti varian terpilih; tanpa varian pakai stok produk. */}
+              {(variant ? variant.stock != null : product.stock != null) && (
                 <div className="flex items-center gap-2 self-start sm:self-center">
                   <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
                   <span className="text-xs font-bold text-primary bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant">
-                    Stok: {product.stock} tersedia
+                    Stok: {variant ? (variant.stock ?? 0) : product.stock} tersedia
                   </span>
                 </div>
               )}
@@ -627,7 +628,7 @@ export default function ProductDetailPage({
                   </button>
                   <span className="w-14 text-center font-bold text-sm text-on-surface">{quantity}</span>
                   <button
-                    onClick={() => setQuantity(Math.min(product.stock ?? 99, quantity + 1))}
+                    onClick={() => setQuantity(Math.min((variant?.stock ?? product.stock) ?? 99, quantity + 1))}
                     className="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-bold active:scale-95"
                     aria-label="Tambah jumlah"
                   >
