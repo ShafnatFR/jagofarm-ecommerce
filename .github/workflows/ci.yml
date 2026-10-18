@@ -25,11 +25,13 @@ jobs:
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "ci-anon-key"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          # Samakan dengan runtime produksi Vercel (24.x) dan syarat engines
+          # dependency: @supabase/* dan jsdom butuh >=22.
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
