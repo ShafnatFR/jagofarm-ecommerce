@@ -2,6 +2,17 @@ import ConsultationChat, { ConsultationSidebar } from "./consultation-chat";
 
 export const metadata = { title: "Konsultasi Pakar", alternates: { canonical: "/consultation" } };
 
+/**
+ * Halaman ini dirender dinamis per-request.
+ *
+ * Sebelumnya halaman di-prerender statis (○), dan hasilnya konten konsultasi
+ * terkurung di dalam Suspense boundary `<div hidden id="S:0">` yang tidak
+ * pernah dibuka React saat hidrasi — halaman tampil kosong setinggi 0px.
+ * Karena isi halaman sepenuhnya bergantung pada data milik pengunjung
+ * (localStorage + tiket mereka), tidak ada manfaat dari prerender statis.
+ */
+export const dynamic = "force-dynamic";
+
 export default function ConsultationPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">

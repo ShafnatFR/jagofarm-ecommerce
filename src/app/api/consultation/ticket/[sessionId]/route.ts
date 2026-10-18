@@ -10,12 +10,16 @@ import {
 /**
  * Akses satu tiket konsultasi oleh pemiliknya.
  *
- * Kepemilikan ditentukan oleh:
- *  - user login  -> sesi harus milik userId tersebut
- *  - tamu        -> header `x-consultation-token` harus cocok dengan accessToken
+ * Kepemilikan ditentukan oleh salah satu bukti berikut:
+ *  - token tamu (`x-consultation-token`) yang cocok, ATAU
+ *  - sesi login yang memiliki tiket tersebut (userId)
  *
- * Tanpa salah satu bukti di atas, tiket dianggap tidak ada (404), bukan 403:
- * jangan membocorkan bahwa ID tersebut valid.
+ * Token diperiksa lebih dulu: pengunjung bisa saja sedang login sebagai admin
+ * di perangkat yang sama, tapi tetap berhak membuka tiket tamu yang tokennya
+ * tersimpan di browser itu.
+ *
+ * Tanpa bukti apa pun, tiket dianggap tidak ada (404, bukan 403) supaya ID
+ * yang valid tidak bisa ditebak.
  */
 
 /** Ambil identitas pemilik dari sesi login atau token tamu. */
@@ -23,6 +27,24 @@ async function resolveOwner(request: NextRequest) {
   const user = await getCurrentUser().catch(() => null);
   const accessToken = request.headers.get("x-consultation-token");
   return { userId: user?.id ?? null, accessToken };
+}
+
+/**
+ * Cari tiket berdasarkan token tamu lebih dulu, lalu userId.
+ * Mengembalikan null bila tidak ada bukti kepemilikan yang cocok.
+ */
+async function findTicketForOwner(
+  owner: { userId: string | null; accessToken: string | null },
+  sessionId: string
+) {
+  if (owner.accessToken) {
+    const byToken = await findOwnedSession({ accessToken: owner.accessToken }, sessionId);
+    if (byToken) return byToken;
+  }
+  if (owner.userId) {
+    return findOwnedSession({ userId: owner.userId }, sessionId);
+  }
+  return null;
 }
 
 export async function GET(
@@ -36,7 +58,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const owned = await findOwnedSession(owner, sessionId);
+    const owned = await findTicketForOwner(owner, sessionId);
     if (!owned) {
       return NextResponse.json({ error: "Tiket tidak ditemukan" }, { status: 404 });
     }
@@ -67,7 +89,7 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const owned = await findOwnedSession(owner, sessionId);
+    const owned = await findTicketForOwner(owner, sessionId);
     if (!owned) {
       return NextResponse.json({ error: "Tiket tidak ditemukan" }, { status: 404 });
     }
@@ -138,7 +160,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const owned = await findOwnedSession(owner, sessionId);
+    const owned = await findTicketForOwner(owner, sessionId);
     if (!owned) {
       return NextResponse.json({ error: "Tiket tidak ditemukan" }, { status: 404 });
     }
