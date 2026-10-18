@@ -87,7 +87,7 @@ async function loadOrder(idOrNumber: string) {
               },
             },
           },
-          variant: { select: { id: true, name: true, attributes: true } },
+          variant: { select: { id: true, name: true, price: true } },
         },
       },
     },

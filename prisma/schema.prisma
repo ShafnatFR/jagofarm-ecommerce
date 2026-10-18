@@ -115,8 +115,9 @@ model Product {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  images     ProductImage[]
-  variants   ProductVariant[]
+  images        ProductImage[]
+  variants      ProductVariant[]
+  optionGroups  VariantOptionGroup[]
   orderItems OrderItem[]
   cartItems  CartItem[]
   reviews    Review[]
@@ -144,28 +145,76 @@ model ProductImage {
 }
 
 model ProductVariant {
-  id        String  @id @default(uuid())
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  name      String  @db.VarChar(100)
-  sku       String  @unique @db.VarChar(50)
+  id            String               @id @default(uuid())
+  productId     String               @map("product_id")
+  product       Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name          String               @db.VarChar(200)
+  sku           String               @unique @db.VarChar(50)
   /// Harga absolut varian (bukan selisih dari basePrice). Semua platform besar
   /// (Shopify, Shopee, Tokopedia, Odoo) menyimpan harga final per varian.
-  price     Decimal @db.Decimal(12, 2)
-  stock     Int     @default(0)
-  /// Berat per varian (gram). Null = pakai berat produk. Diperlukan saat
-  /// varian berbeda ukuran kemasan sehingga ongkir ikut berbeda.
-  weightGram Int?   @map("weight_gram")
+  price         Decimal              @db.Decimal(12, 2)
+  /// Diskon spesifik varian. Null = pakai diskon produk (jika ada).
+  discountPrice Decimal?             @map("discount_price") @db.Decimal(12, 2)
+  stock         Int                  @default(0)
+  /// Berat per varian (gram). Null = pakai berat produk.
+  weightGram    Int?                 @map("weight_gram")
   /// Varian nonaktif tidak ditampilkan & tidak dihitung dalam min/max harga.
-  isActive  Boolean @default(true) @map("is_active")
-  sortOrder Int     @default(0) @map("sort_order")
-  attributes Json?  @db.JsonB
+  isActive      Boolean              @default(true) @map("is_active")
+  sortOrder     Int                  @default(0) @map("sort_order")
+  /// Kombinasi opsi varian (multi-dimensi). Format: [{"groupId":"...","optionId":"..."}, ...]
+  /// Untuk varian single-dimensi (legacy), ini null dan name cukup deskriptif.
+  optionCombination Json?             @map("option_combination") @db.JsonB
 
-  orderItems OrderItem[]
-  cartItems  CartItem[]
+  images        ProductVariantImage[]
+  orderItems    OrderItem[]
+  cartItems     CartItem[]
 
   @@index([productId, sortOrder])
   @@map("product_variants")
+}
+
+/// Gambar spesifik per varian/kombinasi. Memungkinkan gallery berbeda
+/// saat user memilih varian berbeda (misal: kaos merah vs hitam).
+model ProductVariantImage {
+  id        String          @id @default(uuid())
+  variantId String          @map("variant_id")
+  variant   ProductVariant  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  url       String          @db.Text
+  altText   String?         @map("alt_text") @db.VarChar(255)
+  sortOrder Int             @default(0) @map("sort_order")
+  isPrimary Boolean         @default(false) @map("is_primary")
+
+  @@index([variantId, sortOrder])
+  @@map("product_variant_images")
+}
+
+/// Grup opsi varian (dimensi). Contoh: "Ukuran", "Warna", "Material".
+/// Maksimal 3 grup per produk (standar Shopify).
+model VariantOptionGroup {
+  id        String           @id @default(uuid())
+  productId String           @map("product_id")
+  product   Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String           @db.VarChar(50) // "Ukuran", "Warna", dll
+  sortOrder Int              @default(0) @map("sort_order")
+
+  options   VariantOption[]
+
+  @@unique([productId, name]) // nama grup unik per produk
+  @@index([productId, sortOrder])
+  @@map("variant_option_groups")
+}
+
+/// Nilai dalam satu grup opsi. Contoh: "S", "M", "L", "XL" (dalam grup "Ukuran").
+model VariantOption {
+  id       String            @id @default(uuid())
+  groupId  String            @map("group_id")
+  group    VariantOptionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  value    String            @db.VarChar(100) // "Merah", "XL", dll
+  sortOrder Int              @default(0) @map("sort_order")
+
+  @@unique([groupId, value]) // nilai unik dalam grup
+  @@index([groupId, sortOrder])
+  @@map("variant_options")
 }
 
 model Address {

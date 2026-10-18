@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/icon";
@@ -16,92 +16,200 @@ import { AdminRefreshButton } from "../../admin-refresh";
 
 interface Category { id: string; name: string; }
 
-interface VariantRow {
+// ======== TIPE DATA UNTUK VARIAN MULTI-DIMENSI ========
+
+/** Grup opsi varian (dimensi). Contoh: "Ukuran", "Warna". */
+interface OptionGroup {
   id: string;
-  name: string;
+  name: string;       // "Ukuran", "Warna", dll
+  options: OptionValue[];
+}
+
+/** Nilai dalam satu grup. Contoh: "S", "M", "L", "XL". */
+interface OptionValue {
+  id: string;
+  value: string;      // "Merah", "XL", dll
+}
+
+/** Kombinasi varian yang dihasilkan dari opsi. */
+interface VariantCombination {
+  id: string;
+  name?: string;       // untuk internal use (auto-generated)
   sku: string;
-  /** Harga absolut varian (Rp). Bukan selisih dari harga dasar. */
-  price: string;
+  price: string;          // harga absolut
+  discountPrice: string;  // diskon spesifik varian (opsional)
   stock: string;
-  /** Berat per varian (gram). Kosong = pakai berat produk. */
   weight: string;
+  /** Referensi ke opsi yang dipilih: [{groupId, optionId}, ...] */
+  selectedOptions: { groupId: string; optionId: string; groupLabel: string; optionLabel: string }[];
+  images: string[];       // gambar spesifik varian
 }
 
-let variantIdSeq = 0;
-function newVariantId(): string {
-  variantIdSeq += 1;
-  return `variant-${Date.now().toString(36)}-${variantIdSeq}`;
+// ======== HELPER FUNCTIONS ========
+
+let idSeq = 0;
+function newId(prefix: string = "id"): string {
+  idSeq += 1;
+  return `${prefix}-${Date.now().toString(36)}-${idSeq}`;
 }
 
-function emptyVariantRow(): VariantRow {
-  return { id: newVariantId(), name: "", sku: "", price: "", stock: "", weight: "" };
+function emptyOptionGroup(): OptionGroup {
+  return { id: newId("og"), name: "", options: [] };
 }
 
-/** Serialisasi baris varian sesuai kontrak API: baris kosong diabaikan. */
-function serializeVariants(rows: VariantRow[]) {
-  return rows
-    .filter((row) => row.name.trim() || row.sku.trim() || row.price.trim() || row.stock.trim())
-    .map((row, index) => ({
-      name: row.name.trim(),
-      sku: row.sku.trim(),
-      price: row.price.trim() ? Number(row.price) : 0,
-      stock: row.stock.trim() ? Math.trunc(Number(row.stock)) : 0,
-      weightGram: row.weight.trim() ? Math.trunc(Number(row.weight)) : null,
-      isActive: true,
-      sortOrder: index,
-    }));
+function emptyOptionValue(): OptionValue {
+  return { id: newId("ov"), value: "" };
 }
 
-/** Validasi baris varian: nama & harga wajib, SKU unik per produk, stok valid. */
-function validateVariants(rows: VariantRow[], productSku: string): { rowErrors: Record<string, string>; message: string } {
-  const rowErrors: Record<string, string> = {};
-  const skuCounts = new Map<string, number>();
-  rows.forEach((row) => {
-    const sku = row.sku.trim().toUpperCase();
-    if (sku) skuCounts.set(sku, (skuCounts.get(sku) ?? 0) + 1);
-  });
+function emptyCombination(): VariantCombination {
+  return {
+    id: newId("vc"),
+    sku: "",
+    price: "",
+    discountPrice: "",
+    stock: "",
+    weight: "",
+    selectedOptions: [],
+    images: [],
+  };
+}
 
-  const productKey = productSku.trim().toUpperCase();
-  let message = "";
-  rows.forEach((row, index) => {
-    const label = `Varian #${index + 1}`;
-    const name = row.name.trim();
-    const sku = row.sku.trim();
-    const price = Number(row.price);
-    const stock = Number(row.stock);
-    const weight = Number(row.weight);
+/**
+ * Generate semua kombinasi Cartesian dari opsi-opsi yang ada.
+ * Contoh: Ukuran=[S,M] × Warna=[Merah,Hitam] → 4 kombinasi.
+ */
+function generateCombinations(groups: OptionGroup[]): VariantCombination[] {
+  const activeGroups = groups.filter(g => g.name.trim() && g.options.length > 0);
+  if (activeGroups.length === 0) return [];
 
-    // Baris yang belum diisi sama sekali diabaikan (bukan error).
-    if (!name && !sku && !row.price.trim() && !row.stock.trim()) return;
+  // Build cartesian product
+  const result: VariantCombination[] = [];
 
-    let rowMessage = "";
-    if (!name) rowMessage = `${label}: nama varian wajib diisi.`;
-    else if (sku.length < 2) rowMessage = `${label}: SKU varian wajib diisi minimal 2 karakter.`;
-    else if (!row.price.trim() || !Number.isFinite(price) || price <= 0) rowMessage = `${label}: harga varian wajib diisi dan harus lebih dari 0.`;
-    else if (row.stock.trim() && (!Number.isInteger(stock) || stock < 0)) rowMessage = `${label}: stok harus bilangan bulat dan tidak boleh negatif.`;
-    else if (row.weight.trim() && (!Number.isInteger(weight) || weight <= 0)) rowMessage = `${label}: berat harus bilangan bulat positif (gram).`;
-    else if (sku.toUpperCase() === productKey) rowMessage = `${label}: SKU varian tidak boleh sama dengan SKU produk.`;
-    else if ((skuCounts.get(sku.toUpperCase()) ?? 0) > 1) rowMessage = `${label}: SKU varian duplikat (${sku}). Setiap varian membutuhkan SKU unik.`;
-
-    if (rowMessage) {
-      rowErrors[row.id] = rowMessage;
-      if (!message) message = rowMessage;
+  function build(index: number, current: VariantCombination["selectedOptions"]) {
+    if (index === activeGroups.length) {
+      // Generate nama & SKU otomatis dari kombinasi
+      const labels = current.map(o => o.optionLabel);
+      const name = labels.join(" / ");
+      const skuPrefix = labels.join("-").toUpperCase().replace(/[^A-Z0-9-]/g, "-");
+      
+      result.push({
+        ...emptyCombination(),
+        name, // untuk internal use
+        sku: skuPrefix,
+        selectedOptions: current,
+      });
+      return;
     }
-  });
 
-  return { rowErrors, message };
+    const group = activeGroups[index];
+    for (const opt of group.options) {
+      if (!opt.value.trim()) continue;
+      build(index + 1, [
+        ...current,
+        {
+          groupId: group.id,
+          optionId: opt.id,
+          groupLabel: group.name.trim(),
+          optionLabel: opt.value.trim(),
+        },
+      ]);
+    }
+  }
+
+  build(0, []);
+  return result;
 }
 
-/** Format rentang harga varian untuk pratinjau, mis. "Rp 150.000 - Rp 500.000". */
-function formatVariantRange(rows: VariantRow[]): string | null {
-  const prices = rows
-    .map((row) => (row.price.trim() ? Number(row.price) : NaN))
-    .filter((value) => Number.isFinite(value) && value > 0);
+/**
+ * Format rentang harga dari kombinasi untuk pratinjau.
+ */
+function formatPriceRange(combinations: VariantCombination[]): string | null {
+  const prices = combinations
+    .map(c => c.price.trim() ? Number(c.price) : NaN)
+    .filter(v => Number.isFinite(v) && v > 0);
+  
   if (prices.length === 0) return null;
   const min = Math.min(...prices);
   const max = Math.max(...prices);
   return min === max ? formatPrice(min) : `${formatPrice(min)} - ${formatPrice(max)}`;
 }
+
+/**
+ * Validasi kombinasi varian.
+ */
+function validateCombinations(combinations: VariantCombination[], productSku: string): {
+  errors: Record<string, string>;
+  message: string;
+} {
+  const errors: Record<string, string> = {};
+  const skuCounts = new Map<string, number>();
+  
+  combinations.forEach(c => {
+    const sku = c.sku.trim().toUpperCase();
+    if (sku) skuCounts.set(sku, (skuCounts.get(sku) ?? 0) + 1);
+  });
+
+  const productKey = productSku.trim().toUpperCase();
+  let message = "";
+
+  combinations.forEach((c, idx) => {
+    const label = c.selectedOptions.length > 0 
+      ? c.selectedOptions.map(o => o.optionLabel).join(" / ")
+      : `Kombinasi #${idx + 1}`;
+    
+    const price = Number(c.price);
+    const stock = Number(c.stock);
+    const weight = Number(c.weight);
+    const discount = Number(c.discountPrice);
+
+    let msg = "";
+    
+    if (!c.sku.trim()) msg = `${label}: SKU wajib diisi.`;
+    else if (c.sku.trim().length < 2) msg = `${label}: SKU minimal 2 karakter.`;
+    else if (!c.price.trim() || !Number.isFinite(price) || price <= 0) msg = `${label}: harga wajib > 0.`;
+    else if (c.stock.trim() && (!Number.isInteger(stock) || stock < 0)) msg = `${label}: stok tidak valid.`;
+    else if (c.weight.trim() && (!Number.isInteger(weight) || weight <= 0)) msg = `${label}: berat tidak valid.`;
+    else if (c.discountPrice.trim() && (!Number.isFinite(discount) || discount <= 0 || discount >= price)) msg = `${label}: diskon harus > 0 dan < harga.`;
+    else if (c.sku.trim().toUpperCase() === productKey) msg = `${label}: SKU tidak boleh sama dengan produk.`;
+    else if ((skuCounts.get(c.sku.trim().toUpperCase()) ?? 0) > 1) msg = `${label}: SKU duplikat (${c.sku}).`;
+
+    if (msg) {
+      errors[c.id] = msg;
+      if (!message) message = msg;
+    }
+  });
+
+  return { errors, message };
+}
+
+/**
+ * Serialisasi kombinasi untuk dikirim ke API.
+ */
+function serializeCombinations(combinations: VariantCombination[]) {
+  return combinations
+    .filter(c => c.sku.trim() || c.price.trim())
+    .map((c, index) => ({
+      name: c.selectedOptions.map(o => o.optionLabel).join(" / ") || `Varian ${index + 1}`,
+      sku: c.sku.trim(),
+      price: c.price.trim() ? Number(c.price) : 0,
+      discountPrice: c.discountPrice.trim() ? Number(c.discountPrice) : null,
+      stock: c.stock.trim() ? Math.trunc(Number(c.stock)) : 0,
+      weightGram: c.weight.trim() ? Math.trunc(Number(c.weight)) : null,
+      isActive: true,
+      sortOrder: index,
+      optionCombination: c.selectedOptions.map(o => ({
+        groupId: o.groupId,
+        optionId: o.optionId,
+      })),
+      images: c.images.map((url, i) => ({
+        url,
+        sortOrder: i,
+        isPrimary: i === 0,
+      })),
+    }));
+}
+
+// ======== KOMPONEN UTAMA ========
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -116,10 +224,12 @@ export default function NewProductPage() {
     basePrice: "", discountPrice: "", sku: "", weight: "", length: "", width: "", height: "", stock: "", featured: false, tags: [] as string[],
   });
   const [tagInput, setTagInput] = useState("");
-  /** Produk dijual dalam beberapa varian (harga & stok per varian). */
+  
+  // State varian multi-dimensi
   const [hasVariants, setHasVariants] = useState(false);
-  const [variants, setVariants] = useState<VariantRow[]>([]);
-  const [variantErrors, setVariantErrors] = useState<Record<string, string>>({});
+  const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
+  const [combinations, setCombinations] = useState<VariantCombination[]>([]);
+  const [combinationErrors, setCombinationErrors] = useState<Record<string, string>>({});
 
   const fetchCategories = useCallback(async () => {
     setLoadingCats(true);
@@ -136,12 +246,11 @@ export default function NewProductPage() {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount updates the category loading state.
     void fetchCategories();
   }, [fetchCategories]);
 
   const updateField = useCallback((field: string, value: string | boolean) => {
-    setForm((prev) => {
+    setForm(prev => {
       const next = { ...prev, [field]: value };
       if (field === "name" && typeof value === "string") next.slug = slugify(value);
       return next;
@@ -150,29 +259,118 @@ export default function NewProductPage() {
 
   const addTag = () => {
     const tag = tagInput.trim();
-    if (tag && !form.tags.includes(tag)) { setForm((p) => ({ ...p, tags: [...p.tags, tag] })); setTagInput(""); }
+    if (tag && !form.tags.includes(tag)) { setForm(p => ({ ...p, tags: [...p.tags, tag] })); setTagInput(""); }
   };
-  const removeTag = (tag: string) => setForm((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }));
+  const removeTag = (tag: string) => setForm(p => ({ ...p, tags: p.tags.filter(t => t !== tag) }));
 
-  const addVariant = () => setVariants((prev) => [...prev, emptyVariantRow()]);
-  const removeVariant = (id: string) => {
-    setVariants((prev) => prev.filter((row) => row.id !== id));
-    setVariantErrors((prev) => {
-      if (!(id in prev)) return prev;
+  // ======== MANAJEMEN Opsi GRUP ========
+  
+  const addOptionGroup = () => {
+    if (optionGroups.length >= 3) {
+      setError("Maksimal 3 grup opsi varian (standar Shopify).");
+      return;
+    }
+    setOptionGroups(prev => [...prev, emptyOptionGroup()]);
+    setError("");
+  };
+
+  const removeOptionGroup = (groupId: string) => {
+    setOptionGroups(prev => prev.filter(g => g.id !== groupId));
+    // Regenerate kombinasi jika ada
+    if (combinations.length > 0) {
+      const remaining = optionGroups.filter(g => g.id !== groupId);
+      setCombinations(generateCombinations(remaining));
+    }
+  };
+
+  const updateOptionGroupName = (groupId: string, name: string) => {
+    setOptionGroups(prev => prev.map(g => g.id === groupId ? { ...g, name } : g));
+  };
+
+  const addOptionValue = (groupId: string) => {
+    setOptionGroups(prev => prev.map(g => 
+      g.id === groupId ? { ...g, options: [...g.options, emptyOptionValue()] } : g
+    ));
+  };
+
+  const removeOptionValue = (groupId: string, optionId: string) => {
+    setOptionGroups(prev => prev.map(g =>
+      g.id === groupId ? { ...g, options: g.options.filter(o => o.id !== optionId) } : g
+    ));
+  };
+
+  const updateOptionValue = (groupId: string, optionId: string, value: string) => {
+    setOptionGroups(prev => prev.map(g =>
+      g.id === groupId 
+        ? { ...g, options: g.options.map(o => o.id === optionId ? { ...o, value } : o) }
+        : g
+    ));
+  };
+
+  // ======== GENERATE KOMBINASI ========
+
+  const handleGenerateCombinations = () => {
+    // Validasi: minimal 1 grup dengan minimal 1 opsi
+    const validGroups = optionGroups.filter(g => g.name.trim() && g.options.some(o => o.value.trim()));
+    
+    if (validGroups.length === 0) {
+      setError("Tambahkan minimal 1 grup opsi dengan minimal 1 nilai.");
+      return;
+    }
+
+    const newCombinations = generateCombinations(optionGroups);
+    
+    if (newCombinations.length === 0) {
+      setError("Tidak bisa membuat kombinasi. Pastikan setiap grup punya nilai.");
+      return;
+    }
+
+    // Preservasi data existing jika mungkin (match by selectedOptions)
+    const existingMap = new Map<string, VariantCombination>();
+    combinations.forEach(c => {
+      const key = c.selectedOptions.map(o => `${o.groupId}:${o.optionId}`).sort().join("|");
+      existingMap.set(key, c);
+    });
+
+    const merged = newCombinations.map(nc => {
+      const key = nc.selectedOptions.map(o => `${o.groupId}:${o.optionId}`).sort().join("|");
+      const existing = existingMap.get(key);
+      if (existing) {
+        return { ...nc, sku: existing.sku, price: existing.price, discountPrice: existing.discountPrice, stock: existing.stock, weight: existing.weight, images: existing.images };
+      }
+      return nc;
+    });
+
+    setCombinations(merged);
+    setCombinationErrors({});
+    setError("");
+  };
+
+  // ======== MANAJEMEN KOMBINASI ========
+
+  const updateCombination = (combId: string, field: keyof VariantCombination, value: string | string[]) => {
+    setCombinations(prev => prev.map(c => 
+      c.id === combId ? { ...c, [field]: value } : c
+    ));
+    setCombinationErrors(prev => {
+      if (!(combId in prev)) return prev;
       const next = { ...prev };
-      delete next[id];
+      delete next[combId];
       return next;
     });
   };
-  const updateVariant = useCallback((id: string, field: "name" | "sku" | "price" | "stock" | "weight", value: string) => {
-    setVariants((prev) => prev.map((row) => (row.id === id ? { ...row, [field]: value } : row)));
-    setVariantErrors((prev) => {
-      if (!prev[id]) return prev;
+
+  const removeCombination = (combId: string) => {
+    setCombinations(prev => prev.filter(c => c.id !== combId));
+    setCombinationErrors(prev => {
+      if (!(combId in prev)) return prev;
       const next = { ...prev };
-      delete next[id];
+      delete next[combId];
       return next;
     });
-  }, []);
+  };
+
+  // ======== SUBMIT ========
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,20 +385,17 @@ export default function NewProductPage() {
 
     if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
     if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
-    if (![lengthCm, widthCm, heightCm].every((value) => Number.isFinite(value) && value > 0)) { setError("Dimensi paket wajib diisi dalam cm."); return; }
+    if (![lengthCm, widthCm, heightCm].every(v => Number.isFinite(v) && v > 0)) { setError("Dimensi paket wajib diisi dalam cm."); return; }
     if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
 
-    /*
-     * Validasi bercabang:
-     *  - Tanpa varian: harga dasar, diskon, dan stok di level produk.
-     *  - Bervarian   : harga & stok per varian; harga dasar/stok produk
-     *                  dihitung server (tidak perlu diisi admin).
-     */
     if (hasVariants) {
-      if (variants.length === 0) { setError("Tambahkan minimal satu varian."); return; }
-      const variantCheck = validateVariants(variants, form.sku);
-      if (variantCheck.message) { setVariantErrors(variantCheck.rowErrors); setError(variantCheck.message); return; }
-      setVariantErrors({});
+      // Validasi opsi & kombinasi
+      if (optionGroups.length === 0) { setError("Tambahkan minimal 1 grup opsi varian."); return; }
+      if (combinations.length === 0) { setError("Generate kombinasi varian terlebih dahulu."); return; }
+      
+      const comboCheck = validateCombinations(combinations, form.sku);
+      if (comboCheck.message) { setCombinationErrors(comboCheck.errors); setError(comboCheck.message); return; }
+      setCombinationErrors({});
     } else {
       if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
       if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
@@ -208,14 +403,14 @@ export default function NewProductPage() {
 
     setSaving(true);
     try {
-      const payload = {
+      const payload: Record<string, unknown> = {
         name: form.name.trim(),
         categoryId: form.category,
         description: form.description.trim() || undefined,
         shortDesc: form.shortDescription.trim() || undefined,
-        // Server menimpa angka ini saat bervarian (harga = varian termurah,
-        // stok = 0), tapi field tetap wajib dikirim agar lolos validasi skema.
-        basePrice: hasVariants ? (Number(serializeVariants(variants)[0]?.price) || 1) : basePrice,
+        basePrice: hasVariants 
+          ? (combinations.length > 0 ? (Number(combinations[0].price) || 1) : 1)
+          : basePrice,
         discountPrice: !hasVariants && Number(form.discountPrice) > 0 ? Number(form.discountPrice) : null,
         sku: form.sku.trim(),
         weightGram: Math.trunc(weightGram),
@@ -227,11 +422,23 @@ export default function NewProductPage() {
         isFeatured: form.featured,
         tags: form.tags,
         hasVariants,
-        // Gambar pertama otomatis jadi primary (diproses ulang di API juga)
         images: images.map((url, index) => ({ url, sortOrder: index, isPrimary: index === 0 })),
-        // Varian tersimpan bersama produk; daftar kosong = produk tanpa varian
-        variants: hasVariants ? serializeVariants(variants) : [],
       };
+
+      // Tambahkan data varian multi-dimensi
+      if (hasVariants) {
+        payload.optionGroups = optionGroups
+          .filter(g => g.name.trim())
+          .map((g, gi) => ({
+            name: g.name.trim(),
+            sortOrder: gi,
+            options: g.options
+              .filter(o => o.value.trim())
+              .map((opt, optIdx) => ({ value: opt.value.trim(), sortOrder: optIdx })),
+          }));
+
+        payload.variants = serializeCombinations(combinations);
+      }
 
       const res = await fetch("/api/admin/products", {
         method: "POST",
@@ -253,6 +460,15 @@ export default function NewProductPage() {
     }
   };
 
+  // Hitung jumlah kombinasi yang akan di-generate (untuk preview)
+  const expectedComboCount = useMemo(() => {
+    const counts = optionGroups
+      .map(g => g.options.filter(o => o.value.trim()).length)
+      .filter(c => c > 0);
+    if (counts.length === 0) return 0;
+    return counts.reduce((a, b) => a * b, 1);
+  }, [optionGroups]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
@@ -269,12 +485,14 @@ export default function NewProductPage() {
       {error && <p className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* KOLOM KIRI (2/3) */}
         <div className="space-y-6 lg:col-span-2">
+          {/* Card Informasi Produk */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <Card>
               <CardHeader><CardTitle className="text-lg">Informasi Produk</CardTitle></CardHeader>
               <CardContent className="space-y-4">
-                <Input label="Nama Produk" placeholder="Contoh: Kit Hidroponik NFT 6 Lubang" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
+                <Input label="Nama Produk" placeholder="Contoh: Kaos Polos Cotton Combed" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
                 <Input label="Slug" placeholder="otomatis-dari-nama" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Kategori</label>
@@ -284,7 +502,7 @@ export default function NewProductPage() {
                     <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
                       <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
                       <SelectContent>
-                        {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                        {categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   )}
@@ -301,20 +519,18 @@ export default function NewProductPage() {
             </Card>
           </motion.div>
 
+          {/* Card Harga & Stok */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <Card>
               <CardHeader className="flex flex-row items-start justify-between space-y-0">
                 <div>
-                  <CardTitle className="text-lg">
-                    {hasVariants ? "Harga & Stok Produk" : "Harga & Stok"}
-                  </CardTitle>
+                  <CardTitle className="text-lg">{hasVariants ? "Harga & Stok Produk" : "Harga & Stok"}</CardTitle>
                   <p className="text-sm text-on-surface-variant">
                     {hasVariants
-                      ? "Harga dan stok diatur per varian di card Varian Produk."
+                      ? "Harga, stok, dan gambar diatur per kombinasi varian."
                       : "Berlaku untuk seluruh produk karena tidak ada varian."}
                   </p>
                 </div>
-                {/* Pilihan mode: satu harga untuk semua, atau harga per varian. */}
                 <label className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg border border-input px-3 py-2">
                   <span className="text-xs font-medium text-on-surface">Ada varian</span>
                   <div
@@ -322,35 +538,23 @@ export default function NewProductPage() {
                     tabIndex={0}
                     aria-checked={hasVariants}
                     aria-label="Produk ini punya varian"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setHasVariants((v) => !v);
-                      }
-                    }}
-                    onClick={() => setHasVariants((v) => !v)}
-                    className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${
-                      hasVariants ? "bg-primary" : "bg-surface-container"
-                    }`}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setHasVariants(v => !v); }}}
+                    onClick={() => setHasVariants(v => !v)}
+                    className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${hasVariants ? "bg-primary" : "bg-surface-container"}`}
                   >
-                    <div
-                      className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-transform ${
-                        hasVariants ? "translate-x-[22px]" : "translate-x-0.5"
-                      }`}
-                    />
+                    <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-transform ${hasVariants ? "translate-x-[22px]" : "translate-x-0.5"}`} />
                   </div>
                 </label>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {/* Harga hanya diisi di level produk saat TIDAK bervarian. */}
                   {!hasVariants && (
                     <>
                       <Input label="Harga Dasar (Rp)" type="number" placeholder="850000" value={form.basePrice} onChange={(e) => updateField("basePrice", e.target.value)} required />
                       <Input label="Harga Diskon (Rp)" type="number" placeholder="750000" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
                     </>
                   )}
-                  <Input label="SKU" placeholder="JF-HID-NFT6" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
+                  <Input label="SKU" placeholder="JF-KAOS-POL01" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
                   <Input label="Berat (gram)" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
                   {!hasVariants && (
                     <Input label="Stok" type="number" placeholder="24" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
@@ -359,8 +563,8 @@ export default function NewProductPage() {
 
                 {hasVariants && (
                   <p className="mt-3 rounded-lg bg-surface-container-low p-3 text-xs text-on-surface-variant">
-                    Harga dan stok per varian diisi di card <strong>Varian Produk</strong> di bawah.
-                    Harga dasar produk otomatis mengikuti varian termurah.
+                    Harga, stok, diskon, dan gambar diatur di card <strong>Kombinasi Varian</strong> di bawah.
+                    Harga dasar produk otomatis mengikuti kombinasi termurah.
                   </p>
                 )}
 
@@ -377,76 +581,283 @@ export default function NewProductPage() {
             </Card>
           </motion.div>
 
-          {/* Card varian hanya tampil saat mode bervarian aktif. */}
+          {/* ======== CARD VARIAN MULTI-DIMENSI ======== */}
           {hasVariants && (
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <Card>
-                <CardHeader className="flex flex-row items-start justify-between space-y-0">
-                  <div>
-                    <CardTitle className="text-lg">Varian Produk</CardTitle>
-                    <p className="text-sm text-on-surface-variant">
-                      Tiap varian punya harga, stok, dan SKU sendiri.
-                    </p>
-                  </div>
-                  <Button type="button" variant="secondary" size="sm" onClick={addVariant} disabled={saving}>
-                    <Icon name="add" size={16} className="mr-1" /> Tambah Varian
-                  </Button>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {variants.length === 0 ? (
-                    <div className="rounded-lg border border-dashed p-6 text-center">
-                      <Icon name="inventory_2" size={32} className="mx-auto text-on-surface-variant/70" />
-                      <p className="mt-2 text-sm text-on-surface-variant">
-                        Belum ada varian. Klik “Tambah Varian” untuk menambah pilihan.
+            <>
+              {/* Card Opsi Varian (Definisi Grup) */}
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                <Card>
+                  <CardHeader className="flex flex-row items-start justify-between space-y-0">
+                    <div>
+                      <CardTitle className="text-lg">Opsi Varian</CardTitle>
+                      <p className="text-sm text-on-surface-variant">
+                        Definisikan dimensi varian (maksimal 3). Contoh: Ukuran, Warna, Material.
                       </p>
                     </div>
-                  ) : (
-                    variants.map((row, index) => {
-                      const rowError = variantErrors[row.id];
-                      return (
-                        <div key={row.id} className={`rounded-lg border p-3 ${rowError ? "border-destructive" : "border-input"}`}>
-                          <div className="mb-2 flex items-center justify-between">
-                            <p className="text-sm font-medium">Varian {index + 1}</p>
+                    <Button 
+                      type="button" 
+                      variant="secondary" 
+                      size="sm" 
+                      onClick={addOptionGroup} 
+                      disabled={saving || optionGroups.length >= 3}
+                    >
+                      <Icon name="add" size={16} className="mr-1" /> Tambah Grup Opsi
+                    </Button>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {optionGroups.length === 0 ? (
+                      <div className="rounded-lg border border-dashed p-6 text-center">
+                        <Icon name="category" size={32} className="mx-auto text-on-surface-variant/70" />
+                        <p className="mt-2 text-sm text-on-surface-variant">
+                          Belum ada grup opsi. Klik "Tambah Grup Opsi" untuk memulai.
+                        </p>
+                      </div>
+                    ) : (
+                      optionGroups.map((group, gIdx) => (
+                        <div key={group.id} className="rounded-lg border border-input p-4">
+                          <div className="mb-3 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                                {gIdx + 1}
+                              </span>
+                              <Input
+                                label=""
+                                placeholder="Nama opsi: Ukuran, Warna, dll"
+                                value={group.name}
+                                onChange={(e) => updateOptionGroupName(group.id, e.target.value)}
+                                disabled={saving}
+                                className="max-w-[200px]"
+                              />
+                            </div>
                             <Button
                               type="button"
                               variant="ghost"
                               size="sm"
                               className="text-destructive hover:text-destructive"
-                              onClick={() => removeVariant(row.id)}
+                              onClick={() => removeOptionGroup(group.id)}
                               disabled={saving}
-                              title="Hapus varian"
+                              title="Hapus grup opsi"
                             >
                               <Icon name="delete" size={16} />
                             </Button>
                           </div>
-                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                            <Input label="Nama Varian" placeholder="Contoh: Ukuran L" value={row.name} onChange={(e) => updateVariant(row.id, "name", e.target.value)} disabled={saving} />
-                            <Input label="SKU Varian" placeholder="JF-HID-NFT6-L" value={row.sku} onChange={(e) => updateVariant(row.id, "sku", e.target.value)} disabled={saving} />
-                            <Input label="Harga (Rp)" type="number" placeholder="150000" value={row.price} onChange={(e) => updateVariant(row.id, "price", e.target.value)} disabled={saving} />
-                            <Input label="Stok" type="number" placeholder="10" value={row.stock} onChange={(e) => updateVariant(row.id, "stock", e.target.value)} disabled={saving} />
-                            <Input label="Berat (gram, opsional)" type="number" placeholder="Ikut berat produk" value={row.weight} onChange={(e) => updateVariant(row.id, "weight", e.target.value)} disabled={saving} />
-                          </div>
-                          {rowError && <p className="mt-1 text-xs text-destructive">{rowError}</p>}
-                        </div>
-                      );
-                    })
-                  )}
 
-                  {/* Pratinjau harga yang akan tampil di kartu produk. */}
-                  {formatVariantRange(variants) && (
-                    <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
-                      <p className="text-xs text-on-surface-variant">Harga tampil di kartu produk:</p>
-                      <p className="mt-0.5 font-serif text-base font-bold text-primary">
-                        {formatVariantRange(variants)}
+                          {/* Daftar nilai opsi */}
+                          <div className="ml-9 space-y-2">
+                            {group.options.length === 0 ? (
+                              <p className="text-xs text-muted-foreground">Belum ada nilai. Tambahkan di bawah.</p>
+                            ) : (
+                              <div className="flex flex-wrap gap-2">
+                                {group.options.map(opt => (
+                                  <div
+                                    key={opt.id}
+                                    className="flex items-center gap-1.5 rounded-full border border-input bg-background px-3 py-1.5"
+                                  >
+                                    <input
+                                      type="text"
+                                      value={opt.value}
+                                      onChange={(e) => updateOptionValue(group.id, opt.id, e.target.value)}
+                                      disabled={saving}
+                                      className="w-16 border-0 bg-transparent text-sm focus:outline-none focus:ring-0"
+                                      placeholder="Nilai"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => removeOptionValue(group.id, opt.id)}
+                                      disabled={saving}
+                                      className="text-muted-foreground hover:text-destructive"
+                                    >
+                                      <Icon name="close" size={14} />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => addOptionValue(group.id)}
+                              disabled={saving}
+                            >
+                              <Icon name="add" size={14} className="mr-1" /> Tambah Nilai
+                            </Button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+
+                    {/* Preview jumlah kombinasi */}
+                    {expectedComboCount > 0 && (
+                      <div className="rounded-lg bg-primary/5 p-3">
+                        <p className="text-xs text-on-surface-variant">
+                          Akan menghasilkan <strong className="text-primary">{expectedComboCount} kombinasi</strong> varian.
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Tombol Generate Kombinasi */}
+              <div className="flex justify-center">
+                <Button
+                  type="button"
+                  onClick={handleGenerateCombinations}
+                  disabled={saving || expectedComboCount === 0}
+                  size="lg"
+                  className="gap-2"
+                >
+                  <Icon name="auto_awesome" size={20} />
+                  Generate Kombinasi Varian ({expectedComboCount})
+                </Button>
+              </div>
+
+              {/* Card Kombinasi Varian (Hasil Generate) */}
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                <Card>
+                  <CardHeader className="flex flex-row items-start justify-between space-y-0">
+                    <div>
+                      <CardTitle className="text-lg">Kombinasi Varian</CardTitle>
+                      <p className="text-sm text-on-surface-variant">
+                        Setiap kombinasi punya harga, stok, diskon, SKU, dan gambar sendiri.
                       </p>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {combinations.length === 0 ? (
+                      <div className="rounded-lg border border-dashed p-8 text-center">
+                        <Icon name="inventory_2" size={40} className="mx-auto text-on-surface-variant/70" />
+                        <p className="mt-3 text-sm text-on-surface-variant">
+                          Belum ada kombinasi. Definisikan opsi varian di atas, lalu klik "Generate Kombinasi".
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Header tabel */}
+                        <div className="hidden grid-cols-12 gap-2 rounded-lg bg-surface-container-low p-2 text-xs font-medium text-on-surface-variant sm:grid">
+                          <div className="col-span-3">Kombinasi</div>
+                          <div className="col-span-2">SKU</div>
+                          <div className="col-span-1">Harga</div>
+                          <div className="col-span-1">Diskon</div>
+                          <div className="col-span-1">Stok</div>
+                          <div className="col-span-1">Berat</div>
+                          <div className="col-span-2">Gambar</div>
+                          <div className="col-span-1"></div>
+                        </div>
+
+                        {combinations.map((comb) => {
+                          const err = combinationErrors[comb.id];
+                          return (
+                            <div
+                              key={comb.id}
+                              className={`rounded-lg border p-3 ${err ? "border-destructive" : "border-input"}`}
+                            >
+                              <div className="mb-2 flex items-center justify-between">
+                                <div className="flex flex-wrap gap-1.5">
+                                  {comb.selectedOptions.map(so => (
+                                    <span
+                                      key={`${so.groupId}:${so.optionId}`}
+                                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                                    >
+                                      <span className="text-on-surface-variant/70">{so.groupLabel}:</span>
+                                      {so.optionLabel}
+                                    </span>
+                                  ))}
+                                </div>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-destructive hover:text-destructive"
+                                  onClick={() => removeCombination(comb.id)}
+                                  disabled={saving}
+                                  title="Hapus kombinasi"
+                                >
+                                  <Icon name="delete" size={16} />
+                                </Button>
+                              </div>
+
+                              <div className="grid grid-cols-1 gap-3 sm:grid-cols-6 lg:grid-cols-7">
+                                <Input
+                                  label="SKU"
+                                  placeholder="JF-S-MERAH"
+                                  value={comb.sku}
+                                  onChange={(e) => updateCombination(comb.id, "sku", e.target.value)}
+                                  disabled={saving}
+                                />
+                                <Input
+                                  label="Harga (Rp)"
+                                  type="number"
+                                  placeholder="150000"
+                                  value={comb.price}
+                                  onChange={(e) => updateCombination(comb.id, "price", e.target.value)}
+                                  disabled={saving}
+                                />
+                                <Input
+                                  label="Diskon (Rp)"
+                                  type="number"
+                                  placeholder="Opsional"
+                                  value={comb.discountPrice}
+                                  onChange={(e) => updateCombination(comb.id, "discountPrice", e.target.value)}
+                                  disabled={saving}
+                                />
+                                <Input
+                                  label="Stok"
+                                  type="number"
+                                  placeholder="10"
+                                  value={comb.stock}
+                                  onChange={(e) => updateCombination(comb.id, "stock", e.target.value)}
+                                  disabled={saving}
+                                />
+                                <Input
+                                  label="Berat (g)"
+                                  type="number"
+                                  placeholder="Ikut produk"
+                                  value={comb.weight}
+                                  onChange={(e) => updateCombination(comb.id, "weight", e.target.value)}
+                                  disabled={saving}
+                                />
+                                
+                                {/* Gambar per varian */}
+                                <div className="sm:col-span-2 lg:col-span-2">
+                                  <label className="mb-1.5 block text-xs font-medium text-on-surface-variant">
+                                    Gambar Varian
+                                  </label>
+                                  <ImageUploader
+                                    value={comb.images}
+                                    onChange={(urls) => updateCombination(comb.id, "images", urls)}
+                                    disabled={saving}
+                                    folder="variants"
+                                    max={5}
+                                  />
+                                </div>
+                              </div>
+
+                              {err && <p className="mt-1 text-xs text-destructive">{err}</p>}
+                            </div>
+                          );
+                        })}
+
+                        {/* Pratinjau rentang harga */}
+                        {formatPriceRange(combinations) && (
+                          <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
+                            <p className="text-xs text-on-surface-variant">Harga tampil di kartu produk:</p>
+                            <p className="mt-0.5 font-serif text-base font-bold text-primary">
+                              {formatPriceRange(combinations)}
+                            </p>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </>
           )}
         </div>
 
+        {/* KOLOM KANAN (1/3) */}
         <div className="space-y-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
             <Card>
@@ -478,7 +889,7 @@ export default function NewProductPage() {
                   </div>
                   {form.tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {form.tags.map((tag) => (
+                      {form.tags.map(tag => (
                         <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
                           {tag}
                           <button type="button" onClick={() => removeTag(tag)} className="hover:text-destructive"><Icon name="close" size={12} /></button>

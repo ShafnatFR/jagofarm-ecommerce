@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -26,7 +26,17 @@ interface ApiProduct {
   sku?: string; weightGram?: number; stock?: number;
   images: { url: string; altText?: string | null; isPrimary?: boolean }[];
   category: { id: string; name: string; slug: string };
-  variants?: { id: string; name: string; price: number; stock?: number; weightGram?: number | null }[];
+  variants?: { 
+    id: string; name: string; price: number; discountPrice?: number | null;
+    stock?: number; weightGram?: number | null; sku?: string;
+    images?: { url: string }[];
+    selectedOptions?: { groupId: string; optionId: string; groupLabel: string; optionLabel: string }[];
+  }[];
+  /** Opsi varian multi-dimensi (Shopify-style) */
+  optionGroups?: {
+    id: string; name: string;
+    options: { id: string; value: string }[];
+  }[];
   _count?: { reviews?: number };
 }
 
@@ -96,6 +106,8 @@ export default function ProductDetailPage({
   const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(0);
+  /** Multi-dimensi: pilihan per opsi group { groupId: optionId } */
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [reviewSummary, setReviewSummary] = useState<ReviewSummary | null>(null);
@@ -341,10 +353,35 @@ export default function ProductDetailPage({
 
   /* ---------- Derived data ---------- */
   const variant = product.variants?.[selectedVariant];
+  
+  /** 
+   * Multi-dimensi: cari varian yang cocok dengan selectedOptions.
+   * Jika ada optionGroups, gunakan ini; jika tidak, fallback ke index lama.
+   */
+  const matchedVariant = useMemo(() => {
+    if (!product.optionGroups || product.optionGroups.length === 0) {
+      return product.variants?.[selectedVariant] ?? null;
+    }
+    // Cari varian yang selectedOptions-nya cocok semua
+    const selectedEntries = Object.entries(selectedOptions);
+    if (selectedEntries.length === 0) return null;
+    
+    return (product.variants ?? []).find(v => {
+      const opts = v.selectedOptions;
+      if (!opts || opts.length !== selectedEntries.length) return false;
+      return selectedEntries.every(([grpId, optId]) => 
+        opts.some(so => so.groupId === grpId && so.optionId === optId)
+      );
+    }) ?? null;
+  }, [product.variants, product.optionGroups, selectedOptions, selectedVariant]);
+  
+  // Gunakan matchedVariant untuk multi-dimensi, atau variant fallback
+  const activeVariant = matchedVariant ?? variant;
+  
   // Harga absolut: varian punya harga sendiri, bukan selisih dari basePrice.
-  const displayPrice = variant?.price ?? product.discountPrice ?? product.basePrice;
-  const basePrice = variant?.price ?? product.basePrice;
-  const hasDiscount = !variant && product.discountPrice != null && product.discountPrice < product.basePrice;
+  const displayPrice = activeVariant?.discountPrice ?? activeVariant?.price ?? product.discountPrice ?? product.basePrice;
+  const basePrice = activeVariant?.price ?? product.basePrice;
+  const hasDiscount = (activeVariant?.discountPrice ?? product.discountPrice) != null && displayPrice < basePrice;
   const discountPct = hasDiscount
     ? Math.round(((product.basePrice - product.discountPrice!) / product.basePrice) * 100)
     : 0;
@@ -353,16 +390,24 @@ export default function ProductDetailPage({
     : [{ url: "/placeholder-product.png", altText: product.name }];
 
   function handleAddToCart() {
+    if (!product || !activeVariant && product.variants && product.variants.length > 0) {
+      toast({ title: "Pilih varian terlebih dahulu", variant: "destructive" });
+      return;
+    }
+    if ((activeVariant?.stock ?? product.stock ?? 0) < quantity) {
+      toast({ title: "Stok tidak mencukupi", variant: "destructive" });
+      return;
+    }
     addItem({
-      id: `${product!.id}${variant ? `-${variant.id}` : ""}`,
+      id: `${product!.id}${activeVariant ? `-${activeVariant.id}` : ""}`,
       productId: product!.id,
-      variantId: variant?.id,
-      name: product!.name + (variant ? ` (${variant.name})` : ""),
+      variantId: activeVariant?.id,
+      name: product!.name + (activeVariant ? ` (${activeVariant.name})` : ""),
       price: displayPrice,
       quantity,
       image: images[0]?.url,
       // Berat varian diprioritaskan; null berarti ikut berat produk.
-      weightGram: variant?.weightGram ?? product!.weightGram ?? 0,
+      weightGram: activeVariant?.weightGram ?? product!.weightGram ?? 0,
       slug: product!.slug,
     });
     setAddedToCart(true);
@@ -567,50 +612,166 @@ export default function ProductDetailPage({
                 )}
               </div>
               {/* Stok: ikuti varian terpilih; tanpa varian pakai stok produk. */}
-              {(variant ? variant.stock != null : product.stock != null) && (
+              {(activeVariant ? activeVariant.stock != null : product.stock != null) && (
                 <div className="flex items-center gap-2 self-start sm:self-center">
                   <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
                   <span className="text-xs font-bold text-primary bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant">
-                    Stok: {variant ? (variant.stock ?? 0) : product.stock} tersedia
+                    Stok: {activeVariant ? (activeVariant.stock ?? 0) : product.stock} tersedia
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Variant selector */}
-            {product.variants && product.variants.length > 0 && (
-              <div className="space-y-3">
-                <label className="text-xs font-bold text-on-surface uppercase tracking-wider">Pilih Varian</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {product.variants.map((v, i) => {
-                    const isSelected = selectedVariant === i;
-                    return (
-                      <button
-                        key={v.id}
-                        onClick={() => setSelectedVariant(i)}
-                        className={cn(
-                          "flex flex-col items-start p-3 rounded-xl text-left transition-all",
-                          isSelected
-                            ? "border-2 border-primary bg-primary/5"
-                            : "border border-outline-variant hover:border-primary/50 bg-surface-container-lowest opacity-80 hover:opacity-100"
-                        )}
-                      >
-                        <div className="flex items-center justify-between w-full">
-                          <span className={cn("text-sm", isSelected ? "font-bold text-primary" : "font-semibold text-on-surface")}>
-                            {v.name}
-                          </span>
-                          {isSelected ? (
-                            <Icon name="check_circle" size={18} filled className="text-primary" />
-                          ) : null}
-                        </div>
-                        <span className="text-xs font-bold text-primary mt-0.5">
-                          {formatPrice(v.price)}
+            {/* Multi-Dimensi Variant Picker (Shopify-style) */}
+            {product.optionGroups && product.optionGroups.length > 0 ? (
+              <div className="space-y-4">
+                {product.optionGroups.map((group) => (
+                  <div key={group.id} className="space-y-2">
+                    <label className="text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+                      Pilih {group.name}
+                      {selectedOptions[group.id] && (
+                        <span className="font-normal normal-case text-primary text-xs bg-primary/10 px-2 py-0.5 rounded-full">
+                          {(product.variants ?? []).find(v => 
+                            v.selectedOptions?.some(so => so.groupId === group.id && so.optionId === selectedOptions[group.id])
+                          ) ? "✓" : ""}
                         </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                      )}
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {group.options.map((option) => {
+                        const isSelected = selectedOptions[group.id] === option.id;
+                        // Cek apakah opsi ini tersedia (ada varian yang valid)
+                        const isAvailable = (product.variants ?? []).some(v =>
+                          v.selectedOptions?.some(so => so.groupId === group.id && so.optionId === option.id) &&
+                          (v.stock ?? 0) > 0
+                        );
+                        
+                        return (
+                          <button
+                            key={option.id}
+                            onClick={() => {
+                              setSelectedOptions(prev => ({ ...prev, [group.id]: option.id }));
+                              // Reset selectedVariant index karena sekarang pakai multi-dimensi
+                              if (!matchedVariant) {
+                                // Coba cari varian yang cocok setelah pilihan ini
+                                const newSelection = { ...selectedOptions, [group.id]: option.id };
+                                const found = (product.variants ?? []).find(v => {
+                                  if (!v.selectedOptions || v.selectedOptions.length !== Object.keys(newSelection).length + (product.optionGroups?.length ?? 0) - 1) return false;
+                                  return Object.entries(newSelection).every(([grpId, optId]) =>
+                                    v.selectedOptions?.some(so => so.groupId === grpId && so.optionId === optId)
+                                  );
+                                });
+                                if (found) {
+                                  const idx = (product.variants ?? []).indexOf(found);
+                                  if (idx >= 0) setSelectedVariant(idx);
+                                }
+                              }
+                            }}
+                            disabled={!isAvailable}
+                            className={cn(
+                              "px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border",
+                              isSelected
+                                ? "border-2 border-primary bg-primary/10 text-primary shadow-sm"
+                                : isAvailable
+                                  ? "border-outline-variant/60 hover:border-primary/50 bg-surface-container-lowest hover:bg-surface-container-low"
+                                  : "border-outline-variant/30 bg-surface-container-lowest opacity-40 cursor-not-allowed line-through"
+                            )}
+                          >
+                            {option.value}
+                            {!isAvailable && <span className="ml-1 text-xs">(Habis)</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Tampilkan detail varian yang cocok */}
+                {activeVariant && (
+                  <div className="mt-3 p-3 rounded-xl bg-primary/5 border border-primary/20">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-bold text-on-surface">{activeVariant.name}</p>
+                        {activeVariant.sku && (
+                          <p className="text-xs text-on-surface-variant mt-0.5">SKU: {activeVariant.sku}</p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <p className="text-base font-bold text-primary">{formatPrice(displayPrice)}</p>
+                        {hasDiscount && (
+                          <p className="text-xs text-error line-through">{formatPrice(basePrice)}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Gambar spesifik varian (jika ada) */}
+                    {activeVariant.images && activeVariant.images.length > 0 && (
+                      <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                        {activeVariant.images.map((img: { url: string }, idx: number) => (
+                          <div 
+                            key={idx} 
+                            className="relative w-16 h-16 rounded-lg overflow-hidden border border-outline-variant/40 flex-shrink-0 cursor-pointer"
+                            onClick={() => {
+                              // Cari gambar ini di gallery utama atau tampilkan sebagai gambar utama sementara
+                              const mainIdx = images.findIndex(i => i.url === img.url);
+                              if (mainIdx >= 0) setSelectedImage(mainIdx);
+                            }}
+                          >
+                            <Image
+                              src={img.url}
+                              alt={`${activeVariant.name} - Gambar ${idx + 1}`}
+                              fill
+                              className="object-cover"
+                              sizes="64px"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
+            ) : (
+              /* Fallback: varian lama (flat list) untuk kompatibilitas */
+              product.variants && product.variants.length > 0 && (
+                <div className="space-y-3">
+                  <label className="text-xs font-bold text-on-surface uppercase tracking-wider">Pilih Varian</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {product.variants.map((v, i) => {
+                      const isSelected = selectedVariant === i;
+                      return (
+                        <button
+                          key={v.id}
+                          onClick={() => setSelectedVariant(i)}
+                          className={cn(
+                            "flex flex-col items-start p-3 rounded-xl text-left transition-all",
+                            isSelected
+                              ? "border-2 border-primary bg-primary/5"
+                              : "border border-outline-variant hover:border-primary/50 bg-surface-container-lowest opacity-80 hover:opacity-100"
+                          )}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className={cn("text-sm", isSelected ? "font-bold text-primary" : "font-semibold text-on-surface")}>
+                              {v.name}
+                            </span>
+                            {isSelected ? (
+                              <Icon name="check_circle" size={18} filled className="text-primary" />
+                            ) : null}
+                          </div>
+                          <span className="text-xs font-bold text-primary mt-0.5">
+                            {formatPrice(v.price)}
+                          </span>
+                          {v.discountPrice && v.discountPrice < v.price && (
+                            <span className="text-xs text-error line-through">
+                              {formatPrice(v.price)}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )
             )}
 
             {/* Quantity + Dual CTA */}
@@ -628,7 +789,7 @@ export default function ProductDetailPage({
                   </button>
                   <span className="w-14 text-center font-bold text-sm text-on-surface">{quantity}</span>
                   <button
-                    onClick={() => setQuantity(Math.min((variant?.stock ?? product.stock) ?? 99, quantity + 1))}
+                    onClick={() => setQuantity(Math.min((activeVariant?.stock ?? product.stock) ?? 99, quantity + 1))}
                     className="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-bold active:scale-95"
                     aria-label="Tambah jumlah"
                   >

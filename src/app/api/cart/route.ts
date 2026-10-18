@@ -115,10 +115,14 @@ export async function GET() {
       const discountPrice = item.product.discountPrice
         ? Number(item.product.discountPrice)
         : null;
-      // Harga unit: varian punya harga absolut sendiri; tanpa varian pakai
-      // harga produk (dengan diskon bila ada).
+      // Harga unit: varian punya harga absolut (dan mungkin diskon spesifik);
+      // tanpa varian pakai harga produk (dengan diskon bila ada).
       const variantPrice = item.variant ? Number(item.variant.price) : null;
-      const unitPrice = variantPrice ?? discountPrice ?? basePrice;
+      const variantDiscount = item.variant?.discountPrice
+        ? Number(item.variant.discountPrice)
+        : null;
+      // Prioritas: diskon varian > harga varian > diskon produk > harga produk
+      const unitPrice = variantDiscount ?? variantPrice ?? discountPrice ?? basePrice;
       const lineTotal = unitPrice * item.quantity;
       subtotal += lineTotal;
 

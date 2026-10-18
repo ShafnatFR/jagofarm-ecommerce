@@ -86,17 +86,48 @@ const createProductSchema = z.object({
     .array(z.object({ url: z.string(), altText: z.string().optional(), isPrimary: z.boolean().optional() }))
     .optional(),
   hasVariants: z.boolean().default(false),
+  // Opsi varian multi-dimensi (grup + nilai)
+  optionGroups: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Nama grup opsi wajib."),
+        sortOrder: z.number().int().min(0).default(0),
+        options: z.array(
+          z.object({
+            value: z.string().min(1, "Nilai opsi wajib."),
+            sortOrder: z.number().int().min(0).default(0),
+          })
+        ).min(1, "Grup opsi harus punya minimal 1 nilai."),
+      })
+    )
+    .optional(),
+  // Kombinasi varian (hasil dari Cartesian product opsi)
   variants: z
     .array(
       z.object({
-        name: z.string().min(1, "Nama varian wajib diisi."),
+        name: z.string().min(1, "Nama varian/kombinasi wajib diisi."),
         sku: z.string().min(2, "SKU varian minimal 2 karakter."),
         price: z.number().positive("Harga varian harus lebih dari 0."),
+        discountPrice: z.number().positive("Diskon varian harus > 0.").optional().nullable(),
         stock: z.number().int().min(0).default(0),
         weightGram: z.number().int().positive().nullable().optional(),
         isActive: z.boolean().default(true),
         sortOrder: z.number().int().min(0).default(0),
-        attributes: z.any().optional(),
+        // Referensi ke opsi yang dipilih untuk kombinasi ini
+        optionCombination: z.array(
+          z.object({
+            groupId: z.string().uuid(),
+            optionId: z.string().uuid(),
+          })
+        ).optional(),
+        // Gambar spesifik varian
+        images: z.array(
+          z.object({ 
+            url: z.string(), 
+            altText: z.string().optional(), 
+            isPrimary: z.boolean().optional() 
+          })
+        ).optional(),
       })
     )
     .optional(),
@@ -133,7 +164,7 @@ const createProductSchema = z.object({
  *  3. Bervarian -> `minPrice`/`maxPrice` diisi dari varian aktif; dipakai
  *     filter & sort /api/products.
  *  4. Tidak bervarian -> min/max = null dan varian tidak disimpan.
- *  5. `discountPrice` dipaksa null saat bervarian.
+ *  5. `discountPrice` dipaksa null saat bervarian (diskon sekarang per varian).
  */
 function normalizeVariants(input: {
   hasVariants: boolean;
@@ -144,11 +175,13 @@ function normalizeVariants(input: {
     name: string;
     sku: string;
     price: number;
+    discountPrice?: number | null;
     stock: number;
     weightGram?: number | null;
     isActive?: boolean;
     sortOrder?: number;
-    attributes?: unknown;
+    optionCombination?: Array<{ groupId: string; optionId: string }>;
+    images?: Array<{ url: string; altText?: string | null; isPrimary?: boolean }>;
   }>;
 }) {
   const rows = input.hasVariants ? (input.variants ?? []).filter((v) => v.isActive !== false) : [];
@@ -182,6 +215,9 @@ function normalizeVariants(input: {
       isActive: v.isActive !== false,
       sortOrder: v.sortOrder ?? index,
       weightGram: v.weightGram ?? null,
+      discountPrice: v.discountPrice ?? null,
+      optionCombination: v.optionCombination ?? [],
+      images: v.images ?? [],
     })),
   };
 }
@@ -199,7 +235,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    const { images, variants, hasVariants, ...productData } = parsed.data;
+    const { images, variants, hasVariants, optionGroups, ...productData } = parsed.data;
     const slug = slugify(productData.name);
 
     // Tegakkan aturan konsistensi produk/varian sebelum menyimpan.
@@ -221,34 +257,77 @@ export async function POST(request: NextRequest) {
         isPrimary: i === 0,
       }));
 
-    const product = await prisma.product.create({
-      data: {
-        ...productData,
-        slug,
-        hasVariants: normalized.hasVariants,
-        stock: normalized.stock,
-        basePrice: normalized.basePrice,
-        discountPrice: normalized.discountPrice,
-        minPrice: normalized.minPrice,
-        maxPrice: normalized.maxPrice,
-        images: normalizedImages ? { create: normalizedImages } : undefined,
-        variants:
-          normalized.variants.length > 0
+    // Build data produk dengan opsi & varian multi-dimensi
+    const productCreateData: Parameters<typeof prisma.product.create>[0]["data"] = {
+      ...productData,
+      slug,
+      hasVariants: normalized.hasVariants,
+      stock: normalized.stock,
+      basePrice: normalized.basePrice,
+      discountPrice: normalized.discountPrice,
+      minPrice: normalized.minPrice,
+      maxPrice: normalized.maxPrice,
+      images: normalizedImages ? { create: normalizedImages } : undefined,
+    };
+
+    // Tambahkan opsi grup + opsi nilai (multi-dimensi)
+    if (normalized.hasVariants && optionGroups && optionGroups.length > 0) {
+      productCreateData.optionGroups = {
+        create: optionGroups.map((og, ogIdx) => ({
+          name: og.name.trim(),
+          sortOrder: og.sortOrder ?? ogIdx,
+          options: {
+            create: (og.options ?? []).map((opt, optIdx) => ({
+              value: opt.value.trim(),
+              sortOrder: opt.sortOrder ?? optIdx,
+            })),
+          },
+        })),
+      };
+    }
+
+    // Tambahkan kombinasi varian dengan gambar spesifik
+    if (normalized.hasVariants && normalized.variants.length > 0) {
+      productCreateData.variants = {
+        create: normalized.variants.map((v) => ({
+          name: v.name,
+          sku: v.sku,
+          price: v.price,
+          discountPrice: v.discountPrice,
+          stock: v.stock,
+          weightGram: v.weightGram ?? null,
+          isActive: v.isActive,
+          sortOrder: v.sortOrder,
+          optionCombination: v.optionCombination ?? [],
+          images: v.images && v.images.length > 0
             ? {
-                create: normalized.variants.map((v) => ({
-                  name: v.name,
-                  sku: v.sku,
-                  price: v.price,
-                  stock: v.stock,
-                  weightGram: v.weightGram ?? null,
-                  isActive: v.isActive,
-                  sortOrder: v.sortOrder,
-                  attributes: v.attributes ?? undefined,
-                })),
+                create: v.images
+                  .filter((img) => img.url.trim().length > 0)
+                  .map((img, i) => ({
+                    url: img.url.trim(),
+                    altText: img.altText ?? null,
+                    sortOrder: i,
+                    isPrimary: i === 0,
+                  })),
               }
             : undefined,
+        })),
+      };
+    }
+
+    const product = await prisma.product.create({
+      data: productCreateData,
+      include: { 
+        images: { orderBy: { sortOrder: "asc" } }, 
+        variants: { 
+          include: { images: { orderBy: { sortOrder: "asc" } } },
+          orderBy: { sortOrder: "asc" } 
+        },
+        optionGroups: {
+          include: { options: { orderBy: { sortOrder: "asc" } } },
+          orderBy: { sortOrder: "asc" },
+        },
       },
-      include: { images: { orderBy: { sortOrder: "asc" } }, variants: true },
     });
 
     // Bersihkan cache katalog homepage supaya produk baru langsung tampil.
@@ -262,7 +341,16 @@ export async function POST(request: NextRequest) {
           discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
           minPrice: product.minPrice ? Number(product.minPrice) : null,
           maxPrice: product.maxPrice ? Number(product.maxPrice) : null,
-          variants: product.variants.map((v) => ({ ...v, price: Number(v.price) })),
+          variants: product.variants.map((v) => ({
+            ...v,
+            price: Number(v.price),
+            discountPrice: v.discountPrice ? Number(v.discountPrice) : null,
+            images: v.images ?? [],
+          })),
+          optionGroups: product.optionGroups?.map(og => ({
+            ...og,
+            options: og.options ?? [],
+          })) ?? [],
         },
       },
       { status: 201 }

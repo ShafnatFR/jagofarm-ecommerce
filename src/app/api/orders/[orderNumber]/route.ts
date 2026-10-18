@@ -31,7 +31,7 @@ async function loadOrder(userId: string, orderNumber: string) {
               images: { where: { isPrimary: true }, take: 1 },
             },
           },
-          variant: { select: { id: true, name: true, attributes: true } },
+          variant: { select: { id: true, name: true, price: true } },
         },
       },
       shippingAddress: true,

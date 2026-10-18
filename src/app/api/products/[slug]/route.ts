@@ -12,7 +12,16 @@ export async function GET(
       where: { slug, isActive: true, basePrice: { gt: 0 }, weightGram: { gt: 0 } },
       include: {
         images: { orderBy: { sortOrder: "asc" } },
-        variants: true,
+        variants: { 
+          include: { 
+            images: { orderBy: { sortOrder: "asc" } },
+          },
+          orderBy: { sortOrder: "asc" } 
+        },
+        optionGroups: {
+          include: { options: { orderBy: { sortOrder: "asc" } } },
+          orderBy: { sortOrder: "asc" },
+        },
         category: {
           select: { id: true, name: true, slug: true, parentId: true },
         },
@@ -54,7 +63,13 @@ export async function GET(
       variants: product.variants.map((v) => ({
         ...v,
         price: Number(v.price),
+        discountPrice: v.discountPrice ? Number(v.discountPrice) : null,
+        images: v.images ?? [],
       })),
+      optionGroups: product.optionGroups?.map(og => ({
+        ...og,
+        options: og.options ?? [],
+      })) ?? [],
       reviews: {
         items: product.reviews,
         stats: {
