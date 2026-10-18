@@ -22,14 +22,21 @@ function formatTime(value: Date | string): string {
 
 export function ConsultationThreadPanel({
   sessionId,
-  expertName,
   status,
   messages,
+  contactName,
+  contactEmail,
+  contactPhone,
+  isGuest,
 }: {
   sessionId: string;
-  expertName: string;
   status: string;
   messages: ConsultationMessageRow[];
+  /** Identitas pelanggan supaya admin bisa menghubungi balik. */
+  contactName?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  isGuest?: boolean;
 }) {
   const router = useRouter();
   const [draft, setDraft] = useState("");
@@ -81,8 +88,23 @@ export function ConsultationThreadPanel({
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-3 border-b border-outline-variant px-4 py-3">
-        <div>
-          <p className="text-sm font-bold text-on-surface">{expertName}</p>
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-on-surface">
+            {contactName || "Pelanggan"}
+            {isGuest ? (
+              <span className="ml-2 rounded-full bg-surface-container px-2 py-0.5 text-[10px] font-semibold text-on-surface-variant">
+                Tamu
+              </span>
+            ) : null}
+          </p>
+          <p className="truncate text-xs text-on-surface-variant">
+            {contactEmail ? (
+              <a href={`mailto:${contactEmail}`} className="hover:underline">
+                {contactEmail}
+              </a>
+            ) : null}
+            {contactPhone ? ` · ${contactPhone}` : ""}
+          </p>
           <p className="text-xs text-on-surface-variant">
             Balas sebagai ahli — pesan muncul langsung di halaman pelanggan.
           </p>

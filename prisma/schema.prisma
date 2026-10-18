@@ -322,18 +322,27 @@ model Coupon {
 }
 
 model ConsultationSession {
-  id         String   @id @default(uuid())
-  userId     String?  @map("user_id") @db.VarChar(36)
-  user       User?    @relation(fields: [userId], references: [id])
-  status     String   @default("active") @map("status") @db.VarChar(20)
-  expertName String   @default("Tim Kami") @map("expert_name") @db.VarChar(100)
-  sessionRef String?  @unique @map("session_ref") @db.VarChar(20)
-  metadata   Json?    @db.JsonB
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id          String   @id @default(uuid())
+  userId      String?  @map("user_id") @db.VarChar(36)
+  user        User?    @relation(fields: [userId], references: [id])
+  status      String   @default("active") @map("status") @db.VarChar(20)
+  expertName  String   @default("Tim Kami") @map("expert_name") @db.VarChar(100)
+  sessionRef  String?  @unique @map("session_ref") @db.VarChar(20)
+  metadata    Json?    @db.JsonB
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Data tamu (untuk konsultasi tanpa login)
+  guestName   String?  @map("guest_name") @db.VarChar(100)
+  guestEmail  String?  @map("guest_email") @db.VarChar(255)
+  guestPhone  String?  @map("guest_phone") @db.VarChar(20)
+  /// Kunci akses untuk tamu (tanpa akun). Disimpan di browser tamu, dipakai
+  /// untuk membaca & membalas tiketnya sendiri tanpa login.
+  accessToken String?  @unique @map("access_token") @db.VarChar(64)
 
   messages ConsultationMessage[]
 
+  @@index([guestEmail])
   @@map("consultation_sessions")
 }
 

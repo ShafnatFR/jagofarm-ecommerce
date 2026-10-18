@@ -8,6 +8,7 @@ import {
   type ConsultationSessionSummary,
 } from "@/lib/consultation-admin";
 import { ConsultationThreadPanel } from "./consultation-thread";
+import { AutoRefresh } from "@/components/admin/auto-refresh";
 import { APP_TIME_ZONE } from "@/lib/utils";
 
 export const metadata = { title: "Konsultasi - Admin JagoFarm" };
@@ -39,9 +40,10 @@ function SessionListItem({
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-on-surface">
-            {session.userName || session.userEmail || "Tanpa akun"}
+            {session.userName || session.guestName || session.userEmail || session.guestEmail || "Tanpa nama"}
           </p>
           <p className="truncate text-xs text-on-surface-variant">
+            {session.source === "guest" ? "Tamu · " : ""}
             {session.sessionRef || session.id.slice(0, 8)} · {formatDate(session.updatedAt)}
           </p>
         </div>
@@ -51,6 +53,11 @@ function SessionListItem({
           </span>
         ) : null}
       </div>
+      {(session.guestEmail || session.userEmail) && (
+        <p className="mt-0.5 truncate text-[11px] text-on-surface-variant">
+          {session.userEmail || session.guestEmail}
+        </p>
+      )}
       <p className="mt-1 line-clamp-2 text-xs text-on-surface-variant">
         {session.lastMessage || "Belum ada pesan"}
       </p>
@@ -74,6 +81,7 @@ export default async function AdminConsultationPage({
 
   return (
     <div className="space-y-4">
+      <AutoRefresh intervalMs={20000} />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-on-surface">Konsultasi</h1>
@@ -115,9 +123,12 @@ export default async function AdminConsultationPage({
             {thread ? (
               <ConsultationThreadPanel
                 sessionId={thread.session.id}
-                expertName={thread.session.expertName}
                 status={thread.session.status}
                 messages={thread.messages}
+                contactName={thread.session.userName || thread.session.guestName}
+                contactEmail={thread.session.userEmail || thread.session.guestEmail}
+                contactPhone={thread.session.guestPhone}
+                isGuest={thread.session.source === "guest"}
               />
             ) : (
               <div className="flex min-h-[420px] items-center justify-center p-12 text-center">

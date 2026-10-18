@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { TEAM } from "@/lib/constants";
+import { notifyAdminSafe } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   try {
@@ -58,6 +59,14 @@ export async function POST(request: NextRequest) {
         senderType: "system",
         content: `Sesi konsultasi dengan ${(session.metadata as { expert?: string })?.expert || TEAM.LABEL} telah dimulai. ${TEAM.INITIAL_MESSAGE}`,
       },
+    });
+
+    // Beri tahu admin bahwa ada sesi konsultasi baru (best-effort).
+    await notifyAdminSafe({
+      type: "consultation",
+      title: `Konsultasi baru: ${user.name || user.email || "Pelanggan"}`,
+      body: user.email ?? null,
+      href: `/admin/consultation?session=${session.id}`,
     });
 
     return NextResponse.json({

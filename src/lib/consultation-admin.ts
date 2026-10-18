@@ -21,6 +21,12 @@ export interface ConsultationSessionSummary {
   updatedAt: Date;
   userName: string | null;
   userEmail: string | null;
+  /** Nama/email tamu (tanpa akun) — dipakai bila userName kosong. */
+  guestName: string | null;
+  guestEmail: string | null;
+  guestPhone: string | null;
+  /** "guest" bila tiket dibuat tanpa login, "account" bila oleh user login. */
+  source: string;
   messageCount: number;
   unreadCount: number;
   lastMessage: string | null;
@@ -53,6 +59,10 @@ export async function listConsultationSessions(status?: string): Promise<Consult
       expertName: true,
       createdAt: true,
       updatedAt: true,
+      guestName: true,
+      guestEmail: true,
+      guestPhone: true,
+      metadata: true,
       user: { select: { name: true, email: true } },
       _count: { select: { messages: true } },
       messages: {
@@ -81,10 +91,23 @@ export async function listConsultationSessions(status?: string): Promise<Consult
     updatedAt: session.updatedAt,
     userName: session.user?.name ?? null,
     userEmail: session.user?.email ?? null,
+    guestName: session.guestName,
+    guestEmail: session.guestEmail,
+    guestPhone: session.guestPhone,
+    source: readSource(session.metadata),
     messageCount: session._count.messages,
     unreadCount: unreadMap.get(session.id) ?? 0,
     lastMessage: session.messages[0]?.content ?? null,
   }));
+}
+
+/** Baca asal tiket dari metadata JSON (default: tiket lama = akun). */
+function readSource(metadata: unknown): string {
+  if (metadata && typeof metadata === "object" && "source" in metadata) {
+    const value = (metadata as { source?: unknown }).source;
+    if (typeof value === "string") return value;
+  }
+  return "account";
 }
 
 export async function getConsultationThread(sessionId: string): Promise<ConsultationThread | null> {
@@ -99,6 +122,10 @@ export async function getConsultationThread(sessionId: string): Promise<Consulta
       expertName: true,
       createdAt: true,
       updatedAt: true,
+      guestName: true,
+      guestEmail: true,
+      guestPhone: true,
+      metadata: true,
       user: { select: { name: true, email: true } },
       _count: { select: { messages: true } },
     },
@@ -121,6 +148,10 @@ export async function getConsultationThread(sessionId: string): Promise<Consulta
       updatedAt: session.updatedAt,
       userName: session.user?.name ?? null,
       userEmail: session.user?.email ?? null,
+      guestName: session.guestName,
+      guestEmail: session.guestEmail,
+      guestPhone: session.guestPhone,
+      source: readSource(session.metadata),
       messageCount: session._count.messages,
       unreadCount: messages.filter((message) => message.senderType === "user" && !message.isRead).length,
       lastMessage: messages[messages.length - 1]?.content ?? null,

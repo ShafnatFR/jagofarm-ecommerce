@@ -16,7 +16,8 @@ export default function ConsultationPage() {
             Konsultasi Budidaya &amp; Akuaponik
           </h1>
           <p className="text-xs sm:text-sm text-on-surface-variant mt-1">
-            Diskusi langsung dengan tim agronomis &amp; pakar akuakultur JagoFarm secara real-time.
+            Buka tiket, ceritakan kebutuhan Anda, dan tim agronomis kami membalas langsung
+            di halaman ini. Tidak perlu punya akun.
           </p>
         </div>
       </div>
