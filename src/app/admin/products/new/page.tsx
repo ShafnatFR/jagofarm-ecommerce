@@ -47,6 +47,49 @@ interface VariantCombination {
 
 // ======== HELPER FUNCTIONS ========
 
+/**
+ * Generate SKU dari nama produk.
+ * 
+ * Aturan:
+ * - Ambil 3-4 kata pertama (maks 12 karakter total)
+ * - Uppercase + dash separator
+ * - Hapus karakter non-alphanumeric
+ * - Contoh: "Kaos Polos Cotton Combed 30s" → "KAOS-POL-COT-COM"
+ * Contoh: "Set Tambak Lengkap" → "SET-TAM-LEN"
+ */
+function generateProductSKU(productName: string): string {
+  if (!productName.trim()) return "";
+  
+  // Split kata, filter kosong, ambil maks 4 kata
+  const words = productName.trim()
+    .replace(/[^a-zA-Z0-9\s]/g, "") // hapus karakter khusus
+    .split(/\s+/)
+    .filter(w => w.length > 0)
+    .slice(0, 4);
+  
+  if (words.length === 0) return "";
+  
+  // Truncate setiap kata: kata pertama max 6, lainnya max 3
+  const truncated = words.map((w, i) => 
+    i === 0 ? w.substring(0, 6).toUpperCase() : w.substring(0, 3).toUpperCase()
+  );
+  
+  return truncated.join("-");
+}
+
+/**
+ * Generate SKU varian dari base SKU + opsi yang dipilih.
+ * Contoh: base="KAOS-POL", ops=["S", "Merah"] → "KAOS-POL-S-MER"
+ */
+function generateVariantSKU(baseSKU: string, optionLabels: string[]): string {
+  const prefix = baseSKU || "PROD";
+  // Ambil 3 karakter pertama setiap opsi, uppercase, hapus spesial
+  const suffix = optionLabels
+    .map(opt => opt.replace(/[^a-zA-Z0-9]/g, "").substring(0, 3).toUpperCase())
+    .join("-");
+  return `${prefix}-${suffix}`;
+}
+
 let idSeq = 0;
 function newId(prefix: string = "id"): string {
   idSeq += 1;
@@ -78,7 +121,7 @@ function emptyCombination(): VariantCombination {
  * Generate semua kombinasi Cartesian dari opsi-opsi yang ada.
  * Contoh: Ukuran=[S,M] × Warna=[Merah,Hitam] → 4 kombinasi.
  */
-function generateCombinations(groups: OptionGroup[]): VariantCombination[] {
+function generateCombinations(groups: OptionGroup[], baseSKU: string = ""): VariantCombination[] {
   const activeGroups = groups.filter(g => g.name.trim() && g.options.length > 0);
   if (activeGroups.length === 0) return [];
 
@@ -90,12 +133,14 @@ function generateCombinations(groups: OptionGroup[]): VariantCombination[] {
       // Generate nama & SKU otomatis dari kombinasi
       const labels = current.map(o => o.optionLabel);
       const name = labels.join(" / ");
-      const skuPrefix = labels.join("-").toUpperCase().replace(/[^A-Z0-9-]/g, "-");
+      
+      // Gunakan base SKU produk + opsi untuk generate SKU varian
+      const sku = generateVariantSKU(baseSKU, labels);
       
       result.push({
         ...emptyCombination(),
         name, // untuk internal use
-        sku: skuPrefix,
+        sku,
         selectedOptions: current,
       });
       return;
@@ -252,7 +297,13 @@ export default function NewProductPage() {
   const updateField = useCallback((field: string, value: string | boolean) => {
     setForm(prev => {
       const next = { ...prev, [field]: value };
-      if (field === "name" && typeof value === "string") next.slug = slugify(value);
+      if (field === "name" && typeof value === "string") {
+        next.slug = slugify(value);
+        // Auto-generate SKU dari nama produk (hanya jika SKU masih kosong atau belum di-edit manual)
+        if (!prev.sku || prev.sku === generateProductSKU(prev.name)) {
+          next.sku = generateProductSKU(value);
+        }
+      }
       return next;
     });
   }, []);
@@ -318,7 +369,7 @@ export default function NewProductPage() {
       return;
     }
 
-    const newCombinations = generateCombinations(optionGroups);
+    const newCombinations = generateCombinations(optionGroups, form.sku);
     
     if (newCombinations.length === 0) {
       setError("Tidak bisa membuat kombinasi. Pastikan setiap grup punya nilai.");
@@ -554,7 +605,25 @@ export default function NewProductPage() {
                       <Input label="Harga Diskon (Rp)" type="number" placeholder="750000" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
                     </>
                   )}
-                  <Input label="SKU" placeholder="JF-KAOS-POL01" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
+                  <div className="flex gap-2 items-end">
+                    <div className="flex-1">
+                      <Input label="SKU" placeholder="JF-KAOS-POL01" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        const autoSKU = generateProductSKU(form.name);
+                        if (autoSKU) setForm(p => ({ ...p, sku: autoSKU }));
+                      }}
+                      disabled={!form.name.trim()}
+                      className="mb-0.5 whitespace-nowrap"
+                    >
+                      <Icon name="auto_awesome" size={16} className="mr-1.5" />
+                      Auto
+                    </Button>
+                  </div>
                   <Input label="Berat (gram)" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
                   {!hasVariants && (
                     <Input label="Stok" type="number" placeholder="24" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
@@ -779,13 +848,32 @@ export default function NewProductPage() {
                               </div>
 
                               <div className="grid grid-cols-1 gap-3 sm:grid-cols-6 lg:grid-cols-7">
-                                <Input
-                                  label="SKU"
-                                  placeholder="JF-S-MERAH"
-                                  value={comb.sku}
-                                  onChange={(e) => updateCombination(comb.id, "sku", e.target.value)}
-                                  disabled={saving}
-                                />
+                                <div className="sm:col-span-1 flex gap-1.5 items-end">
+                                  <div className="flex-1 min-w-0">
+                                    <Input
+                                      label="SKU"
+                                      placeholder="JF-S-MERAH"
+                                      value={comb.sku}
+                                      onChange={(e) => updateCombination(comb.id, "sku", e.target.value)}
+                                      disabled={saving}
+                                    />
+                                  </div>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      const labels = comb.selectedOptions.map(o => o.optionLabel);
+                                      const autoSKU = generateVariantSKU(form.sku, labels);
+                                      if (autoSKU) updateCombination(comb.id, "sku", autoSKU);
+                                    }}
+                                    disabled={saving || !form.sku.trim()}
+                                    title="Auto-generate dari nama produk + opsi"
+                                    className="mb-0.5 flex-shrink-0"
+                                  >
+                                    <Icon name="auto_awesome" size={14} />
+                                  </Button>
+                                </div>
                                 <Input
                                   label="Harga (Rp)"
                                   type="number"
