@@ -104,7 +104,7 @@ function installAdminDataCache() {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [guardState, setGuardState] = useState<GuardState>("checking")
   const [admin, setAdmin] = useState<AdminIdentity | null>(null)
