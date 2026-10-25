@@ -281,8 +281,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={cn(
                   "relative flex items-center gap-3 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "border-white/60 bg-surface/15 text-white"
-                    : "border-white/15 text-white/70 hover:border-white/30 hover:bg-on-primary/10 hover:text-white",
+                    ? "border-primary/60 bg-surface/15 text-white"
+                    : "border-primary/20 text-white/70 hover:border-primary/40 hover:bg-on-primary/10 hover:text-white",
                   collapsed && "justify-center px-0"
                 )}
               >
