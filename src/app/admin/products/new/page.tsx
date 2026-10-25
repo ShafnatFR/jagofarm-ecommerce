@@ -1003,12 +1003,10 @@ export default function NewProductPage() {
             <Button type="submit" className="flex-1" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
             <Link href="/admin/products" className="flex-1"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>
           </div>
-
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-            <NumericKeypad />
-          </motion.div>
         </div>
       </form>
+      {/* Keypad melayang kanan-tengah: muncul saat field angka fokus. */}
+      <NumericKeypad />
     </div>
   );
 }
