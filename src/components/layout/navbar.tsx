@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useCategories } from "@/hooks/use-categories";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { useCartStore } from "@/lib/cart-store";
 import { createClient } from "@/lib/supabase/client";
@@ -27,7 +26,6 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const cartCount = useCartStore((s) => s.totalItems());
-  const { categories } = useCategories();
   const fetchedContent = useSiteContent();
   const site = content ?? fetchedContent;
 
@@ -131,15 +129,9 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
 
           {/* Navigation Links */}
           <nav className="hidden lg:flex items-center gap-6">
-            <Link className="text-on-surface font-semibold text-label-lg font-label-lg hover:text-primary transition-colors duration-150 flex items-center gap-1" href="/products">
-              Kategori
-              <span className="material-symbols-outlined text-[16px]">expand_more</span>
+            <Link className="text-on-surface font-semibold text-label-lg font-label-lg hover:text-primary transition-colors duration-150" href="/products">
+              Toko
             </Link>
-            {categories.slice(0, 3).map((cat) => (
-              <Link key={cat.id} className="text-on-surface-variant font-medium text-label-lg font-label-lg hover:text-primary transition-colors duration-150" href={`/products?category=${cat.slug}`}>
-                {cat.name}
-              </Link>
-            ))}
             <Link className="text-on-surface-variant font-medium text-label-lg font-label-lg hover:text-primary transition-colors duration-150 flex items-center gap-1" href="/consultation">
               Konsultasi
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse" />
