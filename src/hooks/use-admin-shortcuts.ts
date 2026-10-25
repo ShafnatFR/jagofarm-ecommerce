@@ -41,7 +41,7 @@ export const ADMIN_SHORTCUT_DOCS: { combo: string; desc: string }[] = [
   { combo: "n", desc: "Tambah baru (konteks halaman)" },
   { combo: "s", desc: "Simpan form (konteks halaman)" },
   { combo: "/", desc: "Fokus ke pencarian" },
-  { combo: "r", desc: "Muat ulang data halaman" },
+  { combo: "g lalu r", desc: "Muat ulang data halaman" },
   { combo: "?", desc: "Buka/tutup daftar shortcut ini" },
   { combo: "Esc", desc: "Tutup palette / dialog" },
   { combo: "↑ ↓ + Enter", desc: "Pilih aksi di palette" },
@@ -174,7 +174,7 @@ export function useAdminShortcuts() {
       {
         id: "page-refresh",
         label: "Muat ulang data",
-        hint: "r",
+        hint: "g r",
         icon: "refresh",
         keywords: ["refresh", "reload", "muat ulang", "segarkan"],
         run: () => {
@@ -247,12 +247,18 @@ export function useAdminShortcuts() {
         return;
       }
       if (Date.now() - gAtRef.current < G_WINDOW_MS) {
-        const nav = NAV_ITEMS.find((item) => item.key === e.key);
         gAtRef.current = 0;
         setHintOn(false);
+        const nav = NAV_ITEMS.find((item) => item.key === e.key);
         if (nav) {
           e.preventDefault();
           gotoModule(nav.href);
+          return;
+        }
+        // g lalu r → muat ulang data halaman (aman saat mengetik: butuh awalan g).
+        if (e.key.toLowerCase() === "r") {
+          e.preventDefault();
+          if (!triggerAction("page-refresh")) window.location.reload();
           return;
         }
         // Tombol kedua bukan target navigasi → abaikan, lanjut ke shortcut biasa.
@@ -267,9 +273,6 @@ export function useAdminShortcuts() {
           const form = document.querySelector("form");
           if (form) form.requestSubmit();
         }
-      } else if (e.key.toLowerCase() === "r") {
-        e.preventDefault();
-        if (!triggerAction("page-refresh")) window.location.reload();
       } else if (e.key.toLowerCase() === "f") {
         e.preventDefault();
         focusSearch();
