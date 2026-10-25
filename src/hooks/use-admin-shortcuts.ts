@@ -116,9 +116,21 @@ export function useAdminShortcuts() {
   const paletteOpenRef = useRef(false);
   paletteOpenRef.current = paletteOpen;
   const gAtRef = useRef(0);
+  const gTimerRef = useRef<number | null>(null);
+
+  /** Matikan mode tunggu-tombol-kedua + sembunyikan badge seketika. */
+  function cancelG() {
+    gAtRef.current = 0;
+    setHintOn(false);
+    if (gTimerRef.current !== null) {
+      window.clearTimeout(gTimerRef.current);
+      gTimerRef.current = null;
+    }
+  }
 
   const gotoModule = useCallback(
     (href: string) => {
+      cancelG();
       setPaletteOpen(false);
       setHelpOpen(false);
       if (pathname !== href) router.push(href);
@@ -195,8 +207,9 @@ export function useAdminShortcuts() {
           target.tagName === "SELECT" ||
           target.isContentEditable);
 
-      // Esc selalu menutup palette/bantuan.
+      // Esc selalu menutup palette/bantuan + membatalkan tunggu-tombol-kedua.
       if (e.key === "Escape") {
+        cancelG();
         if (paletteOpenRef.current) {
           setPaletteOpen(false);
           e.preventDefault();
@@ -237,18 +250,16 @@ export function useAdminShortcuts() {
         return;
       }
 
-      // g lalu <tombol>: tekan g, lepas, lalu tekan angka dalam 800ms.
+      // g lalu <tombol>: tekan g, lepas, lalu tekan tombol kedua dalam 800ms.
+      // Timer disimpan di ref supaya bisa dibatalkan — tidak ada timer ganda.
       if (e.key.toLowerCase() === "g") {
+        cancelG();
         gAtRef.current = Date.now();
         setHintOn(true);
-        window.setTimeout(() => {
-          if (Date.now() - gAtRef.current >= G_WINDOW_MS) setHintOn(false);
-        }, G_WINDOW_MS + 50);
+        gTimerRef.current = window.setTimeout(cancelG, G_WINDOW_MS);
         return;
       }
-      if (Date.now() - gAtRef.current < G_WINDOW_MS) {
-        gAtRef.current = 0;
-        setHintOn(false);
+      if (gAtRef.current !== 0 && Date.now() - gAtRef.current < G_WINDOW_MS) {
         const nav = NAV_ITEMS.find((item) => item.key === e.key);
         if (nav) {
           e.preventDefault();
@@ -258,10 +269,13 @@ export function useAdminShortcuts() {
         // g lalu r → muat ulang data halaman (aman saat mengetik: butuh awalan g).
         if (e.key.toLowerCase() === "r") {
           e.preventDefault();
+          cancelG();
           if (!triggerAction("page-refresh")) window.location.reload();
           return;
         }
-        // Tombol kedua bukan target navigasi → abaikan, lanjut ke shortcut biasa.
+        // Tombol kedua bukan target navigasi → batalkan seketika,
+        // lalu lanjut ke shortcut biasa di bawah (n/s/f tetap jalan).
+        cancelG();
       }
 
       if (e.key.toLowerCase() === "n") {
@@ -288,6 +302,7 @@ export function useAdminShortcuts() {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("blur", onBlur);
+      if (gTimerRef.current !== null) window.clearTimeout(gTimerRef.current);
     };
   }, [gotoModule]);
 
