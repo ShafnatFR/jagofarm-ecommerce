@@ -342,6 +342,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Link href="/" title="Switch to Toko (halaman user)">
+              <Button variant="ghost" size="icon">
+                <Icon name="store" size={18} />
+              </Button>
+            </Link>
             <Button
               variant="ghost"
               size="icon"
