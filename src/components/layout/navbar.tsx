@@ -129,22 +129,24 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-3">
             <Link
+              aria-current={pathname === "/products" || pathname?.startsWith("/products/") ? "page" : undefined}
               className={
                 pathname === "/products" || pathname?.startsWith("/products/")
-                  ? "rounded-full bg-primary/10 px-3 py-1.5 text-primary font-semibold text-label-lg font-label-lg transition-colors duration-150"
-                  : "text-on-surface font-semibold text-label-lg font-label-lg hover:text-primary transition-colors duration-150"
+                  ? "rounded-full bg-primary px-4 py-1.5 text-white font-bold text-label-lg font-label-lg shadow-sm transition-colors duration-150"
+                  : "rounded-full px-4 py-1.5 text-on-surface font-semibold text-label-lg font-label-lg hover:bg-primary/10 hover:text-primary transition-colors duration-150"
               }
               href="/products"
             >
               Toko
             </Link>
             <Link
+              aria-current={pathname === "/consultation" || pathname?.startsWith("/consultation/") ? "page" : undefined}
               className={
                 pathname === "/consultation" || pathname?.startsWith("/consultation/")
-                  ? "rounded-full bg-primary/10 px-3 py-1.5 text-primary font-semibold text-label-lg font-label-lg transition-colors duration-150 flex items-center gap-1"
-                  : "text-on-surface-variant font-medium text-label-lg font-label-lg hover:text-primary transition-colors duration-150 flex items-center gap-1"
+                  ? "rounded-full bg-primary px-4 py-1.5 text-white font-bold text-label-lg font-label-lg shadow-sm transition-colors duration-150 flex items-center gap-1.5"
+                  : "rounded-full px-4 py-1.5 text-on-surface-variant font-medium text-label-lg font-label-lg hover:bg-primary/10 hover:text-primary transition-colors duration-150 flex items-center gap-1.5"
               }
               href="/consultation"
             >
