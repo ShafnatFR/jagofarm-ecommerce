@@ -249,17 +249,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         )}
       >
         {/* Logo */}
-        <div className={cn("flex h-16 items-center border-b border-white/10 px-4", collapsed && "justify-center")}>
-          {!collapsed && (
-            <Link href="/admin" className="text-xl font-bold tracking-tight">
-              🌱 JagoFarm
-            </Link>
-          )}
-          {collapsed && (
-            <Link href="/admin" className="text-xl font-bold">
-              🌱
-            </Link>
-          )}
+        <div className={cn("flex h-16 items-center border-b border-white/10 px-4", collapsed && "justify-center px-2")}>
+          <Link href="/admin" className="flex items-center gap-2.5 shrink-0 group">
+            <div className="w-10 h-10 shrink-0 rounded-xl bg-white/10 text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200">
+              <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>water_drop</span>
+            </div>
+            {!collapsed && (
+              <div className="flex flex-col">
+                <span className="font-serif font-bold text-white tracking-tight leading-none text-lg">JagoFarm</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-white/60">Agri &amp; Aqua Tech</span>
+              </div>
+            )}
+          </Link>
         </div>
 
         {/* Navigation */}
