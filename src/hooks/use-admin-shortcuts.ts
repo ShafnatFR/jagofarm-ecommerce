@@ -250,9 +250,9 @@ export function useAdminShortcuts() {
         return;
       }
 
-      // g lalu <tombol>: tekan g, lepas, lalu tekan tombol kedua dalam 800ms.
-      // Timer disimpan di ref supaya bisa dibatalkan — tidak ada timer ganda.
-      if (e.key.toLowerCase() === "g") {
+      // g lalu <tombol>: tahan g untuk lihat badge, lepas lalu tekan tombol kedua dalam 800ms.
+      // Badge tampil selama g ditahan (hold-to-preview), hilang saat g dilepas.
+      if (e.key.toLowerCase() === "g" && !e.repeat) {
         cancelG();
         gAtRef.current = Date.now();
         setHintOn(true);
@@ -294,13 +294,19 @@ export function useAdminShortcuts() {
     }
     function onBlur() {
       setPaletteOpen(false);
-      setHintOn(false);
-      gAtRef.current = 0;
+      cancelG();
+    }
+    function onKeyUp(e: KeyboardEvent) {
+      // Lepas g → badge hilang seketika, tapi jendela 800ms untuk tombol
+      // kedua tetap berjalan (timer cancelG yang sudah dijadwalkan).
+      if (e.key.toLowerCase() === "g") setHintOn(false);
     }
     window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
     window.addEventListener("blur", onBlur);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
       if (gTimerRef.current !== null) window.clearTimeout(gTimerRef.current);
     };

@@ -279,17 +279,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                  "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors outline-1 -outline-offset-1",
                   isActive
-                    ? "bg-surface/15 text-white"
-                    : "text-white/70 hover:bg-on-primary/10 hover:text-white",
+                    ? "bg-surface/15 text-white outline-white/60"
+                    : "text-white/70 outline-transparent hover:bg-on-primary/10 hover:text-white hover:outline-white/25",
                   collapsed && "justify-center px-0"
                 )}
               >
                 <Icon name={link.icon} size={20} />
                 {navKey && (
                   <AltBadge
-                    combo={`g ${navKey}`}
+                    combo={`g + ${navKey}`}
                     visible={hintOn}
                     className={cn("absolute -top-1.5", collapsed ? "-right-1" : "right-1")}
                   />
