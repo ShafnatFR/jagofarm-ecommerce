@@ -289,7 +289,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Icon name={link.icon} size={20} />
                 {navKey && (
                   <AltBadge
-                    combo={navKey}
+                    combo={`g ${navKey}`}
                     visible={hintOn}
                     className={cn("absolute -top-1.5", collapsed ? "-right-1" : "right-1")}
                   />
