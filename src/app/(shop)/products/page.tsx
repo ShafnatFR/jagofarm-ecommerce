@@ -122,7 +122,7 @@ function ProductsContent() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb & Header */}
-      <section className="bg-card border-b border-border pb-5 mb-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="bg-card border border-border rounded-2xl p-5 sm:p-6 mb-6">
         <nav aria-label="Breadcrumb" className="mb-3">
           <ol className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
             <li><Link href="/" className="hover:text-primary transition-colors flex items-center gap-1"><Icon name="home" size={14} /> Beranda</Link></li>
@@ -191,7 +191,7 @@ function ProductsContent() {
       </section>
 
       {/* Content */}
-      <div className="flex gap-6">
+      <div className="flex gap-6 items-start">
         <Suspense>
           <ProductFilters className="w-64 shrink-0" />
         </Suspense>
