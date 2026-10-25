@@ -386,6 +386,13 @@ input[type="number"] {
   appearance: textfield;
 }
 
+/* Modul admin: border card hijau, selaras dengan sidebar admin. */
+:where([data-admin]) .rounded-lg.border,
+:where([data-admin]) .rounded-xl.border,
+:where([data-admin]) .rounded-2xl.border {
+  border-color: color-mix(in srgb, var(--color-primary) 28%, transparent);
+}
+
 /* Material Symbols */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;

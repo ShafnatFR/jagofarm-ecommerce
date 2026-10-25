@@ -231,7 +231,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-background" data-admin>
       {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
