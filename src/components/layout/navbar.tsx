@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useSiteContent } from "@/hooks/use-site-content";
@@ -21,6 +21,7 @@ const SEARCH_PLACEHOLDER = "Cari paket tambak, kit hidroponik, sensor IoT, benih
  */
 export function Navbar({ content }: { content?: SiteContent } = {}) {
   const router = useRouter();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -129,10 +130,24 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
 
           {/* Navigation Links */}
           <nav className="hidden lg:flex items-center gap-6">
-            <Link className="text-on-surface font-semibold text-label-lg font-label-lg hover:text-primary transition-colors duration-150" href="/products">
+            <Link
+              className={
+                pathname === "/products" || pathname?.startsWith("/products/")
+                  ? "rounded-full bg-primary/10 px-3 py-1.5 text-primary font-semibold text-label-lg font-label-lg transition-colors duration-150"
+                  : "text-on-surface font-semibold text-label-lg font-label-lg hover:text-primary transition-colors duration-150"
+              }
+              href="/products"
+            >
               Toko
             </Link>
-            <Link className="text-on-surface-variant font-medium text-label-lg font-label-lg hover:text-primary transition-colors duration-150 flex items-center gap-1" href="/consultation">
+            <Link
+              className={
+                pathname === "/consultation" || pathname?.startsWith("/consultation/")
+                  ? "rounded-full bg-primary/10 px-3 py-1.5 text-primary font-semibold text-label-lg font-label-lg transition-colors duration-150 flex items-center gap-1"
+                  : "text-on-surface-variant font-medium text-label-lg font-label-lg hover:text-primary transition-colors duration-150 flex items-center gap-1"
+              }
+              href="/consultation"
+            >
               Konsultasi
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse" />
             </Link>
