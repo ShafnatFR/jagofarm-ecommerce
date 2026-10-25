@@ -113,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [guardState, setGuardState] = useState<GuardState>("checking")
   const [admin, setAdmin] = useState<AdminIdentity | null>(null)
   const [unreadCount, setUnreadCount] = useState(0)
-  const { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, altHeld } = useAdminShortcuts()
+  const { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, hintOn } = useAdminShortcuts()
 
   // Guard nyata: hanya admin yang boleh melihat isi /admin/*.
   // Konten admin TIDAK dirender selama guardState === "checking" supaya
@@ -290,7 +290,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {navKey && (
                   <AltBadge
                     combo={navKey}
-                    visible={altHeld}
+                    visible={hintOn}
                     className={cn("absolute -top-1.5", collapsed ? "-right-1" : "right-1")}
                   />
                 )}
@@ -345,7 +345,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Button
               variant="ghost"
               size="icon"
-              title="Command palette (Alt+K)"
+              title="Command palette (Ctrl+K)"
               onClick={() => setPaletteOpen(true)}
             >
               <Icon name="terminal" size={18} />

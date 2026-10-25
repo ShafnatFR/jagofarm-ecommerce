@@ -28,15 +28,21 @@ export const NAV_ITEMS = [
   { href: "/admin/site-settings", label: "Pengaturan", icon: "settings", key: "," },
 ] as const;
 
+/**
+ * Skema Gmail-style — tanpa Alt supaya tidak direbut browser/OS:
+ * - Ctrl+K / Cmd+K : palette
+ * - g lalu 1..0    : pindah modul (tahan g tidak perlu, tekan berurutan)
+ * - / : fokus cari,  ? : bantuan,  n/s/r/f : aksi halaman,  Esc : tutup
+ */
 export const ADMIN_SHORTCUT_DOCS: { combo: string; desc: string }[] = [
-  { combo: "Alt+1..0", desc: "Pindah modul (Dashboard..Laporan)" },
-  { combo: "Alt+,", desc: "Buka Pengaturan" },
-  { combo: "Alt+N", desc: "Tambah baru (konteks halaman)" },
-  { combo: "Alt+S", desc: "Simpan form (konteks halaman)" },
-  { combo: "Alt+F", desc: "Fokus ke pencarian" },
-  { combo: "Alt+R", desc: "Muat ulang data halaman" },
-  { combo: "Alt+/", desc: "Buka/tutup daftar shortcut ini" },
-  { combo: "Alt+K", desc: "Buka command palette" },
+  { combo: "Ctrl+K", desc: "Buka command palette" },
+  { combo: "g lalu 1..0", desc: "Pindah modul (Dashboard..Laporan)" },
+  { combo: "g lalu ,", desc: "Buka Pengaturan" },
+  { combo: "n", desc: "Tambah baru (konteks halaman)" },
+  { combo: "s", desc: "Simpan form (konteks halaman)" },
+  { combo: "/", desc: "Fokus ke pencarian" },
+  { combo: "r", desc: "Muat ulang data halaman" },
+  { combo: "?", desc: "Buka/tutup daftar shortcut ini" },
   { combo: "Esc", desc: "Tutup palette / dialog" },
   { combo: "↑ ↓ + Enter", desc: "Pilih aksi di palette" },
 ];
@@ -98,14 +104,18 @@ function clickAdd(): boolean {
   return true;
 }
 
+/** Tombol "g" ditekan dalam 800ms terakhir → tunggu tombol kedua (g lalu 1..0). */
+const G_WINDOW_MS = 800;
+
 export function useAdminShortcuts() {
   const router = useRouter();
   const pathname = usePathname();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [altHeld, setAltHeld] = useState(false);
+  const [hintOn, setHintOn] = useState(false);
   const paletteOpenRef = useRef(false);
   paletteOpenRef.current = paletteOpen;
+  const gAtRef = useRef(0);
 
   const gotoModule = useCallback(
     (href: string) => {
@@ -121,7 +131,7 @@ export function useAdminShortcuts() {
       ...NAV_ITEMS.map((item) => ({
         id: `nav-${item.href}`,
         label: `Buka ${item.label}`,
-        hint: `Alt+${item.key}`,
+        hint: `g ${item.key}`,
         icon: item.icon,
         keywords: [item.label.toLowerCase(), "buka", "modul", "navigasi"],
         run: () => gotoModule(item.href),
@@ -129,7 +139,7 @@ export function useAdminShortcuts() {
       {
         id: "page-add",
         label: "Tambah baru (halaman ini)",
-        hint: "Alt+N",
+        hint: "n",
         icon: "add",
         keywords: ["tambah", "baru", "buat"],
         run: () => {
@@ -139,7 +149,7 @@ export function useAdminShortcuts() {
       {
         id: "page-save",
         label: "Simpan form (halaman ini)",
-        hint: "Alt+S",
+        hint: "s",
         icon: "save",
         keywords: ["simpan", "save", "submit"],
         run: () => {
@@ -154,7 +164,7 @@ export function useAdminShortcuts() {
       {
         id: "page-search",
         label: "Fokus ke pencarian",
-        hint: "Alt+F",
+        hint: "/",
         icon: "search",
         keywords: ["cari", "search", "fokus", "filter"],
         run: () => {
@@ -164,7 +174,7 @@ export function useAdminShortcuts() {
       {
         id: "page-refresh",
         label: "Muat ulang data",
-        hint: "Alt+R",
+        hint: "r",
         icon: "refresh",
         keywords: ["refresh", "reload", "muat ulang", "segarkan"],
         run: () => {
@@ -177,10 +187,6 @@ export function useAdminShortcuts() {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      // Tandai Alt sedang ditahan (tanpa modifier lain) → tampilkan badge hint.
-      if (e.key === "Alt" && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
-        setAltHeld(true);
-      }
       const target = e.target as HTMLElement | null;
       const inField =
         !!target &&
@@ -206,63 +212,81 @@ export function useAdminShortcuts() {
         return;
       }
 
-      if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-      const key = e.key.toLowerCase();
-
-      // Alt+K → palette (pengganti Alt+Spasi yang direbut menu window di Windows).
-      if (key === "k") {
+      // Ctrl+K / Cmd+K → palette (standar VS Code, Linear, GitHub). Jalan di mana saja.
+      if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setPaletteOpen((v) => !v);
         return;
       }
-      // Alt+/ → bantuan.
-      if (key === "/" || key === "?") {
+
+      // ? → bantuan. Shift+/ menghasilkan "?" — tangani sebelum cek inField
+      // supaya bisa dibuka dari mana saja, kecuali sedang mengetik di field.
+      if (e.key === "?" && !inField && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
         setHelpOpen((v) => !v);
         return;
       }
-      // Jangan rebut Alt+huruf saat mengetik (kecuali Spasi dan /).
-      if (inField) return;
 
-      const nav = NAV_ITEMS.find((item) => item.key === key || item.key === e.key);
-      if (nav) {
+      // Sisa shortcut single-key: hanya di luar field ketik.
+      if (inField || e.ctrlKey || e.metaKey || e.altKey) return;
+
+      // / → fokus cari (boleh juga dari luar field saja; di dalam field "/" mengetik biasa).
+      if (e.key === "/") {
         e.preventDefault();
-        gotoModule(nav.href);
+        focusSearch();
         return;
       }
-      if (key === "n") {
+
+      // g lalu <tombol>: tekan g, lepas, lalu tekan angka dalam 800ms.
+      if (e.key.toLowerCase() === "g") {
+        gAtRef.current = Date.now();
+        setHintOn(true);
+        window.setTimeout(() => {
+          if (Date.now() - gAtRef.current >= G_WINDOW_MS) setHintOn(false);
+        }, G_WINDOW_MS + 50);
+        return;
+      }
+      if (Date.now() - gAtRef.current < G_WINDOW_MS) {
+        const nav = NAV_ITEMS.find((item) => item.key === e.key);
+        gAtRef.current = 0;
+        setHintOn(false);
+        if (nav) {
+          e.preventDefault();
+          gotoModule(nav.href);
+          return;
+        }
+        // Tombol kedua bukan target navigasi → abaikan, lanjut ke shortcut biasa.
+      }
+
+      if (e.key.toLowerCase() === "n") {
         e.preventDefault();
         if (!triggerAction("page-add")) clickAdd();
-      } else if (key === "s") {
+      } else if (e.key.toLowerCase() === "s") {
         e.preventDefault();
         if (!triggerAction("page-save")) {
           const form = document.querySelector("form");
           if (form) form.requestSubmit();
         }
-      } else if (key === "f") {
-        e.preventDefault();
-        focusSearch();
-      } else if (key === "r") {
+      } else if (e.key.toLowerCase() === "r") {
         e.preventDefault();
         if (!triggerAction("page-refresh")) window.location.reload();
+      } else if (e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        focusSearch();
       }
     }
-    window.addEventListener("keydown", onKeyDown);
-    function onKeyUp(e: KeyboardEvent) {
-      if (e.key === "Alt") setAltHeld(false);
-    }
     function onBlur() {
-      setAltHeld(false);
       setPaletteOpen(false);
+      setHintOn(false);
+      gAtRef.current = 0;
     }
-    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("keydown", onKeyDown);
     window.addEventListener("blur", onBlur);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
     };
   }, [gotoModule]);
 
-  return { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, altHeld, gotoModule };
+  return { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, hintOn, gotoModule };
 }
