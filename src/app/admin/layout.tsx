@@ -279,10 +279,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors outline-1 -outline-offset-1",
+                  "relative flex items-center gap-3 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-surface/15 text-white outline-white/60"
-                    : "text-white/70 outline-transparent hover:bg-on-primary/10 hover:text-white hover:outline-white/25",
+                    ? "border-white/60 bg-surface/15 text-white"
+                    : "border-white/15 text-white/70 hover:border-white/30 hover:bg-on-primary/10 hover:text-white",
                   collapsed && "justify-center px-0"
                 )}
               >
