@@ -26,6 +26,7 @@ import {
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDate } from "@/lib/utils"
 import { AdminRefreshButton } from "../admin-refresh"
+import { registerAdminAction } from "@/hooks/use-admin-shortcuts"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
 function toMessage(error: unknown): string {
@@ -162,6 +163,13 @@ export default function OrdersPage() {
   useEffect(() => {
     const timer = setTimeout(fetchData, 300)
     return () => clearTimeout(timer)
+  }, [fetchData])
+
+  // Alt+R: muat ulang daftar pesanan (tanpa reload halaman penuh).
+  useEffect(() => {
+    const fetchRef = { current: fetchData }
+    fetchRef.current = fetchData
+    return registerAdminAction("page-refresh", () => void fetchRef.current())
   }, [fetchData])
 
   /** Export pesanan (sesuai filter aktif) ke CSV (A4). */

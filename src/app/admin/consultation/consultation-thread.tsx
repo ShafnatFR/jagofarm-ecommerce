@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
+import { registerAdminAction } from "@/hooks/use-admin-shortcuts";
 import {
   markConsultationRead,
   replyToConsultation,
@@ -42,6 +43,7 @@ export function ConsultationThreadPanel({
   const [draft, setDraft] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const draftRef = useRef<HTMLTextAreaElement>(null);
   const closed = status === "closed";
 
   // Tandai pesan sebagai dibaca dari client: server action yang memanggil
@@ -73,6 +75,19 @@ export function ConsultationThreadPanel({
       }
     });
   };
+
+  const sendRef = useRef(send);
+  sendRef.current = send;
+
+  // Alt+S = kirim balasan, Alt+F = fokus ke draft (via event bus shortcut admin).
+  useEffect(() => {
+    const offSave = registerAdminAction("page-save", () => sendRef.current());
+    const offSearch = registerAdminAction("page-search", () => draftRef.current?.focus());
+    return () => {
+      offSave();
+      offSearch();
+    };
+  }, [sessionId]);
 
   const changeStatus = (next: string) => {
     startTransition(async () => {
@@ -162,6 +177,7 @@ export function ConsultationThreadPanel({
         {error ? <p className="mb-2 text-xs text-error">{error}</p> : null}
         <div className="flex items-end gap-2">
           <textarea
+            ref={draftRef}
             className="min-h-[64px] w-full resize-y rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none disabled:bg-surface-container"
             placeholder={closed ? "Sesi ditutup — buka lagi untuk membalas." : "Tulis balasan untuk pelanggan…"}
             value={draft}

@@ -13,6 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { slugify, formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
+import { registerAdminAction } from "@/hooks/use-admin-shortcuts";
 
 interface Category { id: string; name: string; }
 
@@ -293,6 +294,13 @@ export default function NewProductPage() {
   useEffect(() => {
     void fetchCategories();
   }, [fetchCategories]);
+
+  // Alt+S: submit form tambah produk (ditangani global via requestSubmit fallback).
+  useEffect(() => {
+    return registerAdminAction("page-save", () => {
+      document.querySelector<HTMLFormElement>('form')?.requestSubmit();
+    });
+  }, []);
 
   const updateField = useCallback((field: string, value: string | boolean) => {
     setForm(prev => {

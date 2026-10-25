@@ -10,6 +10,9 @@ import { Button } from "@/components/ui/button"
 import { AdminRefreshProvider } from "./admin-refresh"
 import { NotificationBell } from "@/components/admin/notification-bell"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { AdminCommandPalette } from "@/components/admin/command-palette"
+import { AdminShortcutHelp } from "@/components/admin/shortcut-help"
+import { useAdminShortcuts } from "@/hooks/use-admin-shortcuts"
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
@@ -109,6 +112,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [guardState, setGuardState] = useState<GuardState>("checking")
   const [admin, setAdmin] = useState<AdminIdentity | null>(null)
   const [unreadCount, setUnreadCount] = useState(0)
+  const { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen } = useAdminShortcuts()
 
   // Guard nyata: hanya admin yang boleh melihat isi /admin/*.
   // Konten admin TIDAK dirender selama guardState === "checking" supaya
@@ -329,6 +333,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Command palette (Alt+Spasi)"
+              onClick={() => setPaletteOpen(true)}
+            >
+              <Icon name="terminal" size={18} />
+            </Button>
             <ThemeToggle variant="menu" />
             <NotificationBell />
             <div className="flex items-center gap-2">
@@ -370,6 +382,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </motion.div>
         </main>
       </div>
+      <AdminCommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} actions={actions} />
+      <AdminShortcutHelp open={helpOpen} onClose={() => setHelpOpen(false)} />
     </div>
   )
 }
