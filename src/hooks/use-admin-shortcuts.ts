@@ -14,7 +14,7 @@ export interface AdminAction {
 }
 
 /** Navigasi modul admin — sinkron dengan sidebarLinks di admin/layout.tsx. */
-const NAV_ITEMS = [
+export const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: "dashboard", key: "1" },
   { href: "/admin/products", label: "Produk", icon: "inventory_2", key: "2" },
   { href: "/admin/orders", label: "Pesanan", icon: "shopping_cart", key: "3" },
@@ -103,6 +103,7 @@ export function useAdminShortcuts() {
   const pathname = usePathname();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [altHeld, setAltHeld] = useState(false);
   const paletteOpenRef = useRef(false);
   paletteOpenRef.current = paletteOpen;
 
@@ -176,6 +177,10 @@ export function useAdminShortcuts() {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
+      // Tandai Alt sedang ditahan (tanpa modifier lain) → tampilkan badge hint.
+      if (e.key === "Alt" && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+        setAltHeld(true);
+      }
       const target = e.target as HTMLElement | null;
       const inField =
         !!target &&
@@ -243,8 +248,21 @@ export function useAdminShortcuts() {
       }
     }
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    function onKeyUp(e: KeyboardEvent) {
+      if (e.key === "Alt") setAltHeld(false);
+    }
+    function onBlur() {
+      setAltHeld(false);
+      setPaletteOpen(false);
+    }
+    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("blur", onBlur);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("blur", onBlur);
+    };
   }, [gotoModule]);
 
-  return { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, gotoModule };
+  return { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, altHeld, gotoModule };
 }

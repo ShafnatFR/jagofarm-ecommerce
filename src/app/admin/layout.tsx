@@ -12,7 +12,8 @@ import { NotificationBell } from "@/components/admin/notification-bell"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { AdminCommandPalette } from "@/components/admin/command-palette"
 import { AdminShortcutHelp } from "@/components/admin/shortcut-help"
-import { useAdminShortcuts } from "@/hooks/use-admin-shortcuts"
+import { AltBadge } from "@/components/admin/alt-badge"
+import { useAdminShortcuts, NAV_ITEMS } from "@/hooks/use-admin-shortcuts"
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
@@ -112,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [guardState, setGuardState] = useState<GuardState>("checking")
   const [admin, setAdmin] = useState<AdminIdentity | null>(null)
   const [unreadCount, setUnreadCount] = useState(0)
-  const { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen } = useAdminShortcuts()
+  const { actions, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, altHeld } = useAdminShortcuts()
 
   // Guard nyata: hanya admin yang boleh melihat isi /admin/*.
   // Konten admin TIDAK dirender selama guardState === "checking" supaya
@@ -271,13 +272,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {sidebarLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== "/admin" && pathname.startsWith(link.href))
+            const navKey = NAV_ITEMS.find((n) => n.href === link.href)?.key
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                  "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-surface/15 text-white"
                     : "text-white/70 hover:bg-on-primary/10 hover:text-white",
@@ -285,6 +287,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 )}
               >
                 <Icon name={link.icon} size={20} />
+                {navKey && (
+                  <AltBadge
+                    combo={navKey}
+                    visible={altHeld}
+                    className={cn("absolute -top-1.5", collapsed ? "-right-1" : "right-1")}
+                  />
+                )}
                 {!collapsed && (
                   <>
                     <span>{link.label}</span>
