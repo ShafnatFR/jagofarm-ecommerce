@@ -43,6 +43,7 @@ export default function AccountPage() {
   const [reloadNonce, setReloadNonce] = useState(0);
 
   const [uploading, setUploading] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -231,14 +232,19 @@ export default function AccountPage() {
             <div className="absolute -top-12 -right-12 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
             {/* Avatar */}
             <div className="relative mx-auto w-28 h-28 mb-5">
-              {user.image ? (
+              {user.image && !imageError ? (
                 <Image
                   src={user.image}
                   alt={user.name || "Profile"}
                   width={112}
                   height={112}
                   className="w-full h-full rounded-full object-cover border-4 border-surface shadow-md"
+                  onError={() => setImageError(true)}
                 />
+              ) : imageError ? (
+                <div className="w-full h-full rounded-full bg-surface-container-high flex items-center justify-center border-4 border-surface shadow-md">
+                  <Icon name="person" size={56} className="text-on-surface-variant" />
+                </div>
               ) : (
                 <div className="w-full h-full rounded-full bg-surface-container-high flex items-center justify-center text-4xl font-extrabold text-primary border-4 border-surface shadow-md">
                   {getInitials(user.name || user.email)}
