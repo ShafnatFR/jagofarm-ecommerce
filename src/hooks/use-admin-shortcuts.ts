@@ -36,7 +36,7 @@ export const ADMIN_SHORTCUT_DOCS: { combo: string; desc: string }[] = [
   { combo: "Alt+F", desc: "Fokus ke pencarian" },
   { combo: "Alt+R", desc: "Muat ulang data halaman" },
   { combo: "Alt+/", desc: "Buka/tutup daftar shortcut ini" },
-  { combo: "Alt+Spasi", desc: "Buka command palette" },
+  { combo: "Alt+K", desc: "Buka command palette" },
   { combo: "Esc", desc: "Tutup palette / dialog" },
   { combo: "↑ ↓ + Enter", desc: "Pilih aksi di palette" },
 ];
@@ -209,8 +209,8 @@ export function useAdminShortcuts() {
       if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
       const key = e.key.toLowerCase();
 
-      // Alt+Spasi → palette (cegah menu window).
-      if (key === " " || e.code === "Space") {
+      // Alt+K → palette (pengganti Alt+Spasi yang direbut menu window di Windows).
+      if (key === "k") {
         e.preventDefault();
         setPaletteOpen((v) => !v);
         return;

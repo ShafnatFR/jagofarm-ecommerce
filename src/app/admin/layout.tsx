@@ -345,7 +345,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Button
               variant="ghost"
               size="icon"
-              title="Command palette (Alt+Spasi)"
+              title="Command palette (Alt+K)"
               onClick={() => setPaletteOpen(true)}
             >
               <Icon name="terminal" size={18} />
