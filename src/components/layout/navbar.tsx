@@ -94,27 +94,6 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
 
   return (
     <>
-      {/* TOP PROMO ANNOUNCEMENT STRIP */}
-      <div className="bg-[#092f21] text-[#c9dc94] border-b border-white/10 px-margin py-2 text-label-md font-label-md">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-2">
-            <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded bg-lime text-forest-deep text-[10px] font-extrabold">NEW</span>
-            <span className="text-[#dfe7d7]">{site.navAnnouncement}</span>
-          </div>
-          <div className="flex items-center justify-center gap-1.5 mx-auto md:mx-0">
-            <span className="material-symbols-outlined text-[16px] text-lime">eco</span>
-            <span className="text-[#dfe7d7]">{site.navPromo}</span>
-          </div>
-          <div className="hidden lg:flex items-center gap-4 text-[#dfe7d7]">
-            <Link className="hover:text-white transition-colors" href="/faq">Pusat Bantuan</Link>
-            <span className="opacity-40">•</span>
-            <Link className="hover:text-white transition-colors flex items-center gap-1" href="/contact">
-              <span className="material-symbols-outlined text-[14px]">support_agent</span>
-              {site.navSupportBadge}
-            </Link>
-          </div>
-        </div>
-      </div>
 
       {/* SHARED COMPONENT: TopNavBar */}
       <header className="bg-surface/90 backdrop-blur-md border-b border-outline-variant shadow-xs top-0 sticky z-50">
