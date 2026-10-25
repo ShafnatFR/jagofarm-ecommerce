@@ -167,13 +167,13 @@ function ProductsContent() {
 
           {/* View toggler */}
           <div className="flex items-center gap-2 self-start sm:self-end">
-            <span className="text-xs font-medium text-slate-500 mr-1 hidden sm:inline">Tampilan:</span>
-            <div className="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+            <span className="text-xs font-medium text-muted-foreground mr-1 hidden sm:inline">Tampilan:</span>
+            <div className="flex bg-secondary p-0.5 rounded-lg border border-border">
               <button
                 type="button"
                 onClick={() => updateView("grid")}
                 title="Tampilan Grid"
-                className={cn("p-1.5 rounded-md transition", view === "grid" ? "bg-white text-primary shadow-sm" : "text-slate-400 hover:text-slate-700")}
+                className={cn("p-1.5 rounded-md transition", view === "grid" ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground")}
               >
                 <Icon name="grid_view" size={16} />
               </button>
@@ -181,7 +181,7 @@ function ProductsContent() {
                 type="button"
                 onClick={() => updateView("list")}
                 title="Tampilan Daftar"
-                className={cn("p-1.5 rounded-md transition", view === "list" ? "bg-white text-primary shadow-sm" : "text-slate-400 hover:text-slate-700")}
+                className={cn("p-1.5 rounded-md transition", view === "list" ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground")}
               >
                 <Icon name="view_list" size={16} />
               </button>
