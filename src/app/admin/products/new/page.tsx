@@ -13,6 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { slugify, formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
+import { NumericKeypad } from "@/components/admin/numeric-keypad";
 import { registerAdminAction } from "@/hooks/use-admin-shortcuts";
 
 interface Category { id: string; name: string; }
@@ -1002,6 +1003,10 @@ export default function NewProductPage() {
             <Button type="submit" className="flex-1" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
             <Link href="/admin/products" className="flex-1"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>
           </div>
+
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+            <NumericKeypad />
+          </motion.div>
         </div>
       </form>
     </div>
