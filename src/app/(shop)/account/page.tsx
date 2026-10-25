@@ -278,6 +278,15 @@ export default function AccountPage() {
                 {user.role === "admin" ? "Admin" : "Pelanggan"}
               </span>
             </div>
+            {user.role === "admin" && (
+              <Link
+                href="/admin"
+                className="mt-3 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold shadow-md hover:brightness-110 transition-all hover:scale-105 active:scale-95"
+              >
+                <Icon name="dashboard" size={16} />
+                Switch to Admin
+              </Link>
+            )}
             <div className="mt-6 pt-5 border-t border-outline-variant flex items-center justify-center gap-2 text-xs text-on-surface-variant">
               <Icon name="calendar_today" size={16} />
               <span>Bergabung sejak {formatDate(user.createdAt)}</span>
