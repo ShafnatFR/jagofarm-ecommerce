@@ -12,6 +12,15 @@ import { UPLOAD } from "@/lib/constants";
 const ACCEPTED_TYPES = new Set(UPLOAD.ACCEPTED_IMAGE_TYPES.map((t) => t.toLowerCase()));
 const ACCEPTED_EXTENSIONS = new Set(["jpg", "jpeg", "png", "webp"]);
 
+/** Inisial 1-2 huruf ala Google: "Shafnat Fuaini" → "SF", "Shafnat" → "S". */
+function getInitials(nameOrEmail: string): string {
+  const name = nameOrEmail.split("@")[0].replace(/[._-]+/g, " ").trim();
+  const parts = name.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 interface AccountUser {
   id: string;
   name: string | null;
@@ -232,7 +241,7 @@ export default function AccountPage() {
                 />
               ) : (
                 <div className="w-full h-full rounded-full bg-surface-container-high flex items-center justify-center text-4xl font-extrabold text-primary border-4 border-surface shadow-md">
-                  {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
+                  {getInitials(user.name || user.email)}
                 </div>
               )}
               <button
