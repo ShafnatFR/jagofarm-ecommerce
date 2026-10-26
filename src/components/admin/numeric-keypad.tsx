@@ -74,6 +74,24 @@ export function NumericKeypad() {
     };
   }, []);
 
+  // Sinkron efek klik: ketik angka di keyboard fisik → tombol keypad ikut berdenyut.
+  useEffect(() => {
+    if (!visible) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (/^[0-9]$/.test(e.key)) {
+        const k = e.key;
+        setPressed(k);
+        window.setTimeout(() => setPressed((p) => (p === k ? null : p)), 150);
+      } else if (e.key === "Backspace") {
+        setPressed("back");
+        window.setTimeout(() => setPressed((p) => (p === "back" ? null : p)), 150);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [visible]);
+
   const press = useCallback((key: string) => {
     setPressed(key);
     window.setTimeout(() => setPressed((p) => (p === key ? null : p)), 150);
