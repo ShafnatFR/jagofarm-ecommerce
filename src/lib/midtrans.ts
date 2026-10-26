@@ -117,6 +117,26 @@ function getAuthHeader(): string {
   return `Basic ${encoded}`;
 }
 
+/**
+ * Format waktu untuk Midtrans expiry.start_time: "yyyy-MM-dd HH:mm:ss Z"
+ * (mis. "2026-10-26 23:35:00 +0700"). ISO-8601 ditolak API (400).
+ * Zona Asia/Jakarta = +0700 tetap (tanpa DST).
+ */
+export function formatMidtransTime(date: Date): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Jakarta",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const get = (t: string) => parts.find((x) => x.type === t)?.value ?? "00";
+  return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}:${get("second")} +0700`;
+}
+
 /** Fail fast (with a clear message) when the server key is missing. */
 function assertServerKey(): void {
   if (!MIDTRANS_SERVER_KEY) {
@@ -146,7 +166,7 @@ export async function createTransaction(
       secure: true,
     },
     expiry: {
-      start_time: new Date().toISOString(),
+      start_time: formatMidtransTime(new Date()),
       unit: "hours",
       duration: params.expiryHours ?? 24,
     },
