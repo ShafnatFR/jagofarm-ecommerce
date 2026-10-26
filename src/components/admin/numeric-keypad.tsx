@@ -8,12 +8,32 @@ import { cn } from "@/lib/utils";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "00", "0", "000"] as const;
 
+/** Kata kunci penanda field angka (label/nama/placeholder/id). */
+const NUMERIC_HINTS = [
+  "harga", "price", "diskon", "discount", "berat", "weight", "stok", "stock",
+  "jumlah", "qty", "quantity", "panjang", "lebar", "tinggi", "length", "width", "height",
+  "dimensi", "dimension", "gram", "kg", "cm", "rp", "rupiah", "nominal", "total",
+  "ongkir", "poin", "point", "persen", "percent", "min", "max", "minimal", "maksimal",
+];
+
 function isNumericInput(el: HTMLElement | null): el is HTMLInputElement {
-  return (
-    !!el &&
-    el.tagName === "INPUT" &&
-    ["number", "text", "tel"].includes((el as HTMLInputElement).type)
-  );
+  if (!el || el.tagName !== "INPUT") return false;
+  const input = el as HTMLInputElement;
+  if (input.readOnly || input.disabled) return false;
+  if (input.type === "number" || input.type === "tel") return true;
+  if (input.type !== "text") return false;
+  // type=text: hanya jika inputMode numeric ATAU identitas bertema angka.
+  if (input.inputMode === "numeric" || input.inputMode === "decimal") return true;
+  const hay = [
+    input.name,
+    input.id,
+    input.placeholder,
+    input.getAttribute("aria-label") || "",
+    document.querySelector(`label[for="${input.id}"]`)?.textContent || "",
+  ]
+    .join(" ")
+    .toLowerCase();
+  return NUMERIC_HINTS.some((hint) => hay.includes(hint));
 }
 
 function labelOf(input: HTMLInputElement): string {
@@ -48,7 +68,7 @@ export function NumericKeypad() {
   useEffect(() => {
     function onFocusIn(e: FocusEvent) {
       const el = e.target as HTMLElement | null;
-      if (isNumericInput(el) && !el.readOnly && !el.disabled) {
+      if (isNumericInput(el)) {
         lastInputRef.current = el;
         setTargetLabel(labelOf(el));
         setVisible(true);
