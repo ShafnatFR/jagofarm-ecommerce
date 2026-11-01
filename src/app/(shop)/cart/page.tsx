@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { cn, formatPrice } from "@/lib/utils";
+import { useDualPrice } from "@/hooks/use-dual-price";
 import { Button } from "@/components/ui/button";
 import { useCartStore, type CartItem } from "@/lib/cart-store";
 import { useToast } from "@/components/ui/use-toast";
@@ -41,6 +42,7 @@ export default function CartPage() {
   const { toast } = useToast();
   const router = useRouter();
   const site = useSiteContent();
+  const dualPrice = useDualPrice();
 
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
@@ -394,7 +396,7 @@ export default function CartPage() {
                       )}
                     </div>
                     <div className="text-right sm:mt-0">
-                      <p className="text-base font-extrabold text-foreground sm:text-lg">{formatPrice(item.price * item.quantity)}</p>
+                      <p className="text-base font-extrabold text-foreground sm:text-lg">{dualPrice(item.price * item.quantity)}</p>
                       {item.quantity > 1 && (
                         <p className="text-[11px] text-muted-foreground">
                           {formatPrice(item.price)} × {item.quantity}
@@ -532,7 +534,7 @@ export default function CartPage() {
             <div className="pb-6 pt-4">
               <div className="mb-1 flex items-baseline justify-between">
                 <span className="text-sm font-bold">Total Tagihan</span>
-                <span className="text-2xl font-black tracking-tight text-primary">{formatPrice(total)}</span>
+                <span className="text-2xl font-black tracking-tight text-primary">{dualPrice(total)}</span>
               </div>
             </div>
             {/* CTA Button */}

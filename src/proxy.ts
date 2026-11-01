@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
-import { consume, getClientIp, resolveRule } from "@/lib/rate-limit";
+import { consumeAsync, getClientIp, resolveRule } from "@/lib/rate-limit";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,7 +14,8 @@ export async function proxy(request: NextRequest) {
 
     if (match) {
       const ip = getClientIp(request.headers);
-      const result = consume(`${ip}:${match.pattern}`, match.rule);
+      // Upstash bila dikonfigurasi, fallback in-memory bila tidak/gagal.
+      const result = await consumeAsync(`${ip}:${match.pattern}`, match.rule);
 
       if (!result.allowed) {
         return NextResponse.json(

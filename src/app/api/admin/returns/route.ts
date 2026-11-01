@@ -66,6 +66,17 @@ export async function PATCH(request: NextRequest) {
         { status: 400 }
       );
     }
+    // Aksi refund dana = sensitif: wajib 2FA (approve/reject cukup guard admin).
+    if (parsed.data.action === "refund") {
+      try {
+        const { requireAdminWith2FA } = await import("@/lib/auth");
+        await requireAdminWith2FA();
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : "Forbidden";
+        const code = msg.startsWith("2FA_REQUIRED") ? 428 : 403;
+        return NextResponse.json({ error: msg }, { status: code });
+      }
+    }
     const { id, action, adminNote, refundAmount } = parsed.data;
 
     const existing = await prisma.returnRequest.findUnique({

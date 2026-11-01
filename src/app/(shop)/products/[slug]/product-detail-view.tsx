@@ -15,6 +15,7 @@ import { useCartStore } from "@/lib/cart-store";
 import { createClient } from "@/lib/supabase/client";
 import { SITE_CONFIG, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 import { useSiteContent } from "@/hooks/use-site-content";
+import { useDualPrice } from "@/hooks/use-dual-price";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -119,6 +120,7 @@ export default function ProductDetailPage({
   const slug = params.slug as string;
   const addItem = useCartStore((s) => s.addItem);
   const site = useSiteContent();
+  const dualPrice = useDualPrice();
 
   const [product, setProduct] = useState<ApiProduct | null>(initialProduct);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -617,11 +619,11 @@ export default function ProductDetailPage({
                 <span className="text-xs font-semibold text-outline uppercase tracking-wider">Harga Spesial</span>
                 <div className="flex items-baseline gap-2.5 mt-0.5">
                   <span className="text-3xl sm:text-4xl font-extrabold text-primary tracking-tight">
-                    {formatPrice(displayPrice)}
+                    {dualPrice(displayPrice)}
                   </span>
                   {hasDiscount && (
                     <span className="text-sm text-muted-foreground line-through">
-                      {formatPrice(basePrice)}
+                      {dualPrice(basePrice)}
                     </span>
                   )}
                 </div>
@@ -715,9 +717,9 @@ export default function ProductDetailPage({
                         )}
                       </div>
                       <div className="text-right">
-                        <p className="text-base font-bold text-primary">{formatPrice(displayPrice)}</p>
+                        <p className="text-base font-bold text-primary">{dualPrice(displayPrice)}</p>
                         {hasDiscount && (
-                          <p className="text-xs text-error line-through">{formatPrice(basePrice)}</p>
+                          <p className="text-xs text-error line-through">{dualPrice(basePrice)}</p>
                         )}
                       </div>
                     </div>

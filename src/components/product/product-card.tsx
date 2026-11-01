@@ -8,6 +8,7 @@ import type { MouseEvent } from "react";
 import { Icon } from "@/components/ui/icon";
 import { motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
+import { useDualPrice } from "@/hooks/use-dual-price";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useCartStore } from "@/lib/cart-store";
@@ -48,6 +49,7 @@ export function ProductCard({
   const router = useRouter();
   const pathname = usePathname();
   const addItem = useCartStore((s) => s.addItem);
+  const dualPrice = useDualPrice();
 
   const displayPrice = product.discountPrice ?? product.price;
   const hasDiscount = product.discountPrice != null && product.discountPrice < product.price;
@@ -66,10 +68,10 @@ export function ProductCard({
     variantMax != null &&
     variantMax > variantMin;
 
-  /** Label harga yang tampil di kartu. */
+  /** Label harga yang tampil di kartu (+USD bila CMS aktif). */
   const priceLabel = hasPriceRange
-    ? `${formatPrice(variantMin)} - ${formatPrice(variantMax)}`
-    : formatPrice(isVariantProduct && variantMin != null ? variantMin : displayPrice);
+    ? `${dualPrice(variantMin)} - ${dualPrice(variantMax)}`
+    : dualPrice(isVariantProduct && variantMin != null ? variantMin : displayPrice);
 
   const [wishlisted, setWishlisted] = useState(isWishlisted ?? false);
   const [pending, setPending] = useState(false);
@@ -226,7 +228,7 @@ export function ProductCard({
           <div className="min-w-0">
             {hasDiscount && !isVariantProduct && (
               <p className="text-xs text-on-surface-variant line-through">
-                {formatPrice(product.price)}
+                {dualPrice(product.price)}
               </p>
             )}
             <p

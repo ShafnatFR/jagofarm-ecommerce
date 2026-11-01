@@ -178,3 +178,25 @@ export async function requireStrictAdmin(): Promise<AuthUser> {
   if (user.role !== "admin") throw new Error("Forbidden");
   return user;
 }
+
+/**
+ * Guard aksi sensitif: admin + 2FA aktif.
+ * Dilewati bila belum ada admin ber-2FA (mode bootstrap) — agar tidak lockout.
+ * Pakai di: refund dana, hapus produk/artikel, ubah role.
+ */
+export async function requireAdminWith2FA(): Promise<AuthUser> {
+  const user = await requireStrictAdmin();
+  const row = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { totpEnabled: true },
+  });
+  if (row?.totpEnabled) return user;
+  // Ada admin lain yang sudah aktif 2FA -> wajibkan.
+  const enforced = await prisma.user.count({
+    where: { role: "admin", totpEnabled: true },
+  });
+  if (enforced > 0) {
+    throw new Error("2FA_REQUIRED: aktifkan 2FA di /account/security dulu");
+  }
+  return user;
+}
