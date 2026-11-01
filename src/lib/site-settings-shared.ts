@@ -314,6 +314,10 @@ export interface SiteContent {
   productsConsultDesc: string;
   /** Tagline footer di halaman lupa password. */
   footerTagline: string;
+  /** 4 kartu keunggulan di tab deskripsi produk (dipisah "|", tiap kartu "Judul~Deskripsi"). */
+  productFeatureCards: string;
+  /** Placeholder kolom pencarian navbar. */
+  navbarSearchPlaceholder: string;
 }
 
 export const SITE_CONTENT_DEFAULT: SiteContent = {
@@ -372,6 +376,9 @@ export const SITE_CONTENT_DEFAULT: SiteContent = {
   productsConsultDesc:
     "Tim akuakultur JagoFarm siap mendesain kolam, instalasi aerasi, atau sistem filtrasi sesuai ukuran lahan Anda.",
   footerTagline: "Solusi Pertanian & Akuakultur Modern.",
+  productFeatureCards:
+    "Kualitas Terjamin~Produk telah melewati quality control ketat sebelum dikemas.|Packing Aman~Kemasan pelindung ganda untuk pengiriman aman sampai tujuan.|Stok Segar~Stok selalu diperbarui untuk menjamin kesegaran produk.|Layanan Purna Jual~Tim support siap membantu jika ada kendala setelah pembelian.",
+  navbarSearchPlaceholder: "Cari paket tambak, kit hidroponik, sensor IoT, benih...",
 };
 
 const SITE_CONTENT_FIELDS: (keyof SiteContent)[] = [
@@ -415,6 +422,8 @@ const SITE_CONTENT_FIELDS: (keyof SiteContent)[] = [
   "productConsultNote",
   "productsConsultDesc",
   "footerTagline",
+  "productFeatureCards",
+  "navbarSearchPlaceholder",
 ];
 
 /**

@@ -293,6 +293,8 @@ export default function NewProductPage() {
   }, []);
 
   useEffect(() => {
+    // Muat sekali saat mount — pola repo: disable beralasan.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount, bukan render loop
     void fetchCategories();
   }, [fetchCategories]);
 
@@ -687,7 +689,7 @@ export default function NewProductPage() {
                       <div className="rounded-lg border border-dashed p-6 text-center">
                         <Icon name="category" size={32} className="mx-auto text-on-surface-variant/70" />
                         <p className="mt-2 text-sm text-on-surface-variant">
-                          Belum ada grup opsi. Klik "Tambah Grup Opsi" untuk memulai.
+                          Belum ada grup opsi. Klik &quot;Tambah Grup Opsi&quot; untuk memulai.
                         </p>
                       </div>
                     ) : (
@@ -807,7 +809,7 @@ export default function NewProductPage() {
                       <div className="rounded-lg border border-dashed p-8 text-center">
                         <Icon name="inventory_2" size={40} className="mx-auto text-on-surface-variant/70" />
                         <p className="mt-3 text-sm text-on-surface-variant">
-                          Belum ada kombinasi. Definisikan opsi varian di atas, lalu klik "Generate Kombinasi".
+                          Belum ada kombinasi. Definisikan opsi varian di atas, lalu klik &quot;Generate Kombinasi&quot;.
                         </p>
                       </div>
                     ) : (

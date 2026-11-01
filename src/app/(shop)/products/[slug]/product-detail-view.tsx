@@ -76,6 +76,26 @@ const MIN_QUESTION_LENGTH = 10;
 /** Panjang maksimum pertanyaan — selaras dengan validasi zod di backend. */
 const MAX_QUESTION_LENGTH = 1000;
 
+const FALLBACK_CARDS = [
+  { title: "Kualitas Terjamin", desc: "Produk telah melewati quality control ketat sebelum dikemas." },
+  { title: "Packing Aman", desc: "Kemasan pelindung ganda untuk pengiriman aman sampai tujuan." },
+  { title: "Stok Segar", desc: "Stok selalu diperbarui untuk menjamin kesegaran produk." },
+  { title: "Layanan Purna Jual", desc: "Tim support siap membantu jika ada kendala setelah pembelian." },
+];
+
+/** Parse kartu CMS: "Judul~Deskripsi|..." — fallback ke kartu baku bila rusak. */
+function parseFeatureCards(raw: string | undefined): { title: string; desc: string }[] {
+  if (!raw) return FALLBACK_CARDS;
+  const cards = raw
+    .split("|")
+    .map((part) => {
+      const [title, ...rest] = part.split("~");
+      return { title: title?.trim() ?? "", desc: rest.join("~").trim() };
+    })
+    .filter((c) => c.title && c.desc);
+  return cards.length > 0 ? cards.slice(0, 6) : FALLBACK_CARDS;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Page Component                                                     */
 /* ------------------------------------------------------------------ */
@@ -128,6 +148,25 @@ export default function ProductDetailPage({
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
   const { toast } = useToast();
+
+  /**
+   * Multi-dimensi: cari varian yang cocok dengan selectedOptions.
+   * Hook HARUS di atas semua early return (rules-of-hooks).
+   */
+  const matchedVariant = useMemo(() => {
+    if (!product?.optionGroups || product.optionGroups.length === 0) {
+      return product?.variants?.[selectedVariant] ?? null;
+    }
+    const selectedEntries = Object.entries(selectedOptions);
+    if (selectedEntries.length === 0) return null;
+    return (product.variants ?? []).find((v) => {
+      const opts = v.selectedOptions;
+      if (!opts || opts.length !== selectedEntries.length) return false;
+      return selectedEntries.every(([grpId, optId]) =>
+        opts.some((so) => so.groupId === grpId && so.optionId === optId)
+      );
+    }) ?? null;
+  }, [product, selectedOptions, selectedVariant]);
 
   /** Muat ulasan + ringkasan rating; dipakai saat halaman dibuka dan setelah kirim ulasan. */
   async function loadReviews(productId: string) {
@@ -353,27 +392,6 @@ export default function ProductDetailPage({
 
   /* ---------- Derived data ---------- */
   const variant = product.variants?.[selectedVariant];
-  
-  /** 
-   * Multi-dimensi: cari varian yang cocok dengan selectedOptions.
-   * Jika ada optionGroups, gunakan ini; jika tidak, fallback ke index lama.
-   */
-  const matchedVariant = useMemo(() => {
-    if (!product.optionGroups || product.optionGroups.length === 0) {
-      return product.variants?.[selectedVariant] ?? null;
-    }
-    // Cari varian yang selectedOptions-nya cocok semua
-    const selectedEntries = Object.entries(selectedOptions);
-    if (selectedEntries.length === 0) return null;
-    
-    return (product.variants ?? []).find(v => {
-      const opts = v.selectedOptions;
-      if (!opts || opts.length !== selectedEntries.length) return false;
-      return selectedEntries.every(([grpId, optId]) => 
-        opts.some(so => so.groupId === grpId && so.optionId === optId)
-      );
-    }) ?? null;
-  }, [product.variants, product.optionGroups, selectedOptions, selectedVariant]);
   
   // Gunakan matchedVariant untuk multi-dimensi, atau variant fallback
   const activeVariant = matchedVariant ?? variant;
@@ -899,14 +917,9 @@ export default function ProductDetailPage({
                   </div>
                 </div>
 
-                {/* Feature checklist cards */}
+                {/* Feature checklist cards (teks dari CMS, fallback baku) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-                  {[
-                    { title: "Kualitas Terjamin", desc: "Produk telah melewati quality control ketat sebelum dikemas." },
-                    { title: "Packing Aman", desc: "Kemasan pelindung ganda untuk pengiriman aman sampai tujuan." },
-                    { title: "Stok Segar", desc: "Stok selalu diperbarui untuk menjamin kesegaran produk." },
-                    { title: "Layanan Purna Jual", desc: "Tim support siap membantu jika ada kendala setelah pembelian." },
-                  ].map((feat, i) => (
+                  {parseFeatureCards(site.productFeatureCards).map((feat, i) => (
                     <div key={i} className="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50">
                       <span className="text-xs font-bold text-primary flex items-center gap-1.5">
                         <Icon name="check_circle" size={16} className="text-primary" />

@@ -99,6 +99,8 @@ model Product {
   widthCm       Int?     @map("width_cm")
   heightCm      Int?     @map("height_cm")
   stock         Int      @default(0)
+  /// Waktu alert stok-menipis terakhir dikirim (anti-spam A3; null = belum pernah / sudah pulih).
+  lastStockAlertAt DateTime? @map("last_stock_alert_at")
   /// Produk ini dijual dalam beberapa varian (harga & stok per varian).
   /// Saat true, `stock` produk = 0 dan stok dihitung dari varian aktif.
   hasVariants   Boolean  @default(false) @map("has_variants")

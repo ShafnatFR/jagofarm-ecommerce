@@ -27,13 +27,13 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const CATEGORY_ICONS: Record<string, { icon: string; desc: string; badge?: string }> = {
-  "set-tambak": { icon: "water", desc: "Paket kolam terpal bulat & bioflok air tawar" },
-  "set-hidroponik": { icon: "potted_plant", desc: "Kit NFT, DWC & Wick pipa talang lengkap" },
-  "set-aquaponik": { icon: "set_meal", desc: "Sistem simbiosis terpadu ikan & tanaman" },
-  "iot-smart-farming": { icon: "developer_board", desc: "Sensor, monitoring & kontroler otomatis", badge: "POPULER" },
-  "benih": { icon: "spa", desc: "Bibit sayuran, buah hibrida, & media tanam" },
-  "anakan-ikan": { icon: "waves", desc: "Benih lele sangkuriang, nila merah, & gurame" },
+const CATEGORY_ICONS: Record<string, { icon: string; badge?: string }> = {
+  "set-tambak": { icon: "water" },
+  "set-hidroponik": { icon: "potted_plant" },
+  "set-aquaponik": { icon: "set_meal" },
+  "iot-smart-farming": { icon: "developer_board", badge: "POPULER" },
+  "benih": { icon: "spa" },
+  "anakan-ikan": { icon: "waves" },
 };
 
 export default async function HomePage() {
@@ -196,7 +196,11 @@ export default async function HomePage() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((cat) => {
-            const meta = CATEGORY_ICONS[cat.slug] || { icon: "category", desc: "Produk berkualitas tinggi" };
+            // M-1: deskripsi dari DB (admin bisa ubah via /admin/categories);
+            // ikon hanya kosmetik, tetap dari peta.
+            const meta: { icon: string; badge?: string } =
+              CATEGORY_ICONS[cat.slug] || { icon: "category" };
+            const desc = cat.description?.trim() || "Produk berkualitas tinggi";
             return (
               <Link key={cat.id} className="group bg-surface border border-outline-variant hover:border-primary/50 hover:bg-surface-container-low/60 rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg relative overflow-hidden" href={`/products?category=${cat.slug}`}>
                 {meta.badge && <span className="absolute top-2 right-2 text-[9px] bg-lime text-forest-deep font-bold px-2 py-0.5 rounded-full">{meta.badge}</span>}
@@ -204,7 +208,7 @@ export default async function HomePage() {
                   <span className="material-symbols-outlined text-[28px]">{meta.icon}</span>
                 </div>
                 <h3 className="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">{cat.name}</h3>
-                <p className="text-body-sm font-body-sm text-on-surface-variant mt-1 line-clamp-2">{meta.desc}</p>
+                <p className="text-body-sm font-body-sm text-on-surface-variant mt-1 line-clamp-2">{desc}</p>
               </Link>
             );
           })}

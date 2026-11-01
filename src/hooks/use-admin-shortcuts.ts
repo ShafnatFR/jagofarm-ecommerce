@@ -25,6 +25,7 @@ export const NAV_ITEMS = [
   { href: "/admin/consultation", label: "Konsultasi", icon: "forum", key: "8" },
   { href: "/admin/contact", label: "Pesan", icon: "mail", key: "9" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart", key: "0" },
+  { href: "/admin/content-pages", label: "Halaman", icon: "article", key: "." },
   { href: "/admin/site-settings", label: "Pengaturan", icon: "settings", key: "," },
 ] as const;
 
@@ -114,7 +115,9 @@ export function useAdminShortcuts() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [hintOn, setHintOn] = useState(false);
   const paletteOpenRef = useRef(false);
-  paletteOpenRef.current = paletteOpen;
+  useEffect(() => {
+    paletteOpenRef.current = paletteOpen;
+  });
   const gAtRef = useRef(0);
   const gTimerRef = useRef<number | null>(null);
 

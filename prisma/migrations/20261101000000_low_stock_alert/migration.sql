@@ -1,0 +1,1 @@
+ALTER TABLE products ADD COLUMN IF NOT EXISTS last_stock_alert_at TIMESTAMPTZ;

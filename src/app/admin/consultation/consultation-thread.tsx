@@ -77,7 +77,9 @@ export function ConsultationThreadPanel({
   };
 
   const sendRef = useRef(send);
-  sendRef.current = send;
+  useEffect(() => {
+    sendRef.current = send;
+  });
 
   // Alt+S = kirim balasan, Alt+F = fokus ke draft (via event bus shortcut admin).
   useEffect(() => {

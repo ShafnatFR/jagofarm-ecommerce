@@ -180,7 +180,8 @@ export default function ProductsPage() {
                       <td className="px-4 py-3">
                         {product.featured && <Badge variant="warning">Unggulan</Badge>}
                         {product.stock === 0 && <Badge variant="destructive">Habis</Badge>}
-                        {!product.featured && product.stock > 0 && <Badge variant="success">Aktif</Badge>}
+                        {product.stock > 0 && product.stock <= 10 && <Badge variant="warning">Menipis</Badge>}
+                        {!product.featured && product.stock > 10 && <Badge variant="success">Aktif</Badge>}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="relative inline-block">

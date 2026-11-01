@@ -32,6 +32,8 @@ export function AdminCommandPalette({
 
   useEffect(() => {
     if (open) {
+      // Reset sinkron saat palette dibuka — pola repo: disable beralasan.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset sekali saat open berubah false->true
       setQuery("");
       setIndex(0);
       // Tunggu mount sebelum fokus.
@@ -41,6 +43,8 @@ export function AdminCommandPalette({
   }, [open ]);
 
   useEffect(() => {
+    // Reset sinkron saat query berubah — pola repo: disable beralasan.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- highlight ikut query, bukan render loop
     setIndex(0);
   }, [query]);
 

@@ -26,6 +26,7 @@ const sidebarLinks = [
   { href: "/admin/consultation", label: "Konsultasi", icon: "forum" },
   { href: "/admin/contact", label: "Pesan", icon: "mail" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart" },
+  { href: "/admin/content-pages", label: "Halaman", icon: "article" },
   { href: "/admin/site-settings", label: "Pengaturan", icon: "settings" },
 ]
 

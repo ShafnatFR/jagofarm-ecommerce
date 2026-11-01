@@ -6,6 +6,7 @@ import { sendEmailSafe } from "@/lib/email";
 import { orderCreatedEmail, toEmailOrder } from "@/lib/email-templates";
 import { sendWhatsAppSafe } from "@/lib/whatsapp";
 import { notifyAdminSafe } from "@/lib/notifications";
+import { checkLowStockSafe } from "@/lib/stock-alert";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
 import { checkoutSchema } from "@/lib/validators";
 import { getShippingOptions, normalizeCouriers } from "@/lib/shipping";
@@ -473,6 +474,9 @@ export async function POST(request: NextRequest) {
         )}`,
         href: `/admin/orders`,
       });
+
+      // ── Alert stok menipis (best-effort, tidak menggagalkan respons) ──
+      await checkLowStockSafe(fullOrder.items.map((i) => i.productId));
     }
 
     return NextResponse.json(

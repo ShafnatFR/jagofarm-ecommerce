@@ -12,14 +12,8 @@ import type { User } from "@supabase/supabase-js";
 import type { SiteContent } from "@/lib/site-settings-shared";
 
 
-const SEARCH_PLACEHOLDER = "Cari paket tambak, kit hidroponik, sensor IoT, benih...";
-
-/**
- * `content` dikirim oleh parent server component (layout) supaya teks navbar
- * tampil tanpa flash; bila tidak ada (mis. dipakai di tempat lain), hook
- * mengambil dari /api/site-content dengan fallback default.
- */
 export function Navbar({ content }: { content?: SiteContent } = {}) {
+  /* Teks navbar: prop server dulu, hook + default bila tidak ada. */
   const router = useRouter();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -120,7 +114,7 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-surface-container-low hover:bg-surface-container focus:bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-full pl-11 pr-24 py-2 text-body-md font-body-md text-on-surface placeholder:text-on-surface-variant transition-colors outline-none"
-                placeholder={SEARCH_PLACEHOLDER}
+                placeholder={site.navbarSearchPlaceholder}
               />
               <div className="absolute right-2 flex items-center gap-1">
                 <span className="text-[11px] bg-surface border border-outline-variant rounded px-1.5 py-0.5 text-on-surface-variant">⌘K</span>

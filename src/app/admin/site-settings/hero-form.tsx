@@ -471,6 +471,7 @@ const CONTENT_GROUPS: {
       { key: "navAnnouncement", label: "Teks pengumuman (kiri)" },
       { key: "navPromo", label: "Teks promo (tengah)", multiline: true },
       { key: "navSupportBadge", label: "Badge dukungan (kanan)" },
+      { key: "navbarSearchPlaceholder", label: "Placeholder pencarian" },
     ],
   },
   {
@@ -530,6 +531,7 @@ const CONTENT_GROUPS: {
     fields: [
       { key: "cartConsultLabel", label: "Label konsultasi (keranjang)" },
       { key: "productConsultNote", label: "Catatan konsultasi (detail produk)", multiline: true },
+      { key: "productFeatureCards", label: "Kartu keunggulan produk (Judul~Deskripsi, pisah |)", multiline: true },
       { key: "productsConsultDesc", label: "Deskripsi banner konsultasi (katalog)", multiline: true },
       { key: "footerTagline", label: "Tagline footer (lupa password)" },
     ],
