@@ -71,10 +71,27 @@ export async function GET(request: NextRequest) {
     // Kecamatan = segmen ke-3 dari depan bila district masih kosong.
     const districtFb = parts.length >= 4 ? parts[2] : "";
 
+    // OSM kadang menaruh kecamatan di `town` dan kab/kota di `county`
+    // (kasus Dayeuhkolot: town=Dayeuhkolot, county=Kabupaten Bandung).
+    // Normalisasi: yang berawalan Kota/Kabupaten -> city, sisanya district.
+    const rawDistrict = district || districtFb;
+    const rawCity = a.city || a.town || a.municipality || a.county || parts[parts.length - 4] || "";
+    const isCityLike = (s: string) => /^(kota|kabupaten)\b/i.test(s.trim());
+    let finalDistrict = rawDistrict;
+    let finalCity = rawCity;
+    if (rawCity && !isCityLike(rawCity) && !rawDistrict) {
+      finalDistrict = rawCity;
+      finalCity = a.county && isCityLike(a.county) ? a.county : rawCity;
+    }
+    if (finalDistrict && isCityLike(finalDistrict) && !isCityLike(finalCity)) {
+      finalCity = finalDistrict;
+      finalDistrict = rawCity && !isCityLike(rawCity) ? rawCity : "";
+    }
+
     return NextResponse.json({
       detail,
-      district: district || districtFb,
-      city: a.city || a.town || a.municipality || a.county || parts[parts.length - 4] || "",
+      district: finalDistrict || districtFb,
+      city: finalCity,
       province: a.state || a.state_district || parts[parts.length - 3] || "",
       postalCode: pickPostcode,
     });
