@@ -125,9 +125,14 @@ export default function AdminReturnsPage() {
                 </div>
               )}
               {r.status === "approved" && (
-                <Button size="sm" disabled={busy === r.id} onClick={() => void act(r.id, "refund")}>
-                  <Icon name="payments" size={14} className="mr-1" /> Tandai Refunded
-                </Button>
+                <>
+                  <Button size="sm" disabled={busy === r.id} onClick={() => void act(r.id, "refund")}>
+                    <Icon name="payments" size={14} className="mr-1" /> Tandai Refunded
+                  </Button>
+                  <span className="text-xs text-muted-foreground">
+                    Refund dana di dashboard gateway dulu (Midtrans/Mayar → transaksi → Refund), baru tandai di sini.
+                  </span>
+                </>
               )}
             </div>
           ))}

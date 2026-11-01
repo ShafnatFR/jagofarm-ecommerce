@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "@/lib/constants";
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  siteUrl()
 ).replace(/\/$/, "");
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 

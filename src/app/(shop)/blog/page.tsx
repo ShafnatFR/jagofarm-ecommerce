@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: { absolute: "Blog — JagoFarm" },
@@ -20,7 +21,7 @@ interface BlogItem {
 
 async function getArticles(): Promise<BlogItem[]> {
   try {
-    const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    const base = siteUrl();
     const res = await fetch(`${base}/api/blog`, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const data = await res.json();

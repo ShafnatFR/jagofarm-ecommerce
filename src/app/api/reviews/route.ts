@@ -223,8 +223,8 @@ export async function POST(request: NextRequest) {
         rating,
         comment,
         imageUrl,
-        // Auto-publish so the review shows up immediately.
-        isApproved: true,
+        // Moderasi: pending dulu, admin setujui lewat /admin/reviews.
+        isApproved: false,
       },
       include: { user: { select: { id: true, name: true, image: true } } },
     });
@@ -244,7 +244,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        message: "Ulasan berhasil dikirim dan sudah tayang.",
+        message: "Ulasan terkirim, menunggu moderasi admin sebelum tayang.",
         review: {
           id: review.id,
           userId: review.userId,

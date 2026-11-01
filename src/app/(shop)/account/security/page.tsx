@@ -1,8 +1,134 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/components/ui/use-toast";
+
+/** Panel 2FA TOTP — hanya tampil untuk akun admin. */
+function TwoFactorPanel() {
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [enabled, setEnabled] = useState(false);
+  const [secret, setSecret] = useState<string | null>(null);
+  const [setupUrl, setSetupUrl] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const res = await fetch("/api/user/profile", { cache: "no-store" });
+        const data = await res.json().catch(() => null);
+        const role = data?.user?.role ?? data?.role;
+        if (role !== "admin") {
+          setIsAdmin(false);
+          return;
+        }
+        setIsAdmin(true);
+        const s = await fetch("/api/admin/2fa", { cache: "no-store" });
+        const sj = await s.json().catch(() => null);
+        setEnabled(Boolean(sj?.enabled));
+      } catch {
+        setIsAdmin(false);
+      }
+    })();
+  }, []);
+
+  if (isAdmin !== true) return null;
+
+  async function setup() {
+    setBusy(true);
+    try {
+      const res = await fetch("/api/admin/2fa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ step: "setup" }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? "Gagal");
+      setSecret(data.secret);
+      setSetupUrl(data.setupUrl);
+    } catch (e) {
+      toast({ title: "Gagal", description: e instanceof Error ? e.message : "", variant: "destructive" });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function confirm(step: "enable" | "disable") {
+    if (!/^\d{6}$/.test(code.trim())) {
+      toast({ title: "Kode harus 6 digit", variant: "destructive" });
+      return;
+    }
+    setBusy(true);
+    try {
+      const res = await fetch("/api/admin/2fa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ step, code: code.trim() }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? "Gagal");
+      setEnabled(Boolean(data.enabled));
+      setSecret(null);
+      setSetupUrl(null);
+      setCode("");
+      toast({ title: step === "enable" ? "2FA aktif" : "2FA dimatikan" });
+    } catch (e) {
+      toast({ title: "Gagal", description: e instanceof Error ? e.message : "", variant: "destructive" });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="mt-6 bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-sm">
+      <h3 className="text-headline-sm font-headline-sm text-on-surface mb-2">Verifikasi 2 Langkah (Admin)</h3>
+      <p className="text-sm text-on-surface-variant mb-4">
+        Status: <strong>{enabled ? "Aktif" : "Nonaktif"}</strong>. Wajibkan kode 6 digit dari aplikasi
+        autentikator (Google Authenticator, 1Password) untuk aksi sensitif.
+      </p>
+      {!enabled && !secret && (
+        <button onClick={() => void setup()} disabled={busy} className="px-5 py-2.5 rounded-full bg-primary text-on-primary font-semibold text-sm disabled:opacity-60">
+          {busy ? "Memproses..." : "Mulai Setup 2FA"}
+        </button>
+      )}
+      {secret && (
+        <div className="space-y-3">
+          <p className="text-sm text-on-surface-variant break-all">
+            Secret: <code className="font-mono">{secret}</code>
+          </p>
+          {setupUrl && (
+            <p className="text-xs text-on-surface-variant break-all">
+              Atau buka di aplikasi autentikator: <code className="font-mono">{setupUrl}</code>
+            </p>
+          )}
+          <div className="flex gap-2">
+            <input
+              className="w-40 rounded-full border border-outline-variant bg-surface px-4 py-2 text-sm"
+              placeholder="Kode 6 digit" inputMode="numeric" maxLength={6}
+              value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+            />
+            <button onClick={() => void confirm("enable")} disabled={busy} className="px-5 py-2 rounded-full bg-primary text-on-primary font-semibold text-sm disabled:opacity-60">
+              Aktifkan
+            </button>
+          </div>
+        </div>
+      )}
+      {enabled && (
+        <div className="flex gap-2">
+          <input
+            className="w-40 rounded-full border border-outline-variant bg-surface px-4 py-2 text-sm"
+            placeholder="Kode 6 digit" inputMode="numeric" maxLength={6}
+            value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+          />
+          <button onClick={() => void confirm("disable")} disabled={busy} className="px-5 py-2 rounded-full border border-outline-variant font-semibold text-sm disabled:opacity-60">
+            Matikan 2FA
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function SecurityPage() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -174,6 +300,9 @@ export default function SecurityPage() {
             </button>
           </form>
         </div>
+
+        {/* Verifikasi 2 Langkah (khusus admin) */}
+        <TwoFactorPanel />
 
         {/* Security Tips */}
         <div className="mt-6 bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-sm">

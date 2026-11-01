@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ interface Article {
 
 async function getArticle(slug: string): Promise<Article | null> {
   try {
-    const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    const base = siteUrl();
     const res = await fetch(`${base}/api/blog?slug=${encodeURIComponent(slug)}`, {
       next: { revalidate: 60 },
     });

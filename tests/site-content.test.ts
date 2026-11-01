@@ -50,10 +50,18 @@ test("normalizeSiteContent mengembalikan semua field yang diharapkan", () => {
   const content = normalizeSiteContent({});
   assert.ok(content);
   for (const key of Object.keys(SITE_CONTENT_DEFAULT)) {
-    assert.equal(
-      typeof content[key as keyof typeof content],
-      "string",
-      `${key} harus string`
-    );
+    const k = key as keyof typeof content;
+    if (k === "usdRate") {
+      assert.equal(typeof content[k], "number", "usdRate harus number");
+    } else {
+      assert.equal(typeof content[k], "string", `${key} harus string`);
+    }
   }
+});
+
+test("normalizeSiteContent coerce usdRate angka", () => {
+  assert.equal(normalizeSiteContent({ usdRate: 17000 })?.usdRate, 17000);
+  assert.equal(normalizeSiteContent({ usdRate: "17000" })?.usdRate, 17000);
+  assert.equal(normalizeSiteContent({ usdRate: "rusak" })?.usdRate, SITE_CONTENT_DEFAULT.usdRate);
+  assert.equal(normalizeSiteContent({ usdRate: -5 })?.usdRate, SITE_CONTENT_DEFAULT.usdRate);
 });

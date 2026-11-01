@@ -103,6 +103,11 @@ export function resolveRule(
  * Catat satu hit untuk `key` dan kembalikan status kuota.
  * `key` sebaiknya berisi identitas pemanggil (IP) + path agar tidak saling
  * memakan kuota antar endpoint.
+ *
+ * Mode Upstash (opsional): bila env UPSTASH_REDIS_REST_URL +
+ * UPSTASH_REDIS_REST_TOKEN diisi, hit dicatat ke Redis lintas instance
+ * (atomic INCR + EXPIRE via pipeline). Gagal Redis = fallback in-memory,
+ * tidak pernah menggagalkan request.
  */
 export function consume(key: string, rule: RateLimitRule): RateLimitResult {
   const now = Date.now();
@@ -153,4 +158,38 @@ export function getClientIp(headers: Headers): string {
 /** Hanya untuk test: kosongkan semua bucket. */
 export function resetRateLimitBuckets() {
   buckets.clear();
+}
+
+/**
+ * Varian async dengan backend Upstash bila dikonfigurasi.
+ * Tanpa env Upstash = sama dengan consume() in-memory.
+ */
+export async function consumeAsync(key: string, rule: RateLimitRule): Promise<RateLimitResult> {
+  const url = (process.env.UPSTASH_REDIS_REST_URL ?? "").trim();
+  const token = (process.env.UPSTASH_REDIS_REST_TOKEN ?? "").trim();
+  if (!url || !token) return consume(key, rule);
+  try {
+    const windowS = Math.max(1, Math.ceil(rule.windowMs / 1000));
+    const rkey = `rl:${key}`;
+    const res = await fetch(`${url.replace(/\/$/, "")}/pipeline`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify([["INCR", rkey], ["EXPIRE", rkey, windowS, "NX"], ["TTL", rkey]]),
+    });
+    if (!res.ok) return consume(key, rule);
+    const data = (await res.json()) as Array<{ result: number }>;
+    const count = Number(data?.[0]?.result ?? 1);
+    const ttl = Number(data?.[2]?.result ?? windowS);
+    const allowed = count <= rule.limit;
+    const now = Date.now();
+    return {
+      allowed,
+      limit: rule.limit,
+      remaining: Math.max(0, rule.limit - count),
+      retryAfterSeconds: allowed ? 0 : Math.max(1, ttl),
+      resetAt: now + Math.max(1, ttl) * 1000,
+    };
+  } catch {
+    return consume(key, rule);
+  }
 }

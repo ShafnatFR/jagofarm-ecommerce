@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
+import { siteUrl } from "@/lib/constants";
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  siteUrl()
 ).replace(/\/$/, "");
 
 /** Sitemap di-regenerate tiap jam, bukan tiap request. */
@@ -11,6 +12,7 @@ export const revalidate = 3600;
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/`, changeFrequency: "daily", priority: 1 },
   { url: `${SITE_URL}/products`, changeFrequency: "daily", priority: 0.9 },
+  { url: `${SITE_URL}/blog`, changeFrequency: "daily", priority: 0.8 },
   { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.5 },
   { url: `${SITE_URL}/contact`, changeFrequency: "monthly", priority: 0.5 },
   { url: `${SITE_URL}/faq`, changeFrequency: "monthly", priority: 0.5 },
@@ -25,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Database bisa tidak terjangkau (mis. saat build di CI) — sitemap tetap
   // harus keluar dengan rute statis, bukan menggagalkan build.
   try {
-    const [products, categories] = await Promise.all([
+    const [products, categories, articles] = await Promise.all([
       prisma.product.findMany({
         where: { isActive: true },
         select: { slug: true, updatedAt: true },
@@ -36,10 +38,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         where: { isActive: true },
         select: { slug: true, createdAt: true },
       }),
+      prisma.article.findMany({
+        where: { published: true },
+        select: { slug: true, updatedAt: true },
+        orderBy: { updatedAt: "desc" },
+        take: 500,
+      }),
     ]);
 
     return [
       ...STATIC_ROUTES,
+      ...articles.map((a) => ({
+        url: `${SITE_URL}/blog/${encodeURIComponent(a.slug)}`,
+        lastModified: a.updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      })),
       ...categories.map((category) => ({
         url: `${SITE_URL}/products?category=${encodeURIComponent(category.slug)}`,
         lastModified: category.createdAt,

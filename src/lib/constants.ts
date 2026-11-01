@@ -1,5 +1,14 @@
 // ── Site Configuration ────────────────────────────────
 
+/** Satu sumber URL situs: SITE_URL dulu, APP_URL lama, lalu default. */
+export function siteUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_APP_URL?.trim() ||
+    "https://jagofarm.dev/"
+  );
+}
+
 /** Panjang minimum password di seluruh aplikasi (register, reset, ganti password). */
 export const MIN_PASSWORD_LENGTH = 8;
 

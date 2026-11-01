@@ -121,8 +121,8 @@ export async function updateSiteContent(input: SiteContent) {
   const normalized = normalizeSiteContent(input);
   if (!normalized) throw new Error("Data teks konten tidak valid.");
 
-  // Semua field berupa string -> objek plain agar sesuai tipe Json Prisma.
-  const payload: Record<string, string> = { ...normalized };
+  // Semua field berupa string/number -> objek plain agar sesuai tipe Json Prisma.
+  const payload: Record<string, string | number> = { ...normalized };
 
   await prisma.siteSetting.upsert({
     where: { key: "site_content" },

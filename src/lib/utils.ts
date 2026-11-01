@@ -40,6 +40,33 @@ export function formatPrice(
 }
 
 /**
+ * Format harga + perkiraan USD (kurs manual dari CMS).
+ * Contoh: "Rp150.000 (≈ $9.38)". Tanpa showUsd = sama dengan formatPrice.
+ */
+export function formatPriceDual(
+  price: number | string | { toString(): string },
+  opts?: { showUsd?: boolean; usdRate?: number }
+): string {
+  const idr = formatPrice(price);
+  if (!opts?.showUsd) return idr;
+  const parsed =
+    typeof price === "number"
+      ? price
+      : typeof price === "string"
+        ? parseFloat(price)
+        : parseFloat(price.toString());
+  const rate = opts.usdRate && opts.usdRate > 0 ? opts.usdRate : 16000;
+  const usd = Number.isFinite(parsed) ? parsed / rate : 0;
+  const usdText = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(usd);
+  return `${idr} (≈ ${usdText})`;
+}
+
+/**
  * Format a date for Indonesian locale
  */
 export function formatDate(date: Date | string): string {

@@ -318,6 +318,10 @@ export interface SiteContent {
   productFeatureCards: string;
   /** Placeholder kolom pencarian navbar. */
   navbarSearchPlaceholder: string;
+  /** Mata uang tampil: "IDR" saja atau "IDR+USD". */
+  displayCurrency: string;
+  /** Kurs manual IDR per 1 USD (dipakai bila displayCurrency memuat USD). */
+  usdRate: number;
 }
 
 export const SITE_CONTENT_DEFAULT: SiteContent = {
@@ -379,6 +383,8 @@ export const SITE_CONTENT_DEFAULT: SiteContent = {
   productFeatureCards:
     "Kualitas Terjamin~Produk telah melewati quality control ketat sebelum dikemas.|Packing Aman~Kemasan pelindung ganda untuk pengiriman aman sampai tujuan.|Stok Segar~Stok selalu diperbarui untuk menjamin kesegaran produk.|Layanan Purna Jual~Tim support siap membantu jika ada kendala setelah pembelian.",
   navbarSearchPlaceholder: "Cari paket tambak, kit hidroponik, sensor IoT, benih...",
+  displayCurrency: "IDR",
+  usdRate: 16000,
 };
 
 const SITE_CONTENT_FIELDS: (keyof SiteContent)[] = [
@@ -424,6 +430,8 @@ const SITE_CONTENT_FIELDS: (keyof SiteContent)[] = [
   "footerTagline",
   "productFeatureCards",
   "navbarSearchPlaceholder",
+  "displayCurrency",
+  "usdRate",
 ];
 
 /**
@@ -436,11 +444,17 @@ export function normalizeSiteContent(value: unknown): SiteContent | null {
   const record = value as Record<string, unknown>;
   const result = { ...SITE_CONTENT_DEFAULT };
   for (const field of SITE_CONTENT_FIELDS) {
-    const raw = record[field];
+    const key = field as keyof SiteContent;
+    const raw = record[key];
+    if (key === "usdRate") {
+      const num = typeof raw === "number" ? raw : Number(raw);
+      result.usdRate = Number.isFinite(num) && num > 0 ? num : SITE_CONTENT_DEFAULT.usdRate;
+      continue;
+    }
     if (typeof raw === "string" && raw.trim() && raw.length <= 500) {
-      result[field] = raw.trim();
+      (result[key] as string) = raw.trim();
     } else if (raw !== undefined) {
-      result[field] = SITE_CONTENT_DEFAULT[field];
+      (result[key] as string) = SITE_CONTENT_DEFAULT[key] as string;
     }
   }
   return result;

@@ -534,6 +534,8 @@ const CONTENT_GROUPS: {
       { key: "productFeatureCards", label: "Kartu keunggulan produk (Judul~Deskripsi, pisah |)", multiline: true },
       { key: "productsConsultDesc", label: "Deskripsi banner konsultasi (katalog)", multiline: true },
       { key: "footerTagline", label: "Tagline footer (lupa password)" },
+      { key: "displayCurrency", label: 'Mata uang tampil ("IDR" / "IDR+USD")' },
+      { key: "usdRate", label: "Kurs IDR per 1 USD" },
     ],
   },
 ];
@@ -545,7 +547,11 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
   const [success, setSuccess] = useState<string | null>(null);
 
   function setField(key: keyof SiteContent, value: string) {
-    setForm((prev) => ({ ...prev, [key]: value }));
+    setForm((prev) => ({
+      ...prev,
+      // usdRate bertipe number — coerce dari input teks; normalizer memvalidasi.
+      [key]: key === "usdRate" ? Number(value.replace(/[^\d.]/g, "")) || 0 : value,
+    }));
   }
 
   function handleSave(e: React.FormEvent) {
@@ -601,7 +607,7 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
                 </label>
                 {field.multiline ? (
                   <textarea
-                    value={form[field.key]}
+                    value={String(form[field.key] ?? "")}
                     onChange={(e) => setField(field.key, e.target.value)}
                     rows={2}
                     maxLength={500}
@@ -610,7 +616,7 @@ export function SiteContentForm({ initial, isDefault }: SiteContentFormProps) {
                 ) : (
                   <input
                     type="text"
-                    value={form[field.key]}
+                    value={String(form[field.key] ?? "")}
                     onChange={(e) => setField(field.key, e.target.value)}
                     maxLength={500}
                     className="w-full rounded-lg border border-outline-variant px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none"

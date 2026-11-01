@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
-import { SITE_CONFIG } from "@/lib/constants";
+import { SITE_CONFIG, siteUrl } from "@/lib/constants";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -20,7 +20,7 @@ const manrope = Manrope({
 });
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  siteUrl()
 ).replace(/\/$/, "");
 
 const SITE_DESCRIPTION =
