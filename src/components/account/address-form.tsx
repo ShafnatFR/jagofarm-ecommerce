@@ -65,7 +65,9 @@ export function AddressForm({ initialValues, existingCount }: Props) {
           setValues((current) => ({
             ...current,
             label: current.label || "Rumah",
+            // Hanya isi yang kosong dari API — jangan timpa ketikan manual.
             detail: data.detail || current.detail,
+            district: data.district || current.district,
             city: data.city || current.city,
             province: data.province || current.province,
             postalCode: data.postalCode || current.postalCode,

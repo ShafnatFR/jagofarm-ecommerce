@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
   url.searchParams.set("format", "jsonv2");
   url.searchParams.set("lat", String(lat));
   url.searchParams.set("lon", String(lon));
-  url.searchParams.set("zoom", "18");
+  url.searchParams.set("zoom", "17");
   url.searchParams.set("addressdetails", "1");
   
   try {
@@ -42,17 +42,41 @@ export async function GET(request: NextRequest) {
 
     const payload = (await response.json()) as { display_name?: string; address?: NominatimAddress };
     const address = payload.address ?? {};
-    const locality = address.village || address.suburb || address.neighbourhood;
-    const detail = [
-      [address.road, address.house_number].filter(Boolean).join(" "),
-      locality,
-    ].filter(Boolean).join(", ");
+    type Addr = NominatimAddress & {
+      city_district?: string;
+      district?: string;
+      hamlet?: string;
+      quarter?: string;
+      residential?: string;
+    };
+    const a = address as Addr;
+    // OSM Indonesia: kecamatan biasanya di `suburb`, kadang `city_district`/
+    // `district`; kelurahan di `village`/`hamlet`/`neighbourhood`.
+    const district =
+      a.suburb || a.city_district || a.district || a.quarter || a.residential || "";
+    const locality =
+      a.village || a.hamlet || a.neighbourhood || "";
+    const road = [a.road, a.house_number].filter(Boolean).join(" ");
+
+    // Fallback: bila field kosong, pecah display_name
+    // ("Jl. X, Sukapura, Dayeuhkolot, Bandung, Jawa Barat, 40257").
+    const parts = (payload.display_name ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+    const pickPostcode = (a.postcode || parts.find((p) => /^\d{5}$/.test(p)) || "").trim();
+
+    const detail =
+      [road, locality].filter(Boolean).join(", ") ||
+      parts.slice(0, 2).join(", ") ||
+      payload.display_name ||
+      "";
+    // Kecamatan = segmen ke-3 dari depan bila district masih kosong.
+    const districtFb = parts.length >= 4 ? parts[2] : "";
 
     return NextResponse.json({
-      detail: detail || payload.display_name || "",
-      city: address.city || address.town || address.municipality || address.county || "",
-      province: address.state || address.state_district || address.city || "",
-      postalCode: address.postcode || "",
+      detail,
+      district: district || districtFb,
+      city: a.city || a.town || a.municipality || a.county || parts[parts.length - 4] || "",
+      province: a.state || a.state_district || parts[parts.length - 3] || "",
+      postalCode: pickPostcode,
     });
   } catch (error) {
     console.error("Reverse geocoding error:", error);
