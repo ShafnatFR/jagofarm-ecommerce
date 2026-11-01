@@ -86,15 +86,18 @@ export default function ConsultationChat() {
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   /** Tiket yang isinya sudah dimuat (mencegah fetch ganda). */
   const loadedIdRef = useRef<string | null>(null);
 
   const selectedId = useTicketSelection((s) => s.selectedId);
   const select = useTicketSelection((s) => s.select);
 
+  /** Scroll daftar pesan saja (container), bukan seluruh halaman. */
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = listRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   };
 
   /** Muat isi tiket. `silent` dipakai polling agar tidak memicu spinner. */
@@ -297,7 +300,7 @@ export default function ConsultationChat() {
       </div>
 
       {/* Daftar pesan */}
-      <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
+      <div ref={listRef} className="custom-scrollbar flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
         {error && (
           <div className="flex items-center gap-2 rounded-xl border border-error/30 bg-error-container/20 p-3 text-xs text-error">
             <span className="material-symbols-outlined text-base">error</span>
@@ -425,8 +428,6 @@ export default function ConsultationChat() {
           </>
         )}
       </div>
-
-      <div ref={messagesEndRef} />
     </div>
   );
 }
