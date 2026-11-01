@@ -34,6 +34,16 @@ declare global {
           onClose?: () => void;
         }
       ) => void;
+      embed: (
+        token: string,
+        options?: {
+          embedId: string;
+          onSuccess?: (result: unknown) => void;
+          onPending?: (result: unknown) => void;
+          onError?: (result: unknown) => void;
+          onClose?: () => void;
+        }
+      ) => void;
     };
   }
 }
@@ -269,6 +279,8 @@ export default function OrderDetailPage() {
   const [cancelOpen, setCancelOpen] = useState(false);
   const [canceling, setCanceling] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
+  /** Token Snap aktif untuk mode embed (bayar di halaman ini, tanpa pindah). */
+  const [embedToken, setEmbedToken] = useState<string | null>(null);
   const [autoCheck, setAutoCheck] = useState(false);
   /** URL halaman pembayaran provider redirect-based (Mayar). */
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
@@ -359,6 +371,46 @@ export default function OrderDetailPage() {
     setAutoCheck(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- baca query Midtrans sekali saat mount; toast stabil.
   }, []);
+
+  // Snap embed: render saat div #snap-embed sudah ada (token dari handlePay).
+  useEffect(() => {
+    if (!embedToken || typeof window === "undefined" || !window.snap) return;
+    if (!document.getElementById("snap-embed")) return;
+    try {
+      window.snap.embed(embedToken, {
+        embedId: "snap-embed",
+        onSuccess: () => {
+          toast({ title: "Pembayaran berhasil", description: "Kami sedang memverifikasi pembayaran Anda." });
+          void refreshStatus(true);
+        },
+        onPending: () => {
+          toast({ title: "Menunggu pembayaran", description: "Selesaikan pembayaran sesuai instruksi, lalu klik Cek Status Pembayaran." });
+          void refreshStatus(true);
+        },
+        onError: () => {
+          toast({ variant: "destructive", title: "Pembayaran gagal", description: "Transaksi tidak berhasil. Silakan coba lagi." });
+          void refreshStatus(true);
+        },
+        onClose: () => {
+          setEmbedToken(null);
+          toast({ title: "Pembayaran ditutup", description: "Anda bisa melanjutkan pembayaran kapan saja." });
+        },
+      });
+    } catch {
+      // Embed gagal (mis. diblokir) -> fallback popup sekali.
+      try {
+        window.snap.pay(embedToken, {
+          onSuccess: () => void refreshStatus(true),
+          onPending: () => void refreshStatus(true),
+          onError: () => void refreshStatus(true),
+          onClose: () => setEmbedToken(null),
+        });
+      } catch {
+        setEmbedToken(null);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- embed sekali per token; refreshStatus stabil via ref implisit
+  }, [embedToken]);
 
   useEffect(() => {
     if (autoCheck && order) {
@@ -506,37 +558,22 @@ export default function OrderDetailPage() {
       }
 
       if (typeof window !== "undefined" && window.snap) {
-        window.snap.pay(token, {
-          onSuccess: () => {
-            toast({
-              title: "Pembayaran berhasil",
-              description: "Kami sedang memverifikasi pembayaran Anda.",
-            });
-            void refreshStatus(true);
-          },
-          onPending: () => {
-            toast({
-              title: "Menunggu pembayaran",
-              description:
-                "Selesaikan pembayaran sesuai instruksi, lalu klik Cek Status Pembayaran.",
-            });
-            void refreshStatus(true);
-          },
-          onError: () => {
-            toast({
-              variant: "destructive",
-              title: "Pembayaran gagal",
-              description: "Transaksi tidak berhasil. Silakan coba lagi.",
-            });
-            void refreshStatus(true);
-          },
-          onClose: () => {
-            toast({
-              title: "Jendela pembayaran ditutup",
-              description: "Anda bisa melanjutkan pembayaran kapan saja.",
-            });
-          },
-        });
+        // Embed di halaman: Snap dirender inline, tidak pindah domain.
+        // Div #snap-embed dirender dari state -> embed dijalankan effect.
+        setEmbedToken(token);
+        return;
+      }
+
+      // Fallback: popup bila Snap.js belum termuat tapi token ada.
+      if (typeof window !== "undefined" && token) {
+        try {
+          await loadSnapScript(snapScriptUrl, clientKey ?? "");
+        } catch {
+          /* lanjut ke redirect */
+        }
+      }
+      if (typeof window !== "undefined" && window.snap) {
+        setEmbedToken(token);
         return;
       }
 
@@ -1119,6 +1156,23 @@ export default function OrderDetailPage() {
                     <Icon name="payments" size={16} className="mr-2" />
                     {paying ? "Memproses…" : "Bayar Sekarang"}
                   </Button>
+                )}
+
+                {/* Snap embed: bayar di halaman ini tanpa pindah domain. */}
+                {embedToken && (
+                  <div className="rounded-xl border border-outline-variant overflow-hidden">
+                    <div className="flex items-center justify-between px-3 py-2 bg-surface-container-low">
+                      <span className="text-xs font-semibold">Pembayaran Midtrans</span>
+                      <button
+                        type="button"
+                        onClick={() => setEmbedToken(null)}
+                        className="text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        Tutup
+                      </button>
+                    </div>
+                    <div id="snap-embed" className="min-h-[400px]" />
+                  </div>
                 )}
 
                 {isPending && (
