@@ -148,6 +148,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Reuse: order midtrans yang sudah punya token → kembalikan token lama
+    // (Snap order_id sekali pakai; create baru = 400 already taken).
+    if (provider.id === "midtrans" && order.midtransToken) {
+      try {
+        const { getTransactionStatus } = await import("@/lib/midtrans");
+        const st = await getTransactionStatus(order.orderNumber);
+        // settlement/capture = sudah bayar (webhook mungkin telat) → sinkron.
+        if (st.transaction_status === "settlement" || st.transaction_status === "capture") {
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: "paid", paymentStatus: "paid", paidAt: new Date() },
+          });
+          return NextResponse.json(
+            { error: "Pesanan ini sudah dibayar." },
+            { status: 409 }
+          );
+        }
+        // pending/deny/cancel/expire/failure → token lama masih bisa dipakai
+        // untuk bayar ulang (atau hangus bila expired → jatuh ke create baru).
+        if (st.transaction_status !== "expire") {
+          const { getMidtransClientConfig } = await import("@/lib/midtrans");
+          const cfg = getMidtransClientConfig();
+          return NextResponse.json({
+            provider: "midtrans",
+            providerRef: order.orderNumber,
+            paymentUrl: order.paymentUrl,
+            redirectUrl: order.paymentUrl,
+            token: order.midtransToken,
+            clientKey: cfg.clientKey,
+            snapScriptUrl: cfg.snapUrl,
+            isProduction: cfg.isProduction,
+            orderNumber: order.orderNumber,
+            grossAmount: Math.round(Number(order.total)),
+            reused: true,
+          });
+        }
+      } catch {
+        // Status check gagal (mis. transaksi belum ada) → lanjut create baru.
+      }
+    }
+
     const totalInt = Math.round(Number(order.total));
 
     // ── Baris item: produk + diskon (negatif) + ongkir + penyesuaian ──────

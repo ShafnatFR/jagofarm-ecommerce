@@ -33,7 +33,8 @@ interface ShippingOption {
   etd: string;
 }
 
-const MAYAR_PAYMENT_LABEL = "Pembayaran via Mayar";
+/** Label fallback bila API provider belum termuat. */
+const DEFAULT_PAYMENT_LABEL = "Pembayaran via Midtrans";
 
 
 /** Ubah error API (string / fieldErrors zod) jadi pesan yang bisa dibaca user. */
@@ -66,6 +67,7 @@ export default function CheckoutPage() {
   const [shippingError, setShippingError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [paymentLabel, setPaymentLabel] = useState(DEFAULT_PAYMENT_LABEL);
   const [insuranceChecked, setInsuranceChecked] = useState(true);
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
@@ -97,6 +99,13 @@ export default function CheckoutPage() {
     // Cart dan alamat independen; ambil bersamaan agar alamat tidak menunggu cart.
     // eslint-disable-next-line react-hooks/set-state-in-effect -- memulai fetch alamat saat checkout dimuat
     void fetchAddresses();
+    // Label provider aktif (Midtrans/Mayar) untuk step pembayaran.
+    void fetch("/api/payments/active-provider", { cache: "no-store" })
+      .then((r) => r.json().catch(() => null))
+      .then((d) => {
+        if (!cancelled && d?.label) setPaymentLabel(`Pembayaran via ${d.label}`);
+      })
+      .catch(() => {});
     return () => { cancelled = true; };
   }, [hydrate, fetchAddresses]);
 
@@ -207,7 +216,7 @@ export default function CheckoutPage() {
           shippingCost: Number(option.cost) || 0,
           insurance: insuranceChecked,
           shippingEtd: option.etd || undefined,
-          paymentMethod: "mayar",
+          paymentMethod: paymentLabel.includes("Mayar") ? "mayar" : "midtrans",
           couponCode: serverCart?.coupon && !serverCart.couponError ? serverCart.coupon.code : "",
           notes: notes.trim() || undefined,
         }),
@@ -335,7 +344,7 @@ export default function CheckoutPage() {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary font-bold text-muted-foreground">
             3
           </div>
-          <span className="text-xs font-medium text-muted-foreground sm:text-sm">3. Pembayaran Mayar</span>
+          <span className="text-xs font-medium text-muted-foreground sm:text-sm">3. {paymentLabel.replace("via ", "")}</span>
         </div>
       </div>
 
@@ -562,9 +571,11 @@ export default function CheckoutPage() {
                     <Icon name="lock" size={18} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold">{MAYAR_PAYMENT_LABEL}</p>
+                    <p className="text-sm font-bold">{paymentLabel}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Semua pesanan diproses melalui Mayar; tidak perlu memilih metode lain. Pilihan QRIS, virtual account, e-wallet, dan channel lain tersedia di halaman pembayaran Mayar.
+                      {paymentLabel.includes("Midtrans")
+                        ? "QRIS, virtual account, e-wallet, dan kartu tersedia di halaman pembayaran Midtrans (popup aman di situs ini)."
+                        : "Semua pesanan diproses melalui Mayar; tidak perlu memilih metode lain. Pilihan QRIS, virtual account, e-wallet, dan channel lain tersedia di halaman pembayaran Mayar."}
                     </p>
                   </div>
                 </div>
