@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 import { Icon } from "@/components/ui/icon";
 import { motion } from "framer-motion";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useDualPrice } from "@/hooks/use-dual-price";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
