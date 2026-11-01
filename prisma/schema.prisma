@@ -21,6 +21,14 @@ enum OrderStatus {
   delivered
   cancelled
   expired
+  refunded
+}
+
+enum ReturnStatus {
+  requested
+  approved
+  rejected
+  refunded
 }
 
 enum PaymentStatus {
@@ -49,6 +57,7 @@ model User {
   cart                 Cart?
   reviews              Review[]
   wishlists            Wishlist[]
+  returnRequests       ReturnRequest[]
   consultationSessions ConsultationSession[]
 
   // ── Loyalty (A7) & Referral (A8) ──
@@ -126,6 +135,8 @@ model Product {
   wishlists  Wishlist[]
   /// Pertanyaan tanya-jawab produk (B19).
   questions  ProductQuestion[]
+  /// Riwayat opname fisik vs sistem (FASE 3).
+  opnames    StockOpname[]
 
   @@index([categoryId])
   @@index([slug])
@@ -319,6 +330,8 @@ model Order {
   updatedAt                     DateTime      @updatedAt @map("updated_at")
 
   items OrderItem[]
+
+  returnRequests ReturnRequest[]
 
   @@index([userId])
   @@index([status])
@@ -566,4 +579,63 @@ model AdminNotification {
 
   @@index([isRead, createdAt])
   @@map("admin_notifications")
+}
+
+// ── Retur / refund (FASE 2) ──
+
+/// Pengajuan retur oleh pelanggan; diproses admin menjadi refunded/ditolak.
+model ReturnRequest {
+  id        String       @id @default(uuid())
+  orderId   String       @map("order_id")
+  order     Order        @relation(fields: [orderId], references: [id])
+  userId    String       @map("user_id")
+  user      User         @relation(fields: [userId], references: [id])
+  reason    String       @db.Text
+  status    ReturnStatus @default(requested)
+  adminNote String?      @map("admin_note") @db.Text
+  /// Nominal yang dikembalikan (diisi admin saat approve/refund).
+  refundAmount Decimal?  @map("refund_amount") @db.Decimal(12, 2)
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  @@index([orderId])
+  @@index([status, createdAt])
+  @@map("return_requests")
+}
+
+// ── Stok opname (FASE 3) ──
+
+/// Catatan hasil opname: selisih fisik vs sistem per produk.
+model StockOpname {
+  id            String   @id @default(uuid())
+  productId     String   @map("product_id")
+  product       Product  @relation(fields: [productId], references: [id])
+  systemStock   Int      @map("system_stock")
+  physicalStock Int      @map("physical_stock")
+  /// Selisih = fisik - sistem (negatif = susut).
+  difference    Int
+  note          String?  @db.Text
+  createdBy     String?  @map("created_by") @db.VarChar(36)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([productId, createdAt])
+  @@map("stock_opnames")
+}
+
+// ── Blog / artikel (FASE 4) ──
+
+/// Artikel CMS untuk SEO dan edukasi; hanya yang published tampil publik.
+model Article {
+  id        String   @id @default(uuid())
+  title     String   @db.VarChar(200)
+  slug      String   @unique @db.VarChar(220)
+  excerpt   String?  @db.VarChar(500)
+  content   String   @db.Text
+  coverUrl  String?  @map("cover_url") @db.Text
+  published Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([published, createdAt])
+  @@map("articles")
 }

@@ -26,6 +26,9 @@ export const NAV_ITEMS = [
   { href: "/admin/contact", label: "Pesan", icon: "mail", key: "9" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart", key: "0" },
   { href: "/admin/content-pages", label: "Halaman", icon: "article", key: "." },
+  { href: "/admin/articles", label: "Artikel", icon: "newspaper", key: "b" },
+  { href: "/admin/returns", label: "Retur", icon: "undo", key: "e" },
+  { href: "/admin/opname", label: "Opname", icon: "inventory", key: "o" },
   { href: "/admin/site-settings", label: "Pengaturan", icon: "settings", key: "," },
 ] as const;
 

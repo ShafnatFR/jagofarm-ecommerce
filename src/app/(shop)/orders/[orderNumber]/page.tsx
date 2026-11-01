@@ -278,6 +278,10 @@ export default function OrderDetailPage() {
   const [reviewTarget, setReviewTarget] = useState<OrderItemDetail | null>(null);
   /** productId yang sudah diulas dari halaman ini (tidak bisa submit dua kali). */
   const [reviewedProductIds, setReviewedProductIds] = useState<string[]>([]);
+  /** Form retur. */
+  const [returnReason, setReturnReason] = useState("");
+  const [returnSending, setReturnSending] = useState(false);
+  const [returnOpen, setReturnOpen] = useState(false);
 
   async function fetchOrder() {
     try {
@@ -637,6 +641,32 @@ export default function OrderDetailPage() {
       description: `${order.items.length} item dari pesanan ${order.orderNumber} ditambahkan ke keranjang.`,
     });
     router.push("/cart");
+  }
+
+  /** Ajukan retur untuk order ini. */
+  async function handleReturn() {
+    if (!order || returnReason.trim().length < 10) {
+      toast({ title: "Alasan minimal 10 karakter", variant: "destructive" });
+      return;
+    }
+    setReturnSending(true);
+    try {
+      const res = await fetch("/api/returns", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: order.id, reason: returnReason.trim() }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        toast({ title: "Gagal mengajukan retur", description: data?.error ?? "", variant: "destructive" });
+        return;
+      }
+      toast({ title: "Retur diajukan", description: "Tim kami akan memproses pengajuan Anda." });
+      setReturnOpen(false);
+      setReturnReason("");
+    } finally {
+      setReturnSending(false);
+    }
   }
 
   /**
@@ -1113,6 +1143,17 @@ export default function OrderDetailPage() {
                     Beli Lagi
                   </Button>
                 )}
+
+                {(order.status === "delivered" || order.status === "paid" || order.status === "shipped") && (
+                  <Button
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setReturnOpen(true)}
+                  >
+                    <Icon name="undo" size={16} className="mr-2" />
+                    Ajukan Retur
+                  </Button>
+                )}
               </CardContent>
             </Card>
           )}
@@ -1148,6 +1189,32 @@ export default function OrderDetailPage() {
               ) : (
                 "Ya, batalkan"
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Ajukan Retur */}
+      <Dialog open={returnOpen} onOpenChange={setReturnOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajukan retur</DialogTitle>
+            <DialogDescription>
+              Pesanan {order?.orderNumber}. Tulis alasan retur (kondisi barang, jumlah, dll).
+            </DialogDescription>
+          </DialogHeader>
+          <textarea
+            className="w-full rounded-lg border border-outline-variant bg-surface p-3 text-sm min-h-28"
+            placeholder="Contoh: barang rusak saat diterima, kemasan bocor..."
+            value={returnReason}
+            onChange={(e) => setReturnReason(e.target.value)}
+          />
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setReturnOpen(false)} disabled={returnSending}>
+              Batal
+            </Button>
+            <Button onClick={() => void handleReturn()} disabled={returnSending || returnReason.trim().length < 10}>
+              {returnSending ? "Mengirim..." : "Kirim Pengajuan"}
             </Button>
           </DialogFooter>
         </DialogContent>

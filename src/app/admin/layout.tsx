@@ -27,6 +27,9 @@ const sidebarLinks = [
   { href: "/admin/contact", label: "Pesan", icon: "mail" },
   { href: "/admin/reports", label: "Laporan", icon: "bar_chart" },
   { href: "/admin/content-pages", label: "Halaman", icon: "article" },
+  { href: "/admin/articles", label: "Artikel", icon: "newspaper" },
+  { href: "/admin/returns", label: "Retur", icon: "undo" },
+  { href: "/admin/opname", label: "Opname", icon: "inventory" },
   { href: "/admin/site-settings", label: "Pengaturan", icon: "settings" },
 ]
 
