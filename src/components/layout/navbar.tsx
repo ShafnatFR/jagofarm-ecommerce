@@ -117,7 +117,7 @@ export function Navbar({ content }: { content?: SiteContent } = {}) {
                 placeholder={site.navbarSearchPlaceholder}
               />
               <div className="absolute right-2 flex items-center gap-1">
-                <span className="text-[11px] bg-surface border border-outline-variant rounded px-1.5 py-0.5 text-on-surface-variant">⌘K</span>
+                <span className="text-[11px] bg-surface border border-outline-variant rounded-md px-1.5 py-0.5 text-on-surface-variant">⌘K</span>
               </div>
             </form>
           </div>
