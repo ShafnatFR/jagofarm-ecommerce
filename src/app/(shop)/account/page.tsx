@@ -331,9 +331,19 @@ export default function AccountPage() {
               </div>
               <Icon name="chevron_right" size={16} className="text-on-surface-variant/50" />
             </Link>
-            <Link
-              href="/auth/signout"
-              className="flex items-center justify-between p-3 rounded-xl hover:bg-error-container/20 text-on-surface-variant hover:text-error font-medium text-sm transition-all mt-1"
+            <button
+              type="button"
+              onClick={() => void (async () => {
+                try {
+                  await fetch("/auth/signout", { method: "POST" });
+                } catch {
+                  // diabaikan: cookie sesi tetap dibersihkan di sisi server saat berhasil
+                }
+                const supabase = (await import("@/lib/supabase/client")).createClient();
+                await supabase.auth.signOut().catch(() => {});
+                router.replace("/login");
+              })()}
+              className="flex w-full items-center justify-between p-3 rounded-xl hover:bg-error-container/20 text-on-surface-variant hover:text-error font-medium text-sm transition-all mt-1"
             >
               <div className="flex items-center gap-3">
                 <span className="p-2 rounded-lg bg-error-container/20 text-error">
@@ -341,7 +351,7 @@ export default function AccountPage() {
                 </span>
                 <span>Keluar dari Akun</span>
               </div>
-            </Link>
+            </button>
           </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/hooks/use-categories";
@@ -14,6 +15,7 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ open, onClose }: MobileNavProps) {
+  const router = useRouter();
   const { categories, loading } = useCategories();
   const [user, setUser] = useState<User | null>(null);
 
@@ -112,11 +114,22 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                 </Link>
               ))}
               {user && (
-                <a href="/auth/signout"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary">
+                <button
+                  type="button"
+                  onClick={() => void (async () => {
+                    onClose();
+                    try {
+                      await fetch("/auth/signout", { method: "POST" });
+                    } catch {
+                      // diabaikan: cookie sesi tetap dibersihkan di sisi server saat berhasil
+                    }
+                    await createClient().auth.signOut().catch(() => {});
+                    router.replace("/login");
+                  })()}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-secondary">
                   <Icon name="logout" size={18} className="text-muted-foreground" />
                   Keluar
-                </a>
+                </button>
               )}
             </div>
           </div>
