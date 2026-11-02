@@ -1,6 +1,11 @@
 # Rancangan Kerja JagoFarm — Lanjutan
 
-> Status: **menunggu persetujuan** sebelum eksekusi.
+> Status: **SELESAI — semua fase masuk main (2026-10-26 s.d. 2026-11-01).**
+> A3 low-stock alert: `src/lib/stock-alert.ts` + hook di orders/route.ts.
+> Refund/retur: `src/app/api/returns`, `src/app/api/admin/returns`, UI `/admin/returns`, enum `OrderStatus.refunded`.
+> Stok opname: `src/app/admin/opname` + `src/app/api/admin/opname`.
+> Blog: `src/app/(shop)/blog`, `src/app/admin/articles`, `src/app/api/blog`.
+> Hardening/integrasi: commit 6b3d55a, 9dbab91, ac901b3, 7f42afd.
 > Tanggal: 2026-10-14
 > Dasar: audit kode langsung (bukan asumsi).
 
