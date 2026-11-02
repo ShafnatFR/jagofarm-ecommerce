@@ -406,6 +406,7 @@ export default function OrderDetailPage() {
           onClose: () => setEmbedToken(null),
         });
       } catch {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- fallback sinkron saat embed Snap diblokir; reset token sekali agar UI kembali ke tombol bayar
         setEmbedToken(null);
       }
     }
