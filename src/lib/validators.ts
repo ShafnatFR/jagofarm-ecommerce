@@ -120,6 +120,7 @@ export const checkoutSchema = z.object({
       "qris",
       "cstore",
       "mayar",
+      "midtrans",
     ],
     { message: "Metode pembayaran wajib dipilih" }
   ),
