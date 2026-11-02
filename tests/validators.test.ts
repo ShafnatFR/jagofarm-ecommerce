@@ -36,4 +36,16 @@ describe("checkoutSchema", () => {
   it("butuh addressId dan items", () => {
     assert.ok(!checkoutSchema.safeParse({}).success);
   });
+
+  it("terima midtrans + mayar sebagai paymentMethod", () => {
+    const base = {
+      shippingAddressId: "123e4567-e89b-12d3-a456-426614174000",
+      shippingCourier: "tiki",
+      shippingService: "REG",
+      shippingCost: 6000,
+    };
+    assert.ok(checkoutSchema.safeParse({ ...base, paymentMethod: "midtrans" }).success);
+    assert.ok(checkoutSchema.safeParse({ ...base, paymentMethod: "mayar" }).success);
+    assert.ok(!checkoutSchema.safeParse({ ...base, paymentMethod: "tunai" }).success);
+  });
 });
