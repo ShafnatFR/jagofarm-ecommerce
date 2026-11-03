@@ -990,10 +990,6 @@ export default function OrderDetailPage() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Metode</span>
-                <span>{order.paymentMethod || "-"}</span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-muted-foreground">Status</span>
                 <Badge variant={order.paymentStatus === "paid" ? "default" : "secondary"}>
                   {order.paymentStatus}
