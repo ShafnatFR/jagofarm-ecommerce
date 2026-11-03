@@ -25,17 +25,10 @@ import { prisma } from "@/lib/prisma";
  * Revenue = jumlah Order.total (termasuk ongkos kirim & setelah diskon).
  */
 
-const SOLD_PAYMENT_STATUS = "paid";
-const SOLD_ORDER_STATUSES = [
-  "paid",
-  "processing",
-  "shipped",
-  "delivered",
-] as const;
-
+// Laporan mencakup SEMUA order (pending/unpaid/expired/cancelled ikut masuk).
+// Kolom Status/Payment Status di tabel membedakan tiap baris.
 const DEFINITION =
-  'Pesanan terjual = Order dengan paymentStatus "paid" dan status salah satu dari ' +
-  'paid/processing/shipped/delivered (cancelled & expired tidak dihitung). ' +
+  'Semua order pada rentang tanggal (semua status: pending/unpaid/expired/cancelled/paid). ' +
   "Revenue = total pesanan (termasuk ongkos kirim, setelah diskon). " +
   "Rentang tanggal inklusif mengikuti kalender WIB (UTC+7).";
 
@@ -126,6 +119,18 @@ interface PeriodBucket {
   revenue: number;
   orders: number;
   items: number;
+  paid: number;
+  pending: number;
+  cancelled: number;
+}
+
+interface OrderListRow {
+  orderNumber: string;
+  createdAt: string;
+  status: string;
+  paymentStatus: string;
+  total: number;
+  items: number;
 }
 
 export async function GET(request: NextRequest) {
@@ -207,8 +212,6 @@ export async function GET(request: NextRequest) {
     }
 
     const where: Prisma.OrderWhereInput = {
-      paymentStatus: SOLD_PAYMENT_STATUS,
-      status: { in: [...SOLD_ORDER_STATUSES] },
       createdAt: { gte: rangeFrom, lte: rangeTo },
       ...(categoryId ? { items: { some: { product: { categoryId } } } } : {}),
     };
@@ -219,6 +222,9 @@ export async function GET(request: NextRequest) {
         id: true,
         total: true,
         createdAt: true,
+        orderNumber: true,
+        status: true,
+        paymentStatus: true,
         items: {
           select: {
             productId: true,
@@ -263,12 +269,16 @@ export async function GET(request: NextRequest) {
           : `${parts.d} ${MONTHS_SHORT[parts.m - 1]} ${parts.y}`;
 
       const bucket =
-        buckets.get(key) ?? { key, label, revenue: 0, orders: 0, items: 0 };
+        buckets.get(key) ?? { key, label, revenue: 0, orders: 0, items: 0, paid: 0, pending: 0, cancelled: 0 };
 
       const orderTotal = Number(order.total);
       totalRevenue += orderTotal;
       bucket.revenue += orderTotal;
       bucket.orders += 1;
+      // Klasifikasi visual: lunas / menunggu / batal.
+      if (order.paymentStatus === 'paid') bucket.paid += 1;
+      else if (order.status === 'cancelled' || order.status === 'expired' || order.paymentStatus === 'failed') bucket.cancelled += 1;
+      else bucket.pending += 1;
 
       for (const item of order.items) {
         // Saat filter kategori aktif, hanya item kategori itu yang dihitung.
@@ -441,6 +451,26 @@ export async function GET(request: NextRequest) {
       topCustomers,
     };
 
+    const statusCounts = new Map<string, number>();
+    for (const order of orders) {
+      const k = order.paymentStatus === 'paid' ? 'paid' : (order.status === 'cancelled' || order.status === 'expired' ? 'cancelled' : 'pending');
+      statusCounts.set(k, (statusCounts.get(k) ?? 0) + 1);
+    }
+    const statusBreakdown = [
+      { status: 'paid', label: 'Lunas', count: statusCounts.get('paid') ?? 0, color: 'green' },
+      { status: 'pending', label: 'Menunggu', count: statusCounts.get('pending') ?? 0, color: 'yellow' },
+      { status: 'cancelled', label: 'Batal/Kedaluwarsa', count: statusCounts.get('cancelled') ?? 0, color: 'red' },
+    ];
+
+    const orderList: OrderListRow[] = orders.map((o) => ({
+      orderNumber: o.orderNumber,
+      createdAt: o.createdAt instanceof Date ? o.createdAt.toISOString() : String(o.createdAt),
+      status: o.status,
+      paymentStatus: o.paymentStatus,
+      total: Number(o.total),
+      items: o.items.reduce((s, it) => s + Number(it.quantity), 0),
+    })).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 50);
+
     return NextResponse.json({
       range: {
         from: fromIso,
@@ -458,6 +488,8 @@ export async function GET(request: NextRequest) {
         averageOrderValue,
       },
       series,
+      statusBreakdown,
+      orderList,
       categoryBreakdown,
       topProducts,
       stockReport,

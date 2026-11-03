@@ -18,6 +18,25 @@ interface ReportPeriod {
   revenue: number
   orders: number
   items: number
+  paid: number
+  pending: number
+  cancelled: number
+}
+
+interface StatusSlice {
+  status: string
+  label: string
+  count: number
+  color: string
+}
+
+interface OrderListRow {
+  orderNumber: string
+  createdAt: string
+  status: string
+  paymentStatus: string
+  total: number
+  items: number
 }
 
 interface CategoryRow {
@@ -83,23 +102,12 @@ interface ReportResponse {
     averageOrderValue: number
   }
   series: ReportPeriod[]
+  statusBreakdown: StatusSlice[]
+  orderList: OrderListRow[]
   categoryBreakdown: CategoryRow[]
   topProducts: TopProductRow[]
   stockReport?: StockReport
   customerReport?: CustomerReport
-}
-
-function compactRupiah(value: number): string {
-  try {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      notation: "compact",
-      maximumFractionDigits: 1,
-    }).format(value)
-  } catch {
-    return `Rp ${Math.round(value / 1000)} rb`
-  }
 }
 
 /** Tinggi area batang dalam piksel. */
@@ -112,26 +120,42 @@ const CATEGORY_HEX = [
   "#1d4e3b", "#d4a017",
 ]
 
-/** Bar chart vertikal pendapatan per periode. */
+/** Bar chart vertikal STACKED per status: hijau=lunas, kuning=menunggu, merah=batal. */
 function RevenueBarChart({ rows }: { rows: ReportPeriod[] }) {
-  const peak = rows.reduce((m, r) => Math.max(m, r.revenue), 0)
-  // Batasi 31 batang agar label tidak bertumpuk (preset 30d + hari ini).
+  const peak = rows.reduce((m, r) => Math.max(m, r.orders), 0)
   const view = rows.length > 31 ? rows.slice(-31) : rows
+  const segsOf = (row: ReportPeriod) => [
+    { value: row.paid ?? 0, cls: "bg-primary" },
+    { value: row.pending ?? 0, cls: "bg-[#c9a227]" },
+    { value: row.cancelled ?? 0, cls: "bg-destructive" },
+  ]
   return (
     <div>
+      <div className="flex flex-wrap items-center gap-4 text-xs text-on-surface-variant mb-2">
+        <span className="inline-flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-primary" /> Lunas</span>
+        <span className="inline-flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-[#c9a227]" /> Menunggu</span>
+        <span className="inline-flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-destructive" /> Batal</span>
+      </div>
       <div className="flex items-end gap-1" style={{ height: `${REPORT_BAR_HEIGHT + 46}px` }}>
         {view.map((row) => {
-          const h = row.revenue > 0 ? Math.max(4, Math.round((row.revenue / (peak || 1)) * REPORT_BAR_HEIGHT)) : 2
+          const total = (row.paid ?? 0) + (row.pending ?? 0) + (row.cancelled ?? 0)
+          const h = total > 0 ? Math.max(6, Math.round((total / (peak || 1)) * REPORT_BAR_HEIGHT)) : 2
           return (
             <div key={row.key} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
               <span className="text-[10px] font-medium text-on-surface-variant">
-                {row.revenue > 0 ? compactRupiah(row.revenue) : ""}
+                {total > 0 ? total : ""}
               </span>
               <div
-                className={`w-full rounded-t-md transition-colors ${row.revenue > 0 ? "bg-primary hover:bg-primary-container" : "bg-surface-container"}`}
+                className="flex w-full flex-col-reverse overflow-hidden rounded-t-md bg-surface-container"
                 style={{ height: `${h}px` }}
-                title={`${row.label}: ${formatPrice(row.revenue)} dari ${row.orders} pesanan (${row.items} item)`}
-              />
+                title={`${row.label}: ${row.orders} order (${formatPrice(row.revenue)})`}
+              >
+                {segsOf(row).map((sg, i) =>
+                  sg.value > 0 ? (
+                    <div key={i} className={sg.cls} style={{ flexGrow: sg.value, flexBasis: 0 }} />
+                  ) : null
+                )}
+              </div>
               <span className="text-[11px] font-medium text-on-surface-variant" title={row.key}>
                 {row.label}
               </span>
@@ -140,13 +164,65 @@ function RevenueBarChart({ rows }: { rows: ReportPeriod[] }) {
         })}
       </div>
       <p className="mt-3 text-xs text-on-surface-variant">
-        Arahkan kursor ke batang untuk rincian periode.
+        Tinggi batang = jumlah order; warna = status. Arahkan kursor untuk rincian.
       </p>
     </div>
   )
 }
 
-/** Pie/donat SVG pendapatan per kategori. */
+/** Pie SVG komposisi status order. */
+function StatusPieChart({ rows }: { rows: StatusSlice[] }) {
+  const total = rows.reduce((sum, r) => sum + r.count, 0)
+  const colors: Record<string, string> = { green: "#1a7a4a", yellow: "#c9a227", red: "#dc2626" }
+  if (total <= 0) {
+    return <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada order pada periode ini</p>
+  }
+  const segs = rows.reduce(
+    (acc: { row: StatusSlice; pct: number; dasharray: string; dashoffset: number }[], row) => {
+      const pct = total > 0 ? (row.count / total) * 100 : 0
+      const prev = acc.length > 0 ? acc[acc.length - 1] : null
+      const dashoffset = prev ? prev.dashoffset - prev.pct : 25
+      return [...acc, { row, pct, dasharray: `${pct} ${100 - pct}`, dashoffset }]
+    },
+    []
+  )
+  return (
+    <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+      <svg viewBox="0 0 42 42" className="h-44 w-44 shrink-0" role="img" aria-label="Komposisi status order">
+        <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" className="stroke-surface-container-low" />
+        {segs.filter((sg) => sg.pct > 0).map((sg, i) => (
+          <circle key={i} cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8"
+            stroke={colors[sg.row.color] ?? colors.green}
+            strokeDasharray={sg.dasharray} strokeDashoffset={sg.dashoffset} strokeLinecap="butt" />
+        ))}
+      </svg>
+      <ul className="w-full space-y-2 text-sm">
+        {segs.map((sg, i) => (
+          <li key={i} className="flex items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: colors[sg.row.color] ?? colors.green }} />
+              <span className="font-medium">{sg.row.label}</span>
+            </span>
+            <span className="text-on-surface-variant">{sg.row.count} - {Math.round(sg.pct)}%</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** Badge status order. */
+function OrderStatusBadge({ status, paymentStatus }: { status: string; paymentStatus: string }) {
+  const norm = paymentStatus === "paid" ? "paid" : (status === "cancelled" || status === "expired" ? "cancelled" : "pending")
+  const map: Record<string, { label: string; cls: string }> = {
+    paid: { label: "Lunas", cls: "bg-primary/10 text-primary" },
+    pending: { label: "Menunggu", cls: "bg-[#c9a227]/15 text-[#b45309] dark:text-[#fbbf24]" },
+    cancelled: { label: "Batal", cls: "bg-destructive/10 text-destructive" },
+  }
+  const m = map[norm] ?? map.pending
+  return <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${m.cls}`}>{m.label}</span>
+}
+
 function CategoryPieChart({ rows }: { rows: CategoryRow[] }) {
   const total = rows.reduce((s, r) => s + r.revenue, 0)
   if (total <= 0) {
@@ -202,7 +278,6 @@ function CategoryPieChart({ rows }: { rows: CategoryRow[] }) {
   )
 }
 
-/** Bar horizontal 10 produk terlaris. */
 function TopProductsBar({ rows }: { rows: TopProductRow[] }) {
   const max = rows.reduce((m, r) => Math.max(m, r.revenue), 0)
   if (rows.length === 0 || max <= 0) {
@@ -237,7 +312,6 @@ function TopProductsBar({ rows }: { rows: TopProductRow[] }) {
   )
 }
 
-/** Donat SVG komposisi pelanggan baru vs lama. */
 function CustomerDonut({ total, baru }: { total: number; baru: number }) {
   const lama = Math.max(0, total - baru)
   const baruPct = total > 0 ? (baru / total) * 100 : 0
@@ -277,6 +351,7 @@ function CustomerDonut({ total, baru }: { total: number; baru: number }) {
     </div>
   )
 }
+
 
 function toIsoDate(date: Date): string {
   const y = date.getFullYear()
@@ -423,6 +498,8 @@ export default function AdminReportsPage() {
 
   const summary = data?.summary
   const series = data?.series ?? []
+  const statusBreakdown = data?.statusBreakdown ?? []
+  const orderList = data?.orderList ?? []
   const categoryBreakdown = data?.categoryBreakdown ?? []
   const topProducts = data?.topProducts ?? []
   const stockReport = data?.stockReport
@@ -593,6 +670,49 @@ export default function AdminReportsPage() {
             </CardHeader>
             <CardContent>
               <RevenueBarChart rows={series} />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Komposisi Status Order</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <StatusPieChart rows={statusBreakdown} />
+            </CardContent>
+          </Card>
+
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-lg">Daftar Order per Status</CardTitle>
+            </CardHeader>
+            <CardContent className="overflow-x-auto">
+              {orderList.length === 0 ? (
+                <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada order pada periode ini</p>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b text-left text-on-surface-variant">
+                      <th className="pb-3 font-medium">Order</th>
+                      <th className="pb-3 font-medium">Tanggal</th>
+                      <th className="pb-3 font-medium">Status</th>
+                      <th className="pb-3 text-right font-medium">Item</th>
+                      <th className="pb-3 text-right font-medium">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orderList.map((o, i) => (
+                      <tr key={o.orderNumber} className={i % 2 === 0 ? "bg-surface" : "bg-surface-container-low/50"}>
+                        <td className="py-2.5 font-mono text-xs font-medium text-on-surface">{o.orderNumber}</td>
+                        <td className="py-2.5 text-xs text-on-surface-variant">{o.createdAt.slice(0, 10)}</td>
+                        <td className="py-2.5"><OrderStatusBadge status={o.status} paymentStatus={o.paymentStatus} /></td>
+                        <td className="py-2.5 text-right text-on-surface-variant">{o.items}</td>
+                        <td className="py-2.5 text-right font-medium">{formatPrice(o.total)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </CardContent>
           </Card>
 

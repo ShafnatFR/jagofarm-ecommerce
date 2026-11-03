@@ -6,12 +6,11 @@ import { syncOrderToSheets, type SyncOrder } from "@/lib/sheets-sync";
 /**
  * POST /api/admin/reports/sync?from=YYYY-MM-DD&to=YYYY-MM-DD
  *
- * Sinkron massal order LUNAS pada rentang tanggal ke Google Spreadsheet
- * (tab Orders + OrderItems + Ringkasan). Menggantikan Export CSV:
- * data ditulis langsung ke sheet, realtime per order lunas via webhook,
+ * Sinkron massal SEMUA order pada rentang tanggal ke Google Spreadsheet
+ * (tab Orders + OrderItems + Ringkasan). Semua status masuk
+ * (pending/unpaid/expired/cancelled/paid) — kolom Status/Payment Status
+ * di sheet membedakan tiap baris. Realtime per order lunas via webhook,
  * tombol ini untuk backfill periode lama.
- *
- * Definisi lunas = paymentStatus "paid" (bukan filter "terjual" reports).
  */
 
 function parseIsoDate(value: string): Date | null {
@@ -49,7 +48,6 @@ export async function POST(request: NextRequest) {
 
     const orders = await prisma.order.findMany({
       where: {
-        paymentStatus: "paid",
         createdAt: { gte: fromDate, lte: toDate },
       },
       include: {
