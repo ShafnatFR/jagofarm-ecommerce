@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -274,7 +274,6 @@ export default function OrderDetailPage() {
 
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [paying, setPaying] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
   const [canceling, setCanceling] = useState(false);
@@ -372,7 +371,16 @@ export default function OrderDetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- baca query Midtrans sekali saat mount; toast stabil.
   }, []);
 
-  // Snap embed: render saat div #snap-embed sudah ada (token dari handlePay).
+  // Auto-embed Snap sekali saat order pending termuat (tanpa tombol Bayar).
+  // canPay dihitung dari order; guard ref cegah double-call StrictMode.
+  const snapStartedRef = useRef(false);
+  useEffect(() => {
+    if (!order || embedToken || snapStartedRef.current) return;
+    if (order.status !== "pending" || order.paymentStatus !== "unpaid") return;
+    snapStartedRef.current = true;
+    void startSnapEmbed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- startSnapEmbed dibuat ulang tiap render; picu sekali via ref
+  }, [order, embedToken]);
   useEffect(() => {
     if (!embedToken || typeof window === "undefined" || !window.snap) return;
     if (!document.getElementById("snap-embed")) return;
@@ -392,8 +400,9 @@ export default function OrderDetailPage() {
           void refreshStatus(true);
         },
         onClose: () => {
-          setEmbedToken(null);
-          toast({ title: "Pembayaran ditutup", description: "Anda bisa melanjutkan pembayaran kapan saja." });
+          // Embed tanpa header/tombol tutup: user menutup form Snap =
+          // sinkronkan status, token tetap supaya form bisa dibuka lagi.
+          void refreshStatus(true);
         },
       });
     } catch {
@@ -403,11 +412,10 @@ export default function OrderDetailPage() {
           onSuccess: () => void refreshStatus(true),
           onPending: () => void refreshStatus(true),
           onError: () => void refreshStatus(true),
-          onClose: () => setEmbedToken(null),
+          onClose: () => void refreshStatus(true),
         });
       } catch {
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- fallback sinkron saat embed Snap diblokir; reset token sekali agar UI kembali ke tombol bayar
-        setEmbedToken(null);
+        void refreshStatus(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- embed sekali per token; refreshStatus stabil via ref implisit
@@ -489,9 +497,12 @@ export default function OrderDetailPage() {
     }
   }
 
-  async function handlePay() {
+  /**
+   * Ambil token Snap lalu embed langsung (tanpa tombol Bayar).
+   * Dipanggil otomatis sekali saat order pending termuat.
+   */
+  async function startSnapEmbed() {
     if (!order) return;
-    setPaying(true);
     try {
       const res = await fetch("/api/payments/create", {
         method: "POST",
@@ -591,11 +602,9 @@ export default function OrderDetailPage() {
     } catch {
       toast({
         variant: "destructive",
-        title: "Gagal memulai pembayaran",
-        description: "Periksa koneksi Anda lalu coba lagi.",
+        title: "Gagal memuat pembayaran",
+        description: "Muat ulang halaman untuk mencoba lagi.",
       });
-    } finally {
-      setPaying(false);
     }
   }
 
@@ -1149,32 +1158,15 @@ export default function OrderDetailPage() {
                 <CardTitle className="text-lg">Aksi Pesanan</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {canPay && (
-                  <Button
-                    className="w-full"
-                    onClick={() => void handlePay()}
-                    disabled={paying}
-                  >
-                    <Icon name="payments" size={16} className="mr-2" />
-                    {paying ? "Memproses…" : "Bayar Sekarang"}
-                  </Button>
-                )}
-
-                {/* Snap embed: bayar di halaman ini tanpa pindah domain. */}
-                {embedToken && (
-                  <div className="rounded-xl border border-outline-variant overflow-hidden bg-white">
-                    <div className="flex items-center justify-between px-3 py-2 bg-surface-container-low">
-                      <span className="text-xs font-semibold">Pembayaran Midtrans</span>
-                      <button
-                        type="button"
-                        onClick={() => setEmbedToken(null)}
-                        className="text-xs text-muted-foreground hover:text-foreground"
-                      >
-                        Tutup
-                      </button>
-                    </div>
-                    <div id="snap-embed" className="min-h-[560px] w-full" />
+                {/* Snap auto-embed saat order pending; tanpa tombol Bayar. */}
+                {canPay && !embedToken && (
+                  <div className="flex items-center justify-center gap-2 py-8 text-sm text-muted-foreground">
+                    <Icon name="progress_activity" size={16} className="animate-spin" />
+                    Memuat pembayaran…
                   </div>
+                )}
+                {embedToken && (
+                  <div id="snap-embed" className="min-h-[560px] w-full rounded-xl bg-white" />
                 )}
 
                 {isPending && (
