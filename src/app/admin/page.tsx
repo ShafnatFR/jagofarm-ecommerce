@@ -13,7 +13,11 @@ interface Stats {
   totalRevenue?: number; totalOrders?: number; totalCustomers?: number;
   orderStatusCounts?: Record<string, number>;
 }
-interface DailyRevenuePoint { date: string; revenue: number; orders: number }
+interface DailyRevenuePoint {
+  date: string; revenue: number; orders: number;
+  pendingRevenue?: number; pendingOrders?: number;
+  cancelledRevenue?: number; cancelledOrders?: number;
+}
 /** Seri bulanan hasil agregasi server (GET /api/admin/stats -> monthlyRevenue). */
 interface MonthlyRevenuePoint { month: string; label: string; revenue: number; orders: number }
 interface RecentOrder {
@@ -59,13 +63,6 @@ const colorMap: Record<string, string> = {
 /** Tinggi area batang dalam piksel, dipakai menghitung tinggi tiap batang */
 const BAR_AREA_HEIGHT = 150
 
-function monthLabel(year: number, month: number, style: "short" | "long") {
-  const d = new Date(year, month, 1)
-  return style === "short"
-    ? d.toLocaleDateString("id-ID", { month: "short" })
-    : d.toLocaleDateString("id-ID", { month: "long", year: "numeric" })
-}
-
 function compactRupiah(value: number) {
   try {
     return new Intl.NumberFormat("id-ID", {
@@ -79,122 +76,173 @@ function compactRupiah(value: number) {
   }
 }
 
-interface MonthBucket { key: string; label: string; fullLabel: string; revenue: number; orders: number }
+interface DayBucket {
+  key: string; label: string; fullLabel: string;
+  done: number; doneOrders: number;
+  pending: number; pendingOrders: number;
+  cancelled: number; cancelledOrders: number;
+}
 
-/** Kerangka N bulan terakhir (termasuk bulan ini) yang siap diisi data. */
-function emptyMonthBuckets(months: number): { buckets: MonthBucket[]; byKey: Map<string, MonthBucket> } {
+interface HourlyRevenuePoint {
+  hour: string; revenue: number; orders: number;
+  pendingRevenue?: number; pendingOrders?: number;
+  cancelledRevenue?: number; cancelledOrders?: number;
+}
+
+/** Kerangka 30 hari terakhir yang siap diisi data per-status. */
+function emptyDayBuckets(days: number): { buckets: DayBucket[]; byKey: Map<string, DayBucket> } {
   const now = new Date()
-  const buckets: MonthBucket[] = []
-  const byKey = new Map<string, MonthBucket>()
+  const buckets: DayBucket[] = []
+  const byKey = new Map<string, DayBucket>()
 
-  for (let i = months - 1; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-    const year = d.getFullYear()
-    const month = d.getMonth()
-    const bucket: MonthBucket = {
-      key: `${year}-${String(month + 1).padStart(2, "0")}`,
-      label: monthLabel(year, month, "short"),
-      fullLabel: monthLabel(year, month, "long"),
-      revenue: 0,
-      orders: 0,
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+    const bucket: DayBucket = {
+      key,
+      label: d.toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
+      fullLabel: d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }),
+      done: 0, doneOrders: 0, pending: 0, pendingOrders: 0, cancelled: 0, cancelledOrders: 0,
     }
     buckets.push(bucket)
-    byKey.set(bucket.key, bucket)
+    byKey.set(key, bucket)
   }
 
   return { buckets, byKey }
 }
 
-/**
- * Susun deret pendapatan bulanan dari data HARIAN yang dikirim endpoint stats
- * (`dailyRevenue`), dibatasi N bulan terakhir. Dipakai sebagai fallback kalau
- * server belum mengirim `monthlyRevenue`.
- */
-function buildMonthlySeries(points: DailyRevenuePoint[] | undefined, months: number): MonthBucket[] {
-  const { buckets, byKey } = emptyMonthBuckets(months)
+/** Kerangka 24 slot jam terakhir yang siap diisi data per-status. */
+function emptyHourBuckets(): { buckets: DayBucket[]; byKey: Map<string, DayBucket> } {
+  const now = new Date()
+  const buckets: DayBucket[] = []
+  const byKey = new Map<string, DayBucket>()
+
+  for (let i = 23; i >= 0; i--) {
+    const d = new Date(now.getTime() - i * 60 * 60 * 1000)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(d.getHours()).padStart(2, "0")}`
+    const bucket: DayBucket = {
+      key,
+      label: `${String(d.getHours()).padStart(2, "0")}:00`,
+      fullLabel: `${d.toLocaleDateString("id-ID", { day: "numeric", month: "short" })} ${String(d.getHours()).padStart(2, "0")}:00`,
+      done: 0, doneOrders: 0, pending: 0, pendingOrders: 0, cancelled: 0, cancelledOrders: 0,
+    }
+    buckets.push(bucket)
+    byKey.set(key, bucket)
+  }
+
+  return { buckets, byKey }
+}
+
+/** Susun deret 24 jam dari hourlyRevenue API. Cocokkan via selisih jam utuh. */
+function buildHourlySeries(points: HourlyRevenuePoint[] | undefined): DayBucket[] {
+  const { buckets } = emptyHourBuckets()
+  const num = (v: unknown) => { const n = Number(v); return Number.isFinite(n) ? n : 0 }
+
+  // Batas tiap bucket dalam epoch-ms (tepi atas tiap jam lokal).
+  const edges = buckets.map((b, i) => {
+    void b
+    const d = new Date(Date.now())
+    d.setMinutes(0, 0, 0)
+    return d.getTime() - (buckets.length - 1 - i) * 3_600_000
+  })
 
   for (const point of points ?? []) {
-    const key = String(point?.date ?? "").slice(0, 7) // "YYYY-MM"
-    const bucket = byKey.get(key)
+    const t = new Date(String(point?.hour ?? "")).getTime()
+    if (!Number.isFinite(t)) continue
+    // Masukkan ke bucket yang tepinya paling dekat tapi tidak lebih awal.
+    const idx = edges.findIndex((edge) => t <= edge + 3_600_000 && t > edge - 3_600_000)
+    if (idx < 0) continue
+    const bucket = buckets[idx]
+    bucket.done += num(point.revenue)
+    bucket.doneOrders += num(point.orders)
+    bucket.pending += num(point.pendingRevenue)
+    bucket.pendingOrders += num(point.pendingOrders)
+    bucket.cancelled += num(point.cancelledRevenue)
+    bucket.cancelledOrders += num(point.cancelledOrders)
+  }
+
+  return buckets
+}
+
+/** Susun deret harian 30 hari dari dailyRevenue API. */
+function buildDailySeries(points: DailyRevenuePoint[] | undefined, days: number): DayBucket[] {
+  const { buckets, byKey } = emptyDayBuckets(days)
+
+  for (const point of points ?? []) {
+    const raw = typeof point?.date === "string" ? point.date.slice(0, 10) : ""
+    const bucket = byKey.get(raw)
     if (!bucket) continue
-    const revenue = Number(point.revenue)
-    const orders = Number(point.orders)
-    bucket.revenue += Number.isFinite(revenue) ? revenue : 0
-    bucket.orders += Number.isFinite(orders) ? orders : 0
+    const num = (v: unknown) => { const n = Number(v); return Number.isFinite(n) ? n : 0 }
+    bucket.done += num(point.revenue)
+    bucket.doneOrders += num(point.orders)
+    bucket.pending += num(point.pendingRevenue)
+    bucket.pendingOrders += num(point.pendingOrders)
+    bucket.cancelled += num(point.cancelledRevenue)
+    bucket.cancelledOrders += num(point.cancelledOrders)
   }
 
   return buckets
 }
 
 /**
- * Pakai seri bulanan hasil agregasi SERVER (`monthlyRevenue`) bila tersedia.
- * Mengembalikan null kalau field itu tidak ada/kosong supaya pemanggil jatuh
- * kembali ke agregasi lama dari `dailyRevenue`.
+ * Grafik pendapatan 30 hari / 24 jam, stacked 3 segmen per batang:
+ * selesai (hijau) + menunggu (kuning) + batal (merah).
  */
-function buildMonthlySeriesFromServer(
-  points: MonthlyRevenuePoint[] | undefined,
-  months: number
-): MonthBucket[] | null {
-  if (!points || points.length === 0) return null
-
-  const { buckets, byKey } = emptyMonthBuckets(months)
-  let matched = false
-
-  for (const point of points) {
-    const key = String(point?.month ?? "").slice(0, 7) // "YYYY-MM"
-    const bucket = byKey.get(key)
-    if (!bucket) continue
-    matched = true
-    const revenue = Number(point.revenue)
-    const orders = Number(point.orders)
-    bucket.revenue += Number.isFinite(revenue) ? revenue : 0
-    bucket.orders += Number.isFinite(orders) ? orders : 0
-  }
-
-  return matched ? buckets : null
-}
-
 function MonthlyRevenueChart({
   points,
-  monthly,
+  hourly,
   loading,
 }: {
   points?: DailyRevenuePoint[]
-  monthly?: MonthlyRevenuePoint[]
+  hourly?: HourlyRevenuePoint[]
   loading: boolean
 }) {
-  const [months, setMonths] = useState(6)
+  const [mode, setMode] = useState<"30d" | "24h">("30d")
 
-  // Prioritaskan agregasi server; fallback ke dailyRevenue (perilaku lama).
-  const series = useMemo(
-    () => buildMonthlySeriesFromServer(monthly, months) ?? buildMonthlySeries(points, months),
-    [monthly, points, months]
-  )
-  const total = series.reduce((sum, bucket) => sum + bucket.revenue, 0)
-  const peak = series.reduce((max, bucket) => Math.max(max, bucket.revenue), 0)
+  // 30 hari: agregasi dari dailyRevenue API (per-status).
+  const dailySeries = useMemo(() => buildDailySeries(points, 30), [points])
+
+  // 24 jam: dari hourlyRevenue API (per-status, 24 slot jam).
+  const hourlySeries = useMemo(() => buildHourlySeries(hourly), [hourly])
+
+  const series = mode === "24h" ? hourlySeries : dailySeries
+  const total = series.reduce((s, b) => s + b.done + b.pending + b.cancelled, 0)
+  const peak = series.reduce((m, b) => Math.max(m, b.done + b.pending + b.cancelled), 0)
   const hasData = peak > 0
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs text-on-surface-variant">
-          Total {months} bulan terakhir:{" "}
+          Total {mode === "24h" ? "24 jam" : "30 hari"} terakhir:{" "}
           <span className="font-semibold text-on-surface">{formatPrice(total)}</span>
         </p>
         <div className="flex gap-1 rounded-lg bg-surface-container-low p-1">
-          {[6, 12].map((option) => (
+          {([["30d", "30 hari"], ["24h", "24 jam"]] as const).map(([value, label]) => (
             <button
-              key={option}
+              key={value}
               type="button"
-              onClick={() => setMonths(option)}
+              onClick={() => setMode(value)}
               className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                months === option ? "bg-surface text-primary shadow-sm" : "text-on-surface-variant hover:text-on-surface-variant"
+                mode === value ? "bg-surface text-primary shadow-sm" : "text-on-surface-variant hover:text-on-surface-variant"
               }`}
             >
-              {option} bulan
+              {label}
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-4 text-xs text-on-surface-variant">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-sm bg-primary" /> Selesai
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-sm bg-[#c9a227]" /> Menunggu
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-sm bg-destructive" /> Batal
+        </span>
       </div>
 
       {loading ? (
@@ -208,7 +256,7 @@ function MonthlyRevenueChart({
         <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low">
           <div className="text-center">
             <Icon name="trending_up" size={40} className="mx-auto text-on-surface-variant/70" />
-            <p className="mt-2 text-sm text-on-surface-variant">Belum ada pendapatan pada {months} bulan terakhir</p>
+            <p className="mt-2 text-sm text-on-surface-variant">Belum ada pendapatan pada {mode === "24h" ? "24 jam" : "30 hari"} terakhir</p>
             <p className="text-xs text-on-surface-variant">Grafik akan terisi otomatis setelah ada pesanan masuk</p>
           </div>
         </div>
@@ -216,19 +264,28 @@ function MonthlyRevenueChart({
         <div>
           <div className="flex items-end gap-1.5 sm:gap-2" style={{ height: `${BAR_AREA_HEIGHT + 46}px` }}>
             {series.map((bucket) => {
-              const height = bucket.revenue > 0 ? Math.max(4, Math.round((bucket.revenue / peak) * BAR_AREA_HEIGHT)) : 2
+              const dayTotal = bucket.done + bucket.pending + bucket.cancelled
+              const segs = [
+                { value: bucket.done, cls: "bg-primary" },
+                { value: bucket.pending, cls: "bg-[#c9a227]" },
+                { value: bucket.cancelled, cls: "bg-destructive" },
+              ]
               return (
                 <div key={bucket.key} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
                   <span className="text-[10px] font-medium text-on-surface-variant">
-                    {bucket.revenue > 0 ? compactRupiah(bucket.revenue) : ""}
+                    {dayTotal > 0 ? compactRupiah(dayTotal) : ""}
                   </span>
                   <div
-                    className={`w-full max-w-14 rounded-t-md transition-colors ${
-                      bucket.revenue > 0 ? "bg-primary hover:bg-primary-container" : "bg-surface-container"
-                    }`}
-                    style={{ height: `${height}px` }}
-                    title={`${bucket.fullLabel}: ${formatPrice(bucket.revenue)} dari ${bucket.orders} pesanan`}
-                  />
+                    className="flex w-full max-w-14 flex-col-reverse overflow-hidden rounded-t-md bg-surface-container"
+                    style={{ height: `${dayTotal > 0 ? Math.max(4, Math.round((dayTotal / peak) * BAR_AREA_HEIGHT)) : 2}px` }}
+                    title={`${bucket.fullLabel}: selesai ${formatPrice(bucket.done)} (${bucket.doneOrders}), menunggu ${formatPrice(bucket.pending)} (${bucket.pendingOrders}), batal ${formatPrice(bucket.cancelled)} (${bucket.cancelledOrders})`}
+                  >
+                    {segs.map((s, i) =>
+                      s.value > 0 ? (
+                        <div key={i} className={s.cls} style={{ flexGrow: s.value, flexBasis: 0 }} />
+                      ) : null
+                    )}
+                  </div>
                   <span className="text-[11px] font-medium text-on-surface-variant" title={bucket.fullLabel}>
                     {bucket.label}
                   </span>
@@ -237,8 +294,8 @@ function MonthlyRevenueChart({
             })}
           </div>
           <p className="mt-3 text-xs text-on-surface-variant">
-            Angka di atas batang adalah pendapatan bulan tersebut. Arahkan kursor ke batang untuk
-            detail lengkap (bulan, rupiah, jumlah pesanan).
+            Angka di atas batang adalah total hari tersebut. Arahkan kursor ke batang untuk
+            rincian selesai/menunggu/batal.
           </p>
         </div>
       )}
@@ -251,7 +308,7 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [revenueHistory, setRevenueHistory] = useState<DailyRevenuePoint[] | undefined>(undefined)
-  const [monthlyRevenue, setMonthlyRevenue] = useState<MonthlyRevenuePoint[] | undefined>(undefined)
+  const [hourlyHistory, setHourlyHistory] = useState<HourlyRevenuePoint[] | undefined>(undefined)
   const [historyLoading, setHistoryLoading] = useState(true)
 
   const fetchDashboard = useCallback(async () => {
@@ -265,12 +322,11 @@ export default function AdminDashboardPage() {
     if (summary.status === "fulfilled") setData(summary.value)
     else setError(summary.reason instanceof Error ? summary.reason.message : String(summary.reason))
     if (history.status === "fulfilled") {
-      const monthly = Array.isArray(history.value?.monthlyRevenue) ? history.value.monthlyRevenue : []
-      setMonthlyRevenue(monthly.length > 0 ? monthly : undefined)
       setRevenueHistory(Array.isArray(history.value?.dailyRevenue) ? history.value.dailyRevenue : [])
+      setHourlyHistory(Array.isArray(history.value?.hourlyRevenue) ? history.value.hourlyRevenue : [])
     } else {
-      setMonthlyRevenue(undefined)
       setRevenueHistory([])
+      setHourlyHistory([])
     }
     setLoading(false)
     setHistoryLoading(false)
@@ -364,7 +420,7 @@ export default function AdminDashboardPage() {
         <Card className="lg:col-span-2">
           <CardHeader><CardTitle className="text-lg">Pendapatan Bulanan</CardTitle></CardHeader>
           <CardContent>
-            <MonthlyRevenueChart points={revenueHistory} monthly={monthlyRevenue} loading={historyLoading} />
+            <MonthlyRevenueChart points={revenueHistory} hourly={hourlyHistory} loading={historyLoading} />
           </CardContent>
         </Card>
 

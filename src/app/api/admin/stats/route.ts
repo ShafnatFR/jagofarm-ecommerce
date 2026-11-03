@@ -27,12 +27,26 @@ interface DailyRevenueRow {
   date: string | Date | null;
   revenue: string | number | bigint | null;
   orders: string | number | bigint | null;
+  pending_revenue: string | number | bigint | null;
+  pending_orders: string | number | bigint | null;
+  cancelled_revenue: string | number | bigint | null;
+  cancelled_orders: string | number | bigint | null;
 }
 
 interface MonthlyRevenueRow {
   month: string | null;
   revenue: string | number | bigint | null;
   orders: string | number | bigint | null;
+}
+
+interface HourlyRevenueRow {
+  hour: string | Date | null;
+  revenue: string | number | bigint | null;
+  orders: string | number | bigint | null;
+  pending_revenue: string | number | bigint | null;
+  pending_orders: string | number | bigint | null;
+  cancelled_revenue: string | number | bigint | null;
+  cancelled_orders: string | number | bigint | null;
 }
 
 export async function GET(request: NextRequest) {
@@ -61,6 +75,7 @@ export async function GET(request: NextRequest) {
       orderStatusCounts,
       topProducts,
       dailyRevenue,
+      hourlyRevenue,
     ] = await Promise.all([
       prisma.order.aggregate({
         where: { status: { notIn: ["cancelled", "expired"] }, createdAt: { gte: since } },
@@ -84,14 +99,35 @@ export async function GET(request: NextRequest) {
         orderBy: { _sum: { total: "desc" } },
         take: 5,
       }),
-      // Daily revenue for chart
+      // Daily revenue for chart — per-status: selesai (paid/processing/shipped/
+      // delivered/refunded), menunggu (pending), batal (cancelled/expired).
       prisma.$queryRawUnsafe<DailyRevenueRow[]>(`
-        SELECT DATE(created_at) as date, SUM(total) as revenue, COUNT(*) as orders
+        SELECT DATE(created_at) as date,
+               SUM(CASE WHEN status IN ('paid','processing','shipped','delivered','refunded') THEN total ELSE 0 END) as revenue,
+               SUM(CASE WHEN status IN ('paid','processing','shipped','delivered','refunded') THEN 1 ELSE 0 END) as orders,
+               SUM(CASE WHEN status = 'pending' THEN total ELSE 0 END) as pending_revenue,
+               SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders,
+               SUM(CASE WHEN status IN ('cancelled','expired') THEN total ELSE 0 END) as cancelled_revenue,
+               SUM(CASE WHEN status IN ('cancelled','expired') THEN 1 ELSE 0 END) as cancelled_orders
         FROM orders
-        WHERE created_at >= $1 AND status NOT IN ('cancelled', 'expired')
+        WHERE created_at >= $1
         GROUP BY DATE(created_at)
         ORDER BY date ASC
       `, since),
+      // Hourly revenue for chart (24 jam terakhir) — per-status sama.
+      prisma.$queryRawUnsafe<HourlyRevenueRow[]>(`
+        SELECT DATE_TRUNC('hour', created_at) as hour,
+               SUM(CASE WHEN status IN ('paid','processing','shipped','delivered','refunded') THEN total ELSE 0 END) as revenue,
+               SUM(CASE WHEN status IN ('paid','processing','shipped','delivered','refunded') THEN 1 ELSE 0 END) as orders,
+               SUM(CASE WHEN status = 'pending' THEN total ELSE 0 END) as pending_revenue,
+               SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders,
+               SUM(CASE WHEN status IN ('cancelled','expired') THEN total ELSE 0 END) as cancelled_revenue,
+               SUM(CASE WHEN status IN ('cancelled','expired') THEN 1 ELSE 0 END) as cancelled_orders
+        FROM orders
+        WHERE created_at >= $1
+        GROUP BY DATE_TRUNC('hour', created_at)
+        ORDER BY hour ASC
+      `, new Date(Date.now() - 24 * 60 * 60 * 1000)),
     ]);
 
     // Enrich top products with names
@@ -170,8 +206,21 @@ export async function GET(request: NextRequest) {
         date: d.date,
         revenue: Number(d.revenue),
         orders: Number(d.orders),
+        pendingRevenue: Number(d.pending_revenue),
+        pendingOrders: Number(d.pending_orders),
+        cancelledRevenue: Number(d.cancelled_revenue),
+        cancelledOrders: Number(d.cancelled_orders),
       })),
       monthlyRevenue,
+      hourlyRevenue: hourlyRevenue.map((h) => ({
+        hour: h.hour,
+        revenue: Number(h.revenue),
+        orders: Number(h.orders),
+        pendingRevenue: Number(h.pending_revenue),
+        pendingOrders: Number(h.pending_orders),
+        cancelledRevenue: Number(h.cancelled_revenue),
+        cancelledOrders: Number(h.cancelled_orders),
+      })),
     });
   } catch (error) {
     console.error("Admin stats error:", error);
