@@ -11,7 +11,7 @@ export default async function AddressesPage({
   const user = await getCurrentUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/login?next=%2Faccount%2Faddresses&callbackUrl=%2Faccount%2Faddresses");
   }
 
   const { error } = await searchParams;

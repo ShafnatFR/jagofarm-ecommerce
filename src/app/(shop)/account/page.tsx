@@ -58,7 +58,7 @@ export default function AccountPage() {
         ]);
 
         if (profileRes.status === 401 || addressesRes.status === 401) {
-          router.replace("/login");
+          router.replace("/login?next=%2Faccount&callbackUrl=%2Faccount");
           return;
         }
         if (!profileRes.ok || !addressesRes.ok) {

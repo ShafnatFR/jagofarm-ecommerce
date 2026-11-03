@@ -165,7 +165,7 @@ export default function OrdersPage() {
         <Icon name="login" size={64} className="mx-auto text-muted-foreground" />
         <h1 className="mt-4 text-2xl font-bold">Masuk Diperlukan</h1>
         <p className="mt-2 text-muted-foreground">Silakan masuk untuk melihat riwayat pesanan Anda.</p>
-        <Link href="/login" className="mt-6 inline-block">
+        <Link href="/login?next=%2Forders&callbackUrl=%2Forders" className="mt-6 inline-block">
           <Button size="lg">Masuk <Icon name="login" size={16} className="ml-2" /></Button>
         </Link>
       </div>
