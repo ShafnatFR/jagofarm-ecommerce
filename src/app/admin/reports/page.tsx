@@ -89,6 +89,195 @@ interface ReportResponse {
   customerReport?: CustomerReport
 }
 
+function compactRupiah(value: number): string {
+  try {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(value)
+  } catch {
+    return `Rp ${Math.round(value / 1000)} rb`
+  }
+}
+
+/** Tinggi area batang dalam piksel. */
+const REPORT_BAR_HEIGHT = 180
+
+/** Palet kategori (maks 10) — hijau dominan + aksen. */
+const CATEGORY_HEX = [
+  "#1a7a4a", "#245f43", "#66885d", "#c9a227",
+  "#2f7d62", "#8ab17d", "#3d9c6f", "#b8ce8d",
+  "#1d4e3b", "#d4a017",
+]
+
+/** Bar chart vertikal pendapatan per periode. */
+function RevenueBarChart({ rows }: { rows: ReportPeriod[] }) {
+  const peak = rows.reduce((m, r) => Math.max(m, r.revenue), 0)
+  // Batasi 31 batang agar label tidak bertumpuk (preset 30d + hari ini).
+  const view = rows.length > 31 ? rows.slice(-31) : rows
+  return (
+    <div>
+      <div className="flex items-end gap-1" style={{ height: `${REPORT_BAR_HEIGHT + 46}px` }}>
+        {view.map((row) => {
+          const h = row.revenue > 0 ? Math.max(4, Math.round((row.revenue / (peak || 1)) * REPORT_BAR_HEIGHT)) : 2
+          return (
+            <div key={row.key} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
+              <span className="text-[10px] font-medium text-on-surface-variant">
+                {row.revenue > 0 ? compactRupiah(row.revenue) : ""}
+              </span>
+              <div
+                className={`w-full rounded-t-md transition-colors ${row.revenue > 0 ? "bg-primary hover:bg-primary-container" : "bg-surface-container"}`}
+                style={{ height: `${h}px` }}
+                title={`${row.label}: ${formatPrice(row.revenue)} dari ${row.orders} pesanan (${row.items} item)`}
+              />
+              <span className="text-[11px] font-medium text-on-surface-variant" title={row.key}>
+                {row.label}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+      <p className="mt-3 text-xs text-on-surface-variant">
+        Arahkan kursor ke batang untuk rincian periode.
+      </p>
+    </div>
+  )
+}
+
+/** Pie/donat SVG pendapatan per kategori. */
+function CategoryPieChart({ rows }: { rows: CategoryRow[] }) {
+  const total = rows.reduce((s, r) => s + r.revenue, 0)
+  if (total <= 0) {
+    return <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada data kategori pada periode ini</p>
+  }
+  // Segmen SVG: lingkaran r=15.9155 (keliling 100) dengan stroke-dasharray.
+  const segs = rows.slice(0, 10).reduce(
+    (acc: { row: CategoryRow; pct: number; dasharray: string; dashoffset: number; color: string }[], row, i) => {
+      const pct = (row.revenue / total) * 100
+      const prev = acc.length > 0 ? acc[acc.length - 1] : null
+      const dashoffset = prev ? prev.dashoffset - prev.pct : 25
+      return [...acc, { row, pct, dasharray: `${pct} ${100 - pct}`, dashoffset, color: CATEGORY_HEX[i % CATEGORY_HEX.length] }]
+    },
+    []
+  )
+  const rest = rows.slice(10)
+  return (
+    <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+      <svg viewBox="0 0 42 42" className="h-44 w-44 shrink-0" role="img" aria-label="Diagram pie pendapatan per kategori">
+        <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" className="stroke-surface-container-low" />
+        {segs.map((s, i) => (
+          <circle
+            key={i}
+            cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8"
+            stroke={s.color}
+            strokeDasharray={s.dasharray}
+            strokeDashoffset={s.dashoffset}
+            strokeLinecap="butt"
+          >
+            <title>{`${s.row.categoryName}: ${formatPrice(s.row.revenue)} (${Math.round(s.pct)}%)`}</title>
+          </circle>
+        ))}
+      </svg>
+      <ul className="w-full space-y-2 text-sm">
+        {segs.map((s, i) => (
+          <li key={i} className="flex items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: s.color }} />
+              <span className="font-medium">{s.row.categoryName}</span>
+            </span>
+            <span className="text-on-surface-variant">
+              {formatPrice(s.row.revenue)} · {Math.round(s.pct)}%
+            </span>
+          </li>
+        ))}
+        {rest.length > 0 && (
+          <li className="text-xs text-on-surface-variant">
+            +{rest.length} kategori lain ({formatPrice(rest.reduce((s, r) => s + r.revenue, 0))})
+          </li>
+        )}
+      </ul>
+    </div>
+  )
+}
+
+/** Bar horizontal 10 produk terlaris. */
+function TopProductsBar({ rows }: { rows: TopProductRow[] }) {
+  const max = rows.reduce((m, r) => Math.max(m, r.revenue), 0)
+  if (rows.length === 0 || max <= 0) {
+    return <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada produk terjual pada periode ini</p>
+  }
+  return (
+    <div className="space-y-3">
+      {rows.slice(0, 10).map((p, i) => {
+        const pct = Math.round((p.revenue / max) * 100)
+        return (
+          <div key={p.productId} className="space-y-1">
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <span className="truncate font-medium">
+                <span className="mr-2 text-xs text-on-surface-variant">{i + 1}.</span>
+                {p.name}
+              </span>
+              <span className="shrink-0 text-on-surface-variant">
+                {p.qty} item · {formatPrice(p.revenue)}
+              </span>
+            </div>
+            <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-container-low">
+              <div
+                className={`h-full rounded-full ${i === 0 ? "bg-primary" : "bg-[#66885d]"}`}
+                style={{ width: `${pct}%` }}
+                title={`${p.name}: ${p.qty} item, ${formatPrice(p.revenue)}`}
+              />
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+/** Donat SVG komposisi pelanggan baru vs lama. */
+function CustomerDonut({ total, baru }: { total: number; baru: number }) {
+  const lama = Math.max(0, total - baru)
+  const baruPct = total > 0 ? (baru / total) * 100 : 0
+  return (
+    <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+      <svg viewBox="0 0 42 42" className="h-36 w-36 shrink-0" role="img" aria-label="Komposisi pelanggan">
+        <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" className="stroke-surface-container-low" />
+        {total > 0 && (
+          <>
+            <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" stroke="#1a7a4a"
+              strokeDasharray={`${baruPct} ${100 - baruPct}`} strokeDashoffset={25} strokeLinecap="butt">
+              <title>{`Baru: ${baru} (${Math.round(baruPct)}%)`}</title>
+            </circle>
+            <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" stroke="#b8ce8d"
+              strokeDasharray={`${100 - baruPct} ${baruPct}`} strokeDashoffset={25 - baruPct} strokeLinecap="butt">
+              <title>{`Lama: ${lama} (${Math.round(100 - baruPct)}%)`}</title>
+            </circle>
+          </>
+        )}
+      </svg>
+      <ul className="w-full space-y-2 text-sm">
+        <li className="flex items-center justify-between gap-2">
+          <span className="inline-flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-sm bg-primary" />
+            <span className="font-medium">Pelanggan baru</span>
+          </span>
+          <span className="text-on-surface-variant">{baru} · {Math.round(baruPct)}%</span>
+        </li>
+        <li className="flex items-center justify-between gap-2">
+          <span className="inline-flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-sm bg-[#b8ce8d]" />
+            <span className="font-medium">Pelanggan lama</span>
+          </span>
+          <span className="text-on-surface-variant">{lama} · {Math.round(100 - baruPct)}%</span>
+        </li>
+      </ul>
+    </div>
+  )
+}
+
 function toIsoDate(date: Date): string {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, "0")
@@ -220,7 +409,6 @@ export default function AdminReportsPage() {
   const topProducts = data?.topProducts ?? []
   const stockReport = data?.stockReport
   const customerReport = data?.customerReport
-  const categoryMax = categoryBreakdown.reduce((max, row) => Math.max(max, row.revenue), 0)
 
   const cards = [
     { title: "Total Pendapatan", value: formatPrice(summary?.totalRevenue ?? 0), icon: "account_balance_wallet" },
@@ -378,7 +566,18 @@ export default function AdminReportsPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">
-                Penjualan per {groupBy === "day" ? "Hari" : "Bulan"}
+                Grafik Penjualan per {groupBy === "day" ? "Hari" : "Bulan"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RevenueBarChart rows={series} />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">
+                Tabel Penjualan per {groupBy === "day" ? "Hari" : "Bulan"}
               </CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
@@ -418,42 +617,25 @@ export default function AdminReportsPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Penjualan per Kategori</CardTitle>
+              <CardTitle className="text-lg">Pendapatan per Kategori (Pie)</CardTitle>
             </CardHeader>
             <CardContent>
-              {categoryBreakdown.length === 0 ? (
-                <p className="py-8 text-center text-sm text-on-surface-variant">
-                  Belum ada data kategori pada periode ini
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {categoryBreakdown.map((row) => {
-                    const pct = categoryMax > 0 ? Math.round((row.revenue / categoryMax) * 100) : 0
-                    return (
-                      <div key={row.categoryId} className="space-y-1.5">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">{row.categoryName}</span>
-                          <span className="text-on-surface-variant">
-                            {formatPrice(row.revenue)} · {row.items} item
-                          </span>
-                        </div>
-                        <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-low">
-                          <div
-                            className="h-full rounded-full bg-primary"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
+              <CategoryPieChart rows={categoryBreakdown} />
             </CardContent>
           </Card>
 
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle className="text-lg">10 Produk Terlaris</CardTitle>
+              <CardTitle className="text-lg">10 Produk Terlaris (Bar)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <TopProductsBar rows={topProducts} />
+            </CardContent>
+          </Card>
+
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-lg">Tabel 10 Produk Terlaris</CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
               {topProducts.length === 0 ? (
@@ -571,6 +753,11 @@ export default function AdminReportsPage() {
                       <p className="text-xs text-primary">Pelanggan Baru (periode)</p>
                       <p className="text-xl font-bold text-primary">{customerReport.newCustomers}</p>
                     </div>
+                  </div>
+
+                  <div>
+                    <p className="mb-2 text-sm font-semibold text-on-surface">Komposisi Pelanggan (Donat)</p>
+                    <CustomerDonut total={customerReport.totalCustomers} baru={customerReport.newCustomers} />
                   </div>
 
                   <div className="overflow-x-auto">
