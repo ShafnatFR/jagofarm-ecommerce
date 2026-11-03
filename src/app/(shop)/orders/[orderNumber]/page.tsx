@@ -853,7 +853,8 @@ export default function OrderDetailPage() {
         </Card>
       )}
 
-      <div className="grid items-start gap-4 md:grid-cols-2">
+      {/* 2 kolom mulai lg: embed Snap butuh ~480px, di md kolom cuma ~360px. */}
+      <div className="grid items-start gap-4 lg:grid-cols-2">
         {/* Left Column */}
         <div className="flex flex-col space-y-4">
           <Card>
@@ -1161,7 +1162,7 @@ export default function OrderDetailPage() {
 
                 {/* Snap embed: bayar di halaman ini tanpa pindah domain. */}
                 {embedToken && (
-                  <div className="rounded-xl border border-outline-variant overflow-hidden">
+                  <div className="rounded-xl border border-outline-variant overflow-hidden bg-white">
                     <div className="flex items-center justify-between px-3 py-2 bg-surface-container-low">
                       <span className="text-xs font-semibold">Pembayaran Midtrans</span>
                       <button
@@ -1172,7 +1173,7 @@ export default function OrderDetailPage() {
                         Tutup
                       </button>
                     </div>
-                    <div id="snap-embed" className="min-h-[400px]" />
+                    <div id="snap-embed" className="min-h-[560px] w-full" />
                   </div>
                 )}
 
