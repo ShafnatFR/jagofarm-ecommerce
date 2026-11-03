@@ -37,6 +37,10 @@ interface MonthlyRevenueRow {
   month: string | null;
   revenue: string | number | bigint | null;
   orders: string | number | bigint | null;
+  pending_revenue: string | number | bigint | null;
+  pending_orders: string | number | bigint | null;
+  cancelled_revenue: string | number | bigint | null;
+  cancelled_orders: string | number | bigint | null;
 }
 
 interface HourlyRevenueRow {
@@ -151,21 +155,29 @@ export async function GET(request: NextRequest) {
     const monthlyRows = await prisma.$queryRawUnsafe<MonthlyRevenueRow[]>(
       `
         SELECT TO_CHAR(DATE_TRUNC('month', created_at), 'YYYY-MM') as month,
-               SUM(total) as revenue,
-               COUNT(*) as orders
+               SUM(CASE WHEN status IN ('paid','processing','shipped','delivered','refunded') THEN total ELSE 0 END) as revenue,
+               SUM(CASE WHEN status IN ('paid','processing','shipped','delivered','refunded') THEN 1 ELSE 0 END) as orders,
+               SUM(CASE WHEN status = 'pending' THEN total ELSE 0 END) as pending_revenue,
+               SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders,
+               SUM(CASE WHEN status IN ('cancelled','expired') THEN total ELSE 0 END) as cancelled_revenue,
+               SUM(CASE WHEN status IN ('cancelled','expired') THEN 1 ELSE 0 END) as cancelled_orders
         FROM orders
-        WHERE created_at >= $1 AND status NOT IN ('cancelled', 'expired')
+        WHERE created_at >= $1
         GROUP BY DATE_TRUNC('month', created_at)
         ORDER BY DATE_TRUNC('month', created_at) ASC
       `,
       monthStart
     );
 
-    const monthlyMap = new Map<string, { revenue: number; orders: number }>();
+    const monthlyMap = new Map<string, { revenue: number; orders: number; pendingRevenue: number; pendingOrders: number; cancelledRevenue: number; cancelledOrders: number }>();
     for (const row of monthlyRows) {
       monthlyMap.set(String(row.month), {
         revenue: Number(row.revenue),
         orders: Number(row.orders),
+        pendingRevenue: Number(row.pending_revenue),
+        pendingOrders: Number(row.pending_orders),
+        cancelledRevenue: Number(row.cancelled_revenue),
+        cancelledOrders: Number(row.cancelled_orders),
       });
     }
 
@@ -180,6 +192,10 @@ export async function GET(request: NextRequest) {
         label: ID_MONTHS_SHORT[d.getUTCMonth()],
         revenue: found?.revenue ?? 0,
         orders: found?.orders ?? 0,
+        pendingRevenue: found?.pendingRevenue ?? 0,
+        pendingOrders: found?.pendingOrders ?? 0,
+        cancelledRevenue: found?.cancelledRevenue ?? 0,
+        cancelledOrders: found?.cancelledOrders ?? 0,
       };
     });
 

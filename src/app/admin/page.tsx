@@ -19,7 +19,11 @@ interface DailyRevenuePoint {
   cancelledRevenue?: number; cancelledOrders?: number;
 }
 /** Seri bulanan hasil agregasi server (GET /api/admin/stats -> monthlyRevenue). */
-interface MonthlyRevenuePoint { month: string; label: string; revenue: number; orders: number }
+interface MonthlyRevenuePoint {
+  month: string; label: string; revenue: number; orders: number;
+  pendingRevenue?: number; pendingOrders?: number;
+  cancelledRevenue?: number; cancelledOrders?: number;
+}
 interface RecentOrder {
   id: string; orderNumber?: string; customer?: string; total: number; status: string;
   date?: string; createdAt?: string; user?: { name?: string | null; email?: string | null } | null;
@@ -185,19 +189,41 @@ function buildDailySeries(points: DailyRevenuePoint[] | undefined, days: number)
 }
 
 /**
- * Grafik pendapatan 30 hari / 24 jam, stacked 3 segmen per batang:
+ * Grafik pendapatan 12 bulan / 30 hari / 24 jam, stacked 3 segmen per batang:
  * selesai (hijau) + menunggu (kuning) + batal (merah).
  */
+/** Susun deret 12 bulan dari monthlyRevenue API (per-status). */
+function buildMonthlyStackedSeries(points: MonthlyRevenuePoint[] | undefined): DayBucket[] {
+  const num = (v: unknown) => { const n = Number(v); return Number.isFinite(n) ? n : 0 }
+  return (points ?? []).map((p) => ({
+    key: String(p.month),
+    // Label pendek ("Nov") + tahun biar 12 bulan tidak ambigu.
+    label: `${String(p.label ?? "").slice(0, 3)} ${String(p.month ?? "").slice(2, 4)}`,
+    fullLabel: `${p.label} ${String(p.month ?? "").slice(0, 4)}`,
+    done: num(p.revenue),
+    doneOrders: num(p.orders),
+    pending: num(p.pendingRevenue),
+    pendingOrders: num(p.pendingOrders),
+    cancelled: num(p.cancelledRevenue),
+    cancelledOrders: num(p.cancelledOrders),
+  }))
+}
+
 function MonthlyRevenueChart({
   points,
   hourly,
+  monthly,
   loading,
 }: {
   points?: DailyRevenuePoint[]
   hourly?: HourlyRevenuePoint[]
+  monthly?: MonthlyRevenuePoint[]
   loading: boolean
 }) {
-  const [mode, setMode] = useState<"30d" | "24h">("30d")
+  const [mode, setMode] = useState<"12m" | "30d" | "24h">("12m")
+
+  // 12 bulan: agregasi server monthlyRevenue (per-status).
+  const monthlySeries = useMemo(() => buildMonthlyStackedSeries(monthly), [monthly])
 
   // 30 hari: agregasi dari dailyRevenue API (per-status).
   const dailySeries = useMemo(() => buildDailySeries(points, 30), [points])
@@ -205,7 +231,8 @@ function MonthlyRevenueChart({
   // 24 jam: dari hourlyRevenue API (per-status, 24 slot jam).
   const hourlySeries = useMemo(() => buildHourlySeries(hourly), [hourly])
 
-  const series = mode === "24h" ? hourlySeries : dailySeries
+  const series = mode === "12m" ? monthlySeries : mode === "24h" ? hourlySeries : dailySeries
+  const periodLabel = mode === "12m" ? "12 bulan" : mode === "24h" ? "24 jam" : "30 hari"
   const total = series.reduce((s, b) => s + b.done + b.pending + b.cancelled, 0)
   const peak = series.reduce((m, b) => Math.max(m, b.done + b.pending + b.cancelled), 0)
   const hasData = peak > 0
@@ -214,7 +241,7 @@ function MonthlyRevenueChart({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs text-on-surface-variant">
-          Total {mode === "24h" ? "24 jam" : "30 hari"} terakhir:{" "}
+          Total {periodLabel} terakhir:{" "}
           <span className="font-semibold text-on-surface">{formatPrice(total)}</span>
         </p>
         <div className="flex gap-1 rounded-lg bg-surface-container-low p-1">
@@ -309,6 +336,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState<string | null>(null)
   const [revenueHistory, setRevenueHistory] = useState<DailyRevenuePoint[] | undefined>(undefined)
   const [hourlyHistory, setHourlyHistory] = useState<HourlyRevenuePoint[] | undefined>(undefined)
+  const [monthlyHistory, setMonthlyHistory] = useState<MonthlyRevenuePoint[] | undefined>(undefined)
   const [historyLoading, setHistoryLoading] = useState(true)
 
   const fetchDashboard = useCallback(async () => {
@@ -324,9 +352,11 @@ export default function AdminDashboardPage() {
     if (history.status === "fulfilled") {
       setRevenueHistory(Array.isArray(history.value?.dailyRevenue) ? history.value.dailyRevenue : [])
       setHourlyHistory(Array.isArray(history.value?.hourlyRevenue) ? history.value.hourlyRevenue : [])
+      setMonthlyHistory(Array.isArray(history.value?.monthlyRevenue) ? history.value.monthlyRevenue : [])
     } else {
       setRevenueHistory([])
       setHourlyHistory([])
+      setMonthlyHistory([])
     }
     setLoading(false)
     setHistoryLoading(false)
@@ -420,7 +450,7 @@ export default function AdminDashboardPage() {
         <Card className="lg:col-span-2">
           <CardHeader><CardTitle className="text-lg">Pendapatan Bulanan</CardTitle></CardHeader>
           <CardContent>
-            <MonthlyRevenueChart points={revenueHistory} hourly={hourlyHistory} loading={historyLoading} />
+            <MonthlyRevenueChart points={revenueHistory} hourly={hourlyHistory} monthly={monthlyHistory} loading={historyLoading} />
           </CardContent>
         </Card>
 
