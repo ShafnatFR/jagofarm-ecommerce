@@ -978,6 +978,7 @@ export default function OrderDetailPage() {
             </CardContent>
           </Card>
 
+          {order.paymentStatus === "paid" && (
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Pembayaran</CardTitle>
@@ -1041,6 +1042,7 @@ export default function OrderDetailPage() {
               )}
             </CardContent>
           </Card>
+          )}
         </div>
 
         {/* Right Column */}
