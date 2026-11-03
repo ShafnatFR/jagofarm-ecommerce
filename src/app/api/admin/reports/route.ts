@@ -25,10 +25,12 @@ import { prisma } from "@/lib/prisma";
  * Revenue = jumlah Order.total (termasuk ongkos kirim & setelah diskon).
  */
 
-// Laporan mencakup SEMUA order (pending/unpaid/expired/cancelled ikut masuk).
-// Kolom Status/Payment Status di tabel membedakan tiap baris.
+// Pendapatan, tabel, kategori, produk & pelanggan = order LUNAS saja.
+// Grafik per Hari/Bulan, Komposisi Status & Daftar Order = SEMUA status.
 const DEFINITION =
-  'Semua order pada rentang tanggal (semua status: pending/unpaid/expired/cancelled/paid). ' +
+  'Pendapatan, tabel, kategori, produk & pelanggan dihitung dari order LUNAS ' +
+  '(paymentStatus "paid") saja. Grafik per Hari/Bulan, Komposisi Status Order & ' +
+  'Daftar Order menampilkan SEMUA status (lunas/menunggu/batal). ' +
   "Revenue = total pesanan (termasuk ongkos kirim, setelah diskon). " +
   "Rentang tanggal inklusif mengikuti kalender WIB (UTC+7).";
 
@@ -272,15 +274,21 @@ export async function GET(request: NextRequest) {
         buckets.get(key) ?? { key, label, revenue: 0, orders: 0, items: 0, paid: 0, pending: 0, cancelled: 0 };
 
       const orderTotal = Number(order.total);
-      totalRevenue += orderTotal;
-      bucket.revenue += orderTotal;
-      bucket.orders += 1;
-      // Klasifikasi visual: lunas / menunggu / batal.
-      if (order.paymentStatus === 'paid') bucket.paid += 1;
+      const isPaid = order.paymentStatus === 'paid';
+      // Angka uang & agregasi (revenue/tabel/kategori/produk) = LUNAS saja.
+      if (isPaid) {
+        totalRevenue += orderTotal;
+        bucket.revenue += orderTotal;
+        bucket.orders += 1;
+      }
+      // Klasifikasi visual grafik = SEMUA status.
+      if (isPaid) bucket.paid += 1;
       else if (order.status === 'cancelled' || order.status === 'expired' || order.paymentStatus === 'failed') bucket.cancelled += 1;
       else bucket.pending += 1;
 
       for (const item of order.items) {
+        // Item/kategori/produk hanya dihitung untuk order LUNAS.
+        if (!isPaid) continue;
         // Saat filter kategori aktif, hanya item kategori itu yang dihitung.
         if (categoryId && item.product.categoryId !== categoryId) continue;
 
@@ -319,7 +327,8 @@ export async function GET(request: NextRequest) {
     const series = Array.from(buckets.values()).sort((a, b) =>
       a.key.localeCompare(b.key)
     );
-    const totalOrders = orders.length;
+    const totalOrders = series.reduce((sum, b) => sum + b.orders, 0);
+    const totalOrdersAll = orders.length;
     const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
     const categoryBreakdown = Array.from(categoryMap.values())
@@ -411,10 +420,10 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    // Pelanggan teratas berdasarkan belanja pada rentang (hanya order yang dihitung "terjual").
+    // Pelanggan teratas berdasarkan belanja pada rentang (hanya order LUNAS).
     const topCustomerGroups = await prisma.order.groupBy({
       by: ["userId"],
-      where,
+      where: { ...where, paymentStatus: "paid" },
       _sum: { total: true },
       _count: true,
       orderBy: { _sum: { total: "desc" } },
@@ -484,6 +493,7 @@ export async function GET(request: NextRequest) {
       summary: {
         totalRevenue,
         totalOrders,
+        totalOrdersAll,
         totalItems,
         averageOrderValue,
       },

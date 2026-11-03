@@ -98,6 +98,7 @@ interface ReportResponse {
   summary: {
     totalRevenue: number
     totalOrders: number
+    totalOrdersAll: number
     totalItems: number
     averageOrderValue: number
   }
@@ -506,13 +507,14 @@ export default function AdminReportsPage() {
   const customerReport = data?.customerReport
 
   const cards = [
-    { title: "Total Pendapatan", value: formatPrice(summary?.totalRevenue ?? 0), icon: "account_balance_wallet" },
-    { title: "Jumlah Pesanan", value: (summary?.totalOrders ?? 0).toLocaleString("id-ID"), icon: "shopping_cart" },
+    { title: "Total Pendapatan (Lunas)", value: formatPrice(summary?.totalRevenue ?? 0), icon: "account_balance_wallet" },
+    { title: "Pesanan Lunas", value: (summary?.totalOrders ?? 0).toLocaleString("id-ID"), icon: "shopping_cart" },
+    { title: "Semua Order", value: (summary?.totalOrdersAll ?? 0).toLocaleString("id-ID"), icon: "receipt_long" },
     { title: "Item Terjual", value: (summary?.totalItems ?? 0).toLocaleString("id-ID"), icon: "inventory_2" },
     { title: "Rata-rata Pesanan", value: formatPrice(summary?.averageOrderValue ?? 0), icon: "trending_up" },
   ]
 
-  const isEmpty = (summary?.totalOrders ?? 0) === 0
+  const isEmpty = (summary?.totalOrdersAll ?? 0) === 0
 
   return (
     <div className="space-y-6">
@@ -632,7 +634,7 @@ export default function AdminReportsPage() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {cards.map((card) => (
           <Card key={card.title}>
             <CardContent className="p-6">
@@ -719,7 +721,7 @@ export default function AdminReportsPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">
-                Tabel Penjualan per {groupBy === "day" ? "Hari" : "Bulan"}
+                Tabel Penjualan Lunas per {groupBy === "day" ? "Hari" : "Bulan"}
               </CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
