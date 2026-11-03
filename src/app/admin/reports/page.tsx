@@ -176,7 +176,26 @@ function StatusPieChart({ rows }: { rows: StatusSlice[] }) {
   const total = rows.reduce((sum, r) => sum + r.count, 0)
   const colors: Record<string, string> = { green: "#1a7a4a", yellow: "#c9a227", red: "#dc2626" }
   if (total <= 0) {
-    return <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada order pada periode ini</p>
+    return (
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+        <svg viewBox="0 0 42 42" className="h-44 w-44 shrink-0 opacity-60" role="img" aria-label="Belum ada data status">
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" className="stroke-surface-container-low" />
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth={2}
+            strokeDasharray="2 3" className="stroke-outline" strokeDashoffset={25} strokeLinecap="round" opacity={0.6} />
+        </svg>
+        <ul className="w-full space-y-2 text-sm">
+          {rows.map((row, i) => (
+            <li key={i} className="flex items-center justify-between gap-2">
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-sm bg-surface-container" />
+                <span className="font-medium">{row.label}</span>
+              </span>
+              <span className="text-on-surface-variant">0 - 0%</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
   }
   const segs = rows.reduce(
     (acc: { row: StatusSlice; pct: number; dasharray: string; dashoffset: number }[], row) => {
@@ -227,7 +246,16 @@ function OrderStatusBadge({ status, paymentStatus }: { status: string; paymentSt
 function CategoryPieChart({ rows }: { rows: CategoryRow[] }) {
   const total = rows.reduce((s, r) => s + r.revenue, 0)
   if (total <= 0) {
-    return <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada data kategori pada periode ini</p>
+    return (
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+        <svg viewBox="0 0 42 42" className="h-44 w-44 shrink-0 opacity-60" role="img" aria-label="Belum ada data kategori">
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" strokeWidth="8" className="stroke-surface-container-low" />
+        </svg>
+        <ul className="w-full space-y-2 text-sm">
+          <li className="text-on-surface-variant">Belum ada kategori - Rp 0</li>
+        </ul>
+      </div>
+    )
   }
   // Segmen SVG: lingkaran r=15.9155 (keliling 100) dengan stroke-dasharray.
   const segs = rows.slice(0, 10).reduce(
@@ -282,7 +310,22 @@ function CategoryPieChart({ rows }: { rows: CategoryRow[] }) {
 function TopProductsBar({ rows }: { rows: TopProductRow[] }) {
   const max = rows.reduce((m, r) => Math.max(m, r.revenue), 0)
   if (rows.length === 0 || max <= 0) {
-    return <p className="py-8 text-center text-sm text-on-surface-variant">Belum ada produk terjual pada periode ini</p>
+    return (
+      <div className="space-y-3" aria-label="Belum ada produk terjual">
+        {[60, 45, 35, 25, 15].map((w, i) => (
+          <div key={i} className="space-y-1 opacity-70">
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <span className="h-4 w-40 rounded bg-surface-container-low" />
+              <span className="h-4 w-24 rounded bg-surface-container-low" />
+            </div>
+            <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-container-low">
+              <div className="h-full rounded-full bg-surface-container" style={{ width: `${w}%` }} />
+            </div>
+          </div>
+        ))}
+        <p className="pt-1 text-xs text-on-surface-variant">Belum ada produk - 0 item - Rp 0</p>
+      </div>
+    )
   }
   return (
     <div className="space-y-3">
