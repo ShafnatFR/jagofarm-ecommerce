@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { ReviewForm } from "@/components/product/review-form";
-import { useCartStore } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 
@@ -268,9 +267,6 @@ export default function OrderDetailPage() {
   const params = useParams();
   const orderNumber = params.orderNumber as string;
   const { toast } = useToast();
-  const router = useRouter();
-  const addItem = useCartStore((s) => s.addItem);
-  const hydrateCart = useCartStore((s) => s.hydrate);
 
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -315,11 +311,6 @@ export default function OrderDetailPage() {
     fetchOrder().finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- fetchOrder dibuat ulang tiap render; muat ulang cukup saat orderNumber berubah.
   }, [orderNumber]);
-
-  // Ringkasan cart server disiapkan lebih dulu supaya 'Beli Lagi' ikut tersinkron.
-  useEffect(() => {
-    void hydrateCart();
-  }, [hydrateCart]);
 
   // Pulihkan daftar produk yang sudah diulas (bertahan saat reload halaman).
   useEffect(() => {
@@ -649,47 +640,6 @@ export default function OrderDetailPage() {
     }
   }
 
-  /**
-   * Masukkan satu item pesanan kembali ke keranjang.
-   * weightGram diambil dari data produk bila tersedia, kalau tidak 0.
-   */
-  function pushItemToCart(item: OrderItemDetail, quantity: number) {
-    addItem({
-      id: item.variantId ? `${item.productId}-${item.variantId}` : item.productId,
-      productId: item.productId,
-      variantId: item.variantId ?? undefined,
-      name: orderItemName(item),
-      price: item.price,
-      quantity,
-      image: item.product?.images?.[0]?.url ?? undefined,
-      weightGram: Number(item.product?.weightGram ?? 0) || 0,
-      slug: item.product?.slug,
-    });
-  }
-
-  /** 'Beli Lagi' per item: tambah ke keranjang lalu arahkan ke /cart. */
-  function handleReorderItem(item: OrderItemDetail) {
-    pushItemToCart(item, item.quantity);
-    toast({
-      title: "Ditambahkan ke keranjang",
-      description: orderItemName(item),
-    });
-    router.push("/cart");
-  }
-
-  /** 'Beli Lagi' seluruh order: tambah semua item lalu arahkan ke /cart. */
-  function handleReorderAll() {
-    if (!order || order.items.length === 0) return;
-    for (const item of order.items) {
-      pushItemToCart(item, item.quantity);
-    }
-    toast({
-      title: "Ditambahkan ke keranjang",
-      description: `${order.items.length} item dari pesanan ${order.orderNumber} ditambahkan ke keranjang.`,
-    });
-    router.push("/cart");
-  }
-
   /** Ajukan retur untuk order ini. */
   async function handleReturn() {
     if (!order || returnReason.trim().length < 10) {
@@ -784,10 +734,6 @@ export default function OrderDetailPage() {
   const canPay = order.status === "pending" && order.paymentStatus === "unpaid";
   const isPending = order.status === "pending";
   const isDelivered = order.status === "delivered";
-  const canReorder =
-    order.status !== "cancelled" &&
-    order.status !== "expired" &&
-    order.items.length > 0;
   const trackingInfo = getTrackingInfo(order.shippingCourier);
 
   const paymentProviderId = order.paymentProvider ?? createdProvider;
@@ -923,15 +869,6 @@ export default function OrderDetailPage() {
                               Aktif setelah pesanan Selesai
                             </span>
                           </>
-                        )}
-                        {canReorder && (
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={() => handleReorderItem(item)}
-                          >
-                            <Icon name="shopping_cart" size={12} className="mr-1" /> Beli Lagi
-                          </Button>
                         )}
                       </div>
                     </div>
@@ -1151,8 +1088,8 @@ export default function OrderDetailPage() {
             </div>
           )}
 
-          {/* Aksi pembayaran & pembelian ulang */}
-          {(canPay || canReorder || isPending) && (
+          {/* Aksi pembayaran */}
+          {(canPay || isPending) && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Aksi Pesanan</CardTitle>
@@ -1178,17 +1115,6 @@ export default function OrderDetailPage() {
                   >
                     <Icon name="refresh" size={16} className="mr-2" />
                     {refreshing ? "Memeriksa…" : "Cek Status Pembayaran"}
-                  </Button>
-                )}
-
-                {canReorder && (
-                  <Button
-                    variant="secondary"
-                    className="w-full"
-                    onClick={() => handleReorderAll()}
-                  >
-                    <Icon name="shopping_cart" size={16} className="mr-2" />
-                    Beli Lagi
                   </Button>
                 )}
 
