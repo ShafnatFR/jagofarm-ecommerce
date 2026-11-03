@@ -12,6 +12,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 import { sendEmailSafe } from "@/lib/email";
+import { syncOrderToSheetsSafe } from "@/lib/sheets-sync";
 import { paymentReceivedEmail, toEmailOrder } from "@/lib/email-templates";
 import { prisma } from "@/lib/prisma";
 import {
@@ -424,6 +425,49 @@ export async function runMidtransWebhook(
         console.warn(
           `[payments/webhook] Email pembayaran ${order.orderNumber} dilewati: user tidak memiliki alamat email.`
         );
+      }
+
+      // ── Spreadsheet realtime (best-effort, tidak menggagalkan respons) ──
+      const syncItems = await prisma.orderItem.findMany({
+        where: { orderId: order.id },
+        include: {
+          product: { select: { name: true } },
+          variant: { select: { name: true } },
+        },
+      });
+      {
+        const addr = order.shippingAddress;
+        await syncOrderToSheetsSafe({
+          orderNumber: order.orderNumber,
+          createdAt: order.createdAt,
+          status: orderStatus,
+          paymentStatus,
+          customerName: order.user?.name ?? null,
+          customerEmail: order.user?.email ?? null,
+          phone: addr?.phone ?? null,
+          address: addr
+            ? [addr.detail, addr.district, addr.city, addr.province, addr.postalCode]
+                .filter(Boolean)
+                .join(", ")
+            : null,
+          courier: order.shippingCourier ?? null,
+          service: order.shippingService ?? null,
+          subtotal: Number(order.subtotal),
+          shippingCost: Number(order.shippingCost),
+          insuranceFee: order.insuranceFee != null ? Number(order.insuranceFee) : null,
+          discount: order.discount != null ? Number(order.discount) : null,
+          total: Number(order.total),
+          paymentMethod: paymentMethodForEmail ?? order.paymentMethod,
+          paymentProvider: "midtrans",
+          paidAt: paidAtForEmail,
+          items: syncItems.map((item) => ({
+            name: item.product?.name ?? "Produk",
+            variant: item.variant?.name ?? null,
+            quantity: Number(item.quantity),
+            price: Number(item.price),
+            total: Number(item.total),
+          })),
+        });
       }
     }
 

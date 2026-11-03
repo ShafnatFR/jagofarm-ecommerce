@@ -359,19 +359,37 @@ export default function AdminReportsPage() {
     setActivePreset(preset)
   }
 
-  const exportCsv = () => {
+  const [syncing, setSyncing] = useState(false)
+
+  const syncToSheets = async () => {
     if (!from || !to) return
-    const params = new URLSearchParams({ from, to, groupBy, format: "csv" })
-    const link = document.createElement("a")
-    link.href = `/api/admin/reports?${params.toString()}`
-    link.download = `laporan-penjualan_${from}_${to}.csv`
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-    toast({
-      title: "Export CSV dimulai",
-      description: `Laporan ${from} s/d ${to} sedang diunduh.`,
-    })
+    setSyncing(true)
+    try {
+      const params = new URLSearchParams({ from, to, groupBy })
+      const r = await fetch(`/api/admin/reports/sync?${params.toString()}`, { method: "POST" })
+      const payload = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(payload?.error || `HTTP ${r.status}`)
+      toast({
+        title: "Sinkron ke Spreadsheet selesai",
+        description: `${payload?.synced ?? 0} order ditulis ke Spreadsheet.`,
+      })
+    } catch (e) {
+      toast({
+        title: "Sinkron gagal",
+        description: e instanceof Error ? e.message : String(e),
+        variant: "destructive",
+      })
+    } finally {
+      setSyncing(false)
+    }
+  }
+
+  const openSpreadsheet = () => {
+    window.open(
+      "https://docs.google.com/spreadsheets/d/1Fu4c8xrWEMOKgg6VM37667QtO_gSX7kAgWgweWTIFPE/edit",
+      "_blank",
+      "noopener,noreferrer"
+    )
   }
 
   if (loading && !data && !error) {
@@ -430,9 +448,13 @@ export default function AdminReportsPage() {
         </div>
         <div className="flex items-center gap-2">
           <AdminRefreshButton endpointPrefixes={["/api/admin/reports"]} onRefresh={fetchReport} loading={loading} />
-          <Button onClick={exportCsv} disabled={!from || !to}>
-            <Icon name="download" size={16} className="mr-2" />
-            Export CSV
+          <Button variant="secondary" onClick={openSpreadsheet}>
+            <Icon name="open_in_new" size={16} className="mr-2" />
+            Buka Spreadsheet
+          </Button>
+          <Button onClick={syncToSheets} disabled={!from || !to || syncing}>
+            <Icon name="sync" size={16} className="mr-2" />
+            {syncing ? "Menyinkron..." : "Sinkron ke Spreadsheet"}
           </Button>
         </div>
       </div>

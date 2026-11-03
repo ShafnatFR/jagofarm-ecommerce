@@ -13,6 +13,7 @@ import type { Prisma } from "@prisma/client";
 import { sendEmailSafe } from "@/lib/email";
 import { paymentReceivedEmail, toEmailOrder } from "@/lib/email-templates";
 import { sendWhatsAppSafe } from "@/lib/whatsapp";
+import { syncOrderToSheetsSafe } from "@/lib/sheets-sync";
 import { addPointsSafe, pointsForAmount } from "@/lib/loyalty";
 import { formatPrice } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
@@ -327,6 +328,49 @@ async function handleMayarWebhook(request: NextRequest): Promise<NextResponse> {
         type: "earn",
         note: `Poin belanja ${order.orderNumber}`,
         orderId: order.id,
+      });
+    }
+
+    // ── Spreadsheet realtime (best-effort, tidak menggagalkan respons) ──
+    const syncItems = await prisma.orderItem.findMany({
+      where: { orderId: order.id },
+      include: {
+        product: { select: { name: true } },
+        variant: { select: { name: true } },
+      },
+    });
+    {
+      const addr = order.shippingAddress;
+      await syncOrderToSheetsSafe({
+        orderNumber: order.orderNumber,
+        createdAt: order.createdAt,
+        status: "paid",
+        paymentStatus: "paid",
+        customerName: order.user?.name ?? null,
+        customerEmail: order.user?.email ?? null,
+        phone: addr?.phone ?? null,
+        address: addr
+          ? [addr.detail, addr.district, addr.city, addr.province, addr.postalCode]
+              .filter(Boolean)
+              .join(", ")
+          : null,
+        courier: order.shippingCourier ?? null,
+        service: order.shippingService ?? null,
+        subtotal: Number(order.subtotal),
+        shippingCost: Number(order.shippingCost),
+        insuranceFee: order.insuranceFee != null ? Number(order.insuranceFee) : null,
+        discount: order.discount != null ? Number(order.discount) : null,
+        total: orderTotal,
+        paymentMethod: verified.paymentMethod ?? order.paymentMethod,
+        paymentProvider: "mayar",
+        paidAt,
+        items: syncItems.map((item) => ({
+          name: item.product?.name ?? "Produk",
+          variant: item.variant?.name ?? null,
+          quantity: Number(item.quantity),
+          price: Number(item.price),
+          total: Number(item.total),
+        })),
       });
     }
   }
