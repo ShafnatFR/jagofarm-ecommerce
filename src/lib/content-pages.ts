@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminUser } from "@/lib/auth";
-import { sanitizeHtml } from "@/lib/sanitize";
 
 export interface ContentPageRow {
   id: string;
@@ -13,6 +12,11 @@ export interface ContentPageRow {
   seoDesc: string | null;
   isActive: boolean;
   updatedAt: Date;
+}
+
+async function getSanitizeHtml() {
+  const { sanitizeHtml } = await import("@/lib/sanitize");
+  return sanitizeHtml;
 }
 
 export async function listContentPages(): Promise<ContentPageRow[]> {
@@ -67,6 +71,7 @@ export async function createContentPage(input: CreateContentPageInput) {
     throw new Error(`Halaman dengan slug "${slug}" sudah ada.`);
   }
 
+  const sanitizeHtml = await getSanitizeHtml();
   const page = await prisma.contentPage.create({
     data: {
       slug,
@@ -101,6 +106,7 @@ export async function updateContentPage(input: UpdateContentPageInput) {
     throw new Error("Halaman konten tidak ditemukan.");
   }
 
+  const sanitizeHtml = await getSanitizeHtml();
   const updated = await prisma.contentPage.update({
     where: { id },
     data: {
