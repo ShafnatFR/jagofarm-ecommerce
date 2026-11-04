@@ -1,23 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
 import { SITE_CONFIG, siteUrl } from "@/lib/constants";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
+// Font dimuat melalui @import di globals.css (font-cormorant, font-manrope)
 
 const SITE_URL = (
   siteUrl()
@@ -101,7 +88,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${cormorant.variable} ${manrope.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="id" className="font-cormorant font-manrope h-full antialiased" suppressHydrationWarning>
       <head>
         {/* Anti-kedip mode gelap (A15): terapkan tema sebelum paint pertama. */}
         <script

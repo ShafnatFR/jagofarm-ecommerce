@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+.font-cormorant {
+  font-family: "Cormorant Garamond", serif;
+}
+.font-manrope {
+  font-family: "Manrope", sans-serif;
+}
+
 /* Dark mode berbasis kelas `.dark` pada <html> (Tailwind v4). */
 @custom-variant dark (&:where(.dark, .dark *));
 
