@@ -81,6 +81,7 @@ model Category {
   id          String     @id @default(uuid())
   name        String     @db.VarChar(100)
   slug        String     @unique @db.VarChar(120)
+  color       String?    @db.VarChar(7)      // hex, mis. #123F2D — ditampilkan di daftar kategori
   description String?    @db.Text
   imageUrl    String?    @map("image_url") @db.Text
   parentId    String?    @map("parent_id")

@@ -7,7 +7,6 @@ import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { useToast } from "@/components/ui/use-toast";
 import { slugify, formatPrice } from "@/lib/utils";
@@ -15,8 +14,7 @@ import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
 import { NumericKeypad } from "@/components/admin/numeric-keypad";
 import { registerAdminAction } from "@/hooks/use-admin-shortcuts";
-
-interface Category { id: string; name: string; }
+import { OdooCategorySelect } from "@/components/admin/odoo-category-select";
 
 // ======== TIPE DATA UNTUK VARIAN MULTI-DIMENSI ========
 
@@ -284,8 +282,7 @@ function extractApiErrorMessage(data: unknown, fallback: string): string {
 export default function NewProductPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCats, setLoadingCats] = useState(true);
+  const [tagInput, setTagInput] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -309,33 +306,12 @@ export default function NewProductPage() {
     name: "", slug: "", category: "", description: "", shortDescription: "",
     basePrice: "", discountPrice: "", sku: "", weight: "", length: "", width: "", height: "", stock: "", featured: false, tags: [] as string[],
   });
-  const [tagInput, setTagInput] = useState("");
-  
+
   // State varian multi-dimensi
   const [hasVariants, setHasVariants] = useState(false);
   const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
   const [combinations, setCombinations] = useState<VariantCombination[]>([]);
   const [combinationErrors, setCombinationErrors] = useState<Record<string, string>>({});
-
-  const fetchCategories = useCallback(async () => {
-    setLoadingCats(true);
-    try {
-      const r = await fetch("/api/admin/categories");
-      if (!r.ok) throw new Error("Gagal memuat kategori");
-      const d = await r.json();
-      setCategories(d.categories ?? d ?? []);
-    } catch {
-      setCategories([]);
-    } finally {
-      setLoadingCats(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Muat sekali saat mount — pola repo: disable beralasan.
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount, bukan render loop
-    void fetchCategories();
-  }, [fetchCategories]);
 
   // Alt+S: submit form tambah produk (ditangani global via requestSubmit fallback).
   useEffect(() => {
@@ -580,7 +556,7 @@ export default function NewProductPage() {
             <p className="text-sm text-on-surface-variant">Buat produk baru untuk toko Anda</p>
           </div>
         </div>
-        <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={fetchCategories} loading={loadingCats} />
+        <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={() => {}} />
       </div>
 
       {error && (
@@ -599,16 +575,11 @@ export default function NewProductPage() {
                 <Input label="Slug" placeholder="otomatis-dari-nama" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Kategori</label>
-                  {loadingCats ? (
-                    <div className="h-10 animate-pulse rounded-lg bg-surface-container-low" />
-                  ) : (
-                    <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
-                      <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
-                      <SelectContent>
-                        {categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  )}
+                  <OdooCategorySelect
+                    value={form.category || null}
+                    onChange={(v) => updateField("category", v ?? "")}
+                    required
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>

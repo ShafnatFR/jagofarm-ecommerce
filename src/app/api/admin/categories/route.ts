@@ -1,21 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { slugify } from "@/lib/utils";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.id || session.user.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    const { searchParams } = new URL(request.url);
+    const search = searchParams.get("search") ?? "";
+
+    const where: Prisma.CategoryWhereInput = {};
+    if (search) {
+      // Odoo-like: cocokkan SETIAP kata kunci (AND), case-insensitive
+      const terms = search.trim().split(/\s+/).filter(Boolean);
+      if (terms.length > 0) {
+        where.AND = terms.map((term) => ({
+          name: { contains: term, mode: "insensitive" },
+        }));
+      }
+    }
+
     const categories = await prisma.category.findMany({
+      where,
       orderBy: { sortOrder: "asc" },
       include: {
         parent: { select: { id: true, name: true } },
         _count: { select: { products: true } },
       },
+      take: 50,
     });
 
     return NextResponse.json({ categories });
