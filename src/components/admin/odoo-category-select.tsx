@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectLabel as Label } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 interface Category {
   id: string;
@@ -195,7 +195,7 @@ export function OdooCategorySelect({
   if (disabled) {
     return (
       <div className="space-y-1">
-        {label && <Label className="text-sm font-medium text-on-surface">{label}</Label>}
+        {label && <span className="text-sm font-medium text-on-surface">{label}</span>}
         <Input
           disabled
           value={selectedCategory?.name ?? ""}
@@ -208,7 +208,7 @@ export function OdooCategorySelect({
 
   return (
     <div className="space-y-1 relative">
-      {label && <Label className="text-sm font-medium text-on-surface">{label}</Label>}
+      {label && <span className="text-sm font-medium text-on-surface">{label}</span>}
       <div className="relative">
         <Input
           ref={inputRef}
@@ -292,7 +292,7 @@ export function OdooCategorySelect({
           </DialogHeader>
           <form onSubmit={(e) => { e.preventDefault(); handleConfigSave(); }} className="space-y-4 pt-2">
             <div className="space-y-1">
-              <Label>Nama kategori</Label>
+              <span>Nama kategori</span>
               <Input
                 value={configForm.name}
                 onChange={(e) => setConfigForm((prev) => ({ ...prev, name: e.target.value }))}
@@ -301,7 +301,7 @@ export function OdooCategorySelect({
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <Label>Warna</Label>
+                <span>Warna</span>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -313,7 +313,7 @@ export function OdooCategorySelect({
                 </div>
               </div>
               <div className="space-y-1">
-                <Label>Induk</Label>
+                <span>Induk</span>
                 <Select value={configForm.parentId ?? ""} onValueChange={(v) => setConfigForm((prev) => ({ ...prev, parentId: v || null }))}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Tidak ada (root)" />
@@ -332,7 +332,7 @@ export function OdooCategorySelect({
               </div>
             </div>
             <div className="space-y-1">
-              <Label>Deskripsi</Label>
+              <span>Deskripsi</span>
               <textarea
                 value={configForm.description}
                 onChange={(e) => setConfigForm((prev) => ({ ...prev, description: e.target.value }))}
