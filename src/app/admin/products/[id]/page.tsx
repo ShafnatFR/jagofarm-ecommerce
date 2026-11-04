@@ -14,6 +14,7 @@ import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
 import { OdooCategorySelect } from "@/components/admin/odoo-category-select";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { ClientErrorBoundary } from "@/components/admin/error-boundary";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 /**
@@ -335,61 +336,62 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
-          <div>
-            <h1 className="text-2xl font-bold text-on-surface">Edit Produk</h1>
-            <p className="text-sm text-on-surface-variant">Edit informasi produk #{id}</p>
+    <ClientErrorBoundary>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
+            <div>
+              <h1 className="text-2xl font-bold text-on-surface">Edit Produk</h1>
+              <p className="text-sm text-on-surface-variant">Edit informasi produk #{id}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <AdminRefreshButton endpointPrefixes={[`/api/admin/products/${id}`, "/api/admin/categories"]} onRefresh={fetchProduct} loading={loading} />
+            <Button variant="destructive" size="sm" type="button" onClick={handleDelete} disabled={deleting}><Icon name="delete" size={16} className="mr-2" />{deleting ? "Menghapus..." : "Hapus"}</Button>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <AdminRefreshButton endpointPrefixes={[`/api/admin/products/${id}`, "/api/admin/categories"]} onRefresh={fetchProduct} loading={loading} />
-          <Button variant="destructive" size="sm" type="button" onClick={handleDelete} disabled={deleting}><Icon name="delete" size={16} className="mr-2" />{deleting ? "Menghapus..." : "Hapus"}</Button>
-        </div>
-      </div>
 
-      {error && (
-        <p id="product-edit-error" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
-      )}
+        {error && (
+          <p id="product-edit-error" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
+        )}
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            <Card>
-              <CardHeader><CardTitle className="text-lg">Informasi Produk</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <Input label="Nama Produk" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
-                <Input label="Slug" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Kategori</label>
-                  <OdooCategorySelect
-                    value={form.category || null}
-                    onChange={(v) => updateField("category", v ?? "")}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
-                  <MarkdownEditor
-                    value={form.shortDescription}
-                    onChange={(v) => updateField("shortDescription", v)}
-                    placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                  <MarkdownEditor
-                    value={form.description}
-                    onChange={(v) => updateField("description", v)}
-                    placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
-                    height="min-h-[200px]"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+              <Card>
+                <CardHeader><CardTitle className="text-lg">Informasi Produk</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <Input label="Nama Produk" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
+                  <Input label="Slug" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium">Kategori</label>
+                    <OdooCategorySelect
+                      value={form.category || null}
+                      onChange={(v) => updateField("category", v ?? "")}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
+                    <MarkdownEditor
+                      value={form.shortDescription}
+                      onChange={(v) => updateField("shortDescription", v)}
+                      placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
+                    <MarkdownEditor
+                      value={form.description}
+                      onChange={(v) => updateField("description", v)}
+                      placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
+                      height="min-h-[200px]"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <Card>
@@ -537,6 +539,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         loading={deleting}
         onConfirm={handleDeleteConfirmed}
       />
-    </div>
+      </div>
+    </ClientErrorBoundary>
   );
 }

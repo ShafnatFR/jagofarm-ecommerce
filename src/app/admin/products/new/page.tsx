@@ -15,6 +15,7 @@ import { registerAdminAction } from "@/hooks/use-admin-shortcuts";
 import { NumericKeypad } from "@/components/admin/numeric-keypad";
 import { OdooCategorySelect } from "@/components/admin/odoo-category-select";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { ClientErrorBoundary } from "@/components/admin/error-boundary";
 
 // ======== TIPE DATA UNTUK VARIAN MULTI-DIMENSI ========
 
@@ -574,29 +575,35 @@ export default function NewProductPage() {
                 <Input label="Slug" placeholder="otomatis-dari-nama" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Kategori</label>
-                  <OdooCategorySelect
-                    value={form.category || null}
-                    onChange={(v) => updateField("category", v ?? "")}
-                    required
-                  />
+                  <ClientErrorBoundary>
+                    <OdooCategorySelect
+                      value={form.category || null}
+                      onChange={(v) => updateField("category", v ?? "")}
+                      required
+                    />
+                  </ClientErrorBoundary>
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
-                  <MarkdownEditor
-                    value={form.shortDescription}
-                    onChange={(v) => updateField("shortDescription", v)}
-                    placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
-                  />
+                  <ClientErrorBoundary>
+                    <MarkdownEditor
+                      value={form.shortDescription}
+                      onChange={(v) => updateField("shortDescription", v)}
+                      placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
+                    />
+                  </ClientErrorBoundary>
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                  <MarkdownEditor
-                    value={form.description}
-                    onChange={(v) => updateField("description", v)}
-                    placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
+                  <ClientErrorBoundary>
+                    <MarkdownEditor
+                      value={form.description}
+                      onChange={(v) => updateField("description", v)}
+                      placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
                     height="min-h-[200px]"
-                  />
-                </div>
+                  ></MarkdownEditor>
+                </ClientErrorBoundary>
+              </div>
               </CardContent>
             </Card>
           </motion.div>
