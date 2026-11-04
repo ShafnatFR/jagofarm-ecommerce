@@ -11,10 +11,10 @@ import { ImageUploader } from "@/components/admin/image-uploader";
 import { useToast } from "@/components/ui/use-toast";
 import { slugify, formatPrice } from "@/lib/utils";
 import Link from "next/link";
-import { AdminRefreshButton } from "../../admin-refresh";
-import { NumericKeypad } from "@/components/admin/numeric-keypad";
 import { registerAdminAction } from "@/hooks/use-admin-shortcuts";
+import { NumericKeypad } from "@/components/admin/numeric-keypad";
 import { OdooCategorySelect } from "@/components/admin/odoo-category-select";
+import { MarkdownEditor } from "@/components/admin/markdown-editor";
 
 // ======== TIPE DATA UNTUK VARIAN MULTI-DIMENSI ========
 
@@ -556,7 +556,6 @@ export default function NewProductPage() {
             <p className="text-sm text-on-surface-variant">Buat produk baru untuk toko Anda</p>
           </div>
         </div>
-        <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={() => {}} />
       </div>
 
       {error && (
@@ -583,11 +582,20 @@ export default function NewProductPage() {
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
-                  <textarea className="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" placeholder="Deskripsi pendek untuk kartu produk..." value={form.shortDescription} onChange={(e) => updateField("shortDescription", e.target.value)} />
+                  <MarkdownEditor
+                    value={form.shortDescription}
+                    onChange={(v) => updateField("shortDescription", v)}
+                    placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                  <textarea className="flex min-h-[160px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" placeholder="Deskripsi lengkap produk..." value={form.description} onChange={(e) => updateField("description", e.target.value)} />
+                  <MarkdownEditor
+                    value={form.description}
+                    onChange={(v) => updateField("description", v)}
+                    placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
+                    height="min-h-[200px]"
+                  />
                 </div>
               </CardContent>
             </Card>

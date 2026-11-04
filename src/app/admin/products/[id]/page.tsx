@@ -7,12 +7,13 @@ import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { useToast } from "@/components/ui/use-toast";
 import { slugify, formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
+import { OdooCategorySelect } from "@/components/admin/odoo-category-select";
+import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 /**
@@ -36,8 +37,6 @@ function extractApiErrorMessage(data: unknown, fallback: string): string {
   }
   return fallback;
 }
-
-interface Category { id: string; name: string; }
 
 interface ProductImageRow { id?: string; url: string; sortOrder?: number; isPrimary?: boolean; }
 
@@ -136,8 +135,6 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCats, setLoadingCats] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -169,13 +166,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
   const fetchProduct = useCallback(async () => {
     setLoading(true);
-    setLoadingCats(true);
     setError("");
     try {
-      const [data, catData] = await Promise.all([
-        fetch(`/api/admin/products/${id}`).then((r) => { if (!r.ok) throw new Error("Gagal memuat produk"); return r.json(); }),
-        fetch("/api/admin/categories").then((r) => r.ok ? r.json() : { categories: [] }),
-      ]);
+      const data = await fetch(`/api/admin/products/${id}`).then((r) => { if (!r.ok) throw new Error("Gagal memuat produk"); return r.json(); });
       const product = data?.product ?? data ?? {};
       setForm({
         name: product.name ?? "", slug: product.slug ?? "", category: product.category?.id ?? product.categoryId ?? "",
@@ -189,12 +182,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       // Varian yang sudah ada dimuat ke editor baris (API mengirim priceModifier sebagai number)
       setVariants(toVariantRows(product.variants));
       setVariantErrors({});
-      setCategories(catData.categories ?? catData ?? []);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
-      setLoadingCats(false);
     }
   }, [id]);
 
@@ -373,24 +364,28 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 <Input label="Slug" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Kategori</label>
-                  {loadingCats ? (
-                    <div className="h-10 animate-pulse rounded-lg bg-surface-container-low" />
-                  ) : (
-                    <Select value={form.category} onValueChange={(v) => updateField("category", v)}>
-                      <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
-                      <SelectContent>
-                        {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  )}
+                  <OdooCategorySelect
+                    value={form.category || null}
+                    onChange={(v) => updateField("category", v ?? "")}
+                    required
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
-                  <textarea className="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" value={form.shortDescription} onChange={(e) => updateField("shortDescription", e.target.value)} />
+                  <MarkdownEditor
+                    value={form.shortDescription}
+                    onChange={(v) => updateField("shortDescription", v)}
+                    placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
+                  />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                  <textarea className="flex min-h-[160px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" value={form.description} onChange={(e) => updateField("description", e.target.value)} />
+                  <MarkdownEditor
+                    value={form.description}
+                    onChange={(v) => updateField("description", v)}
+                    placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
+                    height="min-h-[200px]"
+                  />
                 </div>
               </CardContent>
             </Card>
