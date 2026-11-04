@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDate, formatDateTime } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -95,7 +97,7 @@ export default function CustomersPage() {
     if (search) params.set("search", search)
     try {
       const r = await fetch(`/api/admin/customers?${params}`, { cache: "no-store" })
-      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      await throwIfNotOk(r, "Gagal memuat pelanggan")
       const d = await r.json()
       setCustomers(
         (d.customers || []).map((c: CustomerApiItem) => ({
@@ -129,9 +131,9 @@ export default function CustomersPage() {
     setDetailLoading(true)
     try {
       const r = await fetch(`/api/admin/customers/${customer.id}`, { cache: "no-store" })
+      await throwIfNotOk(r, "Gagal memuat detail pelanggan")
       const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
-      setDetail(data.customer)
+      setDetail((data as { customer?: CustomerDetail })?.customer ?? null)
     } catch (e) {
       const message = toMessage(e)
       setDetailError(message)
@@ -156,15 +158,7 @@ export default function CustomersPage() {
   }
 
   if (error && customers.length === 0) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pelanggan: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat pelanggan: ${error}`} onRetry={fetchData} />
   }
 
   return (

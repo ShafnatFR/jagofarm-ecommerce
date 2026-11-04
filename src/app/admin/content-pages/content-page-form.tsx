@@ -30,6 +30,9 @@ export default function ContentPageForm({ initial }: Props) {
   );
 
   const [error, setError] = useState<string | null>(null);
+  // Error khusus aksi "Nonaktifkan" (tombolnya di atas, jauh dari tombol simpan
+  // di bawah form panjang) — tampil di dekat tombolnya sendiri.
+  const [deactivateError, setDeactivateError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent) {
@@ -175,10 +178,12 @@ export default function ContentPageForm({ initial }: Props) {
             onClick={() => {
               if (existing.id) {
                 startTransition(async () => {
+                  setDeactivateError(null);
                   try {
                     await deactivateContentPage(existing.id);
+                    setSuccess("Halaman dinonaktifkan.");
                   } catch (err) {
-                    setError(err instanceof Error ? err.message : "Gagal menonaktifkan halaman.");
+                    setDeactivateError(err instanceof Error ? err.message : "Gagal menonaktifkan halaman.");
                   }
                 });
               }
@@ -187,6 +192,7 @@ export default function ContentPageForm({ initial }: Props) {
             Nonaktifkan
           </button>
         )}
+        {deactivateError && <span className="text-sm text-destructive">{deactivateError}</span>}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

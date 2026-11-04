@@ -29,6 +29,11 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: "border bg-background text-foreground",
+        // Tekstur semantik: sukses = aksi berhasil, warning = berhasil tapi
+        // ada catatan, info = netral, destructive = gagal/perhatian serius.
+        success: "border-primary/30 bg-primary/10 text-primary",
+        warning: "border-[#D4A843]/40 bg-[#D4A843]/15 text-[#8a6a1f] dark:text-[#fbbf24]",
+        info: "border-surface-container-highest bg-surface-container text-on-surface",
         destructive: "destructive group border-destructive bg-destructive text-destructive-foreground",
       },
     },

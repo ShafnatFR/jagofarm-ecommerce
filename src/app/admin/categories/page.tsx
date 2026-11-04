@@ -10,6 +10,9 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -92,7 +95,9 @@ export default function CategoriesPage() {
   const [formSortOrder, setFormSortOrder] = useState("0")
   const [formIsActive, setFormIsActive] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [deleting, setDeleting] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  // Dialog konfirmasi hapus: kategori yang akan dihapus (null = tertutup).
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null)
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -134,24 +139,30 @@ export default function CategoriesPage() {
     setDialogOpen(true)
   }
 
-  const handleDelete = async (cat: Category) => {
-    if (!confirm(`Hapus kategori "${cat.name}"? Tindakan ini tidak dapat dibatalkan.`)) return
+  const handleDelete = (cat: Category) => {
+    setConfirmDelete({ id: cat.id, name: cat.name })
+  }
 
-    setDeleting(cat.id)
+  const handleDeleteConfirmed = async () => {
+    if (!confirmDelete) return
+
+    setDeleting(true)
     try {
-      const r = await fetch(`/api/admin/categories/${cat.id}`, { method: "DELETE" })
+      const r = await fetch(`/api/admin/categories/${confirmDelete.id}`, { method: "DELETE" })
       const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `Gagal menghapus kategori (HTTP ${r.status})`)
+      await throwIfNotOk(r, "Gagal menghapus kategori")
 
       toast({
         title: "Kategori dihapus",
-        description: data?.message || `Kategori "${cat.name}" berhasil dihapus.`,
+        description: (data as { message?: string })?.message || `Kategori "${confirmDelete.name}" berhasil dihapus.`,
+        variant: "success",
       })
+      setConfirmDelete(null)
       await fetchData()
     } catch (e) {
       toast({ title: "Gagal menghapus kategori", description: toMessage(e), variant: "destructive" })
     } finally {
-      setDeleting(null)
+      setDeleting(false)
     }
   }
 
@@ -185,11 +196,12 @@ export default function CategoriesPage() {
         body: JSON.stringify(body),
       })
       const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `Gagal menyimpan kategori (HTTP ${r.status})`)
+      await throwIfNotOk(r, "Gagal menyimpan kategori")
 
       toast({
         title: editingCategory ? "Kategori diperbarui" : "Kategori ditambahkan",
-        description: data?.message || `Kategori "${body.name}" tersimpan.`,
+        description: (data as { message?: string })?.message || `Kategori "${body.name}" tersimpan.`,
+        variant: "success",
       })
       setDialogOpen(false)
       setEditingCategory(null)
@@ -211,15 +223,7 @@ export default function CategoriesPage() {
   }
 
   if (error && categories.length === 0) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kategori: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat kategori: ${error}`} onRetry={fetchData} />
   }
 
   return (
@@ -318,6 +322,17 @@ export default function CategoriesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Konfirmasi hapus kategori — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDelete(null) }}
+        title={`Hapus kategori "${confirmDelete?.name ?? ""}"?`}
+        description={"Tindakan ini tidak dapat dibatalkan."}
+        confirmLabel="Ya, hapus"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   )
 }

@@ -13,6 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { slugify, formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 /**
  * Ambil pesan error dari respons API.
@@ -140,6 +141,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  // Dialog konfirmasi nonaktifkan (pengganti confirm() browser)
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   /**
    * Tampilkan error agar benar-benar terlihat: pesan lama tampil hanya di
@@ -300,7 +303,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   };
 
   const handleDelete = async () => {
-    if (!confirm(`Nonaktifkan produk "${form.name || id}"?\n\nProduk tidak dihapus permanen dari database — hanya dinonaktifkan dari katalog dan bisa diaktifkan kembali.`)) return;
+    // Dialog konfirmasi ditampilkan terlebih dahulu; eksekusi di handleDeleteConfirmed.
+    setConfirmDelete(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
     setDeleting(true);
     try {
       const r = await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
@@ -308,9 +315,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         const data = await r.json().catch(() => ({}));
         throw new Error(extractApiErrorMessage(data, "Gagal menghapus produk."));
       }
-      toast({ title: "Produk dinonaktifkan", description: "Produk disembunyikan dari katalog dan bisa diaktifkan kembali." });
+      toast({ title: "Produk dinonaktifkan", description: "Produk disembunyikan dari katalog dan bisa diaktifkan kembali.", variant: "success" });
+      setConfirmDelete(false);
       router.push("/admin/products");
     } catch (err) {
+      setConfirmDelete(false);
       applyError(err instanceof Error && err.message ? err.message : "Gagal menghapus produk.");
     } finally {
       setDeleting(false);
@@ -522,6 +531,17 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
       </form>
+
+      {/* Konfirmasi nonaktifkan produk — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete}
+        onOpenChange={setConfirmDelete}
+        title={`Nonaktifkan produk "${form.name || id}"?`}
+        description="Produk tidak dihapus permanen dari database — hanya dinonaktifkan dari katalog dan bisa diaktifkan kembali."
+        confirmLabel="Ya, nonaktifkan"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   );
 }

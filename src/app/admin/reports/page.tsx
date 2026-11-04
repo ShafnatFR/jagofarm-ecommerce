@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
 import { AdminRefreshButton } from "../admin-refresh"
 
 type GroupBy = "day" | "month"
@@ -449,11 +451,11 @@ export default function AdminReportsPage() {
     const params = new URLSearchParams({ from, to, groupBy })
     try {
       const r = await fetch(`/api/admin/reports?${params.toString()}`, { cache: "no-store" })
+      await throwIfNotOk(r, "Gagal memuat laporan")
       const payload = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(payload?.error || `HTTP ${r.status}`)
       setData(payload as ReportResponse)
     } catch (e) {
-      const message = e instanceof Error ? e.message : String(e)
+      const message = (e instanceof Error ? e.message : String(e)) || "Coba lagi beberapa saat."
       setError(message)
       setData(null)
       toast({
@@ -486,11 +488,12 @@ export default function AdminReportsPage() {
     try {
       const params = new URLSearchParams({ from, to, groupBy })
       const r = await fetch(`/api/admin/reports/sync?${params.toString()}`, { method: "POST" })
+      await throwIfNotOk(r, "Gagal sinkron ke Spreadsheet")
       const payload = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(payload?.error || `HTTP ${r.status}`)
       toast({
         title: "Sinkron ke Spreadsheet selesai",
-        description: `${payload?.synced ?? 0} order ditulis ke Spreadsheet.`,
+        description: `${(payload as { synced?: number })?.synced ?? 0} order ditulis ke Spreadsheet.`,
+        variant: "success",
       })
     } catch (e) {
       toast({
@@ -527,17 +530,7 @@ export default function AdminReportsPage() {
   }
 
   if (error && !data) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat laporan: {error}</p>
-          <button onClick={() => fetchReport()} className="mt-2 text-sm text-primary underline">
-            Coba lagi
-          </button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat laporan: ${error}`} onRetry={fetchReport} />
   }
 
   const summary = data?.summary

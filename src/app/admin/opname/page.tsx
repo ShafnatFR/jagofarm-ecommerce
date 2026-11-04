@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/utils";
+import { throwIfNotOk } from "@/lib/api-errors";
 
 interface OpnameRow {
   id: string;
@@ -33,7 +34,7 @@ export default function AdminOpnamePage() {
       const data = await res.json();
       setRows(data.opnames ?? []);
     } catch {
-      toast({ title: "Gagal memuat riwayat", variant: "destructive" });
+      toast({ title: "Gagal memuat riwayat", description: "Coba lagi beberapa saat.", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -60,16 +61,15 @@ export default function AdminOpnamePage() {
           note: note.trim() || undefined,
         }),
       });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) {
-        toast({ title: "Gagal", description: data?.error ?? "", variant: "destructive" });
-        return;
-      }
-      toast({ title: "Opname tersimpan", description: `Selisih: ${data.opname.difference}` });
+      await throwIfNotOk(res, "Gagal menyimpan opname");
+      const data = (await res.json()) as { opname?: { difference?: number } };
+      toast({ title: "Opname tersimpan", description: `Selisih: ${data.opname?.difference ?? 0}`, variant: "success" });
       setProductId("");
       setPhysical("");
       setNote("");
       void fetchData();
+    } catch (e) {
+      toast({ title: "Gagal menyimpan opname", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
     } finally {
       setSaving(false);
     }

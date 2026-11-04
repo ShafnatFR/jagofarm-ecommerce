@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/utils";
+import { throwIfNotOk } from "@/lib/api-errors";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 interface Article {
   id: string;
@@ -28,6 +30,9 @@ export default function AdminArticlesPage() {
   const [form, setForm] = useState(EMPTY);
   const [editing, setEditing] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  // Dialog konfirmasi hapus: artikel yang akan dihapus (null = tertutup).
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; title: string } | null>(null);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -36,7 +41,7 @@ export default function AdminArticlesPage() {
       const data = await res.json();
       setArticles(data.articles ?? []);
     } catch {
-      toast({ title: "Gagal memuat artikel", variant: "destructive" });
+      toast({ title: "Gagal memuat artikel", description: "Coba lagi beberapa saat.", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -59,24 +64,37 @@ export default function AdminArticlesPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...(editing ? { id: editing } : {}), ...form }),
       });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) {
-        toast({ title: "Gagal", description: data?.error ?? "", variant: "destructive" });
-        return;
-      }
-      toast({ title: editing ? "Artikel diperbarui" : "Artikel dibuat" });
+      await throwIfNotOk(res, "Gagal menyimpan artikel");
+      toast({ title: editing ? "Artikel diperbarui" : "Artikel dibuat", description: `Artikel "${form.title.trim()}" tersimpan.`, variant: "success" });
       setForm(EMPTY);
       setEditing(null);
       void fetchData();
+    } catch (e) {
+      toast({ title: "Gagal menyimpan artikel", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
     } finally {
       setSaving(false);
     }
   }
 
-  async function remove(id: string) {
-    if (!confirm("Hapus artikel ini?")) return;
-    await fetch(`/api/admin/articles?id=${id}`, { method: "DELETE" });
-    void fetchData();
+  function remove(id: string) {
+    const article = articles.find((a) => a.id === id);
+    setConfirmDelete({ id, title: article?.title ?? "" });
+  }
+
+  async function handleDeleteConfirmed() {
+    if (!confirmDelete) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/articles?id=${confirmDelete.id}`, { method: "DELETE" });
+      await throwIfNotOk(res, "Gagal menghapus artikel");
+      toast({ title: "Artikel dihapus", description: `Artikel "${confirmDelete.title}" telah dihapus permanen.`, variant: "success" });
+      setConfirmDelete(null);
+      void fetchData();
+    } catch (e) {
+      toast({ title: "Gagal menghapus artikel", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
+    } finally {
+      setDeleting(false);
+    }
   }
 
   return (
@@ -122,6 +140,17 @@ export default function AdminArticlesPage() {
           ))}
         </CardContent>
       </Card>
+
+      {/* Konfirmasi hapus artikel — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDelete(null) }}
+        title={`Hapus artikel "${confirmDelete?.title ?? ""}"?`}
+        description={"Artikel akan dihapus permanen dan tidak bisa dikembalikan."}
+        confirmLabel="Ya, hapus"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   );
 }

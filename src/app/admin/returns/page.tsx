@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate, formatPrice } from "@/lib/utils";
+import { throwIfNotOk } from "@/lib/api-errors";
 
 interface ReturnItem {
   id: string;
@@ -43,7 +44,7 @@ export default function AdminReturnsPage() {
       const data = await res.json();
       setItems(data.returns ?? []);
     } catch {
-      toast({ title: "Gagal memuat retur", variant: "destructive" });
+      toast({ title: "Gagal memuat retur", description: "Coba lagi beberapa saat.", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -67,13 +68,15 @@ export default function AdminReturnsPage() {
           refundAmount: amount[id] ? parseInt(amount[id], 10) : undefined,
         }),
       });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) {
-        toast({ title: "Gagal", description: data?.error ?? "", variant: "destructive" });
-        return;
-      }
-      toast({ title: `Retur ${action === "approve" ? "disetujui" : action === "refund" ? "direfund" : "ditolak"}` });
+      await throwIfNotOk(res, "Gagal memperbarui retur");
+      toast({
+        title: `Retur ${action === "approve" ? "disetujui" : action === "refund" ? "direfund" : "ditolak"}`,
+        description: "Status retur berhasil diperbarui.",
+        variant: "success",
+      });
       void fetchData();
+    } catch (e) {
+      toast({ title: "Gagal memperbarui retur", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
     } finally {
       setBusy(null);
     }

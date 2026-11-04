@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
 import { AdminRefreshButton } from "../admin-refresh"
 import { registerAdminAction } from "@/hooks/use-admin-shortcuts"
 
@@ -135,7 +137,7 @@ export default function OrdersPage() {
 
     try {
       const res = await fetch(`/api/admin/orders?${params}`, { cache: "no-store" })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      await throwIfNotOk(res, "Gagal memuat pesanan")
       const data = await res.json()
       const list = (data.orders || []).map((o: OrderApiItem) => ({
         id: o.id || o.orderNumber,
@@ -198,9 +200,8 @@ export default function OrdersPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.error || `Gagal memperbarui pesanan (HTTP ${res.status})`)
-      return data
+      await throwIfNotOk(res, "Gagal memperbarui pesanan")
+      return await res.json().catch(() => ({}))
     },
     []
   )
@@ -212,6 +213,7 @@ export default function OrdersPage() {
       toast({
         title: "Status diperbarui",
         description: `Pesanan ${order.orderNumber} → ${statusConfig[status]?.label || status}.`,
+        variant: "success",
       })
       await fetchData()
     } catch (e) {
@@ -254,6 +256,7 @@ export default function OrdersPage() {
       toast({
         title: "Resi tersimpan",
         description: `Pesanan ${resiOrder.orderNumber} ditandai dikirim dengan resi ${resiValue.trim()}.`,
+        variant: "success",
       })
       setResiOpen(false)
       setResiOrder(null)
@@ -280,15 +283,7 @@ export default function OrdersPage() {
   }
 
   if (error && orders.length === 0) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pesanan: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat pesanan: ${error}`} onRetry={fetchData} />
   }
 
   const firstRow = orders.length === 0 ? 0 : (page - 1) * 20 + 1

@@ -6,6 +6,8 @@ import { Icon } from "@/components/ui/icon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
 import { AdminRefreshButton } from "./admin-refresh"
 
 interface Stats {
@@ -344,8 +346,8 @@ export default function AdminDashboardPage() {
     setHistoryLoading(true)
     setError(null)
     const [summary, history] = await Promise.allSettled([
-      fetch("/api/admin/stats").then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() }),
-      fetch("/api/admin/stats?period=365").then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() }),
+      fetch("/api/admin/stats").then((r) => throwIfNotOk(r, "Gagal memuat data").then(() => r.json())),
+      fetch("/api/admin/stats?period=365").then((r) => throwIfNotOk(r, "Gagal memuat data").then(() => r.json())),
     ])
     if (summary.status === "fulfilled") setData(summary.value)
     else setError(summary.reason instanceof Error ? summary.reason.message : String(summary.reason))
@@ -385,15 +387,7 @@ export default function AdminDashboardPage() {
   }
 
   if (error || !data) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat data: {error || "Unknown error"}</p>
-          <button onClick={() => void fetchDashboard()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={error || "Gagal memuat data"} onRetry={fetchDashboard} />
   }
 
   const stats = [

@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
 import { formatPrice, formatDateTime } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
 import { AdminRefreshButton } from "../../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -127,8 +128,8 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
     setLoading(true)
     try {
       const res = await fetch(`/api/admin/orders/${id}`, { cache: "no-store" })
+      await throwIfNotOk(res, "Gagal memuat pesanan")
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`)
       const loaded: OrderDetail = data.order
       setOrder(loaded)
       setResiValue(loaded.trackingNumber || "")
@@ -154,9 +155,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
+    await throwIfNotOk(res, "Gagal memperbarui pesanan")
     const data = await res.json().catch(() => ({}))
-    if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`)
-    toast({ title: successTitle, description: data?.message || "Perubahan tersimpan." })
+    toast({
+      title: successTitle,
+      description: (data as { message?: string })?.message || "Perubahan tersimpan.",
+      variant: "success",
+    })
     await fetchOrder()
     return data
   }

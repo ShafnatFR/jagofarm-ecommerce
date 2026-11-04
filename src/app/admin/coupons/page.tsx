@@ -9,7 +9,10 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { formatPrice, formatDate } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
 import { useToast } from "@/components/ui/use-toast"
+import { AdminErrorState } from "@/components/admin/error-state"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -56,6 +59,9 @@ export default function CouponsPage() {
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+  // Dialog konfirmasi hapus: kupon yang akan dihapus (null = tertutup).
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; code: string } | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   const normalizeCoupons = (items: CouponApiItem[]): Coupon[] => items.map((c) => ({
     id: c.id, code: c.code, type: (c.discountType || c.type || "percentage").toLowerCase(),
@@ -101,15 +107,31 @@ export default function CouponsPage() {
     setDialogOpen(true)
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Hapus kupon ini?")) return
+  const handleDelete = (id: string) => {
+    const coupon = coupons.find((c) => c.id === id)
+    setConfirmDelete({ id, code: coupon?.code ?? "" })
+  }
+
+  const handleDeleteConfirmed = async () => {
+    if (!confirmDelete) return
+    setDeleting(true)
     try {
-      const r = await fetch(`/api/admin/coupons/${id}`, { method: "DELETE" })
-      if (!r.ok) throw new Error("Gagal menghapus")
+      const r = await fetch(`/api/admin/coupons/${confirmDelete.id}`, { method: "DELETE" })
+      await throwIfNotOk(r, "Gagal menghapus kupon")
       const scope = window as Window & { __jagoAdminClearCache?: (prefixes?: string[]) => void }
       scope.__jagoAdminClearCache?.(["/api/admin/coupons"])
-      setCoupons((prev) => prev.filter((c) => c.id !== id))
-    } catch (e) { toast({ variant: "destructive", title: "Gagal menghapus", description: toMessage(e) }) }
+      setCoupons((prev) => prev.filter((c) => c.id !== confirmDelete.id))
+      toast({
+        title: "Kupon dihapus",
+        description: `Kupon "${confirmDelete.code}" tidak bisa dipakai lagi.`,
+        variant: "success",
+      })
+      setConfirmDelete(null)
+    } catch (e) {
+      toast({ variant: "destructive", title: "Gagal menghapus kupon", description: e instanceof Error ? e.message : String(e) })
+    } finally {
+      setDeleting(false)
+    }
   }
 
   const handleSave = async () => {
@@ -133,13 +155,18 @@ export default function CouponsPage() {
       const url = editingCoupon ? `/api/admin/coupons/${editingCoupon.id}` : "/api/admin/coupons"
       const method = editingCoupon ? "PATCH" : "POST"
       const r = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-      if (!r.ok) throw new Error("Gagal menyimpan")
+      await throwIfNotOk(r, "Gagal menyimpan kupon")
       const scope = window as Window & { __jagoAdminClearCache?: (prefixes?: string[]) => void }
       scope.__jagoAdminClearCache?.(["/api/admin/coupons"])
       const fresh = await fetch("/api/admin/coupons").then((r) => r.json())
       setCoupons(normalizeCoupons(fresh.coupons || []))
       setDialogOpen(false)
-    } catch (e) { toast({ variant: "destructive", title: "Gagal menyimpan", description: toMessage(e) }) }
+      toast({
+        title: editingCoupon ? "Kupon diperbarui" : "Kupon dibuat",
+        description: `Kupon "${form.code.trim()}" tersimpan.`,
+        variant: "success",
+      })
+    } catch (e) { toast({ variant: "destructive", title: "Gagal menyimpan kupon", description: toMessage(e) }) }
     finally { setSaving(false) }
   }
 
@@ -154,15 +181,7 @@ export default function CouponsPage() {
   }
 
   if (error) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat kupon: {error}</p>
-          <button onClick={() => void fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat kupon: ${error}`} onRetry={() => void fetchData()} />
   }
 
   return (
@@ -277,6 +296,17 @@ export default function CouponsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Konfirmasi hapus kupon — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDelete(null) }}
+        title={`Hapus kupon "${confirmDelete?.code ?? ""}"?`}
+        description={"Kupon tidak bisa dipakai pelanggan lagi. Tindakan ini tidak dapat dibatalkan."}
+        confirmLabel="Ya, hapus"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   )
 }

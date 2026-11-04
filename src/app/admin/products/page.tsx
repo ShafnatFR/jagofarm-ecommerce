@@ -9,7 +9,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useToast } from "@/components/ui/use-toast"
 import { formatPrice } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Bentuk mentah produk dari GET /api/admin/products (toleran dua penamaan field). */
@@ -33,6 +37,7 @@ interface Product {
 interface Category { id: string; name: string; slug: string }
 
 export default function ProductsPage() {
+  const { toast } = useToast()
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
@@ -43,6 +48,9 @@ export default function ProductsPage() {
   const [status, setStatus] = useState("all")
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
     const [menuAnchor, setMenuAnchor] = useState<HTMLButtonElement | null>(null)
+  // Dialog konfirmasi hapus: produk yang akan dinonaktifkan (null = tertutup)
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
     const fetchData = useCallback(() => {
     setLoading(true)
@@ -78,17 +86,22 @@ export default function ProductsPage() {
     return () => clearTimeout(timer)
   }, [fetchData])
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Nonaktifkan produk "${name}"?\n\nProduk tidak dihapus permanen dari database — hanya dinonaktifkan dari katalog dan bisa diaktifkan kembali.`)) return
+  const handleDeleteConfirmed = async () => {
+    if (!confirmDelete) return
+    setDeleting(true)
     try {
-      const r = await fetch(`/api/admin/products/${id}`, { method: "DELETE" })
-      if (!r.ok) throw new Error("Gagal menghapus")
+      const r = await fetch(`/api/admin/products/${confirmDelete.id}`, { method: "DELETE" })
+      await throwIfNotOk(r, "Gagal menghapus produk")
+      toast({ title: "Produk dinonaktifkan", description: "Produk disembunyikan dari katalog dan bisa diaktifkan kembali.", variant: "success" })
+      setConfirmDelete(null)
       // JANGAN hilangkan baris dari daftar: produk tetap ada di DB (soft-delete).
       // Muat ulang agar badge "Nonaktif" langsung terlihat — feedback jujur
       // bahwa produk berstatus nonaktif, bukan hilang.
       fetchData()
     } catch (e) {
-      alert(e instanceof Error ? e.message : String(e))
+      toast({ title: "Gagal menghapus produk", description: e instanceof Error ? e.message : String(e), variant: "destructive" })
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -103,15 +116,10 @@ export default function ProductsPage() {
   }
 
   if (error) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat produk: {error}</p>
-          <button onClick={() => fetchData()} className="mt-2 text-sm text-primary underline">Coba lagi</button>
-        </div>
-      </div>
-    )
+    // Pesan humanis per skenario HTTP: 401 → tombol login, 403 → akses admin,
+    // lainnya → tombol coba lagi. (403 juga nonaktifkan retry — membantu tanpa
+    // berguna bila akun memang bukan admin.)
+    return <AdminErrorState message={error} onRetry={fetchData} />
   }
 
   return (
@@ -232,7 +240,7 @@ export default function ProductsPage() {
                                                     <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-container-low" onClick={() => { setActiveMenu(null); setMenuAnchor(null) }}>
                                                       <Icon name="edit" size={16} /> Edit
                                                     </Link>
-                                                    <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10" onClick={() => { setActiveMenu(null); setMenuAnchor(null); handleDelete(product.id, product.name) }}>
+                                                    <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10" onClick={() => { setActiveMenu(null); setMenuAnchor(null); setConfirmDelete({ id: product.id, name: product.name }) }}>
                                                       <Icon name="delete" size={16} /> Hapus
                                                     </button>
                                                   </div>,
@@ -248,6 +256,17 @@ export default function ProductsPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Konfirmasi nonaktifkan produk — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDelete(null) }}
+        title={`Nonaktifkan produk "${confirmDelete?.name ?? ""}"?`}
+        description={"Produk tidak dihapus permanen dari database — hanya dinonaktifkan dari katalog dan bisa diaktifkan kembali."}
+        confirmLabel="Ya, nonaktifkan"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   )
 }

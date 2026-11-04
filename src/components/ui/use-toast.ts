@@ -5,13 +5,26 @@ import * as React from "react"
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+/**
+ * Durasi tampil toast sebelum tertutup sendiri. Sebelumnya file ini memakai
+ * TOAST_REMOVE_DELAY = 1000000 (shadcn klasik) — toast mentang hampir 17
+ * menit dan tidak pernah mati sendiri, membuat admin berpikir aksi gagal.
+ * Sekarang: auto-dismiss 5 dtk; `duration: 0` = sticky.
+ */
+const TOAST_DEFAULT_DURATION = 5000
+// Jeda pendek setelah user menutup manual agar animasi close selesai dulu.
+const TOAST_REMOVE_DELAY = 350
 
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  /**
+   * Lamanya toast tampil (ms) sebelum tertutup sendiri.
+   * 0 = sticky (hanya bisa ditutup manual). Default 5000.
+   */
+  duration?: number
 }
 
 /** Nilai `type` pada action reducer toast. */
@@ -53,18 +66,24 @@ interface State {
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
-const addToRemoveQueue = (toastId: string) => {
-  if (toastTimeouts.has(toastId)) return
-
-  const timeout = setTimeout(() => {
-    toastTimeouts.delete(toastId)
-    dispatch({
-      type: "REMOVE_TOAST",
-      toastId: toastId,
-    })
-  }, TOAST_REMOVE_DELAY)
-
-  toastTimeouts.set(toastId, timeout)
+/**
+ * Jadwalkan penghapusan toast dari state.
+ * Selalu REPLACE timer lama (bukan skip bila sudah ada) — penting agar
+ * close manual lebih cepat dari auto-dismiss yang sudah terjadwal.
+ */
+function scheduleRemove(toastId: string, delay: number) {
+  const existing = toastTimeouts.get(toastId)
+  if (existing) clearTimeout(existing)
+  toastTimeouts.set(
+    toastId,
+    setTimeout(() => {
+      toastTimeouts.delete(toastId)
+      dispatch({
+        type: "REMOVE_TOAST",
+        toastId: toastId,
+      })
+    }, delay)
+  )
 }
 
 export const reducer = (state: State, action: Action): State => {
@@ -87,10 +106,10 @@ export const reducer = (state: State, action: Action): State => {
       const { toastId } = action
 
       if (toastId) {
-        addToRemoveQueue(toastId)
+        scheduleRemove(toastId, TOAST_REMOVE_DELAY)
       } else {
         state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id)
+          scheduleRemove(toast.id, TOAST_REMOVE_DELAY)
         })
       }
 
@@ -154,6 +173,10 @@ function toast({ ...props }: Toast) {
       },
     },
   })
+
+  // Auto-dismiss sebesar durasi toast (default 5 dtk). duration: 0 = sticky.
+  const duration = props.duration ?? TOAST_DEFAULT_DURATION
+  if (duration > 0) scheduleRemove(id, duration)
 
   return {
     id: id,

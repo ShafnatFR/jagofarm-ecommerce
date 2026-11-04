@@ -9,6 +9,9 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/components/ui/use-toast"
 import { formatDate } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -75,6 +78,9 @@ export default function AdminReviewsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  // Dialog konfirmasi hapus: ulasan yang akan dihapus (null = tertutup).
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; userName: string; productName: string } | null>(null)
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -87,15 +93,15 @@ export default function AdminReviewsPage() {
 
     try {
       const r = await fetch(`/api/admin/reviews?${params.toString()}`, { cache: "no-store" })
+      await throwIfNotOk(r, "Gagal memuat ulasan")
       const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
       setReviews(Array.isArray(data.reviews) ? data.reviews : [])
       setSummary(data.summary ?? null)
       setPagination(
         data.pagination ?? { page, limit: LIMIT, total: 0, totalPages: 1 }
       )
     } catch (e) {
-      const message = toMessage(e)
+      const message = toMessage(e) || "Coba lagi beberapa saat."
       setError(message)
       setReviews([])
       toast({
@@ -130,13 +136,13 @@ export default function AdminReviewsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isApproved }),
       })
-      const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
+      await throwIfNotOk(r, "Gagal memperbarui ulasan")
       toast({
         title: isApproved ? "Ulasan disetujui" : "Ulasan disembunyikan",
         description: isApproved
           ? `Ulasan dari ${review.userName} kini tayang di halaman produk.`
           : `Ulasan dari ${review.userName} disembunyikan dari toko.`,
+        variant: "success",
       })
       await fetchData()
     } catch (e) {
@@ -150,23 +156,26 @@ export default function AdminReviewsPage() {
     }
   }
 
-  const remove = async (review: AdminReview) => {
-    if (
-      !confirm(
-        `Hapus ulasan dari ${review.userName} untuk produk "${review.product?.name ?? "-"}"? Tindakan ini tidak bisa dibatalkan.`
-      )
-    ) {
-      return
-    }
-    setBusyId(review.id)
+  const remove = (review: AdminReview) => {
+    setConfirmDelete({
+      id: review.id,
+      userName: review.userName,
+      productName: review.product?.name ?? "-",
+    })
+  }
+
+  const handleDeleteConfirmed = async () => {
+    if (!confirmDelete) return
+    setDeleting(true)
     try {
-      const r = await fetch(`/api/admin/reviews/${review.id}`, { method: "DELETE" })
-      const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
+      const r = await fetch(`/api/admin/reviews/${confirmDelete.id}`, { method: "DELETE" })
+      await throwIfNotOk(r, "Gagal menghapus ulasan")
       toast({
         title: "Ulasan dihapus",
-        description: `Ulasan dari ${review.userName} telah dihapus permanen.`,
+        description: `Ulasan dari ${confirmDelete.userName} telah dihapus permanen.`,
+        variant: "success",
       })
+      setConfirmDelete(null)
       // Kalau baris terakhir di halaman ini terhapus, mundur satu halaman.
       if (reviews.length === 1 && page > 1) {
         setPage((p) => Math.max(1, p - 1))
@@ -180,7 +189,7 @@ export default function AdminReviewsPage() {
         variant: "destructive",
       })
     } finally {
-      setBusyId(null)
+      setDeleting(false)
     }
   }
 
@@ -199,20 +208,7 @@ export default function AdminReviewsPage() {
   }
 
   if (error && reviews.length === 0) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat ulasan: {error}</p>
-          <button
-            onClick={() => fetchData()}
-            className="mt-2 text-sm text-primary underline"
-          >
-            Coba lagi
-          </button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat ulasan: ${error}`} onRetry={fetchData} />
   }
 
   const total = summary?.total ?? pagination.total ?? 0
@@ -416,6 +412,17 @@ export default function AdminReviewsPage() {
           </div>
         </div>
       )}
+
+      {/* Konfirmasi hapus ulasan — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDelete(null) }}
+        title={`Hapus ulasan dari "${confirmDelete?.userName ?? ""}"?`}
+        description={`Ulasan untuk produk "${confirmDelete?.productName ?? "-"}" akan dihapus permanen dan tidak bisa dikembalikan.`}
+        confirmLabel="Ya, hapus"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   )
 }

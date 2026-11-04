@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
 import { formatDateTime } from "@/lib/utils"
+import { throwIfNotOk } from "@/lib/api-errors"
+import { AdminErrorState } from "@/components/admin/error-state"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 import { AdminRefreshButton } from "../admin-refresh"
 
 /** Pesan error yang aman ditampilkan di UI (unknown -> string). */
@@ -82,6 +85,9 @@ export default function AdminContactPage() {
   const [error, setError] = useState<string | null>(null)
   const [busyId, setBusyId] = useState<string | null>(null)
   const [selected, setSelected] = useState<AdminContactMessage | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  // Dialog konfirmasi hapus: pesan yang akan dihapus (null = tertutup).
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string; subject: string } | null>(null)
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -94,15 +100,15 @@ export default function AdminContactPage() {
 
     try {
       const r = await fetch(`/api/admin/contact?${params.toString()}`, { cache: "no-store" })
+      await throwIfNotOk(r, "Gagal memuat pesan")
       const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
       setMessages(Array.isArray(data.messages) ? data.messages : [])
       setSummary(data.summary ?? null)
       setPagination(
         data.pagination ?? { page, limit: LIMIT, total: 0, totalPages: 1 }
       )
     } catch (e) {
-      const message = toMessage(e)
+      const message = toMessage(e) || "Coba lagi beberapa saat."
       setError(message)
       setMessages([])
       toast({
@@ -137,8 +143,7 @@ export default function AdminContactPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: isRead ? "read" : "unread" }),
       })
-      const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
+      await throwIfNotOk(r, "Gagal memperbarui pesan")
       // Sinkronkan dialog detail (kalau sedang terbuka untuk pesan ini).
       setSelected((current) =>
         current && current.id === message.id
@@ -153,6 +158,7 @@ export default function AdminContactPage() {
       toast({
         title: isRead ? "Pesan ditandai sudah dibaca" : "Pesan ditandai belum dibaca",
         description: `Pesan dari ${message.name}.`,
+        variant: "success",
       })
       await fetchData()
     } catch (e) {
@@ -166,39 +172,42 @@ export default function AdminContactPage() {
     }
   }
 
-  const remove = async (message: AdminContactMessage) => {
-    if (
-      !confirm(
-        `Hapus pesan dari ${message.name} ("${message.subject}")? Tindakan ini tidak bisa dibatalkan.`
-      )
-    ) {
-      return false
-    }
-    setBusyId(message.id)
+  const remove = (message: AdminContactMessage) => {
+    setConfirmDelete({
+      id: message.id,
+      name: message.name,
+      subject: message.subject,
+    })
+  }
+
+  const handleDeleteConfirmed = async () => {
+    if (!confirmDelete) return
+    setDeleting(true)
     try {
-      const r = await fetch(`/api/admin/contact/${message.id}`, { method: "DELETE" })
-      const data = await r.json().catch(() => ({}))
-      if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`)
+      const r = await fetch(`/api/admin/contact/${confirmDelete.id}`, { method: "DELETE" })
+      await throwIfNotOk(r, "Gagal menghapus pesan")
       toast({
         title: "Pesan dihapus",
-        description: `Pesan dari ${message.name} telah dihapus permanen.`,
+        description: `Pesan dari ${confirmDelete.name} telah dihapus permanen.`,
+        variant: "success",
       })
+      setConfirmDelete(null)
+      // Tutup juga dialog detail bila yang dihapus adalah pesan yang sedang dibuka.
+      setSelected((current) => (current && current.id === confirmDelete.id ? null : current))
       // Kalau baris terakhir di halaman ini terhapus, mundur satu halaman.
       if (messages.length === 1 && page > 1) {
         setPage((p) => Math.max(1, p - 1))
       } else {
         await fetchData()
       }
-      return true
     } catch (e) {
       toast({
         title: "Gagal menghapus pesan",
         description: toMessage(e),
         variant: "destructive",
       })
-      return false
     } finally {
-      setBusyId(null)
+      setDeleting(false)
     }
   }
 
@@ -225,20 +234,7 @@ export default function AdminContactPage() {
   }
 
   if (error && messages.length === 0) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <Icon name="info" size={40} className="mx-auto text-destructive/80" />
-          <p className="mt-2 text-sm text-on-surface-variant">Gagal memuat pesan: {error}</p>
-          <button
-            onClick={() => fetchData()}
-            className="mt-2 text-sm text-primary underline"
-          >
-            Coba lagi
-          </button>
-        </div>
-      </div>
-    )
+    return <AdminErrorState message={`Gagal memuat pesan: ${error}`} onRetry={fetchData} />
   }
 
   const total = summary?.total ?? pagination.total ?? 0
@@ -538,10 +534,7 @@ export default function AdminContactPage() {
                   size="sm"
                   className="text-destructive hover:text-destructive"
                   disabled={busyId === selected.id}
-                  onClick={async () => {
-                    const deleted = await remove(selected)
-                    if (deleted) setSelected(null)
-                  }}
+                  onClick={() => remove(selected)}
                 >
                   <Icon name="delete" size={16} className="mr-2" />
                   Hapus
@@ -551,6 +544,17 @@ export default function AdminContactPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Konfirmasi hapus pesan — menggantikan confirm() browser */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDelete(null) }}
+        title={`Hapus pesan dari "${confirmDelete?.name ?? ""}"?`}
+        description={`Pesan "${confirmDelete?.subject ?? ""}" akan dihapus permanen dan tidak bisa dikembalikan.`}
+        confirmLabel="Ya, hapus"
+        loading={deleting}
+        onConfirm={handleDeleteConfirmed}
+      />
     </div>
   )
 }
