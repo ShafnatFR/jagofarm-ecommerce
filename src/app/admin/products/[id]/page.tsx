@@ -14,6 +14,28 @@ import { slugify, formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { AdminRefreshButton } from "../../admin-refresh";
 
+/**
+ * Ambil pesan error dari respons API.
+ * Backend bisa balas 400 dengan `error` berupa daftar field error (object),
+ * mis. { basePrice: ["..."] } — gabungkan agar user melihat penyebab nyata.
+ */
+function extractApiErrorMessage(data: unknown, fallback: string): string {
+  if (data && typeof data === "object") {
+    const err = (data as { error?: unknown }).error;
+    if (typeof err === "string" && err) return err;
+    if (err && typeof err === "object") {
+      const parts: string[] = [];
+      for (const [field, messages] of Object.entries(err as Record<string, unknown>)) {
+        if (Array.isArray(messages) && messages.length > 0) {
+          parts.push(`${field}: ${messages.join("; ")}`);
+        }
+      }
+      if (parts.length > 0) return parts.join(" • ");
+    }
+  }
+  return fallback;
+}
+
 interface Category { id: string; name: string; }
 
 interface ProductImageRow { id?: string; url: string; sortOrder?: number; isPrimary?: boolean; }
@@ -118,6 +140,21 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  /**
+   * Tampilkan error agar benar-benar terlihat: pesan lama tampil hanya di
+   * bagian atas laman panjang, sedangkan tombol aksi di bawah — klik terasa
+   * "tidak merespon". Sekarang auto-scroll ke pesan error, dan salinan pesan
+   * juga tampil di dekat tombol Simpan/Hapus.
+   */
+  const applyError = useCallback((msg: string) => {
+    setError(msg);
+    requestAnimationFrame(() => {
+      document
+        .getElementById("product-edit-error")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, []);
   const [images, setImages] = useState<string[]>([]);
   const [form, setForm] = useState({
     name: "", slug: "", category: "", description: "", shortDescription: "",
@@ -207,15 +244,15 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     const widthCm = Number(form.width);
     const heightCm = Number(form.height);
 
-    if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
-    if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
-    if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
-    if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
-    if (![lengthCm, widthCm, heightCm].every((value) => Number.isFinite(value) && value > 0)) { setError("Dimensi paket wajib diisi dalam cm."); return; }
-    if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
+    if (!form.category) { applyError("Pilih kategori produk terlebih dahulu."); return; }
+    if (!Number.isFinite(basePrice) || basePrice <= 0) { applyError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
+    if (!Number.isFinite(weightGram) || weightGram <= 0) { applyError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
+    if (!Number.isFinite(stock) || stock < 0) { applyError("Stok wajib diisi dan tidak boleh negatif."); return; }
+    if (![lengthCm, widthCm, heightCm].every((value) => Number.isFinite(value) && value > 0)) { applyError("Dimensi paket wajib diisi dalam cm."); return; }
+    if (form.sku.trim().length < 2) { applyError("SKU wajib diisi minimal 2 karakter."); return; }
 
     const variantCheck = validateVariants(variants, form.sku);
-    if (variantCheck.message) { setVariantErrors(variantCheck.rowErrors); setError(variantCheck.message); return; }
+    if (variantCheck.message) { setVariantErrors(variantCheck.rowErrors); applyError(variantCheck.message); return; }
     setVariantErrors({});
 
     setSaving(true);
@@ -250,31 +287,31 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(typeof data?.error === "string" ? data.error : "Gagal menyimpan perubahan.");
+        throw new Error(extractApiErrorMessage(data, "Gagal menyimpan perubahan."));
       }
 
       toast({ title: "Perubahan disimpan", description: "Data produk berhasil diperbarui." });
       router.push("/admin/products");
     } catch (err) {
-      setError(err instanceof Error && err.message ? err.message : "Gagal menyimpan perubahan.");
+      applyError(err instanceof Error && err.message ? err.message : "Gagal menyimpan perubahan.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm(`Hapus produk "${form.name || id}"?`)) return;
+    if (!confirm(`Nonaktifkan produk "${form.name || id}"?\n\nProduk tidak dihapus permanen dari database — hanya dinonaktifkan dari katalog dan bisa diaktifkan kembali.`)) return;
     setDeleting(true);
     try {
       const r = await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
       if (!r.ok) {
         const data = await r.json().catch(() => ({}));
-        throw new Error(typeof data?.error === "string" ? data.error : "Gagal menghapus produk.");
+        throw new Error(extractApiErrorMessage(data, "Gagal menghapus produk."));
       }
-      toast({ title: "Produk dihapus", description: "Produk telah dinonaktifkan dari katalog." });
+      toast({ title: "Produk dinonaktifkan", description: "Produk disembunyikan dari katalog dan bisa diaktifkan kembali." });
       router.push("/admin/products");
     } catch (err) {
-      setError(err instanceof Error && err.message ? err.message : "Gagal menghapus produk.");
+      applyError(err instanceof Error && err.message ? err.message : "Gagal menghapus produk.");
     } finally {
       setDeleting(false);
     }
@@ -313,7 +350,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         </div>
       </div>
 
-      {error && <p className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>}
+      {error && (
+        <p id="product-edit-error" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
+      )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
@@ -471,6 +510,12 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             </Card>
           </motion.div>
 
+          {/* Salinan error di dekat tombol Simpan: pesan validasi lama hanya
+              tampil di atas laman panjang sehingga klik "Simpan" terasa tak
+              merespons. Dengan ini error selalu terlihat di dekat aksi. */}
+          {error && (
+            <p aria-live="assertive" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
+          )}
           <div className="flex gap-3">
             <Button type="submit" className="flex-1" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Perubahan"}</Button>
             <Link href="/admin/products" className="flex-1"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>

@@ -256,6 +256,29 @@ function serializeCombinations(combinations: VariantCombination[]) {
     }));
 }
 
+/**
+ * Ambil pesan error dari respons API.
+ * Bila backend balas 400, `error` bisa berupa daftar field error (object),
+ * mis. { basePrice: ["..."] } — gabungkan agar user melihat penyebab nyata,
+ * bukan teks generik "Gagal menyimpan produk."
+ */
+function extractApiErrorMessage(data: unknown, fallback: string): string {
+  if (data && typeof data === "object") {
+    const err = (data as { error?: unknown }).error;
+    if (typeof err === "string" && err) return err;
+    if (err && typeof err === "object") {
+      const parts: string[] = [];
+      for (const [field, messages] of Object.entries(err as Record<string, unknown>)) {
+        if (Array.isArray(messages) && messages.length > 0) {
+          parts.push(`${field}: ${messages.join("; ")}`);
+        }
+      }
+      if (parts.length > 0) return parts.join(" • ");
+    }
+  }
+  return fallback;
+}
+
 // ======== KOMPONEN UTAMA ========
 
 export default function NewProductPage() {
@@ -266,6 +289,22 @@ export default function NewProductPage() {
   const [images, setImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  /**
+   * Tampilkan error VALIDASI/form agar benar-benar terlihat:
+   * pesan merah lama ditampilkan hanya di bagian paling atas laman yang
+   * panjang — saat user klik "Simpan" di bawah, terasa web "tidak merespon".
+   * Sekarang: auto-scroll ke pesan error + salinan pesan tampil di dekat
+   * tombol Simpan (lihat JSX kolom kanan).
+   */
+  const applyError = useCallback((msg: string) => {
+    setError(msg);
+    requestAnimationFrame(() => {
+      document
+        .getElementById("product-form-error")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, []);
   const [form, setForm] = useState({
     name: "", slug: "", category: "", description: "", shortDescription: "",
     basePrice: "", discountPrice: "", sku: "", weight: "", length: "", width: "", height: "", stock: "", featured: false, tags: [] as string[],
@@ -445,22 +484,22 @@ export default function NewProductPage() {
     const widthCm = Number(form.width);
     const heightCm = Number(form.height);
 
-    if (!form.category) { setError("Pilih kategori produk terlebih dahulu."); return; }
-    if (!Number.isFinite(weightGram) || weightGram <= 0) { setError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
-    if (![lengthCm, widthCm, heightCm].every(v => Number.isFinite(v) && v > 0)) { setError("Dimensi paket wajib diisi dalam cm."); return; }
-    if (form.sku.trim().length < 2) { setError("SKU wajib diisi minimal 2 karakter."); return; }
+    if (!form.category) { applyError("Pilih kategori produk terlebih dahulu."); return; }
+    if (!Number.isFinite(weightGram) || weightGram <= 0) { applyError("Berat produk wajib diisi dan harus lebih dari 0 gram."); return; }
+    if (![lengthCm, widthCm, heightCm].every(v => Number.isFinite(v) && v > 0)) { applyError("Dimensi paket wajib diisi dalam cm."); return; }
+    if (form.sku.trim().length < 2) { applyError("SKU wajib diisi minimal 2 karakter."); return; }
 
     if (hasVariants) {
       // Validasi opsi & kombinasi
-      if (optionGroups.length === 0) { setError("Tambahkan minimal 1 grup opsi varian."); return; }
-      if (combinations.length === 0) { setError("Generate kombinasi varian terlebih dahulu."); return; }
+      if (optionGroups.length === 0) { applyError("Tambahkan minimal 1 grup opsi varian."); return; }
+      if (combinations.length === 0) { applyError("Generate kombinasi varian terlebih dahulu."); return; }
       
       const comboCheck = validateCombinations(combinations, form.sku);
-      if (comboCheck.message) { setCombinationErrors(comboCheck.errors); setError(comboCheck.message); return; }
+      if (comboCheck.message) { setCombinationErrors(comboCheck.errors); applyError(comboCheck.message); return; }
       setCombinationErrors({});
     } else {
-      if (!Number.isFinite(basePrice) || basePrice <= 0) { setError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
-      if (!Number.isFinite(stock) || stock < 0) { setError("Stok wajib diisi dan tidak boleh negatif."); return; }
+      if (!Number.isFinite(basePrice) || basePrice <= 0) { applyError("Harga dasar wajib diisi dan harus lebih dari 0."); return; }
+      if (!Number.isFinite(stock) || stock < 0) { applyError("Stok wajib diisi dan tidak boleh negatif."); return; }
     }
 
     setSaving(true);
@@ -510,13 +549,13 @@ export default function NewProductPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(typeof data?.error === "string" ? data.error : "Gagal menyimpan produk.");
+        throw new Error(extractApiErrorMessage(data, "Gagal menyimpan produk."));
       }
 
       toast({ title: "Produk dibuat", description: "Produk baru berhasil disimpan." });
       router.push("/admin/products");
     } catch (err) {
-      setError(err instanceof Error && err.message ? err.message : "Gagal menyimpan produk.");
+      applyError(err instanceof Error && err.message ? err.message : "Gagal menyimpan produk.");
     } finally {
       setSaving(false);
     }
@@ -544,7 +583,9 @@ export default function NewProductPage() {
         <AdminRefreshButton endpointPrefixes={["/api/admin/categories"]} onRefresh={fetchCategories} loading={loadingCats} />
       </div>
 
-      {error && <p className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>}
+      {error && (
+        <p id="product-form-error" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
+      )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* KOLOM KIRI (2/3) */}
@@ -1001,6 +1042,12 @@ export default function NewProductPage() {
             </Card>
           </motion.div>
 
+          {/* Salinan error di dekat tombol Simpan: pesan validasi lama hanya
+              tampil di atas laman panjang, sehingga klik "Simpan" di bawah
+              tak terlihat merespons. Dengan ini error selalu terlihat. */}
+          {error && (
+            <p aria-live="assertive" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
+          )}
           <div className="flex gap-3">
             <Button type="submit" className="flex-1" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
             <Link href="/admin/products" className="flex-1"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>

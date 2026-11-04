@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { Icon } from "@/components/ui/icon";
+import { createPortal } from "react-dom"
+import { Icon } from "@/components/ui/icon"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,6 +15,7 @@ import { AdminRefreshButton } from "../admin-refresh"
 /** Bentuk mentah produk dari GET /api/admin/products (toleran dua penamaan field). */
 interface ProductApiItem {
   id: string; name: string; slug: string;
+  isActive?: boolean | null;
   category?: { name?: string | null } | string | null;
   basePrice?: number | string | null; price?: number | string | null;
   discountPrice?: number | string | null;
@@ -25,6 +27,8 @@ interface ProductApiItem {
 interface Product {
   id: string; name: string; slug: string; category: string; price: number
   discountPrice: number | null; stock: number; image: string; featured: boolean
+  /** false = produk pernah "dihapus" (soft-delete: isActive false). */
+  active: boolean
 }
 interface Category { id: string; name: string; slug: string }
 
@@ -35,13 +39,17 @@ export default function ProductsPage() {
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState("")
   const [category, setCategory] = useState("all")
+  // Filter status: API mendukung status=active|inactive|all.
+  const [status, setStatus] = useState("all")
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
+    const [menuAnchor, setMenuAnchor] = useState<HTMLButtonElement | null>(null)
 
-  const fetchData = useCallback(() => {
+    const fetchData = useCallback(() => {
     setLoading(true)
     const params = new URLSearchParams()
     if (search) params.set("search", search)
     if (category && category !== "all") params.set("category", category)
+    if (status && status !== "all") params.set("status", status)
     fetch(`/api/admin/products?${params}`)
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
       .then((d) => setProducts((d.products || []).map((p: ProductApiItem) => ({
@@ -52,10 +60,11 @@ export default function ProductsPage() {
         stock: p.stock ?? 0,
         image: p.images?.[0]?.url || p.image || "",
         featured: p.isFeatured ?? p.featured ?? false,
+        active: p.isActive ?? true,
       }))))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
-  }, [search, category])
+  }, [search, category, status])
 
   useEffect(() => {
     fetch("/api/admin/categories")
@@ -70,11 +79,14 @@ export default function ProductsPage() {
   }, [fetchData])
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Hapus produk "${name}"?`)) return
+    if (!confirm(`Nonaktifkan produk "${name}"?\n\nProduk tidak dihapus permanen dari database — hanya dinonaktifkan dari katalog dan bisa diaktifkan kembali.`)) return
     try {
       const r = await fetch(`/api/admin/products/${id}`, { method: "DELETE" })
       if (!r.ok) throw new Error("Gagal menghapus")
-      setProducts((prev) => prev.filter((p) => p.id !== id))
+      // JANGAN hilangkan baris dari daftar: produk tetap ada di DB (soft-delete).
+      // Muat ulang agar badge "Nonaktif" langsung terlihat — feedback jujur
+      // bahwa produk berstatus nonaktif, bukan hilang.
+      fetchData()
     } catch (e) {
       alert(e instanceof Error ? e.message : String(e))
     }
@@ -128,6 +140,14 @@ export default function ProductsPage() {
               {categories.map((c) => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
+          <Select value={status} onValueChange={setStatus}>
+            <SelectTrigger className="w-full sm:w-40"><SelectValue placeholder="Status" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua status</SelectItem>
+              <SelectItem value="active">Aktif</SelectItem>
+              <SelectItem value="inactive">Nonaktif</SelectItem>
+            </SelectContent>
+          </Select>
         </CardContent>
       </Card>
 
@@ -178,28 +198,48 @@ export default function ProductsPage() {
                         <span className={product.stock <= 10 ? "font-medium text-destructive" : "text-on-surface-variant"}>{product.stock}</span>
                       </td>
                       <td className="px-4 py-3">
-                        {product.featured && <Badge variant="warning">Unggulan</Badge>}
-                        {product.stock === 0 && <Badge variant="destructive">Habis</Badge>}
-                        {product.stock > 0 && product.stock <= 10 && <Badge variant="warning">Menipis</Badge>}
-                        {!product.featured && product.stock > 10 && <Badge variant="success">Aktif</Badge>}
+                        {!product.active ? (
+                          /* Soft-delete: produk dinonaktifkan — tunjukkan jelas
+                             agar tidak dikira delete "tidak jalan". */
+                          <Badge variant="secondary">Nonaktif</Badge>
+                        ) : (
+                          <>
+                            {product.featured && <Badge variant="warning">Unggulan</Badge>}
+                            {product.stock === 0 && <Badge variant="destructive">Habis</Badge>}
+                            {product.stock > 0 && product.stock <= 10 && <Badge variant="warning">Menipis</Badge>}
+                            {!product.featured && product.stock > 10 && <Badge variant="success">Aktif</Badge>}
+                          </>
+                        )}
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <div className="relative inline-block">
-                          <Button variant="ghost" size="icon" onClick={() => setActiveMenu(activeMenu === product.id ? null : product.id)}>
-                            <Icon name="more_vert" size={16} />
-                          </Button>
-                          {activeMenu === product.id && (
-                            <div className="absolute right-0 z-10 mt-1 w-40 rounded-lg border bg-surface py-1 shadow-lg">
-                              <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-container-low" onClick={() => setActiveMenu(null)}>
-                                <Icon name="edit" size={16} /> Edit
-                              </Link>
-                              <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10" onClick={() => { setActiveMenu(null); handleDelete(product.id, product.name) }}>
-                                <Icon name="delete" size={16} /> Hapus
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </td>
+                                              <div className="relative inline-block">
+                                                <Button
+                                                  variant="ghost"
+                                                  size="icon"
+                                                  onClick={(e) => {
+                                                    const btn = e.currentTarget
+                                                    setMenuAnchor(btn)
+                                                    setActiveMenu(activeMenu === product.id ? null : product.id)
+                                                  }}
+                                                >
+                                                  <Icon name="more_vert" size={16} />
+                                                </Button>
+                                                {activeMenu === product.id && menuAnchor && createPortal(
+                                                  <div className="fixed z-50 w-40 rounded-lg border bg-surface py-1 shadow-lg" style={{
+                                                    top: menuAnchor.getBoundingClientRect().bottom + window.scrollY,
+                                                    left: menuAnchor.getBoundingClientRect().right - 160
+                                                  }}>
+                                                    <Link href={`/admin/products/${product.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-container-low" onClick={() => { setActiveMenu(null); setMenuAnchor(null) }}>
+                                                      <Icon name="edit" size={16} /> Edit
+                                                    </Link>
+                                                    <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10" onClick={() => { setActiveMenu(null); setMenuAnchor(null); handleDelete(product.id, product.name) }}>
+                                                      <Icon name="delete" size={16} /> Hapus
+                                                    </button>
+                                                  </div>,
+                                                  document.body
+                                                )}
+                                              </div>
+                                            </td>
                     </tr>
                   ))}
                 </tbody>
