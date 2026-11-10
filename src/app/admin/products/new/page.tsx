@@ -650,13 +650,13 @@ export default function NewProductPage() {
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
                   <ClientErrorBoundary>
-                    <MarkdownEditor value={form.shortDescription} onChange={(v) => updateField("shortDescription", v)} placeholder="Ringkasan produk (Markdown)…" />
+                    <MarkdownEditor value={form.shortDescription} onChange={(v) => updateField("shortDescription", v)} placeholder="Ringkasan singkat produk…" />
                   </ClientErrorBoundary>
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
                   <ClientErrorBoundary>
-                    <MarkdownEditor value={form.description} onChange={(v) => updateField("description", v)} placeholder="Detail, keunggulan, isi paket (Markdown)…" height="min-h-[220px]" />
+                    <MarkdownEditor value={form.description} onChange={(v) => updateField("description", v)} placeholder="Detail, keunggulan, isi paket…" height="min-h-[220px]" />
                   </ClientErrorBoundary>
                 </div>
               </CardContent>

@@ -108,7 +108,7 @@ function htmlToMd(root: HTMLElement): string {
 export function MarkdownEditor({
   value,
   onChange,
-  label = "Deskripsi",
+  label = "",
   placeholder = "Tulis di sini… (ketik - lalu spasi untuk bullet)",
   height = "min-h-[160px]",
 }: MarkdownEditorProps) {

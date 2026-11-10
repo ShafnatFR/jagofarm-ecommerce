@@ -374,20 +374,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
-                    <MarkdownEditor
-                      value={form.shortDescription}
-                      onChange={(v) => updateField("shortDescription", v)}
-                      placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
-                    />
+                    <MarkdownEditor value={form.shortDescription} onChange={(v) => updateField("shortDescription", v)} placeholder="Ringkasan singkat produk…" />
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                    <MarkdownEditor
-                      value={form.description}
-                      onChange={(v) => updateField("description", v)}
-                      placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
-                      height="min-h-[200px]"
-                    />
+                    <MarkdownEditor value={form.description} onChange={(v) => updateField("description", v)} placeholder="Detail, keunggulan, isi paket…" height="min-h-[200px]" />
                   </div>
                 </CardContent>
               </Card>
@@ -402,10 +393,15 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                   <Input label="Harga Diskon (Rp)" type="number" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
                   <Input label="SKU" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
                   <Input label="Berat (gram)" type="number" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
-                  <Input label="Panjang paket (cm)" type="number" value={form.length} onChange={(e) => updateField("length", e.target.value)} required />
-                  <Input label="Lebar paket (cm)" type="number" value={form.width} onChange={(e) => updateField("width", e.target.value)} required />
-                  <Input label="Tinggi paket (cm)" type="number" value={form.height} onChange={(e) => updateField("height", e.target.value)} required />
                   <Input label="Stok" type="number" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
+                </div>
+                <div className="mt-4">
+                  <p className="mb-2 text-sm font-medium">Dimensi Paket (cm)</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Input label="Panjang" type="number" value={form.length} onChange={(e) => updateField("length", e.target.value)} required />
+                    <Input label="Lebar" type="number" value={form.width} onChange={(e) => updateField("width", e.target.value)} required />
+                    <Input label="Tinggi" type="number" value={form.height} onChange={(e) => updateField("height", e.target.value)} required />
+                  </div>
                 </div>
               </CardContent>
             </Card>
