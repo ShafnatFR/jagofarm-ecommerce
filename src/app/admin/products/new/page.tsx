@@ -547,468 +547,272 @@ export default function NewProductPage() {
     return counts.reduce((a, b) => a * b, 1);
   }, [optionGroups]);
 
+  const pricePreview = hasVariants
+    ? formatPriceRange(combinations)
+    : (form.basePrice ? formatPrice(Number(form.basePrice) || 0) : null);
+
+  const sections = [
+    { id: "info-produk", label: "Informasi Produk" },
+    { id: "spesifikasi", label: "Spesifikasi" },
+    { id: "deskripsi", label: "Deskripsi" },
+    { id: "penjualan", label: "Informasi Penjualan" },
+    { id: "pengiriman", label: "Pengiriman" },
+    { id: "lainnya", label: "Lainnya" },
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
+    <div className="space-y-4 pb-28">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
           <Link href="/admin/products"><Button variant="ghost" size="icon"><Icon name="arrow_back" size={20} /></Button></Link>
           <div>
             <h1 className="text-2xl font-bold text-on-surface">Tambah Produk</h1>
-            <p className="text-sm text-on-surface-variant">Buat produk baru untuk toko Anda</p>
+            <p className="text-sm text-on-surface-variant">Lengkapi detail produk sebelum dipublikasikan</p>
           </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link href="/admin/products"><Button variant="secondary" type="button">Kembali</Button></Link>
+          <Button type="submit" form="product-form" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
+        </div>
+      </div>
+
+      <div className="sticky top-0 z-20 -mx-1 overflow-x-auto rounded-xl border border-outline-variant/60 bg-surface/95 px-2 py-2 backdrop-blur">
+        <div className="flex min-w-max gap-1">
+          {sections.map((s) => (
+            <a key={s.id} href={`#${s.id}`} className="rounded-lg px-3 py-2 text-sm font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface">
+              {s.label}
+            </a>
+          ))}
         </div>
       </div>
 
       {error && (
-        <p id="product-form-error" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
+        <p id="product-form-error" className="rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
       )}
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* KOLOM KIRI (2/3) */}
-        <div className="space-y-6 lg:col-span-2">
-          {/* Card Informasi Produk */}
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+      <form id="product-form" onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="space-y-4">
+          <motion.div id="info-produk" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             <Card>
               <CardHeader><CardTitle className="text-lg">Informasi Produk</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <Input label="Nama Produk" placeholder="Contoh: Kaos Polos Cotton Combed" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
-                <Input label="Slug" placeholder="otomatis-dari-nama" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
+              <CardContent className="space-y-5">
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Kategori</label>
-                  <ClientErrorBoundary>
-                    <OdooCategorySelect
-                      value={form.category || null}
-                      onChange={(v) => updateField("category", v ?? "")}
-                      required
-                    />
-                  </ClientErrorBoundary>
+                  <label className="mb-1.5 block text-sm font-medium">Foto Produk</label>
+                  <p className="mb-2 text-xs text-on-surface-variant">Upload foto utama dan pendukung produk.</p>
+                  <ImageUploader value={images} onChange={setImages} disabled={saving} folder="products" />
+                </div>
+                <Input label="Nama Produk *" placeholder="Contoh: Paket Hidroponik Pot Vertikal Besar" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Input label="Slug" placeholder="otomatis-dari-nama" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <Input label="SKU Produk *" placeholder="JF-PROD-001" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
+                    </div>
+                    <Button type="button" variant="secondary" size="sm" onClick={() => { const s = generateProductSKU(form.name); if (s) setForm(p => ({ ...p, sku: s })); }} disabled={!form.name.trim()} className="mb-0.5 whitespace-nowrap">
+                      <Icon name="auto_awesome" size={16} className="mr-1" />Auto
+                    </Button>
+                  </div>
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
+                  <label className="mb-1.5 block text-sm font-medium">Kategori *</label>
                   <ClientErrorBoundary>
-                    <MarkdownEditor
-                      value={form.shortDescription}
-                      onChange={(v) => updateField("shortDescription", v)}
-                      placeholder="Deskripsi pendek untuk kartu produk (Markdown)…"
-                    />
+                    <OdooCategorySelect value={form.category || null} onChange={(v) => updateField("category", v ?? "")} required />
                   </ClientErrorBoundary>
                 </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
-                  <ClientErrorBoundary>
-                    <MarkdownEditor
-                      value={form.description}
-                      onChange={(v) => updateField("description", v)}
-                      placeholder="Deskripsi lengkap produk (Markdown, gaya GitHub)…"
-                    height="min-h-[200px]"
-                  ></MarkdownEditor>
-                </ClientErrorBoundary>
-              </div>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Card Harga & Stok */}
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <motion.div id="spesifikasi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 }}>
             <Card>
-              <CardHeader className="flex flex-row items-start justify-between space-y-0">
-                <div>
-                  <CardTitle className="text-lg">{hasVariants ? "Harga & Stok Produk" : "Harga & Stok"}</CardTitle>
-                  <p className="text-sm text-on-surface-variant">
-                    {hasVariants
-                      ? "Harga, stok, dan gambar diatur per kombinasi varian."
-                      : "Berlaku untuk seluruh produk karena tidak ada varian."}
-                  </p>
-                </div>
-                <label className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg border border-input px-3 py-2">
-                  <span className="text-xs font-medium text-on-surface">Ada varian</span>
-                  <div
-                    role="switch"
-                    tabIndex={0}
-                    aria-checked={hasVariants}
-                    aria-label="Produk ini punya varian"
-                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setHasVariants(v => !v); }}}
-                    onClick={() => setHasVariants(v => !v)}
-                    className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${hasVariants ? "bg-primary" : "bg-surface-container"}`}
-                  >
-                    <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-transform ${hasVariants ? "translate-x-[22px]" : "translate-x-0.5"}`} />
-                  </div>
-                </label>
+              <CardHeader>
+                <CardTitle className="text-lg">Spesifikasi</CardTitle>
+                <p className="text-sm text-on-surface-variant">Berat dan dimensi untuk perhitungan ongkir.</p>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {!hasVariants && (
-                    <>
-                      <Input label="Harga Dasar (Rp)" type="number" placeholder="850000" value={form.basePrice} onChange={(e) => updateField("basePrice", e.target.value)} required />
-                      <Input label="Harga Diskon (Rp)" type="number" placeholder="750000" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
-                    </>
-                  )}
-                  <div className="flex gap-2 items-end">
-                    <div className="flex-1">
-                      <Input label="SKU" placeholder="JF-KAOS-POL01" value={form.sku} onChange={(e) => updateField("sku", e.target.value)} required />
-                    </div>
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        const autoSKU = generateProductSKU(form.name);
-                        if (autoSKU) setForm(p => ({ ...p, sku: autoSKU }));
-                      }}
-                      disabled={!form.name.trim()}
-                      className="mb-0.5 whitespace-nowrap"
-                    >
-                      <Icon name="auto_awesome" size={16} className="mr-1.5" />
-                      Auto
-                    </Button>
-                  </div>
-                  <Input label="Berat (gram)" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
-                  {!hasVariants && (
-                    <Input label="Stok" type="number" placeholder="24" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
-                  )}
-                </div>
-
-                {hasVariants && (
-                  <p className="mt-3 rounded-lg bg-surface-container-low p-3 text-xs text-on-surface-variant">
-                    Harga, stok, diskon, dan gambar diatur di card <strong>Kombinasi Varian</strong> di bawah.
-                    Harga dasar produk otomatis mengikuti kombinasi termurah.
-                  </p>
-                )}
-
-                <div className="mt-4">
-                  <p className="mb-2 text-sm font-medium">Dimensi Paket (cm)</p>
+              <CardContent className="space-y-4">
+                <Input label="Berat (gram) *" type="number" placeholder="2500" value={form.weight} onChange={(e) => updateField("weight", e.target.value)} required />
+                <div>
+                  <p className="mb-2 text-sm font-medium">Dimensi Paket (cm) *</p>
                   <div className="grid grid-cols-3 gap-3">
                     <Input label="Panjang" type="number" placeholder="30" value={form.length} onChange={(e) => updateField("length", e.target.value)} required />
                     <Input label="Lebar" type="number" placeholder="20" value={form.width} onChange={(e) => updateField("width", e.target.value)} required />
                     <Input label="Tinggi" type="number" placeholder="15" value={form.height} onChange={(e) => updateField("height", e.target.value)} required />
                   </div>
-                  <p className="mt-1 text-xs text-muted-foreground">Dipakai untuk menghitung berat volumetrik ongkir.</p>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* ======== CARD VARIAN MULTI-DIMENSI ======== */}
-          {hasVariants && (
-            <>
-              {/* Card Opsi Varian (Definisi Grup) */}
-              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-                <Card>
-                  <CardHeader className="flex flex-row items-start justify-between space-y-0">
-                    <div>
-                      <CardTitle className="text-lg">Opsi Varian</CardTitle>
-                      <p className="text-sm text-on-surface-variant">
-                        Definisikan dimensi varian (maksimal 3). Contoh: Ukuran, Warna, Material.
-                      </p>
-                    </div>
-                    <Button 
-                      type="button" 
-                      variant="secondary" 
-                      size="sm" 
-                      onClick={addOptionGroup} 
-                      disabled={saving || optionGroups.length >= 3}
-                    >
-                      <Icon name="add" size={16} className="mr-1" /> Tambah Grup Opsi
-                    </Button>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {optionGroups.length === 0 ? (
-                      <div className="rounded-lg border border-dashed p-6 text-center">
-                        <Icon name="category" size={32} className="mx-auto text-on-surface-variant/70" />
-                        <p className="mt-2 text-sm text-on-surface-variant">
-                          Belum ada grup opsi. Klik &quot;Tambah Grup Opsi&quot; untuk memulai.
-                        </p>
-                      </div>
-                    ) : (
-                      optionGroups.map((group, gIdx) => (
-                        <div key={group.id} className="rounded-lg border border-input p-4">
-                          <div className="mb-3 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                                {gIdx + 1}
-                              </span>
-                              <Input
-                                label=""
-                                placeholder="Nama opsi: Ukuran, Warna, dll"
-                                value={group.name}
-                                onChange={(e) => updateOptionGroupName(group.id, e.target.value)}
-                                disabled={saving}
-                                className="max-w-[200px]"
-                              />
-                            </div>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => removeOptionGroup(group.id)}
-                              disabled={saving}
-                              title="Hapus grup opsi"
-                            >
-                              <Icon name="delete" size={16} />
-                            </Button>
-                          </div>
-
-                          {/* Daftar nilai opsi */}
-                          <div className="ml-9 space-y-2">
-                            {group.options.length === 0 ? (
-                              <p className="text-xs text-muted-foreground">Belum ada nilai. Tambahkan di bawah.</p>
-                            ) : (
-                              <div className="flex flex-wrap gap-2">
-                                {group.options.map(opt => (
-                                  <div
-                                    key={opt.id}
-                                    className="flex items-center gap-1.5 rounded-full border border-input bg-background px-3 py-1.5"
-                                  >
-                                    <input
-                                      type="text"
-                                      value={opt.value}
-                                      onChange={(e) => updateOptionValue(group.id, opt.id, e.target.value)}
-                                      disabled={saving}
-                                      className="w-16 border-0 bg-transparent text-sm focus:outline-none focus:ring-0"
-                                      placeholder="Nilai"
-                                    />
-                                    <button
-                                      type="button"
-                                      onClick={() => removeOptionValue(group.id, opt.id)}
-                                      disabled={saving}
-                                      className="text-muted-foreground hover:text-destructive"
-                                    >
-                                      <Icon name="close" size={14} />
-                                    </button>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                            <Button
-                              type="button"
-                              variant="secondary"
-                              size="sm"
-                              onClick={() => addOptionValue(group.id)}
-                              disabled={saving}
-                            >
-                              <Icon name="add" size={14} className="mr-1" /> Tambah Nilai
-                            </Button>
-                          </div>
-                        </div>
-                      ))
-                    )}
-
-                    {/* Preview jumlah kombinasi */}
-                    {expectedComboCount > 0 && (
-                      <div className="rounded-lg bg-primary/5 p-3">
-                        <p className="text-xs text-on-surface-variant">
-                          Akan menghasilkan <strong className="text-primary">{expectedComboCount} kombinasi</strong> varian.
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Tombol Generate Kombinasi */}
-              <div className="flex justify-center">
-                <Button
-                  type="button"
-                  onClick={handleGenerateCombinations}
-                  disabled={saving || expectedComboCount === 0}
-                  size="lg"
-                  className="gap-2"
-                >
-                  <Icon name="auto_awesome" size={20} />
-                  Generate Kombinasi Varian ({expectedComboCount})
-                </Button>
-              </div>
-
-              {/* Card Kombinasi Varian (Hasil Generate) */}
-              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                <Card>
-                  <CardHeader className="flex flex-row items-start justify-between space-y-0">
-                    <div>
-                      <CardTitle className="text-lg">Kombinasi Varian</CardTitle>
-                      <p className="text-sm text-on-surface-variant">
-                        Setiap kombinasi punya harga, stok, diskon, SKU, dan gambar sendiri.
-                      </p>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {combinations.length === 0 ? (
-                      <div className="rounded-lg border border-dashed p-8 text-center">
-                        <Icon name="inventory_2" size={40} className="mx-auto text-on-surface-variant/70" />
-                        <p className="mt-3 text-sm text-on-surface-variant">
-                          Belum ada kombinasi. Definisikan opsi varian di atas, lalu klik &quot;Generate Kombinasi&quot;.
-                        </p>
-                      </div>
-                    ) : (
-                      <>
-                        {/* Header tabel */}
-                        <div className="hidden grid-cols-12 gap-2 rounded-lg bg-surface-container-low p-2 text-xs font-medium text-on-surface-variant sm:grid">
-                          <div className="col-span-3">Kombinasi</div>
-                          <div className="col-span-2">SKU</div>
-                          <div className="col-span-1">Harga</div>
-                          <div className="col-span-1">Diskon</div>
-                          <div className="col-span-1">Stok</div>
-                          <div className="col-span-1">Berat</div>
-                          <div className="col-span-2">Gambar</div>
-                          <div className="col-span-1"></div>
-                        </div>
-
-                        {combinations.map((comb) => {
-                          const err = combinationErrors[comb.id];
-                          return (
-                            <div
-                              key={comb.id}
-                              className={`rounded-lg border p-3 ${err ? "border-destructive" : "border-input"}`}
-                            >
-                              <div className="mb-2 flex items-center justify-between">
-                                <div className="flex flex-wrap gap-1.5">
-                                  {comb.selectedOptions.map(so => (
-                                    <span
-                                      key={`${so.groupId}:${so.optionId}`}
-                                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
-                                    >
-                                      <span className="text-on-surface-variant/70">{so.groupLabel}:</span>
-                                      {so.optionLabel}
-                                    </span>
-                                  ))}
-                                </div>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-destructive hover:text-destructive"
-                                  onClick={() => removeCombination(comb.id)}
-                                  disabled={saving}
-                                  title="Hapus kombinasi"
-                                >
-                                  <Icon name="delete" size={16} />
-                                </Button>
-                              </div>
-
-                              <div className="grid grid-cols-1 gap-3 sm:grid-cols-6 lg:grid-cols-7">
-                                <div className="sm:col-span-1 flex gap-1.5 items-end">
-                                  <div className="flex-1 min-w-0">
-                                    <Input
-                                      label="SKU"
-                                      placeholder="JF-S-MERAH"
-                                      value={comb.sku}
-                                      onChange={(e) => updateCombination(comb.id, "sku", e.target.value)}
-                                      disabled={saving}
-                                    />
-                                  </div>
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => {
-                                      const labels = comb.selectedOptions.map(o => o.optionLabel);
-                                      const autoSKU = generateVariantSKU(form.sku, labels);
-                                      if (autoSKU) updateCombination(comb.id, "sku", autoSKU);
-                                    }}
-                                    disabled={saving || !form.sku.trim()}
-                                    title="Auto-generate dari nama produk + opsi"
-                                    className="mb-0.5 flex-shrink-0"
-                                  >
-                                    <Icon name="auto_awesome" size={14} />
-                                  </Button>
-                                </div>
-                                <Input
-                                  label="Harga (Rp)"
-                                  type="number"
-                                  placeholder="150000"
-                                  value={comb.price}
-                                  onChange={(e) => updateCombination(comb.id, "price", e.target.value)}
-                                  disabled={saving}
-                                />
-                                <Input
-                                  label="Diskon (Rp)"
-                                  type="number"
-                                  placeholder="Opsional"
-                                  value={comb.discountPrice}
-                                  onChange={(e) => updateCombination(comb.id, "discountPrice", e.target.value)}
-                                  disabled={saving}
-                                />
-                                <Input
-                                  label="Stok"
-                                  type="number"
-                                  placeholder="10"
-                                  value={comb.stock}
-                                  onChange={(e) => updateCombination(comb.id, "stock", e.target.value)}
-                                  disabled={saving}
-                                />
-                                <Input
-                                  label="Berat (g)"
-                                  type="number"
-                                  placeholder="Ikut produk"
-                                  value={comb.weight}
-                                  onChange={(e) => updateCombination(comb.id, "weight", e.target.value)}
-                                  disabled={saving}
-                                />
-                                
-                                {/* Gambar per varian */}
-                                <div className="sm:col-span-2 lg:col-span-2">
-                                  <label className="mb-1.5 block text-xs font-medium text-on-surface-variant">
-                                    Gambar Varian
-                                  </label>
-                                  <ImageUploader
-                                    value={comb.images}
-                                    onChange={(urls) => updateCombination(comb.id, "images", urls)}
-                                    disabled={saving}
-                                    folder="variants"
-                                    max={5}
-                                  />
-                                </div>
-                              </div>
-
-                              {err && <p className="mt-1 text-xs text-destructive">{err}</p>}
-                            </div>
-                          );
-                        })}
-
-                        {/* Pratinjau rentang harga */}
-                        {formatPriceRange(combinations) && (
-                          <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
-                            <p className="text-xs text-on-surface-variant">Harga tampil di kartu produk:</p>
-                            <p className="mt-0.5 font-serif text-base font-bold text-primary">
-                              {formatPriceRange(combinations)}
-                            </p>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </>
-          )}
-        </div>
-
-        {/* KOLOM KANAN (1/3) */}
-        <div className="space-y-6">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+          <motion.div id="deskripsi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}>
             <Card>
-              <CardHeader><CardTitle className="text-lg">Gambar Produk</CardTitle></CardHeader>
-              <CardContent>
-                <ImageUploader value={images} onChange={setImages} disabled={saving} folder="products" />
+              <CardHeader><CardTitle className="text-lg">Deskripsi</CardTitle></CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
+                  <ClientErrorBoundary>
+                    <MarkdownEditor value={form.shortDescription} onChange={(v) => updateField("shortDescription", v)} placeholder="Ringkasan produk (Markdown)…" />
+                  </ClientErrorBoundary>
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium">Deskripsi Lengkap</label>
+                  <ClientErrorBoundary>
+                    <MarkdownEditor value={form.description} onChange={(v) => updateField("description", v)} placeholder="Detail, keunggulan, isi paket (Markdown)…" height="min-h-[220px]" />
+                  </ClientErrorBoundary>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <motion.div id="penjualan" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.09 }}>
             <Card>
-              <CardHeader><CardTitle className="text-lg">Pengaturan</CardTitle></CardHeader>
+              <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+                <div>
+                  <CardTitle className="text-lg">Informasi Penjualan</CardTitle>
+                  <p className="text-sm text-on-surface-variant">{hasVariants ? "Harga/stok per kombinasi varian." : "Harga dan stok produk."}</p>
+                </div>
+                <label className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg border border-input px-3 py-2">
+                  <span className="text-xs font-medium text-on-surface">Aktifkan Variasi</span>
+                  <div role="switch" tabIndex={0} aria-checked={hasVariants} aria-label="Aktifkan variasi" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setHasVariants(v => !v); } }} onClick={() => setHasVariants(v => !v)} className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${hasVariants ? "bg-primary" : "bg-surface-container"}`}>
+                    <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-transform ${hasVariants ? "translate-x-[22px]" : "translate-x-0.5"}`} />
+                  </div>
+                </label>
+              </CardHeader>
               <CardContent className="space-y-4">
-                <label className="flex cursor-pointer items-center justify-between rounded-lg border p-3">
+                {!hasVariants ? (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <Input label="Harga (Rp) *" type="number" placeholder="350000" value={form.basePrice} onChange={(e) => updateField("basePrice", e.target.value)} required />
+                    <Input label="Harga Diskon (Rp)" type="number" placeholder="Opsional" value={form.discountPrice} onChange={(e) => updateField("discountPrice", e.target.value)} />
+                    <Input label="Stok *" type="number" placeholder="20" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} required />
+                  </div>
+                ) : (
+                  <p className="rounded-lg bg-surface-container-low p-3 text-sm text-on-surface-variant">Atur opsi & kombinasi varian di bawah untuk harga/stok per varian.</p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {hasVariants && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
+              <Card>
+                <CardHeader className="flex flex-row items-start justify-between space-y-0">
+                  <div>
+                    <CardTitle className="text-lg">Opsi & Kombinasi Varian</CardTitle>
+                    <p className="text-sm text-on-surface-variant">Maks 3 grup opsi, lalu generate kombinasi.</p>
+                  </div>
+                  <Button type="button" variant="secondary" size="sm" onClick={addOptionGroup} disabled={saving || optionGroups.length >= 3}>
+                    <Icon name="add" size={16} className="mr-1" />Tambah Grup
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {optionGroups.length === 0 ? (
+                    <div className="rounded-lg border border-dashed p-6 text-center text-sm text-on-surface-variant">Belum ada grup opsi. Tambah grup (contoh: Ukuran, Warna).</div>
+                  ) : optionGroups.map((group, gIdx) => (
+                    <div key={group.id} className="rounded-lg border border-input p-4">
+                      <div className="mb-3 flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{gIdx + 1}</span>
+                          <Input label="" placeholder="Nama opsi (Ukuran/Warna)" value={group.name} onChange={(e) => updateOptionGroupName(group.id, e.target.value)} disabled={saving} className="max-w-[220px]" />
+                        </div>
+                        <Button type="button" variant="ghost" size="sm" className="text-destructive" onClick={() => removeOptionGroup(group.id)} disabled={saving}><Icon name="delete" size={16} /></Button>
+                      </div>
+                      <div className="ml-1 space-y-2 sm:ml-9">
+                        <div className="flex flex-wrap gap-2">
+                          {group.options.map(opt => (
+                            <div key={opt.id} className="flex items-center gap-1.5 rounded-full border border-input bg-background px-3 py-1.5">
+                              <input type="text" value={opt.value} onChange={(e) => updateOptionValue(group.id, opt.id, e.target.value)} disabled={saving} className="w-20 border-0 bg-transparent text-sm focus:outline-none" placeholder="Nilai" />
+                              <button type="button" onClick={() => removeOptionValue(group.id, opt.id)} disabled={saving} className="text-muted-foreground hover:text-destructive"><Icon name="close" size={14} /></button>
+                            </div>
+                          ))}
+                        </div>
+                        <Button type="button" variant="secondary" size="sm" onClick={() => addOptionValue(group.id)} disabled={saving}><Icon name="add" size={14} className="mr-1" />Tambah Nilai</Button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {expectedComboCount > 0 && (
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-primary/5 p-3">
+                      <p className="text-sm text-on-surface-variant">Akan menghasilkan <strong className="text-primary">{expectedComboCount}</strong> kombinasi.</p>
+                      <Button type="button" onClick={handleGenerateCombinations} disabled={saving} className="gap-2"><Icon name="auto_awesome" size={18} />Generate Kombinasi</Button>
+                    </div>
+                  )}
+
+                  {combinations.length > 0 && (
+                    <div className="space-y-3 border-t border-outline-variant/60 pt-4">
+                      <p className="text-sm font-medium text-on-surface">Kombinasi Varian ({combinations.length})</p>
+                      {combinations.map((comb) => {
+                        const err = combinationErrors[comb.id];
+                        return (
+                          <div key={comb.id} className={`rounded-lg border p-3 ${err ? "border-destructive" : "border-input"}`}>
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                              <div className="flex flex-wrap gap-1.5">
+                                {comb.selectedOptions.map(so => (
+                                  <span key={`${so.groupId}:${so.optionId}`} className="inline-flex rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                                    <span className="mr-1 text-on-surface-variant/70">{so.groupLabel}:</span>{so.optionLabel}
+                                  </span>
+                                ))}
+                              </div>
+                              <Button type="button" variant="ghost" size="sm" className="text-destructive" onClick={() => removeCombination(comb.id)} disabled={saving}><Icon name="delete" size={16} /></Button>
+                            </div>
+                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                              <div className="flex items-end gap-1.5">
+                                <div className="flex-1"><Input label="SKU Varian" value={comb.sku} onChange={(e) => updateCombination(comb.id, "sku", e.target.value)} disabled={saving} /></div>
+                                <Button type="button" variant="ghost" size="sm" onClick={() => { const labels = comb.selectedOptions.map(o => o.optionLabel); const s = generateVariantSKU(form.sku, labels); if (s) updateCombination(comb.id, "sku", s); }} disabled={saving || !form.sku.trim()} className="mb-0.5"><Icon name="auto_awesome" size={14} /></Button>
+                              </div>
+                              <Input label="Harga (Rp)" type="number" value={comb.price} onChange={(e) => updateCombination(comb.id, "price", e.target.value)} disabled={saving} />
+                              <Input label="Diskon (Rp)" type="number" placeholder="Opsional" value={comb.discountPrice} onChange={(e) => updateCombination(comb.id, "discountPrice", e.target.value)} disabled={saving} />
+                              <Input label="Stok" type="number" value={comb.stock} onChange={(e) => updateCombination(comb.id, "stock", e.target.value)} disabled={saving} />
+                              <Input label="Berat (g)" type="number" placeholder="Ikut produk" value={comb.weight} onChange={(e) => updateCombination(comb.id, "weight", e.target.value)} disabled={saving} />
+                              <div className="sm:col-span-2 lg:col-span-3">
+                                <label className="mb-1.5 block text-xs font-medium text-on-surface-variant">Gambar Varian</label>
+                                <ImageUploader value={comb.images} onChange={(urls) => updateCombination(comb.id, "images", urls)} disabled={saving} folder="variants" max={5} />
+                              </div>
+                            </div>
+                            {err && <p className="mt-1 text-xs text-destructive">{err}</p>}
+                          </div>
+                        );
+                      })}
+                      {formatPriceRange(combinations) && (
+                        <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
+                          <span className="text-on-surface-variant">Rentang harga: </span>
+                          <strong className="text-primary">{formatPriceRange(combinations)}</strong>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+
+          <motion.div id="pengiriman" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            <Card>
+              <CardHeader><CardTitle className="text-lg">Pengiriman</CardTitle></CardHeader>
+              <CardContent className="space-y-2 text-sm text-on-surface-variant">
+                <p>Data pengiriman mengikuti spesifikasi produk:</p>
+                <ul className="list-disc space-y-1 pl-5">
+                  <li>Berat: <span className="font-medium text-on-surface">{form.weight ? `${form.weight} g` : "-"}</span></li>
+                  <li>Dimensi: <span className="font-medium text-on-surface">{form.length || form.width || form.height ? `${form.length || "-"} × ${form.width || "-"} × ${form.height || "-"} cm` : "-"}</span></li>
+                </ul>
+                <p className="text-xs">Ubah di bagian Spesifikasi untuk perhitungan ongkir.</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div id="lainnya" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
+            <Card>
+              <CardHeader><CardTitle className="text-lg">Lainnya</CardTitle></CardHeader>
+              <CardContent className="space-y-4">
+                <label className="flex cursor-pointer items-center justify-between rounded-lg border border-input p-3">
                   <div>
                     <p className="text-sm font-medium">Produk Unggulan</p>
-                    <p className="text-xs text-on-surface-variant">Tampilkan di halaman utama</p>
+                    <p className="text-xs text-on-surface-variant">Tampilkan di halaman utama toko</p>
                   </div>
-                  <div className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-primary" : "bg-surface-container"}`} onClick={() => updateField("featured", !form.featured)}>
+                  <div role="switch" tabIndex={0} aria-checked={form.featured} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); updateField("featured", !form.featured); } }} onClick={() => updateField("featured", !form.featured)} className={`relative h-6 w-11 cursor-pointer rounded-full transition-colors ${form.featured ? "bg-primary" : "bg-surface-container"}`}>
                     <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-transform ${form.featured ? "translate-x-[22px]" : "translate-x-0.5"}`} />
                   </div>
                 </label>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Tag</label>
+                  <label className="mb-1.5 block text-sm font-medium">Tag Produk</label>
                   <div className="flex gap-2">
                     <Input placeholder="Tambah tag..." value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())} />
                     <Button type="button" variant="secondary" size="icon" onClick={addTag}><Icon name="add" size={16} /></Button>
@@ -1028,19 +832,60 @@ export default function NewProductPage() {
             </Card>
           </motion.div>
 
-          {/* Salinan error di dekat tombol Simpan: pesan validasi lama hanya
-              tampil di atas laman panjang, sehingga klik "Simpan" di bawah
-              tak terlihat merespons. Dengan ini error selalu terlihat. */}
-          {error && (
-            <p aria-live="assertive" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</p>
-          )}
-          <div className="flex gap-3">
-            <Button type="submit" className="flex-1" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
-            <Link href="/admin/products" className="flex-1"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>
+          {error && <p aria-live="assertive" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive xl:hidden">{error}</p>}
+        </div>
+
+        <aside className="space-y-4 xl:sticky xl:top-20 xl:self-start">
+          <Card>
+            <CardHeader><CardTitle className="text-lg">Preview Produk</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              <div className="aspect-square overflow-hidden rounded-xl border border-outline-variant/60 bg-surface-container-low">
+                {images[0] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={images[0]} alt="Preview produk" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full flex-col items-center justify-center gap-2 text-on-surface-variant">
+                    <Icon name="image" size={32} />
+                    <span className="text-xs">Belum ada foto</span>
+                  </div>
+                )}
+              </div>
+              <div>
+                <p className="line-clamp-2 text-sm font-semibold text-on-surface">{form.name || "Nama produk"}</p>
+                <p className="mt-1 text-base font-bold text-primary">{pricePreview || "Rp0"}</p>
+                <p className="mt-1 text-xs text-on-surface-variant">SKU: {form.sku || "-"} · Stok: {hasVariants ? `${combinations.length} varian` : (form.stock || "-")}</p>
+              </div>
+              <div className="rounded-lg bg-surface-container-low p-3 text-xs text-on-surface-variant">
+                <p className="font-medium text-on-surface">Tips Lengkapi Produk</p>
+                <ul className="mt-1.5 list-disc space-y-1 pl-4">
+                  <li>Foto jelas (rasio 1:1 disarankan)</li>
+                  <li>Nama, kategori, SKU, berat & dimensi wajib</li>
+                  <li>Isi deskripsi & variasi untuk konversi</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader><CardTitle className="text-lg">Aksi</CardTitle></CardHeader>
+            <CardContent className="space-y-2">
+              <Button type="submit" form="product-form" className="w-full" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
+              <Link href="/admin/products" className="block"><Button variant="secondary" className="w-full" type="button">Batal</Button></Link>
+            </CardContent>
+          </Card>
+        </aside>
+      </form>
+
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-outline-variant/60 bg-surface/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <p className="hidden text-xs text-on-surface-variant sm:block">Pastikan informasi wajib terisi sebelum simpan.</p>
+          <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
+            <Link href="/admin/products"><Button variant="secondary" type="button">Batal</Button></Link>
+            <Button type="submit" form="product-form" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Produk"}</Button>
           </div>
         </div>
-      </form>
-      {/* Keypad melayang kanan-tengah: muncul saat field angka fokus. */}
+      </div>
+
       <NumericKeypad />
     </div>
   );

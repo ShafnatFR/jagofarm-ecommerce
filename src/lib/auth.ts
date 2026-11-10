@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export type AuthUser = {
   id: string;
@@ -147,7 +148,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
  */
 export async function requireAuth(): Promise<AuthUser> {
   const user = await getCurrentUser();
-  if (!user) throw new Error("Unauthorized");
+  if (!user) redirect("/login");
   return user;
 }
 
@@ -156,7 +157,7 @@ export async function requireAuth(): Promise<AuthUser> {
  */
 export async function requireAdmin(): Promise<AuthUser> {
   const user = await requireAuth();
-  if (user.role === "customer") throw new Error("Forbidden");
+  if (user.role === "customer") redirect("/login");
   return user;
 }
 
@@ -166,7 +167,7 @@ export async function requireAdmin(): Promise<AuthUser> {
  */
 export async function requireAdminUser(): Promise<AuthUser> {
   const user = await requireAuth();
-  if (user.role !== "admin") throw new Error("Forbidden");
+  if (user.role !== "admin") redirect("/login");
   return user;
 }
 
@@ -175,7 +176,7 @@ export async function requireAdminUser(): Promise<AuthUser> {
  */
 export async function requireStrictAdmin(): Promise<AuthUser> {
   const user = await requireAuth();
-  if (user.role !== "admin") throw new Error("Forbidden");
+  if (user.role !== "admin") redirect("/login");
   return user;
 }
 
