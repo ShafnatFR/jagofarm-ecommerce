@@ -364,14 +364,12 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 <CardContent className="space-y-4">
                   <Input label="Nama Produk" value={form.name} onChange={(e) => updateField("name", e.target.value)} required />
                   <Input label="Slug" value={form.slug} onChange={(e) => updateField("slug", e.target.value)} />
-                  <div>
-                    <label className="mb-1.5 block text-sm font-medium">Kategori</label>
-                    <OdooCategorySelect
-                      value={form.category || null}
-                      onChange={(v) => updateField("category", v ?? "")}
-                      required
-                    />
-                  </div>
+                  <OdooCategorySelect
+                    label="Kategori"
+                    value={form.category || null}
+                    onChange={(v) => updateField("category", v ?? "")}
+                    required
+                  />
                   <div>
                     <label className="mb-1.5 block text-sm font-medium">Deskripsi Singkat</label>
                     <MarkdownEditor value={form.shortDescription} onChange={(v) => updateField("shortDescription", v)} placeholder="Ringkasan singkat produk…" />

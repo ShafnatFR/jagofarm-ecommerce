@@ -186,7 +186,6 @@ export function MarkdownEditor({
           spellCheck={false}
         />
       </div>
-      <p className="text-[10px] text-on-surface-variant/60">Live editor — ketik <code>-</code> lalu spasi untuk bullet.</p>
     </div>
   );
 }

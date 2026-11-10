@@ -38,7 +38,7 @@ interface OdooCategorySelectProps {
 export function OdooCategorySelect({
   value,
   onChange,
-  label = "Kategori",
+  label = "",
   disabled = false,
   required = false,
 }: OdooCategorySelectProps) {
@@ -195,7 +195,7 @@ export function OdooCategorySelect({
   if (disabled) {
     return (
       <div className="space-y-1">
-        {label && <span className="text-sm font-medium text-on-surface">{label}</span>}
+        {label ? <span className="text-sm font-medium text-on-surface">{label}</span> : null}
         <Input
           disabled
           value={selectedCategory?.name ?? ""}
@@ -208,7 +208,7 @@ export function OdooCategorySelect({
 
   return (
     <div className="space-y-1 relative">
-      {label && <span className="text-sm font-medium text-on-surface">{label}</span>}
+      {label ? <span className="text-sm font-medium text-on-surface">{label}</span> : null}
       <div className="relative">
         <Input
           ref={inputRef}

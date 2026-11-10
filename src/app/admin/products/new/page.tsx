@@ -613,12 +613,9 @@ export default function NewProductPage() {
                     </Button>
                   </div>
                 </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Kategori *</label>
-                  <ClientErrorBoundary>
-                    <OdooCategorySelect value={form.category || null} onChange={(v) => updateField("category", v ?? "")} required />
-                  </ClientErrorBoundary>
-                </div>
+                <ClientErrorBoundary>
+                  <OdooCategorySelect label="Kategori *" value={form.category || null} onChange={(v) => updateField("category", v ?? "")} required />
+                </ClientErrorBoundary>
               </CardContent>
             </Card>
           </motion.div>
